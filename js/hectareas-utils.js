@@ -15,7 +15,7 @@ function generateSocialNetworkSharingButtons(){
 }
 
 function updateTwitterShareLink(url, text){
-  var twitterShareBaseUrl='http://twitter.com/share?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url);
+  var twitterShareBaseUrl='https://twitter.com/share?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url);
   $('#twitter-share').attr('href',twitterShareBaseUrl);
 }
 
