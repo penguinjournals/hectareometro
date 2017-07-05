@@ -36,6 +36,23 @@
 <script src="https://platform.twitter.com/widgets.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/hectareas-utils.js"></script>
 <script type="text/javascript" src="js/hectareas.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#337AB7"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
 </head>
 <body>	
 <script>
