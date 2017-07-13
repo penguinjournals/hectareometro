@@ -30,7 +30,7 @@ function updateUrlShareLink(url){
 
 function updateIframeShare(urlParameters,width,height){
   url = iframeBaseUrl+'?'+urlParameters;
-  iframeContent = '<iframe src="'+url+'&w='+width+'&h='+height+'" width="'+width+'" height="'+height+'"><p>Tu navegador no soporta iframes, lo sentimos.</p></iframe>';
+  iframeContent = '<iframe src="'+url+'&w='+width+'&h='+height+'" width="'+width+'" height="'+height+'" frameBorder="0"><p>Tu navegador no soporta iframes, lo sentimos.</p></iframe>';
   $('#iframe-share').text(iframeContent);
 }
 
