@@ -14,6 +14,10 @@ var facebookName = 'Comprueba lo que ocupa una hectárea en el mundo real.';
 var facebookDescription = 'Nunca te has preguntado a qué equivalen las hectáreas que arden en un incendio cuando lo escuchas en las noticias. Aquí podrás comprobarlo sobre un mapa que podrás mover hasta un sitio que conozcas.';
 var facebookCaption = 'Las hectáreas están muy bien, pero entenderlas es aún mejor.';
 
+function initMap() {
+    console.log("load map");
+}
+
 $(document).ready(function() {
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
