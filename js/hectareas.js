@@ -15,10 +15,6 @@ var facebookDescription = 'Nunca te has preguntado a qué equivalen las hectáre
 var facebookCaption = 'Las hectáreas están muy bien, pero entenderlas es aún mejor.';
 
 function initMap() {
-    console.log("load map");
-}
-
-$(document).ready(function() {
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
   $('#iframe-share-width').val(iframeWidth);
@@ -52,4 +48,4 @@ $(document).ready(function() {
   updateUrlShareLink(baseUrl);
   var emptyParameters = '';
   updateIframeShare(emptyParameters,iframeWidth,iframeHeight);
-});
+};
