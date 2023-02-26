@@ -1,15 +1,15 @@
 body {
   padding-top: 20px;
+  line-height: 1.5;
 }
 
 #map {
   width: 100%;
-  height: 600px;
+  aspect-ratio: 3/1;
 }
 
 a, a:link, a:visited, a:hover, a:active {
-  text-decoration: none;
-  color: #000;
+  color: #2B83D0;
 }
 
 a#share-map, a#share-map:link, a#share-map:visited, a#share-map:hover, a#share-map:active {
