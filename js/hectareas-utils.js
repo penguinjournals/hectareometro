@@ -1,5 +1,11 @@
 function generateSocialNetworkSharingButtons(){
+  if (!map || !map.getCenter) {
+    return;
+  }
   mapCenter = map.getCenter();
+  if (!mapCenter) {
+    return;
+  }
   shareHectareas = $('#hectareas').val();
   shareLatitude = mapCenter.lat();
   shareLongitude = mapCenter.lng();
