@@ -39,6 +39,52 @@ function escapeHtml(s) {
 // Hectare quantities to target, derived from Search Console queries.
 const QUANTITIES = [1, 100, 300, 400, 1000, 3000, 4000, 20000];
 
+// Real-world references of roughly each surface, to make every page unique and
+// genuinely useful (3 recognisable places/things per size, avoiding repeating
+// the football-field figure already given in the first paragraph).
+const COMPARISONS = {
+  1: [
+    'un campo de rugby con sus zonas de marca (~1 ha)',
+    'la Plaza Mayor de Madrid (unos 1,2 ha)',
+    'una manzana del Ensanche de Barcelona (la «illa» de Cerdà, ~1,2 ha)',
+  ],
+  100: [
+    'el Parque del Retiro de Madrid (unas 118 ha)',
+    'la mitad del Principado de Mónaco (todo el país mide 202 ha)',
+    'más de dos veces el recinto de la Ciudad del Vaticano (44 ha)',
+  ],
+  300: [
+    'Central Park de Nueva York (unas 341 ha)',
+    'el doble del Hyde Park de Londres (142 ha)',
+    'la primera sección del Bosque de Chapultepec, en Ciudad de México (~274 ha)',
+  ],
+  400: [
+    'el doble del Principado de Mónaco (202 ha cada uno)',
+    'algo más que Central Park de Nueva York (341 ha)',
+    'casi tres veces el Hyde Park de Londres (142 ha)',
+  ],
+  1000: [
+    'el Bois de Boulogne de París (unas 846 ha)',
+    'el aeropuerto de Londres-Heathrow (~1.270 ha)',
+    'casi tres veces Central Park de Nueva York (341 ha)',
+  ],
+  3000: [
+    'el aeropuerto Adolfo Suárez Madrid-Barajas (unas 3.050 ha)',
+    'la mitad de la isla de Manhattan (~5.900 ha)',
+    'unas nueve veces Central Park de Nueva York (341 ha)',
+  ],
+  4000: [
+    'casi todo el municipio de Bilbao (unas 4.137 ha)',
+    'dos tercios de la isla de Manhattan (~5.900 ha)',
+    'unas doce veces Central Park de Nueva York (341 ha)',
+  ],
+  20000: [
+    'casi el doble de la ciudad de Barcelona (~10.100 ha)',
+    'más que todo el país de Liechtenstein (~16.000 ha)',
+    'un tercio del término municipal de Madrid (~60.400 ha)',
+  ],
+};
+
 function quantityPage(ha) {
   const noun = ha === 1 ? 'hectárea' : 'hectáreas';
   const slug = ha === 1 ? '1-hectarea' : `${ha}-hectareas`;
@@ -53,15 +99,27 @@ function quantityPage(ha) {
   const description = `${haLabel} son ${m2} m² (${km2} km²), unos ${ff} campos de fútbol. Míralo dibujado a escala sobre un mapa real en el Hectareómetro.`;
   const h1 = ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${fmt(ha)} hectáreas?`;
 
-  const intro = `      <p>
-        <b>${haLabel} equivalen a ${m2} metros cuadrados</b> (${km2} km²), es decir, aproximadamente
-        <b>${ff} campos de fútbol</b>. Pero una cifra así es difícil de imaginar: arrastra el mapa de
-        arriba hasta tu ciudad o un sitio que conozcas para ver ${ha === 1 ? 'esta hectárea' : 'estas ' + fmt(ha) + ' hectáreas'} dibujadas a escala real.
-      </p>
+  const subject = ha === 1 ? 'esta hectárea' : 'estas ' + fmt(ha) + ' hectáreas';
+  const drawn = ha === 1 ? 'dibujada' : 'dibujadas';
+  const examples = COMPARISONS[ha];
+  const examplesBlock = examples
+    ? `
+      <p>Para hacerte una idea, <b>${haLabel}</b> ocupan más o menos lo mismo que:</p>
+      <ul class="examples-list">
+${examples.map(e => '        <li>' + e + '</li>').join('\n')}
+      </ul>
+      <p>Arrastra el mapa hasta tu ciudad y cambia el número de hectáreas para comparar otras superficies al instante.</p>`
+    : `
       <p>
         Recuerda que una hectárea es un cuadrado de 100 × 100 metros (10.000 m²). Puedes cambiar el
         número de hectáreas en el recuadro del mapa para comparar otras superficies al instante.
       </p>`;
+
+  const intro = `      <p>
+        <b>${haLabel} equivalen a ${m2} metros cuadrados</b> (${km2} km²), es decir, aproximadamente
+        <b>${ff} campos de fútbol</b>. Pero una cifra así es difícil de imaginar: arrastra el mapa de
+        arriba hasta tu ciudad o un sitio que conozcas para ver ${subject} ${drawn} a escala real.
+      </p>${examplesBlock}`;
 
   const question = ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${fmt(ha)} hectáreas?`;
   const answer = `${haLabel} son ${m2} metros cuadrados (${km2} km²), aproximadamente ${ff} campos de fútbol.`;

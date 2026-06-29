@@ -195,6 +195,16 @@ a, a:link, a:visited, a:hover, a:active {
   background: #f8f9fa;
 }
 
+/* Real-world examples list */
+.examples-list {
+  margin: 0 0 16px 22px;
+  padding: 0;
+}
+
+.examples-list li {
+  margin-bottom: 6px;
+}
+
 /* Related landing-page links */
 .related-links {
   list-style: none;
