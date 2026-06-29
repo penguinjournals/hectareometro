@@ -195,6 +195,73 @@ a, a:link, a:visited, a:hover, a:active {
   background: #f8f9fa;
 }
 
+/* Hectare vs football field to-scale figure */
+.ha-vs-field {
+  margin: 20px 0;
+}
+
+.ha-vs-field svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  display: block;
+}
+
+.ha-vs-field figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.ha-vs-field .legend {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ha-vs-field .swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: -2px;
+}
+
+.ha-vs-field .swatch-ha {
+  background: rgba(43, 131, 208, 0.35);
+  border: 1px solid #2B83D0;
+}
+
+.ha-vs-field .swatch-field {
+  background: rgba(37, 166, 90, 0.6);
+  border: 1px solid #0f7a3d;
+}
+
+.ha-vs-field .note {
+  display: block;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* Official rules quote */
+.rules-quote {
+  border-left: 4px solid #2B83D0;
+  background: #f8f9fa;
+  margin: 16px 0;
+  padding: 12px 18px;
+  font-size: 15px;
+}
+
+.rules-quote p {
+  margin-bottom: 8px;
+}
+
+.rules-quote footer {
+  font-size: 13px;
+  color: #777;
+  margin-top: 4px;
+}
+
 /* Real-world examples list */
 .examples-list {
   margin: 0 0 16px 22px;
