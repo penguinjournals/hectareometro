@@ -15,6 +15,9 @@ var facebookDescription = 'Nunca te has preguntado a qué equivalen las hectáre
 var facebookCaption = 'Las hectáreas están muy bien, pero entenderlas es aún mejor.';
 
 function initMap() {
+  if (typeof PRESET_HECTAREAS !== 'undefined' && PRESET_HECTAREAS) {
+    baseHectareas = PRESET_HECTAREAS;
+  }
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
   updateEquivalences(baseHectareas);

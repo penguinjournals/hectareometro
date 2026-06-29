@@ -111,10 +111,12 @@ function initializeParametersIfSet(){
   var paramLon = getUrlParameter('lon');
   var paramZoom = getUrlParameter('z');
   var paramHa = getUrlParameter('ha');
-  if ( paramLat != undefined && paramLon != undefined && paramZoom != undefined && paramHa != undefined){
+  if ( paramLat != undefined && paramLon != undefined && paramZoom != undefined){
     mapLatitude = parseFloat(paramLat);
     mapLongitude = parseFloat(paramLon);
     zoomLevel = parseInt(paramZoom);
+  }
+  if ( paramHa != undefined ){
     baseHectareas = parseFloat(paramHa);
   }
 }

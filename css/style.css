@@ -195,6 +195,30 @@ a, a:link, a:visited, a:hover, a:active {
   background: #f8f9fa;
 }
 
+/* Related landing-page links */
+.related-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+
+.related-links li a {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #f1f5fb;
+  border: 1px solid #d6e4f5;
+  border-radius: 16px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.related-links li a:hover {
+  background: #e3eefb;
+}
+
 /* FAQ */
 .faq dt {
   font-weight: 600;
