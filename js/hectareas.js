@@ -48,9 +48,10 @@ function initMap() {
     drawCircle(map,radius,mapCenter);
     generateSocialNetworkSharingButtons();
   });
-  updateWhatsappShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
-  updateTwitterShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
-  updateFacebookShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
+  var defaultShareText = i18n().shareDefault;
+  updateWhatsappShareLink(baseUrl,defaultShareText);
+  updateTwitterShareLink(baseUrl,defaultShareText);
+  updateFacebookShareLink(baseUrl,defaultShareText);
   updateUrlShareLink(baseUrl);
   var emptyParameters = '';
   updateIframeShare(emptyParameters,iframeWidth,iframeHeight);

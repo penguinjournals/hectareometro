@@ -13,7 +13,7 @@ function generateSocialNetworkSharingButtons(){
   var params = { ha: shareHectareas, lat: shareLatitude, lon: shareLongitude, z: shareZoom };
   var str = jQuery.param( params );
   var shareUrl = baseUrl+'?'+str;
-  var shareText = '¿Cuanto son '+shareHectareas+' hectáreas en realidad?';
+  var shareText = i18n().shareText(shareHectareas);
   updateWhatsappShareLink(shareUrl,shareText);
   updateTwitterShareLink(shareUrl,shareText);
   updateFacebookShareLink(shareUrl,shareText);
@@ -70,10 +70,41 @@ function getRadiusInMetersFromHectareas(hectareas){
 
 // A standard football pitch (~105 x 68 m) is about 7140 m².
 var FOOTBALL_FIELD_SQUARE_METERS = 7140;
+var ACRES_PER_HECTARE = 2.47105;
 
-function formatNumberEs(value, decimals){
+// Current language is set per page via PAGE_LANG (defaults to Spanish).
+var SITE_LANG = (typeof PAGE_LANG !== 'undefined') ? PAGE_LANG : 'es';
+
+var STRINGS = {
+  es: {
+    locale: 'es-ES',
+    fields: 'campos de fútbol',
+    field: 'campo de fútbol',
+    acres: 'acres',
+    showAcres: false,
+    sep: '  ·  ',
+    shareText: function(ha){ return '¿Cuánto son ' + ha + ' hectáreas en realidad?'; },
+    shareDefault: 'Comprueba lo que ocupa una hectárea en el mundo real'
+  },
+  en: {
+    locale: 'en-GB',
+    fields: 'football fields',
+    field: 'football field',
+    acres: 'acres',
+    showAcres: true,
+    sep: '  ·  ',
+    shareText: function(ha){ return 'How big are ' + ha + ' hectares, really?'; },
+    shareDefault: 'See how big a hectare really is on a map'
+  }
+};
+
+function i18n(){
+  return STRINGS[SITE_LANG] || STRINGS.es;
+}
+
+function formatNumberLocale(value, decimals){
   decimals = decimals || 0;
-  return value.toLocaleString('es-ES', {
+  return value.toLocaleString(i18n().locale, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals
   });
@@ -84,16 +115,25 @@ function getEquivalencesText(hectareas){
   if (isNaN(ha) || ha <= 0) {
     return '';
   }
+  var S = i18n();
   var squareMeters = ha * 10000;
   var squareKm = ha / 100;
   var footballFields = squareMeters / FOOTBALL_FIELD_SQUARE_METERS;
   var fieldsText = footballFields < 10
-    ? formatNumberEs(footballFields, 1)
-    : formatNumberEs(Math.round(footballFields));
-  var fieldsLabel = footballFields >= 0.95 && footballFields < 1.05 ? ' campo de fútbol' : ' campos de fútbol';
-  return formatNumberEs(squareMeters) + ' m²  ·  ' +
-         formatNumberEs(squareKm, 2) + ' km²  ·  ' +
-         '≈ ' + fieldsText + fieldsLabel;
+    ? formatNumberLocale(footballFields, 1)
+    : formatNumberLocale(Math.round(footballFields));
+  var fieldsLabel = footballFields >= 0.95 && footballFields < 1.05 ? S.field : S.fields;
+  var parts = [
+    formatNumberLocale(squareMeters) + ' m²',
+    formatNumberLocale(squareKm, 2) + ' km²',
+    '≈ ' + fieldsText + ' ' + fieldsLabel
+  ];
+  if (S.showAcres) {
+    var ac = ha * ACRES_PER_HECTARE;
+    var acText = ac < 10 ? formatNumberLocale(ac, 2) : formatNumberLocale(Math.round(ac));
+    parts.push(acText + ' ' + S.acres);
+  }
+  return parts.join(S.sep);
 }
 
 function updateEquivalences(hectareas){
