@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
@@ -12,36 +12,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="/favicon.ico">
-<link rel="canonical" href="https://hectareometro.com/hectarea-campo-de-futbol/">
+<link rel="canonical" href="https://hectareometro.com/en/hectare-football-field/">
 <link rel="alternate" hreflang="es" href="https://hectareometro.com/hectarea-campo-de-futbol/">
 <link rel="alternate" hreflang="en" href="https://hectareometro.com/en/hectare-football-field/">
 <link rel="alternate" hreflang="x-default" href="https://hectareometro.com/hectarea-campo-de-futbol/">
-<title>¿A cuántos campos de fútbol equivale una hectárea? | Hectareómetro</title>
-<meta name="description" content="Una hectárea equivale a unos 1,4 campos de fútbol (un campo mide ~0,7 ha). Míralo dibujado a escala sobre un mapa real en el Hectareómetro.">
+<title>How many football fields is a hectare? | Hectareometer</title>
+<meta name="description" content="A hectare is about 1.4 football fields (a pitch is ~0.7 ha). See it drawn to scale on a real map with the Hectareometer.">
 <meta name="author" content="David González Diez">
 
 <!-- Open Graph data -->
-<meta property="og:title" content="¿A cuántos campos de fútbol equivale una hectárea?" />
+<meta property="og:title" content="How many football fields is a hectare?" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://hectareometro.com/hectarea-campo-de-futbol/" />
-<meta property="og:description" content="Una hectárea equivale a unos 1,4 campos de fútbol (un campo mide ~0,7 ha). Míralo dibujado a escala sobre un mapa real en el Hectareómetro." />
-<meta property="og:site_name" content="Hectareómetro" />
+<meta property="og:url" content="https://hectareometro.com/en/hectare-football-field/" />
+<meta property="og:description" content="A hectare is about 1.4 football fields (a pitch is ~0.7 ha). See it drawn to scale on a real map with the Hectareometer." />
+<meta property="og:site_name" content="Hectareometer" />
 <meta property="og:image" content="https://hectareometro.com/images/logo.png" />
-<meta property="og:locale" content="es_ES" />
+<meta property="og:locale" content="en_GB" />
 
 <!-- Structured data (schema.org) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "inLanguage": "es",
+  "inLanguage": "en",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿A cuántos campos de fútbol equivale una hectárea?",
+      "name": "How many football fields is a hectare?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Una hectárea equivale a unos 1,4 campos de fútbol. Un campo reglamentario (~105 × 68 m, unos 7.140 m²) ocupa alrededor de 0,7 hectáreas."
+        "text": "A hectare is about 1.4 football fields. A standard pitch (~105 × 68 m, about 7,140 m²) covers roughly 0.7 hectares."
       }
     }
   ]
@@ -52,7 +52,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script>var PAGE_LANG = 'es'; var PRESET_HECTAREAS = 1;</script>
+<script>var PAGE_LANG = 'en'; var PRESET_HECTAREAS = 1;</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/hectareas-utils.js"></script>
@@ -73,11 +73,11 @@ window.cookieconsent.initialise({
 <body>
 <div id="map-container">
   <div id="map"></div>
-  <div class="lang-switch"><a href="/en/hectare-football-field/" hreflang="en">English</a></div>
+  <div class="lang-switch"><a href="/hectarea-campo-de-futbol/" hreflang="es">Español</a></div>
   <div id="hectareas-overlay">
-    <label for="hectareas">¿Cuánto ocupan</label>
+    <label for="hectareas">How big are</label>
     <input type="text" id="hectareas" class="customizable-parameter">
-    <label for="hectareas">hectáreas?</label>
+    <label for="hectareas">hectares?</label>
     <div id="equivalences" aria-live="polite"></div>
   </div>
 </div>
@@ -86,7 +86,7 @@ window.cookieconsent.initialise({
   <div class="row">
     <div class="col-xs-12 col-md-10 col-md-offset-1">
       <div id="share-block" class="text-center">
-        <p id="share-cta">¿Te ha servido? Compártelo 👇</p>
+        <p id="share-cta">Found it useful? Share it 👇</p>
         <div id="share-social">
           <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
           <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="X/Twitter"></a>
@@ -94,7 +94,7 @@ window.cookieconsent.initialise({
         </div>
         <div id="share-details">
           <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
-            <i class="fa fa-caret-down"></i> Más opciones de compartir
+            <i class="fa fa-caret-down"></i> More sharing options
           </a>
           <div id="share-advanced" class="collapse">
             <form>
@@ -108,11 +108,11 @@ window.cookieconsent.initialise({
               </div>
               <div class="row">
                 <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-width">Ancho:</label>
+                  <label class="control-label" for="iframe-share-width">Width:</label>
                   <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
                 </div>
                 <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-height">Alto:</label>
+                  <label class="control-label" for="iframe-share-height">Height:</label>
                   <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
                 </div>
               </div>
@@ -124,16 +124,16 @@ window.cookieconsent.initialise({
   </div>
   <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
-      <h1>¿A cuántos campos de fútbol equivale una hectárea?</h1>
+      <h1>How many football fields is a hectare?</h1>
             <p>
-        Una hectárea equivale a <b>aproximadamente 1,4 campos de fútbol</b>. Un campo reglamentario
-        mide unos 105 × 68 metros (alrededor de 7.140 m²), es decir, unas <b>0,7 hectáreas</b>.
-        Dicho de otro modo: <b>una hectárea es más grande que un campo de fútbol</b>, no al revés.
+        A hectare is about <b>1.4 football fields</b>. A standard pitch measures roughly 105 × 68 metres
+        (around 7,140 m²), which is about <b>0.7 hectares</b>. In other words: <b>a hectare is bigger
+        than a football pitch</b>, not the other way round.
       </p>
 
       <figure class="ha-vs-field">
         <svg viewBox="0 0 330 316" role="img" xmlns="http://www.w3.org/2000/svg"
-             aria-label="Comparación a escala de una hectárea (100 × 100 m) y un campo de fútbol (105 × 68 m) superpuestos">
+             aria-label="To-scale comparison of one hectare (100 × 100 m) and a football pitch (105 × 68 m) overlaid">
           <g transform="translate(8,8)">
             <rect x="0" y="0" width="300" height="300" fill="rgba(43,131,208,0.22)" stroke="#2B83D0" stroke-width="2"/>
             <rect x="0" y="96" width="315" height="204" fill="rgba(37,166,90,0.55)" stroke="#0f7a3d" stroke-width="2"/>
@@ -143,51 +143,50 @@ window.cookieconsent.initialise({
           </g>
         </svg>
         <figcaption>
-          <span class="legend"><span class="swatch swatch-ha"></span> 1 hectárea — 100 × 100 m (10.000 m²)</span>
-          <span class="legend"><span class="swatch swatch-field"></span> Campo de fútbol — 105 × 68 m (≈ 7.140 m²)</span>
-          <span class="note">Ambos dibujados a la misma escala. El campo es algo más largo, pero mucho más estrecho: ocupa solo unos 0,7 de la hectárea.</span>
+          <span class="legend"><span class="swatch swatch-ha"></span> 1 hectare — 100 × 100 m (10,000 m²)</span>
+          <span class="legend"><span class="swatch swatch-field"></span> Football pitch — 105 × 68 m (≈ 7,140 m²)</span>
+          <span class="note">Both drawn at the same scale. The pitch is a little longer but much narrower: it covers only about 0.7 of the hectare.</span>
         </figcaption>
       </figure>
 
       <p>
-        Por eso la frase «ha ardido la superficie de X campos de fútbol» es engañosa: hace que las
-        superficies parezcan mayores de lo que son. Cuando se habla de «300 campos de fútbol», en
-        realidad equivale a unas 210 hectáreas. Usa el mapa de arriba para verlo a escala real.
+        That is why the phrase "an area of X football fields burned down" is misleading: it makes
+        surfaces look bigger than they are. When people say "300 football fields", it is really about
+        210 hectares. Use the map above to see it at real scale.
       </p>
 
-      <h2>¿De dónde salen las medidas del campo de fútbol?</h2>
+      <h2>Where do the football-pitch dimensions come from?</h2>
       <p>
-        Las dimensiones de un campo de fútbol no son fijas. Las define la <b>Regla 1 (El terreno de
-        juego)</b> de las <a href="https://www.theifab.com/laws/latest/the-field-of-play/" target="_blank" rel="noopener">Reglas
-        de Juego del IFAB</a>, el organismo que —junto con la FIFA— redacta las reglas del fútbol.
-        Según la Regla 1:
+        The dimensions of a football pitch are not fixed. They are set by <b>Law 1 (The Field of Play)</b>
+        of the <a href="https://www.theifab.com/laws/latest/the-field-of-play/" target="_blank" rel="noopener">IFAB
+        Laws of the Game</a>, the body that — together with FIFA — writes the rules of football.
+        According to Law 1:
       </p>
       <blockquote class="rules-quote" cite="https://www.theifab.com/laws/latest/the-field-of-play/">
-        <p><b>Partidos normales:</b> longitud (línea de banda) mínimo 90 m (100 yds) – máximo 120 m (130 yds);
-        anchura (línea de meta) mínimo 45 m (50 yds) – máximo 90 m (100 yds).</p>
-        <p><b>Partidos internacionales:</b> longitud mínimo 100 m (110 yds) – máximo 110 m (120 yds);
-        anchura mínimo 64 m (70 yds) – máximo 75 m (80 yds).</p>
-        <footer>— IFAB, <cite>Reglas de Juego, Regla 1: El terreno de juego</cite></footer>
+        <p><b>Normal matches:</b> length (touchline) minimum 90 m (100 yds) – maximum 120 m (130 yds);
+        width (goal line) minimum 45 m (50 yds) – maximum 90 m (100 yds).</p>
+        <p><b>International matches:</b> length minimum 100 m (110 yds) – maximum 110 m (120 yds);
+        width minimum 64 m (70 yds) – maximum 75 m (80 yds).</p>
+        <footer>— IFAB, <cite>Laws of the Game, Law 1: The Field of Play</cite></footer>
       </blockquote>
       <p>
-        Para los cálculos de esta página usamos <b>105 × 68 m</b> (7.140 m²), la medida que la
-        <b>FIFA recomienda</b> para los estadios de competiciones de élite y la más habitual en los
-        grandes campos. Es solo una referencia: como ves en las reglas, un campo puede ser bastante
-        más grande o más pequeño.
+        For the maths on this page we use <b>105 × 68 m</b> (7,140 m²), the size <b>FIFA recommends</b>
+        for elite-competition stadiums and the most common one at big grounds. It is only a reference:
+        as the rules show, a pitch can be quite a bit larger or smaller.
       </p>
 
-      <h2>Mira otras cantidades</h2>
+      <h2>See other amounts</h2>
       <ul class="related-links">
-                <li><a href="/1-hectarea/">1 hectárea</a></li>
-        <li><a href="/100-hectareas/">100 hectáreas</a></li>
-        <li><a href="/300-hectareas/">300 hectáreas</a></li>
-        <li><a href="/400-hectareas/">400 hectáreas</a></li>
-        <li><a href="/1000-hectareas/">1000 hectáreas</a></li>
-        <li><a href="/3000-hectareas/">3000 hectáreas</a></li>
-        <li><a href="/4000-hectareas/">4000 hectáreas</a></li>
-        <li><a href="/20000-hectareas/">20.000 hectáreas</a></li>
+                <li><a href="/en/1-hectare/">1 hectare</a></li>
+        <li><a href="/en/100-hectares/">100 hectares</a></li>
+        <li><a href="/en/300-hectares/">300 hectares</a></li>
+        <li><a href="/en/400-hectares/">400 hectares</a></li>
+        <li><a href="/en/1000-hectares/">1,000 hectares</a></li>
+        <li><a href="/en/3000-hectares/">3,000 hectares</a></li>
+        <li><a href="/en/4000-hectares/">4,000 hectares</a></li>
+        <li><a href="/en/20000-hectares/">20,000 hectares</a></li>
       </ul>
-      <p><a href="/">← Volver al Hectareómetro</a></p>
+      <p><a href="/en/">← Back to the Hectareometer</a></p>
     </div>
   </div>
   <div class="row text-center">

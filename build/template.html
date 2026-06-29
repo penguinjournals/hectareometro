@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{LANG}}">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
@@ -13,6 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="/favicon.ico">
 <link rel="canonical" href="{{CANONICAL}}">
+{{HREFLANG}}
 <title>{{TITLE}}</title>
 <meta name="description" content="{{DESCRIPTION}}">
 <meta name="author" content="David González Diez">
@@ -22,9 +23,9 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{CANONICAL}}" />
 <meta property="og:description" content="{{DESCRIPTION}}" />
-<meta property="og:site_name" content="Hectareómetro" />
+<meta property="og:site_name" content="{{SITE_NAME}}" />
 <meta property="og:image" content="https://hectareometro.com/images/logo.png" />
-<meta property="og:locale" content="es_ES" />
+<meta property="og:locale" content="{{OG_LOCALE}}" />
 
 <!-- Structured data (schema.org) -->
 <script type="application/ld+json">
@@ -35,7 +36,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script>var PRESET_HECTAREAS = {{HA}};</script>
+<script>var PAGE_LANG = '{{PAGE_LANG}}'; var PRESET_HECTAREAS = {{HA}};</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/hectareas-utils.js"></script>
@@ -56,10 +57,11 @@ window.cookieconsent.initialise({
 <body>
 <div id="map-container">
   <div id="map"></div>
+  <div class="lang-switch">{{LANG_SWITCH}}</div>
   <div id="hectareas-overlay">
-    <label for="hectareas">¿Cuánto ocupan</label>
+    <label for="hectareas">{{OVERLAY_PRE}}</label>
     <input type="text" id="hectareas" class="customizable-parameter">
-    <label for="hectareas">hectáreas?</label>
+    <label for="hectareas">{{OVERLAY_POST}}</label>
     <div id="equivalences" aria-live="polite"></div>
   </div>
 </div>
@@ -68,33 +70,33 @@ window.cookieconsent.initialise({
   <div class="row">
     <div class="col-xs-12 col-md-10 col-md-offset-1">
       <div id="share-block" class="text-center">
-        <p id="share-cta">¿Te ha servido? Compártelo 👇</p>
+        <p id="share-cta">{{SHARE_CTA}}</p>
         <div id="share-social">
-          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Compartir en WhatsApp"></a>
-          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Compartir en X/Twitter"></a>
-          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Compartir en Facebook"></a>
+          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
+          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="X/Twitter"></a>
+          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Facebook"></a>
         </div>
         <div id="share-details">
           <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
-            <i class="fa fa-caret-down"></i> Más opciones de compartir
+            <i class="fa fa-caret-down"></i> {{SHARE_MORE}}
           </a>
           <div id="share-advanced" class="collapse">
             <form>
               <div class="form-group">
-                <label class="control-label" for="url-share">Link:</label>
+                <label class="control-label" for="url-share">{{LABEL_LINK}}</label>
                 <input type="text" id="url-share" class="share-link form-control" readonly />
               </div>
               <div class="form-group">
-                <label class="control-label" for="iframe-share">Iframe:</label>
+                <label class="control-label" for="iframe-share">{{LABEL_IFRAME}}</label>
                 <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
               </div>
               <div class="row">
                 <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-width">Ancho:</label>
+                  <label class="control-label" for="iframe-share-width">{{LABEL_WIDTH}}</label>
                   <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
                 </div>
                 <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-height">Alto:</label>
+                  <label class="control-label" for="iframe-share-height">{{LABEL_HEIGHT}}</label>
                   <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
                 </div>
               </div>
@@ -109,11 +111,11 @@ window.cookieconsent.initialise({
       <h1>{{H1}}</h1>
       {{INTRO}}
 
-      <h2>Mira otras cantidades</h2>
+      <h2>{{RELATED_HEADING}}</h2>
       <ul class="related-links">
         {{RELATED_LINKS}}
       </ul>
-      <p><a href="/">← Volver al Hectareómetro</a></p>
+      <p><a href="{{HOME_URL}}">{{BACK_TEXT}}</a></p>
     </div>
   </div>
   <div class="row text-center">

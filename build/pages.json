@@ -1,47 +1,128 @@
 [
   {
+    "lang": "es",
     "slug": "1-hectarea",
+    "path": "/1-hectarea/",
     "label": "1 hectárea",
     "title": "¿Cuánto es una hectárea? Tamaño, m² y campos de fútbol | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "100-hectareas",
+    "path": "/100-hectareas/",
     "label": "100 hectáreas",
     "title": "¿Cuánto son 100 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "300-hectareas",
+    "path": "/300-hectareas/",
     "label": "300 hectáreas",
     "title": "¿Cuánto son 300 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "400-hectareas",
+    "path": "/400-hectareas/",
     "label": "400 hectáreas",
     "title": "¿Cuánto son 400 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "1000-hectareas",
+    "path": "/1000-hectareas/",
     "label": "1000 hectáreas",
     "title": "¿Cuánto son 1000 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "3000-hectareas",
+    "path": "/3000-hectareas/",
     "label": "3000 hectáreas",
     "title": "¿Cuánto son 3000 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "4000-hectareas",
+    "path": "/4000-hectareas/",
     "label": "4000 hectáreas",
     "title": "¿Cuánto son 4000 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "20000-hectareas",
+    "path": "/20000-hectareas/",
     "label": "20.000 hectáreas",
     "title": "¿Cuánto son 20.000 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
+    "lang": "es",
     "slug": "hectarea-campo-de-futbol",
+    "path": "/hectarea-campo-de-futbol/",
     "label": "Hectárea vs campo de fútbol",
     "title": "¿A cuántos campos de fútbol equivale una hectárea? | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "1-hectare",
+    "path": "/en/1-hectare/",
+    "label": "1 hectare",
+    "title": "How big is a hectare? Size in m², acres and football fields | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "100-hectares",
+    "path": "/en/100-hectares/",
+    "label": "100 hectares",
+    "title": "How big are 100 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "300-hectares",
+    "path": "/en/300-hectares/",
+    "label": "300 hectares",
+    "title": "How big are 300 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "400-hectares",
+    "path": "/en/400-hectares/",
+    "label": "400 hectares",
+    "title": "How big are 400 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "1000-hectares",
+    "path": "/en/1000-hectares/",
+    "label": "1,000 hectares",
+    "title": "How big are 1,000 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "3000-hectares",
+    "path": "/en/3000-hectares/",
+    "label": "3,000 hectares",
+    "title": "How big are 3,000 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "4000-hectares",
+    "path": "/en/4000-hectares/",
+    "label": "4,000 hectares",
+    "title": "How big are 4,000 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "20000-hectares",
+    "path": "/en/20000-hectares/",
+    "label": "20,000 hectares",
+    "title": "How big are 20,000 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "hectare-football-field",
+    "path": "/en/hectare-football-field/",
+    "label": "Hectare vs football field",
+    "title": "How many football fields is a hectare? | Hectareometer"
   }
 ]

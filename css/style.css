@@ -21,6 +21,44 @@ body {
   height: 100%;
 }
 
+/* Language switcher on the map */
+.lang-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.lang-switch a,
+.lang-switch a:link,
+.lang-switch a:visited {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.95);
+  color: #2B83D0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lang-switch a:hover {
+  background: #fff;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .lang-switch {
+    top: 10px;
+    right: 10px;
+  }
+  .lang-switch a {
+    padding: 5px 9px;
+    font-size: 12px;
+  }
+}
+
 /* Hectareas overlay on map */
 #hectareas-overlay {
   position: absolute;
