@@ -14,10 +14,16 @@ function generateSocialNetworkSharingButtons(){
   var str = jQuery.param( params );
   var shareUrl = baseUrl+'?'+str;
   var shareText = '¿Cuanto son '+shareHectareas+' hectáreas en realidad?';
+  updateWhatsappShareLink(shareUrl,shareText);
   updateTwitterShareLink(shareUrl,shareText);
   updateFacebookShareLink(shareUrl,shareText);
   updateUrlShareLink(shareUrl);
   updateIframeShare(str,iframeWidth,iframeHeight);
+}
+
+function updateWhatsappShareLink(url, text){
+  var whatsappShareBaseUrl='https://wa.me/?text='+encodeURIComponent(text+' '+url);
+  $('#whatsapp-share').attr('href',whatsappShareBaseUrl);
 }
 
 function updateTwitterShareLink(url, text){
@@ -62,6 +68,38 @@ function getRadiusInMetersFromHectareas(hectareas){
   return radius;
 }
 
+// A standard football pitch (~105 x 68 m) is about 7140 m².
+var FOOTBALL_FIELD_SQUARE_METERS = 7140;
+
+function formatNumberEs(value, decimals){
+  decimals = decimals || 0;
+  return value.toLocaleString('es-ES', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  });
+}
+
+function getEquivalencesText(hectareas){
+  var ha = parseFloat(hectareas);
+  if (isNaN(ha) || ha <= 0) {
+    return '';
+  }
+  var squareMeters = ha * 10000;
+  var squareKm = ha / 100;
+  var footballFields = squareMeters / FOOTBALL_FIELD_SQUARE_METERS;
+  var fieldsText = footballFields < 10
+    ? formatNumberEs(footballFields, 1)
+    : formatNumberEs(Math.round(footballFields));
+  var fieldsLabel = footballFields >= 0.95 && footballFields < 1.05 ? ' campo de fútbol' : ' campos de fútbol';
+  return formatNumberEs(squareMeters) + ' m²  ·  ' +
+         formatNumberEs(squareKm, 2) + ' km²  ·  ' +
+         '≈ ' + fieldsText + fieldsLabel;
+}
+
+function updateEquivalences(hectareas){
+  $('#equivalences').text(getEquivalencesText(hectareas));
+}
+
 function cleanMap(){
   if (circle) {
     circle.setMap(null);
@@ -73,10 +111,12 @@ function initializeParametersIfSet(){
   var paramLon = getUrlParameter('lon');
   var paramZoom = getUrlParameter('z');
   var paramHa = getUrlParameter('ha');
-  if ( paramLat != undefined && paramLon != undefined && paramZoom != undefined && paramHa != undefined){
+  if ( paramLat != undefined && paramLon != undefined && paramZoom != undefined){
     mapLatitude = parseFloat(paramLat);
     mapLongitude = parseFloat(paramLon);
     zoomLevel = parseInt(paramZoom);
+  }
+  if ( paramHa != undefined ){
     baseHectareas = parseFloat(paramHa);
   }
 }

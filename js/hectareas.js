@@ -15,8 +15,12 @@ var facebookDescription = 'Nunca te has preguntado a qué equivalen las hectáre
 var facebookCaption = 'Las hectáreas están muy bien, pero entenderlas es aún mejor.';
 
 function initMap() {
+  if (typeof PRESET_HECTAREAS !== 'undefined' && PRESET_HECTAREAS) {
+    baseHectareas = PRESET_HECTAREAS;
+  }
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
+  updateEquivalences(baseHectareas);
   $('#iframe-share-width').val(iframeWidth);
   $('#iframe-share-height').val(iframeHeight);
   mapCenter = new google.maps.LatLng(mapLatitude, mapLongitude);
@@ -40,9 +44,11 @@ function initMap() {
     iframeWidth = $('#iframe-share-width').val();
     iframeHeight = $('#iframe-share-height').val();
     radius = getRadiusInMetersFromHectareas(baseHectareas);
+    updateEquivalences(baseHectareas);
     drawCircle(map,radius,mapCenter);
     generateSocialNetworkSharingButtons();
   });
+  updateWhatsappShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
   updateTwitterShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
   updateFacebookShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
   updateUrlShareLink(baseUrl);

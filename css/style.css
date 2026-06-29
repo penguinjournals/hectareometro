@@ -63,12 +63,32 @@ body {
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
 }
 
+#equivalences {
+  flex-basis: 100%;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+#equivalences:empty {
+  display: none;
+}
+
 /* Share block always visible */
 #share-block {
   background: #f8f9fa;
   padding: 20px 15px;
   border-top: 3px solid #2B83D0;
   border-bottom: 1px solid #ddd;
+}
+
+#share-cta {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
 }
 
 #share-social {
@@ -78,11 +98,16 @@ body {
 #share-social a {
   margin: 0 15px;
   transition: transform 0.2s;
+  display: inline-block;
 }
 
 #share-social a:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
+
+#whatsapp-share, #whatsapp-share:link, #whatsapp-share:visited { color: #25D366; }
+#twitter-share, #twitter-share:link, #twitter-share:visited { color: #1DA1F2; }
+#facebook-share, #facebook-share:link, #facebook-share:visited { color: #1877F2; }
 
 .share-toggle {
   color: #2B83D0;
@@ -132,6 +157,80 @@ a, a:link, a:visited, a:hover, a:active {
   padding: 30px 15px;
 }
 
+.content-section {
+  padding: 10px 0 20px;
+}
+
+.content-section h1 {
+  font-size: 30px;
+  margin-top: 25px;
+  margin-bottom: 18px;
+}
+
+.content-section p {
+  margin-bottom: 16px;
+}
+
+/* Equivalences table */
+.equiv-table {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 0 20px;
+  border-collapse: collapse;
+}
+
+.equiv-table th,
+.equiv-table td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.equiv-table thead th {
+  background: #2B83D0;
+  color: #fff;
+}
+
+.equiv-table tbody tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+/* Related landing-page links */
+.related-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+
+.related-links li a {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #f1f5fb;
+  border: 1px solid #d6e4f5;
+  border-radius: 16px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.related-links li a:hover {
+  background: #e3eefb;
+}
+
+/* FAQ */
+.faq dt {
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 18px;
+  color: #333;
+}
+
+.faq dd {
+  margin: 6px 0 0;
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   #map-container {
@@ -154,15 +253,23 @@ a, a:link, a:visited, a:hover, a:active {
     font-size: 16px;
     padding: 5px 8px;
   }
+
+  #equivalences {
+    font-size: 12px;
+  }
   
   #share-social a {
     margin: 0 10px;
   }
   
+  .content-section h1 {
+    font-size: 25px;
+  }
+
   h2 {
     font-size: 24px;
   }
-  
+
   h3 {
     font-size: 18px;
   }
