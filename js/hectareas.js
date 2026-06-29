@@ -17,6 +17,7 @@ var facebookCaption = 'Las hectáreas están muy bien, pero entenderlas es aún 
 function initMap() {
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
+  updateEquivalences(baseHectareas);
   $('#iframe-share-width').val(iframeWidth);
   $('#iframe-share-height').val(iframeHeight);
   mapCenter = new google.maps.LatLng(mapLatitude, mapLongitude);
@@ -40,6 +41,7 @@ function initMap() {
     iframeWidth = $('#iframe-share-width').val();
     iframeHeight = $('#iframe-share-height').val();
     radius = getRadiusInMetersFromHectareas(baseHectareas);
+    updateEquivalences(baseHectareas);
     drawCircle(map,radius,mapCenter);
     generateSocialNetworkSharingButtons();
   });

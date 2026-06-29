@@ -62,6 +62,38 @@ function getRadiusInMetersFromHectareas(hectareas){
   return radius;
 }
 
+// A standard football pitch (~105 x 68 m) is about 7140 m².
+var FOOTBALL_FIELD_SQUARE_METERS = 7140;
+
+function formatNumberEs(value, decimals){
+  decimals = decimals || 0;
+  return value.toLocaleString('es-ES', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
+  });
+}
+
+function getEquivalencesText(hectareas){
+  var ha = parseFloat(hectareas);
+  if (isNaN(ha) || ha <= 0) {
+    return '';
+  }
+  var squareMeters = ha * 10000;
+  var squareKm = ha / 100;
+  var footballFields = squareMeters / FOOTBALL_FIELD_SQUARE_METERS;
+  var fieldsText = footballFields < 10
+    ? formatNumberEs(footballFields, 1)
+    : formatNumberEs(Math.round(footballFields));
+  var fieldsLabel = footballFields >= 0.95 && footballFields < 1.05 ? ' campo de fútbol' : ' campos de fútbol';
+  return formatNumberEs(squareMeters) + ' m²  ·  ' +
+         formatNumberEs(squareKm, 2) + ' km²  ·  ' +
+         '≈ ' + fieldsText + fieldsLabel;
+}
+
+function updateEquivalences(hectareas){
+  $('#equivalences').text(getEquivalencesText(hectareas));
+}
+
 function cleanMap(){
   if (circle) {
     circle.setMap(null);

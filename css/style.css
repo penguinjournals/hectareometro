@@ -63,6 +63,19 @@ body {
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
 }
 
+#equivalences {
+  flex-basis: 100%;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+#equivalences:empty {
+  display: none;
+}
+
 /* Share block always visible */
 #share-block {
   background: #f8f9fa;
@@ -203,6 +216,10 @@ a, a:link, a:visited, a:hover, a:active {
     width: 60px;
     font-size: 16px;
     padding: 5px 8px;
+  }
+
+  #equivalences {
+    font-size: 12px;
   }
   
   #share-social a {
