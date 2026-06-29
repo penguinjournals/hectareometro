@@ -170,6 +170,18 @@ a, a:link, a:visited, a:hover, a:active {
   background: #f8f9fa;
 }
 
+/* FAQ */
+.faq dt {
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 18px;
+  color: #333;
+}
+
+.faq dd {
+  margin: 6px 0 0;
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   #map-container {
