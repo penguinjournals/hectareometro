@@ -123,6 +123,17 @@ function render(page) {
     .replace(/\{\{JSON_LD\}\}/g, buildJsonLd(page));
 }
 
+function writeSitemap() {
+  const urls = [`${BASE_URL}/`, ...PAGES.map(p => `${BASE_URL}/${p.slug}/`)];
+  const body = urls.map(u => {
+    const priority = u === `${BASE_URL}/` ? '1.0' : '0.8';
+    return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  }).join('\n');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+  fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), xml);
+  console.log(`sitemap.xml written with ${urls.length} URLs`);
+}
+
 function main() {
   PAGES.forEach(page => {
     const dir = path.join(ROOT, page.slug);
@@ -133,6 +144,7 @@ function main() {
   // Manifest for reuse (homepage links, sitemap) in later steps.
   const manifest = PAGES.map(p => ({ slug: p.slug, label: p.linkLabel, title: p.title }));
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
+  writeSitemap();
   console.log(`\n${PAGES.length} pages generated.`);
 }
 
