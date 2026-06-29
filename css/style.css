@@ -84,6 +84,13 @@ body {
   border-bottom: 1px solid #ddd;
 }
 
+#share-cta {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
+}
+
 #share-social {
   margin-bottom: 15px;
 }
@@ -91,11 +98,16 @@ body {
 #share-social a {
   margin: 0 15px;
   transition: transform 0.2s;
+  display: inline-block;
 }
 
 #share-social a:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
+
+#whatsapp-share, #whatsapp-share:link, #whatsapp-share:visited { color: #25D366; }
+#twitter-share, #twitter-share:link, #twitter-share:visited { color: #1DA1F2; }
+#facebook-share, #facebook-share:link, #facebook-share:visited { color: #1877F2; }
 
 .share-toggle {
   color: #2B83D0;

@@ -14,10 +14,16 @@ function generateSocialNetworkSharingButtons(){
   var str = jQuery.param( params );
   var shareUrl = baseUrl+'?'+str;
   var shareText = '¿Cuanto son '+shareHectareas+' hectáreas en realidad?';
+  updateWhatsappShareLink(shareUrl,shareText);
   updateTwitterShareLink(shareUrl,shareText);
   updateFacebookShareLink(shareUrl,shareText);
   updateUrlShareLink(shareUrl);
   updateIframeShare(str,iframeWidth,iframeHeight);
+}
+
+function updateWhatsappShareLink(url, text){
+  var whatsappShareBaseUrl='https://wa.me/?text='+encodeURIComponent(text+' '+url);
+  $('#whatsapp-share').attr('href',whatsappShareBaseUrl);
 }
 
 function updateTwitterShareLink(url, text){

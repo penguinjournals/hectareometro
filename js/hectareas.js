@@ -45,6 +45,7 @@ function initMap() {
     drawCircle(map,radius,mapCenter);
     generateSocialNetworkSharingButtons();
   });
+  updateWhatsappShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
   updateTwitterShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
   updateFacebookShareLink(baseUrl,'Comprueba lo que ocupa una hectárea en el mundo real');
   updateUrlShareLink(baseUrl);
