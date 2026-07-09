@@ -160,7 +160,8 @@ body {
 }
 
 #share-advanced {
-  margin-top: 15px;
+  max-width: 720px;
+  margin: 15px auto 0;
   padding-top: 15px;
   border-top: 1px solid #ddd;
 }
@@ -231,6 +232,11 @@ a, a:link, a:visited, a:hover, a:active {
 
 .equiv-table tbody tr:nth-child(even) {
   background: #f8f9fa;
+}
+
+/* Wider variant for tables with an extra comparison column */
+.equiv-table-wide {
+  max-width: 720px;
 }
 
 /* Hectare vs football field to-scale figure */

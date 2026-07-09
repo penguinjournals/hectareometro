@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7KGFGQLBRJ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<link rel="canonical" href="https://hectareometro.com/hectareas-quemadas-incendios-espana/">
+<link rel="alternate" hreflang="es" href="https://hectareometro.com/hectareas-quemadas-incendios-espana/">
+<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/hectareas-quemadas-incendios-espana/">
+<title>Hectáreas quemadas en incendios forestales en España (2020-2025) | Hectareómetro</title>
+<meta name="description" content="Entre 2020 y 2025 ardieron en España 916.817 hectáreas en incendios forestales, más que toda la Comunidad de Madrid. Míralo dibujado a escala sobre un mapa real.">
+<meta name="author" content="David González Diez">
+
+<!-- Open Graph data -->
+<meta property="og:title" content="¿Cuánta superficie se ha quemado en España en incendios forestales?" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hectareometro.com/hectareas-quemadas-incendios-espana/" />
+<meta property="og:description" content="Entre 2020 y 2025 ardieron en España 916.817 hectáreas en incendios forestales, más que toda la Comunidad de Madrid. Míralo dibujado a escala sobre un mapa real." />
+<meta property="og:site_name" content="Hectareómetro" />
+<meta property="og:image" content="https://hectareometro.com/images/logo.png" />
+<meta property="og:locale" content="es_ES" />
+
+<!-- Structured data (schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "es",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Entre 2020 y 2025 se quemaron unas 916.817 hectáreas en incendios forestales en España (9.168 km², más que la superficie de la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000 hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue siendo de 1985, con 484.475 hectáreas."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='/css/style.css' rel='stylesheet' type='text/css'>
+<script>var PAGE_LANG = 'es'; var PRESET_HECTAREAS = 916817; var PRESET_ZOOM = 8; var PRESET_LAT = 40.418284251687076; var PRESET_LON = -3.6874296855236155;</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/hectareas-utils.js"></script>
+<script type="text/javascript" src="/js/hectareas.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&loading=async&callback=initMap"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": { "popup": { "background": "#000" }, "button": { "background": "#337AB7" } },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="map-container">
+  <div id="map"></div>
+  <div class="lang-switch"><a href="/en/" hreflang="en">English</a></div>
+  <div id="hectareas-overlay">
+    <label for="hectareas">¿Cuánto ocupan</label>
+    <input type="text" id="hectareas" class="customizable-parameter">
+    <label for="hectareas">hectáreas?</label>
+    <div id="equivalences" aria-live="polite"></div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div id="share-block" class="text-center">
+        <p id="share-cta">¿Te ha servido? Compártelo 👇</p>
+        <div id="share-social">
+          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
+          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="X/Twitter"></a>
+          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Facebook"></a>
+        </div>
+        <div id="share-details">
+          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
+            <i class="fa fa-caret-down"></i> Más opciones de compartir
+          </a>
+          <div id="share-advanced" class="collapse">
+            <form>
+              <div class="form-group">
+                <label class="control-label" for="url-share">Link:</label>
+                <input type="text" id="url-share" class="share-link form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="iframe-share">Iframe:</label>
+                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-width">Ancho:</label>
+                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
+                </div>
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-height">Alto:</label>
+                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
+      <h1>¿Cuánta superficie se ha quemado en España en incendios forestales?</h1>
+            <p>
+        Entre 2020 y 2025 han ardido en España
+        <b><a href="https://hectareometro.com/?ha=916817&lat=40.418284251687076&lon=-3.6874296855236155&z=8">916.817 hectáreas</a></b> en incendios forestales.
+        Es una cifra tan grande que cuesta imaginarla: equivale a 9.168 km², más que
+        toda la Comunidad de Madrid (unas 802.800 ha) y cerca de 1,3 millones de campos de fútbol.
+        Pincha en el enlace para ver esa superficie dibujada como un círculo con centro en Madrid,
+        y arrastra después el mapa hasta tu ciudad para verla sobre un lugar que conozcas.
+      </p>
+      <p>
+        No todos los años son iguales. <b>2025 fue con diferencia el peor año del periodo</b>, con
+        <a href="https://hectareometro.com/?ha=354794&lat=40.418284251687076&lon=-3.6874296855236155&z=9">casi 355.000 hectáreas quemadas</a>, el dato anual
+        más alto en España desde 1994, cuando ardieron
+        <a href="https://hectareometro.com/?ha=437603&lat=40.418284251687076&lon=-3.6874296855236155&z=9">437.602 hectáreas</a>. Le sigue 2022, con
+        <a href="https://hectareometro.com/?ha=263219&lat=40.418284251687076&lon=-3.6874296855236155&z=9">más de 263.000 hectáreas</a>. En el otro extremo,
+        2024 fue el año más benigno, con <a href="https://hectareometro.com/?ha=47711&lat=40.418284251687076&lon=-3.6874296855236155&z=10">menos de 48.000</a>.
+      </p>
+      <p>
+        Mirando la serie histórica completa, que arranca en 1961, el peor año del que tenemos datos
+        sigue siendo <b>1985</b>: aquel año ardieron
+        <a href="https://hectareometro.com/?ha=484475&lat=40.418284251687076&lon=-3.6874296855236155&z=9">484.475 hectáreas</a>, más de la mitad de todo lo
+        quemado entre 2020 y 2025 junto.
+      </p>
+
+      <h2>Hectáreas quemadas por año en España (2020-2025)</h2>
+      <p>Pincha en cualquier cifra para verla dibujada a escala sobre el mapa, con centro en Madrid:</p>
+      <table class="equiv-table equiv-table-wide">
+        <thead><tr><th>Año</th><th>Hectáreas quemadas</th><th>Municipios con esta superficie</th></tr></thead>
+        <tbody>
+          <tr><td>2020</td><td><a href="https://hectareometro.com/?ha=69707&lat=40.418284251687076&lon=-3.6874296855236155&z=10">69.706,50 ha</a></td><td>≈ Madrid + Alcalá de Henares (692 km²)</td></tr>
+          <tr><td>2021</td><td><a href="https://hectareometro.com/?ha=92251&lat=40.418284251687076&lon=-3.6874296855236155&z=10">92.251,45 ha</a></td><td>≈ Cuenca (911 km²)</td></tr>
+          <tr><td>2022</td><td><a href="https://hectareometro.com/?ha=263219&lat=40.418284251687076&lon=-3.6874296855236155&z=9">263.218,83 ha</a></td><td>≈ Cáceres + Murcia (2.632 km²)</td></tr>
+          <tr><td>2023</td><td><a href="https://hectareometro.com/?ha=89136&lat=40.418284251687076&lon=-3.6874296855236155&z=10">89.135,67 ha</a></td><td>≈ Murcia (882 km²)</td></tr>
+          <tr><td>2024</td><td><a href="https://hectareometro.com/?ha=47711&lat=40.418284251687076&lon=-3.6874296855236155&z=10">47.711,13 ha</a></td><td>≈ Alcañiz (472 km²)</td></tr>
+          <tr><td>2025</td><td><a href="https://hectareometro.com/?ha=354794&lat=40.418284251687076&lon=-3.6874296855236155&z=9">354.793,50 ha</a></td><td>≈ Cáceres + Jerez de la Frontera + Ejea de los Caballeros (3.548 km²)</td></tr>
+          <tr><td><b>Total 2020-2025</b></td><td><b><a href="https://hectareometro.com/?ha=916817&lat=40.418284251687076&lon=-3.6874296855236155&z=8">916.817,08 ha</a></b></td><td>≈ Cáceres + Lorca + Badajoz + Córdoba + Jerez de la Frontera + Albacete + Antequera (9.184 km²)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La tercera columna compara cada año con la superficie del término municipal de municipios
+        españoles (1 km² son 100 hectáreas): por ejemplo, solo lo quemado en 2022 equivale a los
+        términos municipales de Cáceres y Murcia juntos.
+      </p>
+      <p>
+        Como ves, estos símiles son difíciles de visualizar en la cabeza, ¿verdad? Pues por eso
+        creamos el Hectareómetro: dibuja el círculo, llévalo encima de tu casa y verás cómo se te
+        hace más fácil.
+      </p>
+
+      <h2>¿De dónde salen los datos?</h2>
+      <p>
+        Los datos de superficie forestal quemada proceden de las estadísticas del Ministerio de
+        Agricultura y Pesca, Alimentación y Medio Ambiente.
+        <a href="https://www.epdata.es/hectareas-quemadas-incendios-forestales-espana/d04011b5-4a23-4425-ad44-fb2623305f88" target="_blank" rel="noopener">Gracias al equipo de EpData por
+        recolectar estos datos</a>.
+      </p>
+
+      <h2>Mira otras cantidades</h2>
+      <ul class="related-links">
+                <li><a href="/1-hectarea/">1 hectárea</a></li>
+        <li><a href="/100-hectareas/">100 hectáreas</a></li>
+        <li><a href="/300-hectareas/">300 hectáreas</a></li>
+        <li><a href="/400-hectareas/">400 hectáreas</a></li>
+        <li><a href="/1000-hectareas/">1000 hectáreas</a></li>
+        <li><a href="/3000-hectareas/">3000 hectáreas</a></li>
+        <li><a href="/4000-hectareas/">4000 hectáreas</a></li>
+        <li><a href="/20000-hectareas/">20.000 hectáreas</a></li>
+        <li><a href="/hectarea-campo-de-futbol/">Hectárea vs campo de fútbol</a></li>
+      </ul>
+      <p><a href="/">← Volver al Hectareómetro</a></p>
+    </div>
+  </div>
+  <div class="row text-center">
+  <p>
+	<h3>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></h3>
+  </p>
+  </div>
+</div>
+</body>
+</html>

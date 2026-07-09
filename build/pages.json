@@ -124,5 +124,12 @@
     "path": "/en/hectare-football-field/",
     "label": "Hectare vs football field",
     "title": "How many football fields is a hectare? | Hectareometer"
+  },
+  {
+    "lang": "es",
+    "slug": "hectareas-quemadas-incendios-espana",
+    "path": "/hectareas-quemadas-incendios-espana/",
+    "label": "Hectáreas quemadas en incendios en España (2020-2025)",
+    "title": "Hectáreas quemadas en incendios forestales en España (2020-2025) | Hectareómetro"
   }
 ]

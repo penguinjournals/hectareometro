@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script>var PAGE_LANG = '{{PAGE_LANG}}'; var PRESET_HECTAREAS = {{HA}};</script>
+<script>var PAGE_LANG = '{{PAGE_LANG}}'; var PRESET_HECTAREAS = {{HA}};{{PRESET_EXTRA}}</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/hectareas-utils.js"></script>
@@ -67,9 +67,7 @@ window.cookieconsent.initialise({
 </div>
 
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12 col-md-10 col-md-offset-1">
-      <div id="share-block" class="text-center">
+  <div id="share-block" class="text-center">
         <p id="share-cta">{{SHARE_CTA}}</p>
         <div id="share-social">
           <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
@@ -104,8 +102,6 @@ window.cookieconsent.initialise({
           </div>
         </div>
       </div>
-    </div>
-  </div>
   <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
       <h1>{{H1}}</h1>

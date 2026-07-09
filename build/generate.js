@@ -384,6 +384,111 @@ function buildPage(lang, key) {
   return key === 'comparison' ? comparisonPage(lang) : quantityPage(lang, Number(key));
 }
 
+// ---- editorial articles (Spanish-only) ------------------------------------
+
+const EPDATA_URL = 'https://www.epdata.es/hectareas-quemadas-incendios-forestales-espana/d04011b5-4a23-4425-ad44-fb2623305f88';
+const MADRID = { lat: 40.418284251687076, lon: -3.6874296855236155 };
+
+// Superficie forestal quemada por año en España. Fuente: Ministerio de
+// Agricultura y Pesca, Alimentación y Medio Ambiente, serie recopilada por
+// EpData (EPDATA_URL). `towns` son términos municipales españoles (superficie
+// en km²; 1 km² = 100 ha) cuya suma se aproxima a lo quemado ese año.
+const BURNED_BY_YEAR = [
+  { year: 2020, ha: 69706.50, towns: 'Madrid + Alcalá de Henares (692 km²)' },
+  { year: 2021, ha: 92251.45, towns: 'Cuenca (911 km²)' },
+  { year: 2022, ha: 263218.83, towns: 'Cáceres + Murcia (2.632 km²)' },
+  { year: 2023, ha: 89135.67, towns: 'Murcia (882 km²)' },
+  { year: 2024, ha: 47711.13, towns: 'Alcañiz (472 km²)' },
+  { year: 2025, ha: 354793.50, towns: 'Cáceres + Jerez de la Frontera + Ejea de los Caballeros (3.548 km²)' },
+];
+const TOTAL_TOWNS = 'Cáceres + Lorca + Badajoz + Córdoba + Jerez de la Frontera + Albacete + Antequera (9.184 km²)';
+
+// Récords de la serie histórica completa (1961-2025), citados en el texto.
+const BURNED_1985 = 484475.20; // el año con más superficie quemada de la serie
+const BURNED_1994 = 437602.50; // el segundo peor, referencia habitual
+
+// Link to the tool with the circle centred on Madrid, zoomed out enough for
+// the whole circle to fit in the viewport.
+function madridMapUrl(ha) {
+  const zoom = ha > 500000 ? 8 : ha > 150000 ? 9 : 10;
+  return `${BASE_URL}/?ha=${Math.round(ha)}&lat=${MADRID.lat}&lon=${MADRID.lon}&z=${zoom}`;
+}
+
+function burnedAreaArticle() {
+  const total = BURNED_BY_YEAR.reduce((sum, r) => sum + r.ha, 0);
+  const totalLabel = fmt(Math.round(total), 0);
+  const byYear = {};
+  BURNED_BY_YEAR.forEach(r => { byYear[r.year] = r.ha; });
+  const rows = BURNED_BY_YEAR.map(r =>
+    `          <tr><td>${r.year}</td><td><a href="${madridMapUrl(r.ha)}">${fmt(r.ha, 2)} ha</a></td><td>≈ ${r.towns}</td></tr>`
+  ).join('\n');
+  const intro = `      <p>
+        Entre 2020 y 2025 han ardido en España
+        <b><a href="${madridMapUrl(total)}">${totalLabel} hectáreas</a></b> en incendios forestales.
+        Es una cifra tan grande que cuesta imaginarla: equivale a 9.168 km², más que
+        toda la Comunidad de Madrid (unas 802.800 ha) y cerca de 1,3 millones de campos de fútbol.
+        Pincha en el enlace para ver esa superficie dibujada como un círculo con centro en Madrid,
+        y arrastra después el mapa hasta tu ciudad para verla sobre un lugar que conozcas.
+      </p>
+      <p>
+        No todos los años son iguales. <b>2025 fue con diferencia el peor año del periodo</b>, con
+        <a href="${madridMapUrl(byYear[2025])}">casi 355.000 hectáreas quemadas</a>, el dato anual
+        más alto en España desde 1994, cuando ardieron
+        <a href="${madridMapUrl(BURNED_1994)}">437.602 hectáreas</a>. Le sigue 2022, con
+        <a href="${madridMapUrl(byYear[2022])}">más de 263.000 hectáreas</a>. En el otro extremo,
+        2024 fue el año más benigno, con <a href="${madridMapUrl(byYear[2024])}">menos de 48.000</a>.
+      </p>
+      <p>
+        Mirando la serie histórica completa, que arranca en 1961, el peor año del que tenemos datos
+        sigue siendo <b>1985</b>: aquel año ardieron
+        <a href="${madridMapUrl(BURNED_1985)}">484.475 hectáreas</a>, más de la mitad de todo lo
+        quemado entre 2020 y 2025 junto.
+      </p>
+
+      <h2>Hectáreas quemadas por año en España (2020-2025)</h2>
+      <p>Pincha en cualquier cifra para verla dibujada a escala sobre el mapa, con centro en Madrid:</p>
+      <table class="equiv-table equiv-table-wide">
+        <thead><tr><th>Año</th><th>Hectáreas quemadas</th><th>Municipios con esta superficie</th></tr></thead>
+        <tbody>
+${rows}
+          <tr><td><b>Total 2020-2025</b></td><td><b><a href="${madridMapUrl(total)}">${fmt(total, 2)} ha</a></b></td><td>≈ ${TOTAL_TOWNS}</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La tercera columna compara cada año con la superficie del término municipal de municipios
+        españoles (1 km² son 100 hectáreas): por ejemplo, solo lo quemado en 2022 equivale a los
+        términos municipales de Cáceres y Murcia juntos.
+      </p>
+      <p>
+        Como ves, estos símiles son difíciles de visualizar en la cabeza, ¿verdad? Pues por eso
+        creamos el Hectareómetro: dibuja el círculo, llévalo encima de tu casa y verás cómo se te
+        hace más fácil.
+      </p>
+
+      <h2>¿De dónde salen los datos?</h2>
+      <p>
+        Los datos de superficie forestal quemada proceden de las estadísticas del Ministerio de
+        Agricultura y Pesca, Alimentación y Medio Ambiente.
+        <a href="${EPDATA_URL}" target="_blank" rel="noopener">Gracias al equipo de EpData por
+        recolectar estos datos</a>.
+      </p>`;
+  return {
+    key: 'burned-area-spain', lang: 'es', ha: Math.round(total),
+    slug: 'hectareas-quemadas-incendios-espana',
+    path: '/hectareas-quemadas-incendios-espana/',
+    presetExtra: ` var PRESET_ZOOM = 8; var PRESET_LAT = ${MADRID.lat}; var PRESET_LON = ${MADRID.lon};`,
+    title: 'Hectáreas quemadas en incendios forestales en España (2020-2025) | Hectareómetro',
+    description: `Entre 2020 y 2025 ardieron en España ${totalLabel} hectáreas en incendios forestales, más que toda la Comunidad de Madrid. Míralo dibujado a escala sobre un mapa real.`,
+    h1: '¿Cuánta superficie se ha quemado en España en incendios forestales?',
+    intro,
+    question: '¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?',
+    answer: `Entre 2020 y 2025 se quemaron unas ${totalLabel} hectáreas en incendios forestales en España (9.168 km², más que la superficie de la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000 hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue siendo de 1985, con 484.475 hectáreas.`,
+    linkLabel: 'Hectáreas quemadas en incendios en España (2020-2025)',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle()];
+
 // ---- rendering -----------------------------------------------------------
 
 function buildJsonLd(page) {
@@ -411,19 +516,32 @@ function buildLangSwitch(lang, key) {
 }
 
 function relatedLinks(lang, currentKey) {
-  return KEYS.filter(k => k !== currentKey)
-    .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`)
-    .join('\n');
+  const links = KEYS.filter(k => k !== currentKey)
+    .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`);
+  ARTICLES.filter(a => a.lang === lang && a.key !== currentKey)
+    .forEach(a => links.push(`        <li><a href="${a.path}">${escapeHtml(a.linkLabel)}</a></li>`));
+  return links.join('\n');
 }
 
 function render(page) {
   const ui = UI[page.lang];
+  // Articles carry their own path and exist in one language only.
+  const canonical = page.path ? BASE_URL + page.path : fullUrl(page.lang, page.key);
+  const hreflang = page.path
+    ? [
+        `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
+        `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
+      ].join('\n')
+    : buildHreflang(page.key);
+  const langSwitch = page.path
+    ? `<a href="${homePath(page.lang === 'es' ? 'en' : 'es')}" hreflang="${page.lang === 'es' ? 'en' : 'es'}">${UI[page.lang].switchLabel}</a>`
+    : buildLangSwitch(page.lang, page.key);
   const repl = {
     LANG: ui.htmlLang,
     PAGE_LANG: page.lang,
-    HREFLANG: buildHreflang(page.key),
-    LANG_SWITCH: buildLangSwitch(page.lang, page.key),
-    CANONICAL: fullUrl(page.lang, page.key),
+    HREFLANG: hreflang,
+    LANG_SWITCH: langSwitch,
+    CANONICAL: canonical,
     TITLE: escapeHtml(page.title),
     OG_TITLE: escapeHtml(page.h1),
     DESCRIPTION: escapeHtml(page.description),
@@ -431,6 +549,7 @@ function render(page) {
     OG_LOCALE: ui.ogLocale,
     JSON_LD: buildJsonLd(page),
     HA: String(page.ha),
+    PRESET_EXTRA: page.presetExtra || '',
     OVERLAY_PRE: ui.overlayPre,
     OVERLAY_POST: ui.overlayPost,
     SHARE_CTA: ui.shareCta,
@@ -456,6 +575,7 @@ function render(page) {
 function writeSitemap() {
   const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
+  ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const priority = (u === `${BASE_URL}/` || u === `${BASE_URL}/en/`) ? '1.0' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
@@ -478,9 +598,16 @@ function main() {
       console.log(`generated ${pathFor(lang, key)}`);
     });
   });
+  ARTICLES.forEach(page => {
+    const dir = path.join(ROOT, page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), render(page));
+    manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
+    console.log(`generated ${page.path}`);
+  });
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × ${KEYS.length} keys).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × ${KEYS.length} keys + ${ARTICLES.length} articles).`);
 }
 
 main();

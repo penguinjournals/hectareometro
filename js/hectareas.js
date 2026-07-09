@@ -18,6 +18,13 @@ function initMap() {
   if (typeof PRESET_HECTAREAS !== 'undefined' && PRESET_HECTAREAS) {
     baseHectareas = PRESET_HECTAREAS;
   }
+  if (typeof PRESET_ZOOM !== 'undefined' && PRESET_ZOOM) {
+    zoomLevel = PRESET_ZOOM;
+  }
+  if (typeof PRESET_LAT !== 'undefined' && typeof PRESET_LON !== 'undefined') {
+    mapLatitude = PRESET_LAT;
+    mapLongitude = PRESET_LON;
+  }
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
   updateEquivalences(baseHectareas);
