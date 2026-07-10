@@ -50,32 +50,45 @@ function generateShareableUrl(parametersString){
   return baseUrl+'?'+parametersString;
 }
 
-// Dot marking the circle's origin point (managed together with the circle).
+// Dot marking the circle's origin point (only used by the 'outline' style).
 var centerDot;
 
-function drawCircle(map,radius,mapCenter){
+// style: default draws the filled area circle (hectares tool); 'outline'
+// draws just the circumference plus a dot at the origin (distances tool).
+function drawCircle(map,radius,mapCenter,style){
   cleanMap();
   mapCenter = map.getCenter();
-  circle = new google.maps.Circle({
-    map: map,
-    radius: radius,
-    strokeWeight: 0,
-    fillColor: '#FF0000',
-    center: mapCenter
-  });
-  centerDot = new google.maps.Marker({
-    map: map,
-    position: mapCenter,
-    clickable: false,
-    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 5,
+  if (style === 'outline') {
+    circle = new google.maps.Circle({
+      map: map,
+      radius: radius,
+      strokeWeight: 3,
+      strokeColor: '#FF0000',
+      fillOpacity: 0,
+      center: mapCenter
+    });
+    centerDot = new google.maps.Marker({
+      map: map,
+      position: mapCenter,
+      clickable: false,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 5,
+        fillColor: '#FF0000',
+        fillOpacity: 1,
+        strokeColor: '#FFFFFF',
+        strokeWeight: 2
+      }
+    });
+  } else {
+    circle = new google.maps.Circle({
+      map: map,
+      radius: radius,
+      strokeWeight: 0,
       fillColor: '#FF0000',
-      fillOpacity: 1,
-      strokeColor: '#FFFFFF',
-      strokeWeight: 2
-    }
-  });
+      center: mapCenter
+    });
+  }
 }
 
 function getRadiusInMetersFromHectareas(hectareas){

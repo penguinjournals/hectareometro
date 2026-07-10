@@ -122,7 +122,7 @@ function generateDistanceSharingButtons() {
 // empty/invalid (radius === null).
 function refreshDistanceCircle() {
   if (radius) {
-    drawCircle(map, radius, mapCenter);
+    drawCircle(map, radius, mapCenter, 'outline');
   } else {
     cleanMap();
   }
