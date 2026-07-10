@@ -27,14 +27,14 @@ var DIST_STRINGS = {
   es: {
     unitNames: { km: 'kilómetros', m: 'metros', mi: 'millas' },
     shareText: function(d, unit) {
-      return '¿Cuánto son ' + d + ' ' + DIST_STRINGS.es.unitNames[unit] + ' en realidad?';
+      return '¿Hasta dónde llegaría en ' + d + ' ' + DIST_STRINGS.es.unitNames[unit] + '?';
     },
     shareDefault: 'Comprueba hasta dónde llega una distancia en el mundo real'
   },
   en: {
     unitNames: { km: 'kilometres', m: 'metres', mi: 'miles' },
     shareText: function(d, unit) {
-      return 'How far do ' + d + ' ' + DIST_STRINGS.en.unitNames[unit] + ' really go?';
+      return 'How far would I get in ' + d + ' ' + DIST_STRINGS.en.unitNames[unit] + '?';
     },
     shareDefault: 'See how far a distance really goes on a map'
   }
