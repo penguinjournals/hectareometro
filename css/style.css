@@ -33,6 +33,12 @@ body {
   font-weight: 600;
 }
 
+/* The site resets .container-fluid padding to 0, so undo Bootstrap's
+   compensating -15px margin or the brand sticks to the screen edge. */
+.site-nav > .container-fluid .navbar-brand {
+  margin-left: 0;
+}
+
 /* Hectareas overlay on map */
 #hectareas-overlay {
   position: absolute;
