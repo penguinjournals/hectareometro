@@ -50,6 +50,9 @@ function generateShareableUrl(parametersString){
   return baseUrl+'?'+parametersString;
 }
 
+// Dot marking the circle's origin point (managed together with the circle).
+var centerDot;
+
 function drawCircle(map,radius,mapCenter){
   cleanMap();
   mapCenter = map.getCenter();
@@ -59,6 +62,19 @@ function drawCircle(map,radius,mapCenter){
     strokeWeight: 0,
     fillColor: '#FF0000',
     center: mapCenter
+  });
+  centerDot = new google.maps.Marker({
+    map: map,
+    position: mapCenter,
+    clickable: false,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 5,
+      fillColor: '#FF0000',
+      fillOpacity: 1,
+      strokeColor: '#FFFFFF',
+      strokeWeight: 2
+    }
   });
 }
 
@@ -143,6 +159,9 @@ function updateEquivalences(hectareas){
 function cleanMap(){
   if (circle) {
     circle.setMap(null);
+  }
+  if (centerDot) {
+    centerDot.setMap(null);
   }
 }
 
