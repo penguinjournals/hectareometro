@@ -22,6 +22,10 @@ var baseDistance = baseUnit === 'mi' ? 1 : 2;
 var baseUrl = (typeof PAGE_LANG !== 'undefined' && PAGE_LANG === 'en')
   ? 'https://hectareometro.com/en/distances/'
   : 'https://hectareometro.com/distancias/';
+var iframeWidth = 400;
+var iframeHeight = 400;
+// Read by updateIframeShare() in hectareas-utils.js.
+var iframeBaseUrl = 'https://hectareometro.com/iframe-distances.html';
 
 var DIST_STRINGS = {
   es: {
@@ -110,12 +114,14 @@ function generateDistanceSharingButtons() {
   var shareDistance = $('#distance').val();
   var shareUnit = $('#distance-unit').val();
   var params = { d: shareDistance, u: shareUnit, lat: mapCenter.lat(), lon: mapCenter.lng(), z: map.getZoom() };
-  var shareUrl = baseUrl + '?' + jQuery.param(params);
+  var str = jQuery.param(params);
+  var shareUrl = baseUrl + '?' + str;
   var shareText = distI18n().shareText(shareDistance, shareUnit);
   updateWhatsappShareLink(shareUrl, shareText);
   updateTwitterShareLink(shareUrl, shareText);
   updateFacebookShareLink(shareUrl, shareText);
   updateUrlShareLink(shareUrl);
+  updateIframeShare(str, iframeWidth, iframeHeight);
 }
 
 // Redraws with the current radius, or clears the circle while the input is
@@ -134,6 +140,8 @@ function initMap() {
   $('#distance-unit').val(baseUnit);
   autoGrowInput('#distance');
   updateDistanceEquivalences();
+  $('#iframe-share-width').val(iframeWidth);
+  $('#iframe-share-height').val(iframeHeight);
   mapCenter = new google.maps.LatLng(mapLatitude, mapLongitude);
   radius = getRadiusMetersFromDistance(baseDistance, baseUnit);
   map = new google.maps.Map(document.getElementById('map'), {
@@ -158,6 +166,11 @@ function initMap() {
   };
   $('#distance').keyup(onInputChange);
   $('#distance-unit').change(onInputChange);
+  $('#iframe-share-width, #iframe-share-height').keyup(function() {
+    iframeWidth = $('#iframe-share-width').val();
+    iframeHeight = $('#iframe-share-height').val();
+    generateDistanceSharingButtons();
+  });
   updateWhatsappShareLink(baseUrl, distI18n().shareDefault);
   updateTwitterShareLink(baseUrl, distI18n().shareDefault);
   updateFacebookShareLink(baseUrl, distI18n().shareDefault);

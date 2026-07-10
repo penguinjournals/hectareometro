@@ -35,7 +35,8 @@ Bilingual: Spanish at the root, English under `/en/`.
 - The distances tool reads `?d=&u=&lat=&lon=&z=` (`u` in km|m|mi) in
   `js/distances.js`, which loads together with `js/hectareas-utils.js` and
   INSTEAD of `js/hectareas.js` (both define the `initMap` Maps callback).
-  No embeddable iframe for distances yet (`iframe.html` is hectares-only).
+  Embeddable iframes: `iframe.html` (hectares) and `iframe-distances.html`
+  (distances, noindex), both taking the tool params plus `w`/`h`.
 - The Google Maps API key is referer-restricted to hectareometro.com: on
   localhost the map dies a few seconds after load (RefererNotAllowedMapError).
   Test interactions quickly after load, or trust production.
