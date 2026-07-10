@@ -58,6 +58,7 @@ function escapeHtml(s) {
 const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
+    navDistances: 'Distancias', navMenu: 'Menú',
     overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
@@ -66,6 +67,7 @@ const UI = {
   },
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
+    navDistances: 'Distances', navMenu: 'Menu',
     overlayPre: 'How big are', overlayPost: 'hectares?',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
@@ -93,6 +95,12 @@ function pathFor(lang, key) {
 
 function homePath(lang) {
   return lang === 'es' ? '/' : '/en/';
+}
+
+// The distances tool pages are hand-maintained (like the homepages) but the
+// generator links to them (navbar/footer) and lists them in the sitemap.
+function distancesPath(lang) {
+  return lang === 'es' ? '/distancias/' : '/en/distances/';
 }
 
 function fullUrl(lang, key) {
@@ -563,6 +571,9 @@ function render(page) {
     RELATED_HEADING: ui.relatedHeading,
     RELATED_LINKS: relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
+    NAV_DIST_URL: distancesPath(page.lang),
+    NAV_DIST_LABEL: ui.navDistances,
+    NAV_MENU_LABEL: ui.navMenu,
     BACK_TEXT: ui.backText,
   };
   let out = TEMPLATE;
@@ -574,6 +585,7 @@ function render(page) {
 
 function writeSitemap() {
   const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
+  LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
   ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {

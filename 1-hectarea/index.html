@@ -71,9 +71,29 @@ window.cookieconsent.initialise({
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
 </head>
 <body>
+<nav class="navbar navbar-default site-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
+        <span class="sr-only">Menú</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Hectareómetro</a>
+    </div>
+    <div class="collapse navbar-collapse" id="site-nav-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/distancias/">Distancias</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/en/1-hectare/" hreflang="en">English</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <div id="map-container">
   <div id="map"></div>
-  <div class="lang-switch"><a href="/en/1-hectare/" hreflang="en">English</a></div>
   <div id="hectareas-overlay">
     <label for="hectareas">¿Cuánto ocupan</label>
     <input type="text" id="hectareas" class="customizable-parameter">
@@ -150,11 +170,13 @@ window.cookieconsent.initialise({
       <p><a href="/">← Volver al Hectareómetro</a></p>
     </div>
   </div>
-  <div class="row text-center">
-  <p>
-	<h3>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></h3>
-  </p>
-  </div>
 </div>
+<footer class="site-footer text-center">
+  <ul class="footer-links">
+    <li><a href="/">Hectareómetro</a></li>
+    <li><a href="/distancias/">Distancias</a></li>
+  </ul>
+  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</footer>
 </body>
 </html>

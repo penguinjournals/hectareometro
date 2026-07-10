@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7KGFGQLBRJ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<link rel="canonical" href="https://hectareometro.com/en/distances/">
+<link rel="alternate" hreflang="es" href="https://hectareometro.com/distancias/">
+<link rel="alternate" hreflang="en" href="https://hectareometro.com/en/distances/">
+<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/distancias/">
+<title>How far is 1,000 miles? Visualize distances on a map | Hectareometer</title>
+<meta name="keywords" content="distance, how far is 1000 miles, how many km is a mile, mile to kilometres, visualize distance on a map, radius on a map">
+<meta name="description" content="Draw on a real map how far a distance goes in miles, kilometres or metres. The circle's radius is the distance you type: compare it with places you know.">
+<meta name="author" content="David González Diez">
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@penguinjournals">
+<meta name="twitter:title" content="How far is 1,000 miles? See it drawn on a map">
+<meta name="twitter:description" content="Draw on a real map how far a distance goes in miles, kilometres or metres and compare it with places you know.">
+<meta name="twitter:creator" content="@penguinjournals">
+<meta name="twitter:image" content="https://hectareometro.com/images/logo.png">
+
+
+<!-- Open Graph data -->
+<meta property="og:title" content="How far is 1,000 miles? See it drawn on a map" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hectareometro.com/en/distances/" />
+<meta property="og:description" content="Draw on a real map how far a distance goes in miles, kilometres or metres and compare it with places you know." />
+<meta property="og:site_name" content="Hectareometer, the visual way to understand areas and distances." />
+<meta property="og:image" content="https://hectareometro.com/images/logo.png" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Structured data (schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Hectareometer — Distances",
+      "url": "https://hectareometro.com/en/distances/",
+      "description": "Visual tool to draw on a real map how far a distance goes in miles, kilometres or metres.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "en",
+      "image": "https://hectareometro.com/images/logo.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "David González Diez"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many kilometres is a mile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A mile equals 1.609344 kilometres, i.e. about 1,609 metres. Conversely, a kilometre is roughly 0.62 miles."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I visualize a distance on a map?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The most intuitive way is to draw it on a real map, over a place you know. In this tool you type a distance in miles, kilometres or metres and a circle is drawn whose radius is that distance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the circle on the map mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The circle's radius is the distance you entered: everything inside the circle is closer than that distance to the centre, as the crow flies."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to walk a mile?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At a normal walking pace (about 3 mph), a mile takes around 20 minutes. Three miles is roughly an hour's walk."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='/css/style.css' rel='stylesheet' type='text/css'>
+<script>var PAGE_LANG = 'en';</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/hectareas-utils.js"></script>
+<script type="text/javascript" src="/js/distances.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&loading=async&callback=initMap"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#337AB7"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-default site-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
+        <span class="sr-only">Menu</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/en/">Hectareometer</a>
+    </div>
+    <div class="collapse navbar-collapse" id="site-nav-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/en/distances/">Distances</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/distancias/" hreflang="es">Español</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div id="map-container">
+  <div id="map"></div>
+  <div id="hectareas-overlay">
+    <label for="distance">How far do</label>
+    <input type="text" id="distance" class="customizable-parameter">
+    <select id="distance-unit" aria-label="Distance unit">
+      <option value="mi" selected>miles</option>
+      <option value="km">km</option>
+      <option value="m">metres</option>
+    </select>
+    <label for="distance">go?</label>
+    <div id="equivalences" aria-live="polite"></div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div id="share-block" class="text-center">
+        <p id="share-cta">Found it useful? Share it 👇</p>
+        <div id="share-social">
+          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on WhatsApp"></a>
+          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on X/Twitter"></a>
+          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on Facebook"></a>
+        </div>
+        <div id="share-details">
+          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
+            <i class="fa fa-caret-down"></i> More sharing options
+          </a>
+          <div id="share-advanced" class="collapse">
+            <form>
+              <div class="form-group">
+                <label class="control-label" for="url-share">Link:</label>
+                <input type="text" id="url-share" class="share-link form-control" readonly />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
+      <h1>How far is 1,000 miles?</h1>
+      <p>
+        We hear distances all the time — "the fire is 20 miles away", "the stage is 120 miles
+        long", "she lives 1,000 miles from here" — but our brain is bad at picturing them. The map
+        above draws a circle whose <b>radius is the distance you type</b>: everything inside the
+        circle is closer than that distance to the centre, as the crow flies. Type a distance,
+        pick the unit (miles, kilometres or metres) and drag the map to your home or a place you
+        know.
+      </p>
+
+      <h2>How many kilometres is a mile?</h2>
+      <p>
+        A mile equals <b>1.609 kilometres</b> (exactly 1,609.344 metres). Conversely, a kilometre
+        is roughly 0.62 miles — which is why metric distances often "don't add up" at first glance.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Distance</th><th>Equivalent</th></tr></thead>
+        <tbody>
+          <tr><td>1 mile</td><td>1.609 km · 1,609 m</td></tr>
+          <tr><td>1 kilometre</td><td>1,000 m · 0.62 miles</td></tr>
+          <tr><td>100 miles</td><td>160.93 km</td></tr>
+          <tr><td>100 kilometres</td><td>62.14 miles</td></tr>
+          <tr><td>1,000 miles</td><td>1,609.34 km</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Straight-line distance examples</h2>
+      <p>To get a sense of the magnitudes (approximate straight-line distances):</p>
+      <ul class="examples-list">
+        <li>London–Manchester: about 163 miles (262 km)</li>
+        <li>London–Edinburgh: about 332 miles (534 km)</li>
+        <li>London–Paris: about 214 miles (344 km)</li>
+        <li>New York–Los Angeles: about 2,451 miles (3,944 km)</li>
+      </ul>
+      <p>
+        Type any of these figures into the tool and move the map: you will see at a glance how far
+        that distance reaches from the point you choose.
+      </p>
+
+      <h2>Frequently asked questions about distances</h2>
+      <dl class="faq">
+        <dt>How many kilometres is a mile?</dt>
+        <dd>A mile equals 1.609344 kilometres, i.e. about 1,609 metres. Conversely, a kilometre is roughly 0.62 miles.</dd>
+
+        <dt>How can I visualize a distance on a map?</dt>
+        <dd>The most intuitive way is to draw it on a real map, over a place you know. Type the distance in the tool above and the circle will show you how far it reaches.</dd>
+
+        <dt>What does the circle on the map mean?</dt>
+        <dd>The circle's radius is the distance you entered: everything inside the circle is closer than that distance to the centre, as the crow flies.</dd>
+
+        <dt>How long does it take to walk a mile?</dt>
+        <dd>At a normal walking pace (about 3 mph), a mile takes around 20 minutes. Three miles is roughly an hour's walk.</dd>
+      </dl>
+      <p>
+        Want to visualize areas instead of distances? Try the
+        <a href="/en/">Hectareometer</a>, which draws how much space any number of hectares takes,
+        or see examples like <a href="/en/1000-hectares/">1,000 hectares</a>.
+      </p>
+    </div>
+  </div>
+</div>
+<footer class="site-footer text-center">
+  <ul class="footer-links">
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><a href="/en/distances/">Distances</a></li>
+  </ul>
+  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</footer>
+</body>
+</html>

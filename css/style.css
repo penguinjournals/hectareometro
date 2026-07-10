@@ -21,42 +21,16 @@ body {
   height: 100%;
 }
 
-/* Language switcher on the map */
-.lang-switch {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
+/* Site navigation bar (static, above the map; hamburger on mobile via the
+   Bootstrap collapse plugin). Keep it static: a fixed navbar would fight the
+   map overlays' z-index. */
+.site-nav {
+  margin-bottom: 0;
+  border-radius: 0;
 }
 
-.lang-switch a,
-.lang-switch a:link,
-.lang-switch a:visited {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.95);
-  color: #2B83D0;
-  padding: 6px 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  font-size: 14px;
+.site-nav .navbar-brand {
   font-weight: 600;
-  text-decoration: none;
-}
-
-.lang-switch a:hover {
-  background: #fff;
-  text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .lang-switch {
-    top: 10px;
-    right: 10px;
-  }
-  .lang-switch a {
-    padding: 5px 9px;
-    font-size: 12px;
-  }
 }
 
 /* Hectareas overlay on map */
@@ -84,7 +58,8 @@ body {
   margin: 0;
 }
 
-#hectareas {
+#hectareas,
+#distance {
   width: 80px;
   text-align: center;
   padding: 8px 10px;
@@ -95,7 +70,19 @@ body {
   background: white;
 }
 
-#hectareas:focus {
+#distance-unit {
+  padding: 8px 6px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #2B83D0;
+  border-radius: 5px;
+  background: white;
+  color: #333;
+}
+
+#hectareas:focus,
+#distance:focus,
+#distance-unit:focus {
   outline: none;
   border-color: #1a5fa0;
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
@@ -340,6 +327,30 @@ a, a:link, a:visited, a:hover, a:active {
   background: #e3eefb;
 }
 
+/* Site footer with section links */
+.site-footer {
+  background: #f8f9fa;
+  border-top: 3px solid #2B83D0;
+  padding: 20px 15px;
+  margin-top: 10px;
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+
+.footer-links li {
+  display: inline-block;
+  margin: 0 12px;
+}
+
+.footer-links li a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
 /* FAQ */
 .faq dt {
   font-weight: 600;
@@ -369,10 +380,16 @@ a, a:link, a:visited, a:hover, a:active {
     font-size: 14px;
   }
   
-  #hectareas {
+  #hectareas,
+  #distance {
     width: 60px;
     font-size: 16px;
     padding: 5px 8px;
+  }
+
+  #distance-unit {
+    font-size: 14px;
+    padding: 5px 4px;
   }
 
   #equivalences {

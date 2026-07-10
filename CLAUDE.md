@@ -2,6 +2,8 @@
 
 Static site (GitHub Pages, hectareometro.com) that draws N hectares to scale as a
 circle on Google Maps, so people can grasp areas like wildfire burned surface.
+It also has a distances tool (`/distancias/`, `/en/distances/`) where the circle
+RADIUS is the typed distance (km/m/miles; default km on es, miles on en).
 Bilingual: Spanish at the root, English under `/en/`.
 
 ## Build
@@ -9,8 +11,12 @@ Bilingual: Spanish at the root, English under `/en/`.
 - `node build/generate.js` regenerates every landing page (`<slug>/index.html`,
   `en/<slug>/index.html`), `sitemap.xml` and `build/pages.json`.
 - **Never hand-edit generated `*/index.html` pages** — change `build/generate.js`
-  or `build/template.html` and regenerate. Only the homepages (`index.html`,
-  `en/index.html`) are maintained by hand.
+  or `build/template.html` and regenerate. Hand-maintained pages: `index.html`,
+  `en/index.html`, `distancias/index.html`, `en/distances/index.html`. Their
+  sitemap entries live in `writeSitemap()` in the generator.
+- The navbar and footer markup is duplicated in 5 places (the 4 hand pages +
+  `build/template.html`) — edit them in lockstep. Keep the navbar static (not
+  `navbar-fixed-top`): a fixed one would fight the map overlays' z-index.
 
 ## Structure
 
@@ -26,6 +32,13 @@ Bilingual: Spanish at the root, English under `/en/`.
   in `js/hectareas-utils.js`). Pages can preset the embedded map via
   `PRESET_HECTAREAS` / `PRESET_ZOOM` / `PRESET_LAT` / `PRESET_LON`
   (read in `js/hectareas.js`).
+- The distances tool reads `?d=&u=&lat=&lon=&z=` (`u` in km|m|mi) in
+  `js/distances.js`, which loads together with `js/hectareas-utils.js` and
+  INSTEAD of `js/hectareas.js` (both define the `initMap` Maps callback).
+  No embeddable iframe for distances yet (`iframe.html` is hectares-only).
+- The Google Maps API key is referer-restricted to hectareometro.com: on
+  localhost the map dies a few seconds after load (RefererNotAllowedMapError).
+  Test interactions quickly after load, or trust production.
 
 ## SEO checklist — apply to EVERY new feature/page
 
