@@ -589,7 +589,9 @@ function writeSitemap() {
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
   ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
-    const priority = (u === `${BASE_URL}/` || u === `${BASE_URL}/en/`) ? '1.0' : '0.8';
+    const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
+    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang));
+    const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
