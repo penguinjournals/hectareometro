@@ -156,6 +156,20 @@ function updateEquivalences(hectareas){
   $('#equivalences').text(getEquivalencesText(hectareas));
 }
 
+// Grows the amount input when the typed number no longer fits its base width
+// (the stylesheet's min-width/max-width still bound the result).
+function autoGrowInput(selector) {
+  var $input = $(selector);
+  if (!$input.length) {
+    return;
+  }
+  var resize = function() {
+    $input.css('width', (String($input.val()).length + 2) + 'ch');
+  };
+  $input.on('input keyup change', resize);
+  resize();
+}
+
 function cleanMap(){
   if (circle) {
     circle.setMap(null);

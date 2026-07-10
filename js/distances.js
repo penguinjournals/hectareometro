@@ -132,6 +132,7 @@ function initMap() {
   initializeDistanceParametersIfSet();
   $('#distance').val(baseDistance);
   $('#distance-unit').val(baseUnit);
+  autoGrowInput('#distance');
   updateDistanceEquivalences();
   mapCenter = new google.maps.LatLng(mapLatitude, mapLongitude);
   radius = getRadiusMetersFromDistance(baseDistance, baseUnit);

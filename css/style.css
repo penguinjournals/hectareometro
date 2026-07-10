@@ -61,6 +61,8 @@ body {
 #hectareas,
 #distance {
   width: 80px;
+  min-width: 80px;
+  max-width: 16ch;
   text-align: center;
   padding: 8px 10px;
   font-size: 20px;
@@ -383,6 +385,7 @@ a, a:link, a:visited, a:hover, a:active {
   #hectareas,
   #distance {
     width: 60px;
+    min-width: 60px;
     font-size: 16px;
     padding: 5px 8px;
   }

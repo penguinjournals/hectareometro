@@ -27,6 +27,7 @@ function initMap() {
   }
   initializeParametersIfSet();
   $('#hectareas').val(baseHectareas);
+  autoGrowInput('#hectareas');
   updateEquivalences(baseHectareas);
   $('#iframe-share-width').val(iframeWidth);
   $('#iframe-share-height').val(iframeHeight);
