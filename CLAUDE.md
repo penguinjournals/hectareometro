@@ -3,7 +3,9 @@
 Static site (GitHub Pages, hectareometro.com) that draws N hectares to scale as a
 circle on Google Maps, so people can grasp areas like wildfire burned surface.
 It also has a distances tool (`/distancias/`, `/en/distances/`) where the circle
-RADIUS is the typed distance (km/m/miles; default km on es, miles on en).
+RADIUS is the typed distance (km/m/miles; default km on es, miles on en), and a
+liters tool (`/litros/`, `/en/liters/`) that draws water amounts as isotype-style
+pictogram rows (no map; default input liters on es, US gallons on en).
 Bilingual: Spanish at the root, English under `/en/`.
 
 ## Build
@@ -12,9 +14,10 @@ Bilingual: Spanish at the root, English under `/en/`.
   `en/<slug>/index.html`), `sitemap.xml` and `build/pages.json`.
 - **Never hand-edit generated `*/index.html` pages** — change `build/generate.js`
   or `build/template.html` and regenerate. Hand-maintained pages: `index.html`,
-  `en/index.html`, `distancias/index.html`, `en/distances/index.html`. Their
-  sitemap entries live in `writeSitemap()` in the generator.
-- The navbar and footer markup is duplicated in 5 places (the 4 hand pages +
+  `en/index.html`, `distancias/index.html`, `en/distances/index.html`,
+  `litros/index.html`, `en/liters/index.html`. Their sitemap entries live in
+  `writeSitemap()` in the generator.
+- The navbar and footer markup is duplicated in 7 places (the 6 hand pages +
   `build/template.html`) — edit them in lockstep. Keep the navbar static (not
   `navbar-fixed-top`): a fixed one would fight the map overlays' z-index.
 
@@ -37,6 +40,14 @@ Bilingual: Spanish at the root, English under `/en/`.
   INSTEAD of `js/hectareas.js` (both define the `initMap` Maps callback).
   Embeddable iframes: `iframe.html` (hectares) and `iframe-distances.html`
   (distances, noindex), both taking the tool params plus `w`/`h`.
+- The liters tool reads `?l=&u=` (`u` in l|gal|hm3|acft; the selector shows
+  l|gal|hm³ on es and gal|l|acre-feet on en) in `js/liters.js` and has NO
+  map (no Maps API script, no initMap: it runs on document.ready). Its data
+  (unit ladder, population entities, canonical rates) lives ONLY in
+  `js/liters-data.js`, loaded as browser globals by the pages and require()d
+  by `build/generate.js` — never duplicate those numbers. `js/liters.js`
+  exports its pure builders (pickLiterUnit, buildPictogram, buildLiterPhrase)
+  for the generator too.
 - The Google Maps API key is referer-restricted to hectareometro.com: on
   localhost the map dies a few seconds after load (RefererNotAllowedMapError).
   Test interactions quickly after load, or trust production.

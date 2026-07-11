@@ -65,7 +65,8 @@ body {
 }
 
 #hectareas,
-#distance {
+#distance,
+#liters {
   width: 80px;
   min-width: 80px;
   max-width: 16ch;
@@ -78,7 +79,9 @@ body {
   background: white;
 }
 
-#distance-unit {
+#distance-unit,
+#liters-unit,
+#picto-unit {
   padding: 8px 6px;
   font-size: 16px;
   font-weight: 600;
@@ -90,7 +93,10 @@ body {
 
 #hectareas:focus,
 #distance:focus,
-#distance-unit:focus {
+#liters:focus,
+#distance-unit:focus,
+#liters-unit:focus,
+#picto-unit:focus {
   outline: none;
   border-color: #1a5fa0;
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
@@ -107,6 +113,199 @@ body {
 
 #equivalences:empty {
   display: none;
+}
+
+/* Liters tool (no map: a normal-flow panel + the pictogram block) */
+#litros-tool {
+  text-align: center;
+  padding: 25px 15px 20px;
+}
+
+#litros-panel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+#litros-panel label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+#litros-tool #equivalences {
+  flex-basis: 100%;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+/* display:table shrink-wraps the block so margin:auto centers it while the
+   rows inside stay left-aligned (isotype-style: the partial row is flush).
+   #capture-picto is the clone inside the downloadable infographic. */
+#pictogram,
+#capture-picto {
+  display: table;
+  margin: 18px auto 10px;
+  max-width: 720px;
+  text-align: left;
+}
+
+.picto-row {
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.picto {
+  display: inline-block;
+  width: 1.25em;
+}
+
+/* Ellipsis in the last slot when the drawing is capped at 500 icons */
+.picto-more {
+  text-align: center;
+  font-weight: bold;
+  color: #555;
+}
+
+/* The fixed-width .picto reserves the whole slot; this inner span crops the
+   emoji horizontally to the fraction percentage (isotype-style partial icon) */
+.picto-clip {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.picto-l { font-size: 34px; }
+.picto-m { font-size: 24px; }
+.picto-s { font-size: 17px; }
+.picto-xs { font-size: 12px; }
+
+#picto-count {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 10px 0 2px;
+}
+
+#picto-legend {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+#picto-unit-row {
+  margin-bottom: 12px;
+}
+
+#picto-unit-row label {
+  font-weight: 600;
+  color: #333;
+  margin-right: 6px;
+}
+
+#liter-phrase {
+  font-size: 18px;
+  color: #333;
+  max-width: 640px;
+  margin: 0 auto 6px;
+}
+
+#liter-phrase:empty,
+#picto-count:empty,
+#picto-legend:empty {
+  display: none;
+}
+
+#picto-download-row {
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+/* Downloadable infographic: built off-screen and captured with html2canvas */
+#picto-capture {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  width: 720px;
+  background: #fff;
+  padding: 24px 28px 20px;
+  text-align: center;
+}
+
+#capture-header {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2B83D0;
+  border-bottom: 3px solid #2B83D0;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+#capture-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+#capture-count {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 12px 0 2px;
+}
+
+#capture-legend {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+#capture-phrase {
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+#capture-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+}
+
+#capture-url {
+  font-size: 14px;
+  color: #2B83D0;
+  text-align: left;
+  padding-right: 12px;
+  word-break: break-all;
+}
+
+#capture-qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#capture-qr img,
+#capture-qr canvas {
+  display: block;
+}
+
+#capture-qr-caption {
+  font-size: 12px;
+  color: #555;
+  margin-top: 6px;
 }
 
 /* Share block always visible */
@@ -389,17 +588,29 @@ a, a:link, a:visited, a:hover, a:active {
   }
   
   #hectareas,
-  #distance {
+  #distance,
+  #liters {
     width: 60px;
     min-width: 60px;
     font-size: 16px;
     padding: 5px 8px;
   }
 
-  #distance-unit {
+  #distance-unit,
+  #liters-unit,
+  #picto-unit {
     font-size: 14px;
     padding: 5px 4px;
   }
+
+  #litros-panel label {
+    font-size: 14px;
+  }
+
+  #pictogram.picto-l { font-size: 26px; }
+  #pictogram.picto-m { font-size: 19px; }
+  #pictogram.picto-s { font-size: 13px; }
+  #pictogram.picto-xs { font-size: 9px; }
 
   #equivalences {
     font-size: 12px;

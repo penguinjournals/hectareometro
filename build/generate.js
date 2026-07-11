@@ -18,13 +18,22 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const TEMPLATE = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
+const TEMPLATE_LITROS = fs.readFileSync(path.join(__dirname, 'template-litros.html'), 'utf8');
 const BASE_URL = 'https://hectareometro.com';
 const FOOTBALL_FIELD_M2 = 7140;
 const ACRES_PER_HECTARE = 2.47105;
 
+// The liters tool's data and pure builders (pickLiterUnit, buildPictogram,
+// buildLiterPhrase) live with the runtime JS so the numbers exist only once.
+const litersLib = require('../js/liters.js');
+const litersData = require('../js/liters-data.js');
+
 const LANGS = ['es', 'en'];
 const QUANTITIES = [1, 100, 300, 400, 1000, 3000, 4000, 20000];
 const KEYS = [...QUANTITIES, 'comparison'];
+// Liters landings: round mid-range figures plus the Olympic pool (2.5M L),
+// the headline figure of the family (same round+headline mix as QUANTITIES).
+const LITER_QUANTITIES = [100, 500, 1000, 5000, 10000, 100000, 1000000, 2500000];
 
 // ---- helpers -------------------------------------------------------------
 
@@ -58,21 +67,33 @@ function escapeHtml(s) {
 const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
-    navDistances: 'Distancias', navMenu: 'Menú',
+    navDistances: 'Distancias', navLiters: 'Litros', navMenu: 'Menú',
     overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
     relatedHeading: 'Mira otras cantidades', backText: '← Volver al Hectareómetro',
     switchLabel: 'English',
+    literToolPre: '¿Cuánta agua son', literSee: 'Ver',
+    literAriaUnit: 'Unidad de volumen', literAriaDraw: 'Unidad del dibujo',
+    literUnitOptions: '<option value="l" selected>litros</option>\n      <option value="gal">galones</option>\n      <option value="hm3">hm³</option>',
+    relatedHeadingLiters: 'Mira otras cantidades de agua',
+    backTextLiters: '← Volver a la herramienta de litros',
+    literDownload: 'Descargar como imagen',
   },
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
-    navDistances: 'Distances', navMenu: 'Menu',
+    navDistances: 'Distances', navLiters: 'Liters', navMenu: 'Menu',
     overlayPre: 'How big are', overlayPost: 'hectares?',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
     relatedHeading: 'See other amounts', backText: '← Back to the Hectareometer',
     switchLabel: 'Español',
+    literToolPre: 'How much water is', literSee: 'Show',
+    literAriaUnit: 'Volume unit', literAriaDraw: 'Drawing unit',
+    literUnitOptions: '<option value="gal" selected>gallons</option>\n      <option value="l">litres</option>\n      <option value="acft">acre-feet</option>',
+    relatedHeadingLiters: 'See other amounts of water',
+    backTextLiters: '← Back to the liters tool',
+    literDownload: 'Download as image',
   },
 };
 
@@ -101,6 +122,11 @@ function homePath(lang) {
 // generator links to them (navbar/footer) and lists them in the sitemap.
 function distancesPath(lang) {
   return lang === 'es' ? '/distancias/' : '/en/distances/';
+}
+
+// The liters tool pages are hand-maintained too (see CLAUDE.md).
+function litersPath(lang) {
+  return lang === 'es' ? '/litros/' : '/en/liters/';
 }
 
 function fullUrl(lang, key) {
@@ -497,6 +523,91 @@ ${rows}
 
 const ARTICLES = [burnedAreaArticle()];
 
+// ---- liters landing pages ------------------------------------------------
+
+function literSlugFor(lang, l) {
+  return lang === 'es' ? `${l}-litros` : `${l}-liters`;
+}
+
+function literPathFor(lang, l) {
+  const prefix = lang === 'es' ? '' : '/en';
+  return `${prefix}/${literSlugFor(lang, l)}/`;
+}
+
+function literFullUrl(lang, l) {
+  return BASE_URL + literPathFor(lang, l);
+}
+
+function buildLiterHreflang(l) {
+  const lines = LANGS.map(lg => `<link rel="alternate" hreflang="${lg}" href="${literFullUrl(lg, l)}">`);
+  lines.push(`<link rel="alternate" hreflang="x-default" href="${literFullUrl('es', l)}">`);
+  return lines.join('\n');
+}
+
+function buildLiterLangSwitch(lang, l) {
+  const other = lang === 'es' ? 'en' : 'es';
+  return `<a href="${literPathFor(other, l)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
+}
+
+function relatedLiterLinks(lang, currentL) {
+  const links = LITER_QUANTITIES.filter(l => l !== currentL)
+    .map(l => `        <li><a href="${literPathFor(lang, l)}">${escapeHtml(literPage(lang, l).linkLabel)}</a></li>`);
+  const toolLabel = lang === 'es' ? 'La herramienta de litros' : 'The liters tool';
+  links.push(`        <li><a href="${litersPath(lang)}">${toolLabel}</a></li>`);
+  return links.join('\n');
+}
+
+// In Spanish, an exact million takes "de": "1.000.000 de litros".
+function literNoun(lang, l) {
+  const n = fmt(l, 0, lang);
+  if (lang === 'es') {
+    return l >= 1000000 && l % 1000000 === 0 ? `${n} de litros` : `${n} litros`;
+  }
+  return `${n} litres`;
+}
+
+function literPage(lang, l) {
+  const unit = litersLib.pickLiterUnit(l);
+  const picto = litersLib.buildPictogram(l, unit, lang);
+  const phraseHtml = litersLib.buildLiterPhrase(l, unit.id, lang);
+  const phrasePlain = phraseHtml.replace(/<[^>]+>/g, '').replace(/^≈ /, '');
+  const countPlain = picto.countText.replace(/^≈ /, '');
+  const noun = literNoun(lang, l);
+  const m3 = l / 1000;
+  const m3Text = fmt(m3, m3 < 10 ? 1 : 0, lang);
+  const gal = l / litersData.GALLON_LITERS;
+  const galText = fmt(Math.round(gal), 0, lang);
+
+  if (lang === 'es') {
+    // "¿Cuánto ES un 1.000.000 de litros?" but "¿Cuánto SON 500 litros?".
+    const verb = l >= 1000000 && l % 1000000 === 0 ? 'es' : 'son';
+    const title = `¿Cuánto ${verb} ${noun} de agua? Visualízalo con iconos | Hectareómetro`;
+    const h1 = `¿Cuánto ${verb} ${noun} de agua?`;
+    const description = `¿Cuánto ${verb} ${noun}? Aproximadamente ${countPlain}: ${phrasePlain}. Míralo dibujado con iconos, de vasos de agua a piscinas olímpicas.`;
+    const answer = `${noun.charAt(0).toUpperCase() + noun.slice(1)} de agua son aproximadamente ${countPlain}, es decir, ${phrasePlain}. En otras unidades: ${m3Text} m³ o unos ${galText} galones.`;
+    const intro = [
+      `<p>El dibujo de arriba muestra <b>${noun} de agua</b> como ${countPlain}: cada icono representa ${unit.es.legend}. Es ${phraseHtml.replace(/^≈ /, 'aproximadamente ')}.</p>`,
+      `<p>En otras unidades, ${noun} son <b>${m3Text} metros cúbicos</b> o unos <b>${galText} galones</b>. Cambia el número en la herramienta o elige otra referencia para el dibujo (vasos, bañeras, camiones cisterna, piscinas olímpicas…) con el selector «Ver».</p>`,
+    ].join('\n      ');
+    return {
+      section: 'litros', lang, key: l, l, title, description, h1, intro,
+      question: h1, answer, linkLabel: `${fmt(l, 0, lang)} litros`,
+    };
+  }
+  const title = `How much is ${noun} of water? See it with icons | Hectareometer`;
+  const h1 = `How much is ${noun} of water?`;
+  const description = `How much is ${noun}? About ${countPlain}: ${phrasePlain}. See it drawn with icons, from glasses of water to Olympic swimming pools.`;
+  const answer = `${noun.charAt(0).toUpperCase() + noun.slice(1)} of water is about ${countPlain}, i.e. ${phrasePlain}. In other units: ${m3Text} m³ or about ${galText} US gallons.`;
+  const intro = [
+    `<p>The drawing above shows <b>${noun} of water</b> as ${countPlain}: each icon represents ${unit.en.legend}. It is ${phraseHtml.replace(/^≈ /, 'roughly ')}.</p>`,
+    `<p>In other units, ${noun} is <b>${m3Text} cubic metres</b> or about <b>${galText} US gallons</b>. Change the number in the tool or pick another reference for the drawing (glasses, bathtubs, tanker trucks, Olympic pools…) with the "Show" selector.</p>`,
+  ].join('\n      ');
+  return {
+    section: 'litros', lang, key: l, l, title, description, h1, intro,
+    question: h1, answer, linkLabel: `${fmt(l, 0, lang)} litres`,
+  };
+}
+
 // ---- rendering -----------------------------------------------------------
 
 function buildJsonLd(page) {
@@ -531,17 +642,25 @@ function relatedLinks(lang, currentKey) {
   return links.join('\n');
 }
 
-function render(page) {
+function render(page, template) {
   const ui = UI[page.lang];
-  // Articles carry their own path and exist in one language only.
-  const canonical = page.path ? BASE_URL + page.path : fullUrl(page.lang, page.key);
-  const hreflang = page.path
+  const isLiters = page.section === 'litros';
+  // Articles carry their own path and exist in one language only; liters
+  // landings have their own slug family and template.
+  const canonical = isLiters
+    ? literFullUrl(page.lang, page.key)
+    : page.path ? BASE_URL + page.path : fullUrl(page.lang, page.key);
+  const hreflang = isLiters
+    ? buildLiterHreflang(page.key)
+    : page.path
     ? [
         `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
         `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
       ].join('\n')
     : buildHreflang(page.key);
-  const langSwitch = page.path
+  const langSwitch = isLiters
+    ? buildLiterLangSwitch(page.lang, page.key)
+    : page.path
     ? `<a href="${homePath(page.lang === 'es' ? 'en' : 'es')}" hreflang="${page.lang === 'es' ? 'en' : 'es'}">${UI[page.lang].switchLabel}</a>`
     : buildLangSwitch(page.lang, page.key);
   const repl = {
@@ -557,7 +676,14 @@ function render(page) {
     OG_LOCALE: ui.ogLocale,
     JSON_LD: buildJsonLd(page),
     HA: String(page.ha),
+    L: String(page.l || ''),
     PRESET_EXTRA: page.presetExtra || '',
+    LITER_TOOL_PRE: ui.literToolPre,
+    LITER_UNIT_OPTIONS: ui.literUnitOptions,
+    LITER_SEE: ui.literSee,
+    LITER_ARIA_UNIT: ui.literAriaUnit,
+    LITER_ARIA_DRAW: ui.literAriaDraw,
+    LITER_DOWNLOAD: ui.literDownload,
     OVERLAY_PRE: ui.overlayPre,
     OVERLAY_POST: ui.overlayPost,
     SHARE_CTA: ui.shareCta,
@@ -568,15 +694,17 @@ function render(page) {
     LABEL_HEIGHT: ui.labelHeight,
     H1: escapeHtml(page.h1),
     INTRO: page.intro,
-    RELATED_HEADING: ui.relatedHeading,
-    RELATED_LINKS: relatedLinks(page.lang, page.key),
+    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : ui.relatedHeading,
+    RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key) : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
     NAV_DIST_URL: distancesPath(page.lang),
     NAV_DIST_LABEL: ui.navDistances,
+    NAV_LITERS_URL: litersPath(page.lang),
+    NAV_LITERS_LABEL: ui.navLiters,
     NAV_MENU_LABEL: ui.navMenu,
-    BACK_TEXT: ui.backText,
+    BACK_TEXT: isLiters ? ui.backTextLiters : ui.backText,
   };
-  let out = TEMPLATE;
+  let out = template || TEMPLATE;
   Object.keys(repl).forEach(k => {
     out = out.split('{{' + k + '}}').join(repl[k]);
   });
@@ -586,11 +714,13 @@ function render(page) {
 function writeSitemap() {
   const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
   LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
+  LANGS.forEach(lang => urls.push(BASE_URL + litersPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
+  LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => urls.push(literFullUrl(lang, l))));
   ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
-    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang));
+    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang));
     const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');
@@ -612,6 +742,17 @@ function main() {
       console.log(`generated ${pathFor(lang, key)}`);
     });
   });
+  LANGS.forEach(lang => {
+    LITER_QUANTITIES.forEach(l => {
+      const page = literPage(lang, l);
+      const slug = literSlugFor(lang, l);
+      const dir = lang === 'es' ? path.join(ROOT, slug) : path.join(ROOT, 'en', slug);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_LITROS));
+      manifest.push({ lang, slug, path: literPathFor(lang, l), label: page.linkLabel, title: page.title });
+      console.log(`generated ${literPathFor(lang, l)}`);
+    });
+  });
   ARTICLES.forEach(page => {
     const dir = path.join(ROOT, page.slug);
     fs.mkdirSync(dir, { recursive: true });
@@ -621,7 +762,7 @@ function main() {
   });
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × ${KEYS.length} keys + ${ARTICLES.length} articles).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter amounts) + ${ARTICLES.length} articles).`);
 }
 
 main();
