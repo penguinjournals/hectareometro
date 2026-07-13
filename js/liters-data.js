@@ -10,10 +10,10 @@
 var DRINK_L_PER_DAY = 2;
 
 // Average HOUSEHOLD water use per person and day in Spain, in liters (showers,
-// toilets, washing...). INE, Encuesta sobre el suministro y saneamiento del
-// agua: 133 L/inhabitant/day (2020, latest published).
-// https://www.ine.es/prensa/essa_2020.pdf
-var HOUSEHOLD_L_PER_PERSON_DAY = 133;
+// toilets, washing...). INE, Estadística sobre el suministro y saneamiento del
+// agua: 128 L/inhabitant/day.
+// https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602
+var HOUSEHOLD_L_PER_PERSON_DAY = 128;
 
 // US liquid gallon. https://en.wikipedia.org/wiki/Gallon
 var GALLON_LITERS = 3.78541;
@@ -57,8 +57,8 @@ var LITER_UNITS = [
   },
   {
     id: 'hogar', liters: HOUSEHOLD_L_PER_PERSON_DAY, emoji: '🏠',
-    es: { selector: 'en consumo doméstico (persona y día)', one: 'persona de consumo doméstico diario', many: 'personas de consumo doméstico diario', legend: 'el consumo doméstico de agua de una persona en un día (133 litros, INE)' },
-    en: { selector: 'in household use (person per day)', one: 'person-day of household use', many: 'person-days of household use', legend: 'one person’s household water use for a day (133 litres, Spain)' }
+    es: { selector: 'en consumo doméstico (persona y día)', one: 'persona de consumo doméstico diario', many: 'personas de consumo doméstico diario', legend: 'el consumo doméstico de agua de una persona en un día (128 litros, INE)' },
+    en: { selector: 'in household use (person per day)', one: 'person-day of household use', many: 'person-days of household use', legend: 'one person’s household water use for a day (128 litres, Spain)' }
   },
   {
     id: 'banera', liters: 150, emoji: '🛁',
