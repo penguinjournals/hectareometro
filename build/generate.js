@@ -19,14 +19,17 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const TEMPLATE = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
 const TEMPLATE_LITROS = fs.readFileSync(path.join(__dirname, 'template-litros.html'), 'utf8');
+const TEMPLATE_KILOS = fs.readFileSync(path.join(__dirname, 'template-kilos.html'), 'utf8');
 const BASE_URL = 'https://hectareometro.com';
 const FOOTBALL_FIELD_M2 = 7140;
 const ACRES_PER_HECTARE = 2.47105;
 
-// The liters tool's data and pure builders (pickLiterUnit, buildPictogram,
-// buildLiterPhrase) live with the runtime JS so the numbers exist only once.
+// The liters/kilos tools' data and pure builders live with the runtime JS so
+// the numbers exist only once.
 const litersLib = require('../js/liters.js');
 const litersData = require('../js/liters-data.js');
+const kilosLib = require('../js/kilos.js');
+const kilosData = require('../js/kilos-data.js');
 
 const LANGS = ['es', 'en'];
 const QUANTITIES = [1, 100, 300, 400, 1000, 3000, 4000, 20000];
@@ -34,6 +37,9 @@ const KEYS = [...QUANTITIES, 'comparison'];
 // Liters landings: round mid-range figures plus the Olympic pool (2.5M L),
 // the headline figure of the family (same round+headline mix as QUANTITIES).
 const LITER_QUANTITIES = [100, 500, 1000, 5000, 10000, 100000, 1000000, 2500000];
+// Kilos landings: round figures plus the fully loaded 40-tonne truck as the
+// headline figure.
+const KILO_QUANTITIES = [100, 500, 1000, 5000, 10000, 40000, 100000, 1000000];
 
 // ---- helpers -------------------------------------------------------------
 
@@ -67,7 +73,7 @@ function escapeHtml(s) {
 const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
-    navDistances: 'Distancias', navLiters: 'Litros', navMenu: 'Menú',
+    navDistances: 'Distancias', navLiters: 'Litros', navKilos: 'Kilos', navMenu: 'Menú',
     overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
@@ -79,10 +85,14 @@ const UI = {
     relatedHeadingLiters: 'Mira otras cantidades de agua',
     backTextLiters: '← Volver a la herramienta de litros',
     literDownload: 'Descargar como imagen',
+    kiloToolPre: '¿Cuánto son', kiloAriaUnit: 'Unidad de peso',
+    kiloUnitOptions: '<option value="kg" selected>kilos</option>\n      <option value="lb">libras</option>\n      <option value="t">toneladas</option>',
+    relatedHeadingKilos: 'Mira otros pesos',
+    backTextKilos: '← Volver a la herramienta de kilos',
   },
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
-    navDistances: 'Distances', navLiters: 'Liters', navMenu: 'Menu',
+    navDistances: 'Distances', navLiters: 'Liters', navKilos: 'Kilos', navMenu: 'Menu',
     overlayPre: 'How big are', overlayPost: 'hectares?',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
@@ -94,6 +104,10 @@ const UI = {
     relatedHeadingLiters: 'See other amounts of water',
     backTextLiters: '← Back to the liters tool',
     literDownload: 'Download as image',
+    kiloToolPre: 'How heavy is', kiloAriaUnit: 'Weight unit',
+    kiloUnitOptions: '<option value="lb" selected>pounds</option>\n      <option value="kg">kilos</option>\n      <option value="t">tonnes</option>',
+    relatedHeadingKilos: 'See other weights',
+    backTextKilos: '← Back to the kilos tool',
   },
 };
 
@@ -127,6 +141,11 @@ function distancesPath(lang) {
 // The liters tool pages are hand-maintained too (see CLAUDE.md).
 function litersPath(lang) {
   return lang === 'es' ? '/litros/' : '/en/liters/';
+}
+
+// And so are the kilos tool pages.
+function kilosPath(lang) {
+  return lang === 'es' ? '/kilos/' : '/en/kilos/';
 }
 
 function fullUrl(lang, key) {
@@ -608,6 +627,97 @@ function literPage(lang, l) {
   };
 }
 
+// ---- kilos landing pages ---------------------------------------------------
+
+function kiloSlugFor(lang, k) {
+  return `${k}-kilos`;
+}
+
+function kiloPathFor(lang, k) {
+  const prefix = lang === 'es' ? '' : '/en';
+  return `${prefix}/${kiloSlugFor(lang, k)}/`;
+}
+
+function kiloFullUrl(lang, k) {
+  return BASE_URL + kiloPathFor(lang, k);
+}
+
+function buildKiloHreflang(k) {
+  const lines = LANGS.map(lg => `<link rel="alternate" hreflang="${lg}" href="${kiloFullUrl(lg, k)}">`);
+  lines.push(`<link rel="alternate" hreflang="x-default" href="${kiloFullUrl('es', k)}">`);
+  return lines.join('\n');
+}
+
+function buildKiloLangSwitch(lang, k) {
+  const other = lang === 'es' ? 'en' : 'es';
+  return `<a href="${kiloPathFor(other, k)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
+}
+
+function relatedKiloLinks(lang, currentK) {
+  const links = KILO_QUANTITIES.filter(k => k !== currentK)
+    .map(k => `        <li><a href="${kiloPathFor(lang, k)}">${escapeHtml(kiloPage(lang, k).linkLabel)}</a></li>`);
+  const toolLabel = lang === 'es' ? 'La herramienta de kilos' : 'The kilos tool';
+  links.push(`        <li><a href="${kilosPath(lang)}">${toolLabel}</a></li>`);
+  return links.join('\n');
+}
+
+// In Spanish, an exact million takes "de": "1.000.000 de kilos".
+function kiloNoun(lang, k) {
+  const n = fmt(k, 0, lang);
+  if (lang === 'es') {
+    return k >= 1000000 && k % 1000000 === 0 ? `${n} de kilos` : `${n} kilos`;
+  }
+  return `${n} kilos`;
+}
+
+function kiloPage(lang, k) {
+  const unit = kilosLib.pickKiloUnit(k);
+  const picto = kilosLib.buildKiloPictogram(k, unit, lang);
+  const phraseHtml = kilosLib.buildKiloPhrase(k, unit.id, lang);
+  const phrasePlain = phraseHtml.replace(/<[^>]+>/g, '').replace(/^≈ /, '');
+  const countPlain = picto.countText.replace(/^≈ /, '');
+  const noun = kiloNoun(lang, k);
+  const lb = k / kilosData.POUND_KG;
+  const lbText = fmt(Math.round(lb), 0, lang);
+  const t = k / 1000;
+  const tText = fmt(t, t < 10 ? 1 : 0, lang);
+
+  if (lang === 'es') {
+    // "¿Cuánto ES 1.000.000 de kilos?" but "¿Cuánto SON 500 kilos?".
+    const verb = k >= 1000000 && k % 1000000 === 0 ? 'es' : 'son';
+    const title = `¿Cuánto ${verb} ${noun}? Visualízalo con iconos | Hectareómetro`;
+    const h1 = `¿Cuánto ${verb} ${noun}?`;
+    const phraseTail = phrasePlain ? `: ${phrasePlain}` : '';
+    const description = `¿Cuánto ${verb} ${noun}? Aproximadamente ${countPlain}${phraseTail}. Míralo dibujado con iconos, de huevos a ballenas azules.`;
+    const tPart = k >= 1000 ? ` o ${tText} toneladas` : '';
+    const answer = `${noun.charAt(0).toUpperCase() + noun.slice(1)} son aproximadamente ${countPlain}${phraseTail}. En otras unidades: ${lbText} libras${tPart}.`;
+    const phraseSentence = phraseHtml ? ` Es ${phraseHtml.replace(/^≈ /, 'aproximadamente ')}.` : '';
+    const intro = [
+      `<p>El dibujo de arriba muestra <b>${noun}</b> como ${countPlain}: cada icono representa ${unit.es.legend}.${phraseSentence}</p>`,
+      `<p>En otras unidades, ${noun} son <b>${lbText} libras</b>${k >= 1000 ? ` o <b>${tText} toneladas</b>` : ''}. Cambia el número en la herramienta o elige otra referencia para el dibujo (huevos, personas, vacas, coches, elefantes…) con el selector «Ver».</p>`,
+    ].join('\n      ');
+    return {
+      section: 'kilos', lang, key: k, k, title, description, h1, intro,
+      question: h1, answer, linkLabel: `${fmt(k, 0, lang)} kilos`,
+    };
+  }
+  const title = `How heavy is ${noun}? See it with icons | Hectareometer`;
+  const h1 = `How heavy is ${noun}?`;
+  const phraseTail = phrasePlain ? `: ${phrasePlain}` : '';
+  const description = `How heavy is ${noun}? About ${countPlain}${phraseTail}. See it drawn with icons, from eggs to blue whales.`;
+  const tPart = k >= 1000 ? ` or ${tText} tonnes` : '';
+  const answer = `${noun.charAt(0).toUpperCase() + noun.slice(1)} is about ${countPlain}${phraseTail}. In other units: ${lbText} pounds${tPart}.`;
+  const phraseSentence = phraseHtml ? ` It is ${phraseHtml.replace(/^≈ /, 'roughly ')}.` : '';
+  const intro = [
+    `<p>The drawing above shows <b>${noun}</b> as ${countPlain}: each icon represents ${unit.en.legend}.${phraseSentence}</p>`,
+    `<p>In other units, ${noun} is <b>${lbText} pounds</b>${k >= 1000 ? ` or <b>${tText} tonnes</b>` : ''}. Change the number in the tool or pick another reference for the drawing (eggs, people, cows, cars, elephants…) with the "Show" selector.</p>`,
+  ].join('\n      ');
+  return {
+    section: 'kilos', lang, key: k, k, title, description, h1, intro,
+    question: h1, answer, linkLabel: `${fmt(k, 0, lang)} kilos`,
+  };
+}
+
 // ---- rendering -----------------------------------------------------------
 
 function buildJsonLd(page) {
@@ -645,13 +755,18 @@ function relatedLinks(lang, currentKey) {
 function render(page, template) {
   const ui = UI[page.lang];
   const isLiters = page.section === 'litros';
-  // Articles carry their own path and exist in one language only; liters
-  // landings have their own slug family and template.
+  const isKilos = page.section === 'kilos';
+  // Articles carry their own path and exist in one language only; liters and
+  // kilos landings have their own slug family and template.
   const canonical = isLiters
     ? literFullUrl(page.lang, page.key)
+    : isKilos
+    ? kiloFullUrl(page.lang, page.key)
     : page.path ? BASE_URL + page.path : fullUrl(page.lang, page.key);
   const hreflang = isLiters
     ? buildLiterHreflang(page.key)
+    : isKilos
+    ? buildKiloHreflang(page.key)
     : page.path
     ? [
         `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
@@ -660,6 +775,8 @@ function render(page, template) {
     : buildHreflang(page.key);
   const langSwitch = isLiters
     ? buildLiterLangSwitch(page.lang, page.key)
+    : isKilos
+    ? buildKiloLangSwitch(page.lang, page.key)
     : page.path
     ? `<a href="${homePath(page.lang === 'es' ? 'en' : 'es')}" hreflang="${page.lang === 'es' ? 'en' : 'es'}">${UI[page.lang].switchLabel}</a>`
     : buildLangSwitch(page.lang, page.key);
@@ -677,6 +794,7 @@ function render(page, template) {
     JSON_LD: buildJsonLd(page),
     HA: String(page.ha),
     L: String(page.l || ''),
+    K: String(page.k || ''),
     PRESET_EXTRA: page.presetExtra || '',
     LITER_TOOL_PRE: ui.literToolPre,
     LITER_UNIT_OPTIONS: ui.literUnitOptions,
@@ -684,6 +802,9 @@ function render(page, template) {
     LITER_ARIA_UNIT: ui.literAriaUnit,
     LITER_ARIA_DRAW: ui.literAriaDraw,
     LITER_DOWNLOAD: ui.literDownload,
+    KILO_TOOL_PRE: ui.kiloToolPre,
+    KILO_UNIT_OPTIONS: ui.kiloUnitOptions,
+    KILO_ARIA_UNIT: ui.kiloAriaUnit,
     OVERLAY_PRE: ui.overlayPre,
     OVERLAY_POST: ui.overlayPost,
     SHARE_CTA: ui.shareCta,
@@ -694,15 +815,19 @@ function render(page, template) {
     LABEL_HEIGHT: ui.labelHeight,
     H1: escapeHtml(page.h1),
     INTRO: page.intro,
-    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : ui.relatedHeading,
-    RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key) : relatedLinks(page.lang, page.key),
+    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : ui.relatedHeading,
+    RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
+      : isKilos ? relatedKiloLinks(page.lang, page.key)
+      : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
     NAV_DIST_URL: distancesPath(page.lang),
     NAV_DIST_LABEL: ui.navDistances,
     NAV_LITERS_URL: litersPath(page.lang),
     NAV_LITERS_LABEL: ui.navLiters,
+    NAV_KILOS_URL: kilosPath(page.lang),
+    NAV_KILOS_LABEL: ui.navKilos,
     NAV_MENU_LABEL: ui.navMenu,
-    BACK_TEXT: isLiters ? ui.backTextLiters : ui.backText,
+    BACK_TEXT: isLiters ? ui.backTextLiters : isKilos ? ui.backTextKilos : ui.backText,
   };
   let out = template || TEMPLATE;
   Object.keys(repl).forEach(k => {
@@ -715,12 +840,14 @@ function writeSitemap() {
   const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
   LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + litersPath(lang)));
+  LANGS.forEach(lang => urls.push(BASE_URL + kilosPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => urls.push(literFullUrl(lang, l))));
+  LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => urls.push(kiloFullUrl(lang, k))));
   ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
-    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang));
+    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang));
     const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');
@@ -753,6 +880,17 @@ function main() {
       console.log(`generated ${literPathFor(lang, l)}`);
     });
   });
+  LANGS.forEach(lang => {
+    KILO_QUANTITIES.forEach(k => {
+      const page = kiloPage(lang, k);
+      const slug = kiloSlugFor(lang, k);
+      const dir = lang === 'es' ? path.join(ROOT, slug) : path.join(ROOT, 'en', slug);
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_KILOS));
+      manifest.push({ lang, slug, path: kiloPathFor(lang, k), label: page.linkLabel, title: page.title });
+      console.log(`generated ${kiloPathFor(lang, k)}`);
+    });
+  });
   ARTICLES.forEach(page => {
     const dir = path.join(ROOT, page.slug);
     fs.mkdirSync(dir, { recursive: true });
@@ -762,7 +900,7 @@ function main() {
   });
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter amounts) + ${ARTICLES.length} articles).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length} articles).`);
 }
 
 main();

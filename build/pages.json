@@ -239,6 +239,118 @@
   },
   {
     "lang": "es",
+    "slug": "100-kilos",
+    "path": "/100-kilos/",
+    "label": "100 kilos",
+    "title": "¿Cuánto son 100 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "500-kilos",
+    "path": "/500-kilos/",
+    "label": "500 kilos",
+    "title": "¿Cuánto son 500 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "1000-kilos",
+    "path": "/1000-kilos/",
+    "label": "1000 kilos",
+    "title": "¿Cuánto son 1000 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "5000-kilos",
+    "path": "/5000-kilos/",
+    "label": "5000 kilos",
+    "title": "¿Cuánto son 5000 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "10000-kilos",
+    "path": "/10000-kilos/",
+    "label": "10.000 kilos",
+    "title": "¿Cuánto son 10.000 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "40000-kilos",
+    "path": "/40000-kilos/",
+    "label": "40.000 kilos",
+    "title": "¿Cuánto son 40.000 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "100000-kilos",
+    "path": "/100000-kilos/",
+    "label": "100.000 kilos",
+    "title": "¿Cuánto son 100.000 kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "1000000-kilos",
+    "path": "/1000000-kilos/",
+    "label": "1.000.000 kilos",
+    "title": "¿Cuánto es 1.000.000 de kilos? Visualízalo con iconos | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "100-kilos",
+    "path": "/en/100-kilos/",
+    "label": "100 kilos",
+    "title": "How heavy is 100 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "500-kilos",
+    "path": "/en/500-kilos/",
+    "label": "500 kilos",
+    "title": "How heavy is 500 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "1000-kilos",
+    "path": "/en/1000-kilos/",
+    "label": "1,000 kilos",
+    "title": "How heavy is 1,000 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "5000-kilos",
+    "path": "/en/5000-kilos/",
+    "label": "5,000 kilos",
+    "title": "How heavy is 5,000 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "10000-kilos",
+    "path": "/en/10000-kilos/",
+    "label": "10,000 kilos",
+    "title": "How heavy is 10,000 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "40000-kilos",
+    "path": "/en/40000-kilos/",
+    "label": "40,000 kilos",
+    "title": "How heavy is 40,000 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "100000-kilos",
+    "path": "/en/100000-kilos/",
+    "label": "100,000 kilos",
+    "title": "How heavy is 100,000 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "1000000-kilos",
+    "path": "/en/1000000-kilos/",
+    "label": "1,000,000 kilos",
+    "title": "How heavy is 1,000,000 kilos? See it with icons | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "hectareas-quemadas-incendios-espana",
     "path": "/hectareas-quemadas-incendios-espana/",
     "label": "Hectáreas quemadas en incendios en España (2020-2025)",

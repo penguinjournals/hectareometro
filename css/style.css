@@ -66,7 +66,8 @@ body {
 
 #hectareas,
 #distance,
-#liters {
+#liters,
+#kilos {
   width: 80px;
   min-width: 80px;
   max-width: 16ch;
@@ -81,6 +82,7 @@ body {
 
 #distance-unit,
 #liters-unit,
+#kilos-unit,
 #picto-unit {
   padding: 8px 6px;
   font-size: 16px;
@@ -94,8 +96,10 @@ body {
 #hectareas:focus,
 #distance:focus,
 #liters:focus,
+#kilos:focus,
 #distance-unit:focus,
 #liters-unit:focus,
+#kilos-unit:focus,
 #picto-unit:focus {
   outline: none;
   border-color: #1a5fa0;
@@ -211,7 +215,8 @@ body {
   margin-right: 6px;
 }
 
-#liter-phrase {
+#liter-phrase,
+#kilo-phrase {
   font-size: 18px;
   color: #333;
   max-width: 640px;
@@ -219,6 +224,7 @@ body {
 }
 
 #liter-phrase:empty,
+#kilo-phrase:empty,
 #picto-count:empty,
 #picto-legend:empty {
   display: none;
@@ -589,7 +595,8 @@ a, a:link, a:visited, a:hover, a:active {
   
   #hectareas,
   #distance,
-  #liters {
+  #liters,
+  #kilos {
     width: 60px;
     min-width: 60px;
     font-size: 16px;
@@ -598,6 +605,7 @@ a, a:link, a:visited, a:hover, a:active {
 
   #distance-unit,
   #liters-unit,
+  #kilos-unit,
   #picto-unit {
     font-size: 14px;
     padding: 5px 4px;
