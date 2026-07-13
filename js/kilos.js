@@ -248,6 +248,9 @@ if (typeof $ !== 'undefined') {
   // 1,000 matches the section H1 ("¿Cuánto son 1.000 kilos?").
   var baseInputUnit = kiloLang === 'en' ? 'lb' : 'kg';
   var baseAmount = 1000;
+  // Which ladder rung the drawing uses ('auto' = picked automatically). Travels
+  // in the URL as ?v= so a shared "seen in elephants" view rebuilds intact.
+  var basePictoUnit = 'auto';
 
   // hectareas-utils.js reads the global baseUrl when building share links, so
   // it must point at this page (per language).
@@ -297,7 +300,7 @@ if (typeof $ !== 'undefined') {
     }
     loadImageLibs(function() {
       var inputUnit = $('#kilos-unit').val();
-      var shareUrl = baseUrl + '?' + jQuery.param({ k: $('#kilos').val(), u: inputUnit });
+      var shareUrl = baseUrl + '?' + jQuery.param(kiloShareParams());
       var brand = kiloLang === 'en' ? 'Hectareometer' : 'Hectareómetro';
       var title = (kiloLang === 'en' ? 'How heavy is ' : '¿Cuánto son ')
         + kilosFmt(value, value === Math.round(value) ? 0 : 2, kiloLang)
@@ -337,16 +340,30 @@ if (typeof $ !== 'undefined') {
     });
   };
 
-  // URL scheme: ?k=<amount in the chosen input unit>&u=<kg|lb|t>
+  // URL scheme: ?k=<amount in the chosen input unit>&u=<kg|lb|t>&v=<ladder rung>
   var initializeKiloParametersIfSet = function() {
     var paramAmount = getUrlParameter('k');
     var paramUnit = getUrlParameter('u');
+    var paramView = getUrlParameter('v');
     if (paramUnit != undefined && KILO_INPUT_UNITS[paramUnit]) {
       baseInputUnit = paramUnit;
     }
     if (paramAmount != undefined && parseKilos(paramAmount) !== null) {
       baseAmount = parseKilos(paramAmount);
     }
+    if (paramView != undefined && kiloUnitById(paramView)) {
+      basePictoUnit = paramView;
+    }
+  };
+
+  // Shareable params: the drawing rung (?v=) rides along unless it is 'auto'.
+  var kiloShareParams = function() {
+    var params = { k: $('#kilos').val(), u: $('#kilos-unit').val() };
+    var view = $('#picto-unit').val();
+    if (view && view !== 'auto') {
+      params.v = view;
+    }
+    return params;
   };
 
   // Conversion to the input units the user did NOT pick (t only from 1,000 kg).
@@ -371,7 +388,7 @@ if (typeof $ !== 'undefined') {
   };
 
   var generateKiloSharingButtons = function() {
-    var params = { k: $('#kilos').val(), u: $('#kilos-unit').val() };
+    var params = kiloShareParams();
     var str = jQuery.param(params);
     var shareUrl = baseUrl + '?' + str;
     var shareText = kiloI18n().shareText(params.k, params.u);
@@ -425,6 +442,7 @@ if (typeof $ !== 'undefined') {
     }
     initializeKiloParametersIfSet();
     populatePictoUnitSelector();
+    $('#picto-unit').val(basePictoUnit);
     $('#kilos').val(baseAmount);
     // ?u= accepts every unit but each language's selector only lists its own
     // three; if the URL brings one of the others, add it on the fly so the

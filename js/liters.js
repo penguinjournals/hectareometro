@@ -284,6 +284,9 @@ if (typeof $ !== 'undefined') {
   // Language defaults: liters on the Spanish page, US gallons on the English one.
   var baseInputUnit = literLang === 'en' ? 'gal' : 'l';
   var baseAmount = 100;
+  // Which ladder rung the drawing uses ('auto' = picked automatically). Travels
+  // in the URL as ?v= so a shared "seen in Olympic pools" view rebuilds intact.
+  var basePictoUnit = 'auto';
 
   // hectareas-utils.js reads the global baseUrl when building share links, so
   // it must point at this page (per language).
@@ -333,7 +336,7 @@ if (typeof $ !== 'undefined') {
     }
     loadImageLibs(function() {
       var inputUnit = $('#liters-unit').val();
-      var shareUrl = baseUrl + '?' + jQuery.param({ l: $('#liters').val(), u: inputUnit });
+      var shareUrl = baseUrl + '?' + jQuery.param(literShareParams());
       var brand = literLang === 'en' ? 'Hectareometer' : 'Hectareómetro';
       var title = (literLang === 'en' ? 'How much water is ' : '¿Cuánta agua son ')
         + litersFmt(value, value === Math.round(value) ? 0 : 2, literLang)
@@ -373,16 +376,30 @@ if (typeof $ !== 'undefined') {
     });
   };
 
-  // URL scheme: ?l=<amount in the chosen input unit>&u=<l|gal>
+  // URL scheme: ?l=<amount in the chosen input unit>&u=<l|gal>&v=<ladder rung>
   var initializeLiterParametersIfSet = function() {
     var paramAmount = getUrlParameter('l');
     var paramUnit = getUrlParameter('u');
+    var paramView = getUrlParameter('v');
     if (paramUnit != undefined && LITER_INPUT_UNITS[paramUnit]) {
       baseInputUnit = paramUnit;
     }
     if (paramAmount != undefined && parseLiters(paramAmount) !== null) {
       baseAmount = parseLiters(paramAmount);
     }
+    if (paramView != undefined && literUnitById(paramView)) {
+      basePictoUnit = paramView;
+    }
+  };
+
+  // Shareable params: the drawing rung (?v=) rides along unless it is 'auto'.
+  var literShareParams = function() {
+    var params = { l: $('#liters').val(), u: $('#liters-unit').val() };
+    var view = $('#picto-unit').val();
+    if (view && view !== 'auto') {
+      params.v = view;
+    }
+    return params;
   };
 
   // Conversion to the input unit the user did NOT pick (plus m³ when large).
@@ -417,7 +434,7 @@ if (typeof $ !== 'undefined') {
   };
 
   var generateLiterSharingButtons = function() {
-    var params = { l: $('#liters').val(), u: $('#liters-unit').val() };
+    var params = literShareParams();
     var str = jQuery.param(params);
     var shareUrl = baseUrl + '?' + str;
     var shareText = literI18n().shareText(params.l, params.u);
@@ -471,6 +488,7 @@ if (typeof $ !== 'undefined') {
     }
     initializeLiterParametersIfSet();
     populatePictoUnitSelector();
+    $('#picto-unit').val(basePictoUnit);
     $('#liters').val(baseAmount);
     // ?u= accepts every unit but each language's selector only lists its own
     // three; if the URL brings one of the others (e.g. ?u=acft on the Spanish
