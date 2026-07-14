@@ -568,9 +568,11 @@ function buildLiterLangSwitch(lang, l) {
   return `<a href="${literPathFor(other, l)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
 }
 
-function relatedLiterLinks(lang, currentL) {
-  const links = LITER_QUANTITIES.filter(l => l !== currentL)
+function relatedLiterLinks(lang, currentKey) {
+  const links = LITER_QUANTITIES.filter(l => l !== currentKey)
     .map(l => `        <li><a href="${literPathFor(lang, l)}">${escapeHtml(literPage(lang, l).linkLabel)}</a></li>`);
+  LITER_ARTICLES.filter(a => a.lang === lang && a.key !== currentKey)
+    .forEach(a => links.push(`        <li><a href="${a.path}">${escapeHtml(a.linkLabel)}</a></li>`));
   const toolLabel = lang === 'es' ? 'La herramienta de litros' : 'The liters tool';
   links.push(`        <li><a href="${litersPath(lang)}">${toolLabel}</a></li>`);
   return links.join('\n');
@@ -626,6 +628,124 @@ function literPage(lang, l) {
     question: h1, answer, linkLabel: `${fmt(l, 0, lang)} litres`,
   };
 }
+
+// ---- editorial liters articles (Spanish-only) -----------------------------
+
+// Olympic pool: 50 × 25 m, 2 m minimum depth = 2,500 m³ = 2,500,000 L (World
+// Aquatics facilities rules). Competition pools (Olympics/World Champs) are
+// usually built to 3 m → 3,750 m³. Average Spanish water price 1.92 €/m³
+// (INE, Estadística sobre el suministro y saneamiento del agua, 2024).
+const POOL_LITERS = 2500000;
+const WATER_PRICE_EUR_M3 = 1.92;
+
+function poolArticle() {
+  const bathtubs = fmt(Math.round(POOL_LITERS / 150), 0); // 16.667
+  const tankers = Math.round(POOL_LITERS / 30000); // 83
+  const poolsPerHm3 = fmt(1e9 / POOL_LITERS, 0); // 400
+  const cost2m = fmt(Math.round((POOL_LITERS / 1000) * WATER_PRICE_EUR_M3), 0); // 4.800
+  const cost3m = fmt(Math.round(3750 * WATER_PRICE_EUR_M3), 0); // 7.200
+  const intro = `      <p>
+        Una <b>piscina olímpica</b> contiene unos <b><a href="/2500000-litros/">2,5 millones de
+        litros</a></b> de agua, es decir, <b>2.500 metros cúbicos</b>. Esa es la cifra con la
+        profundidad mínima que exige el reglamento (2 metros); en las piscinas de competición, que
+        suelen tener 3 metros de fondo, el volumen sube hasta unos <b>3,75 millones de litros</b>
+        (3.750 m³). El dibujo de arriba reparte esos 2,5 millones de litros en unos
+        <b>${tankers} camiones cisterna</b>: cambia la referencia con el selector «Ver» para verla
+        en bañeras, vasos o lo que quieras.
+      </p>
+
+      <h2>¿Cuánto mide una piscina olímpica?</h2>
+      <p>
+        Las medidas están fijadas por el reglamento de instalaciones de
+        <a href="https://www.worldaquatics.com/" target="_blank" rel="noopener">World Aquatics</a>
+        (la antigua FINA), el organismo que rige la natación mundial:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Dimensión</th><th>Medida oficial</th></tr></thead>
+        <tbody>
+          <tr><td>Largo</td><td>50 metros</td></tr>
+          <tr><td>Ancho</td><td>25 metros</td></tr>
+          <tr><td>Calles</td><td>10 calles de 2,5 metros</td></tr>
+          <tr><td>Profundidad mínima</td><td>2 metros (3 m en competición)</td></tr>
+          <tr><td>Superficie del agua</td><td>1.250 m² (0,125 hectáreas)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Con 50 × 25 metros y 2 metros de fondo salen <b>2.500 m³</b>, que son esos 2,5 millones de
+        litros. En galones estadounidenses, unos <b>660.430 galones</b>.
+      </p>
+
+      <h2>Una piscina olímpica, en cosas que sí te imaginas</h2>
+      <p>Pincha en cualquier cifra para verla dibujada arriba a escala:</p>
+      <ul class="examples-list">
+        <li>Unas <b><a href="/litros/?l=2500000&v=banera">16.667 bañeras</a></b> llenas (150 litros cada una).</li>
+        <li>Unos <b><a href="/litros/?l=2500000&v=cisterna">${tankers} camiones cisterna</a></b> de agua (30.000 litros cada uno).</li>
+        <li><a href="/litros/?l=2500000">Aproximadamente lo que bebe en un día toda la población de
+          Baleares</a> (aunque de <i>beber</i>, apenas gastamos 2 litros al día por persona).</li>
+        <li>La cuadragésima parte de un <b><a href="/litros/?l=1&u=hm3">hectómetro cúbico</a></b>, la
+          unidad de los embalses: en 1 hm³ caben <b>${poolsPerHm3} piscinas olímpicas</b>.</li>
+      </ul>
+
+      <h2>¿Cuánto cuesta llenar una piscina olímpica?</h2>
+      <p>
+        En España el metro cúbico de agua cuesta de media <b>${fmt(WATER_PRICE_EUR_M3, 2)} €</b>
+        (dato del <a href="https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602" target="_blank" rel="noopener">INE</a>,
+        sumando suministro y saneamiento). Llenar los 2.500 m³ de una piscina olímpica costaría, solo
+        de agua, alrededor de <b>${cost2m} €</b>; si es una piscina de competición de 3 metros de
+        fondo (3.750 m³), unos <b>${cost3m} €</b>. Es una estimación: el precio varía mucho de una
+        ciudad a otra y no incluye el tratamiento ni la parte fija de la factura.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos litros tiene una piscina olímpica?</dt>
+        <dd>Una piscina olímpica (50 × 25 metros, 2 metros de profundidad mínima) contiene unos
+          <b><a href="/2500000-litros/">2,5 millones de litros</a></b>, es decir, 2.500 metros
+          cúbicos. Con la profundidad de competición de 3 metros llega hasta unos 3,75 millones de
+          litros (3.750 m³).</dd>
+
+        <dt>¿Cuánto mide una piscina olímpica?</dt>
+        <dd>Mide 50 metros de largo por 25 de ancho, repartidos en 10 calles de 2,5 metros, con una
+          profundidad mínima de 2 metros (3 en competición), según el reglamento de World Aquatics.</dd>
+
+        <dt>¿Cuántas bañeras o camiones cisterna caben en una piscina olímpica?</dt>
+        <dd>Unas <a href="/litros/?l=2500000&v=banera">16.667 bañeras</a> llenas (de 150 litros) o unos
+          <a href="/litros/?l=2500000&v=cisterna">${tankers} camiones cisterna</a> (de 30.000 litros).</dd>
+
+        <dt>¿Cuánto cuesta llenar una piscina olímpica?</dt>
+        <dd>A ${fmt(WATER_PRICE_EUR_M3, 2)} €/m³ (precio medio del agua en España, INE), unos
+          ${cost2m} € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de
+          ${cost3m} € para una piscina de competición de 3 metros (3.750 m³).</dd>
+      </dl>
+      <p>
+        ¿Quieres visualizar otras cantidades de agua? Prueba la
+        <a href="/litros/">herramienta de litros</a>, mira cuánto es
+        <a href="/100000-litros/">100.000 litros</a> o cuánto ocupa
+        <a href="/litros/?l=1&u=hm3">un hectómetro cúbico</a>. Y si lo tuyo son las superficies o las
+        distancias, tienes el <a href="/">Hectareómetro</a> y la herramienta de
+        <a href="/distancias/">distancias</a>.
+      </p>`;
+  return {
+    section: 'litros', lang: 'es', key: 'piscina-olimpica', l: POOL_LITERS,
+    slug: 'cuantos-litros-piscina-olimpica',
+    path: '/cuantos-litros-piscina-olimpica/',
+    title: '¿Cuántos litros tiene una piscina olímpica? Medidas y equivalencias | Hectareómetro',
+    description: 'Una piscina olímpica tiene unos 2,5 millones de litros (2.500 m³): unas 16.667 bañeras o 83 camiones cisterna. Medidas oficiales, equivalencias y cuánto cuesta llenarla.',
+    h1: '¿Cuántos litros de agua tiene una piscina olímpica?',
+    intro,
+    question: '¿Cuántos litros tiene una piscina olímpica?',
+    answer: 'Una piscina olímpica (50 × 25 metros y 2 metros de profundidad mínima) contiene unos 2,5 millones de litros de agua, es decir, 2.500 metros cúbicos. En las piscinas de competición, con 3 metros de fondo, sube hasta unos 3,75 millones de litros (3.750 m³).',
+    faqs: [
+      { q: '¿Cuántos litros tiene una piscina olímpica?', a: 'Una piscina olímpica (50 × 25 metros, 2 metros de profundidad mínima) contiene unos 2,5 millones de litros, es decir, 2.500 metros cúbicos. Con la profundidad de competición de 3 metros llega hasta unos 3,75 millones de litros (3.750 m³).' },
+      { q: '¿Cuánto mide una piscina olímpica?', a: 'Mide 50 metros de largo por 25 de ancho, repartidos en 10 calles de 2,5 metros, con una profundidad mínima de 2 metros (3 en competición), según el reglamento de World Aquatics.' },
+      { q: '¿Cuántas bañeras o camiones cisterna caben en una piscina olímpica?', a: 'Unas 16.667 bañeras llenas (de 150 litros) o unos 83 camiones cisterna (de 30.000 litros).' },
+      { q: '¿Cuánto cuesta llenar una piscina olímpica?', a: 'A 1,92 €/m³ (precio medio del agua en España, INE), unos 4.800 € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de 7.200 € para una piscina de competición de 3 metros (3.750 m³).' },
+    ],
+    linkLabel: '¿Cuántos litros tiene una piscina olímpica?',
+  };
+}
+
+const LITER_ARTICLES = [poolArticle()];
 
 // ---- kilos landing pages ---------------------------------------------------
 
@@ -721,15 +841,18 @@ function kiloPage(lang, k) {
 // ---- rendering -----------------------------------------------------------
 
 function buildJsonLd(page) {
+  // Pages carry a single question/answer; editorial articles can pass a `faqs`
+  // array ([{ q, a }, ...]) that mirrors their visible <dl class="faq">.
+  const faqs = page.faqs || [{ q: page.question, a: page.answer }];
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     'inLanguage': page.lang,
-    'mainEntity': [{
+    'mainEntity': faqs.map(f => ({
       '@type': 'Question',
-      'name': page.question,
-      'acceptedAnswer': { '@type': 'Answer', 'text': page.answer },
-    }],
+      'name': f.q,
+      'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+    })),
   }, null, 2);
 }
 
@@ -756,30 +879,35 @@ function render(page, template) {
   const ui = UI[page.lang];
   const isLiters = page.section === 'litros';
   const isKilos = page.section === 'kilos';
-  // Articles carry their own path and exist in one language only; liters and
-  // kilos landings have their own slug family and template.
-  const canonical = isLiters
-    ? literFullUrl(page.lang, page.key)
-    : isKilos
-    ? kiloFullUrl(page.lang, page.key)
-    : page.path ? BASE_URL + page.path : fullUrl(page.lang, page.key);
-  const hreflang = isLiters
-    ? buildLiterHreflang(page.key)
-    : isKilos
-    ? buildKiloHreflang(page.key)
-    : page.path
-    ? [
-        `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
-        `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
-      ].join('\n')
-    : buildHreflang(page.key);
-  const langSwitch = isLiters
-    ? buildLiterLangSwitch(page.lang, page.key)
-    : isKilos
-    ? buildKiloLangSwitch(page.lang, page.key)
-    : page.path
-    ? `<a href="${homePath(page.lang === 'es' ? 'en' : 'es')}" hreflang="${page.lang === 'es' ? 'en' : 'es'}">${UI[page.lang].switchLabel}</a>`
-    : buildLangSwitch(page.lang, page.key);
+  // Editorial articles (any section) carry their own path and exist in one
+  // language only: canonical = BASE_URL + path, hreflang es + x-default, and
+  // the language switch points at the section's tool in the other language
+  // (the home for hectares articles). Liters/kilos LANDINGS have no path and
+  // use their own slug-family hreflang instead.
+  const isArticle = !!page.path;
+  const other = page.lang === 'es' ? 'en' : 'es';
+  let canonical, hreflang, langSwitch;
+  if (isArticle) {
+    canonical = BASE_URL + page.path;
+    hreflang = [
+      `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
+      `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
+    ].join('\n');
+    const switchHref = isLiters ? litersPath(other) : isKilos ? kilosPath(other) : homePath(other);
+    langSwitch = `<a href="${switchHref}" hreflang="${other}">${UI[page.lang].switchLabel}</a>`;
+  } else if (isLiters) {
+    canonical = literFullUrl(page.lang, page.key);
+    hreflang = buildLiterHreflang(page.key);
+    langSwitch = buildLiterLangSwitch(page.lang, page.key);
+  } else if (isKilos) {
+    canonical = kiloFullUrl(page.lang, page.key);
+    hreflang = buildKiloHreflang(page.key);
+    langSwitch = buildKiloLangSwitch(page.lang, page.key);
+  } else {
+    canonical = fullUrl(page.lang, page.key);
+    hreflang = buildHreflang(page.key);
+    langSwitch = buildLangSwitch(page.lang, page.key);
+  }
   const repl = {
     LANG: ui.htmlLang,
     PAGE_LANG: page.lang,
@@ -845,6 +973,7 @@ function writeSitemap() {
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => urls.push(literFullUrl(lang, l))));
   LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => urls.push(kiloFullUrl(lang, k))));
   ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
+  LITER_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
     const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang));
@@ -898,9 +1027,16 @@ function main() {
     manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
     console.log(`generated ${page.path}`);
   });
+  LITER_ARTICLES.forEach(page => {
+    const dir = path.join(ROOT, page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_LITROS));
+    manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
+    console.log(`generated ${page.path}`);
+  });
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length} articles).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length + LITER_ARTICLES.length} articles).`);
 }
 
 main();

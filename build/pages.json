@@ -355,5 +355,12 @@
     "path": "/hectareas-quemadas-incendios-espana/",
     "label": "Hectáreas quemadas en incendios en España (2020-2025)",
     "title": "Hectáreas quemadas en incendios forestales en España (2020-2025) | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "cuantos-litros-piscina-olimpica",
+    "path": "/cuantos-litros-piscina-olimpica/",
+    "label": "¿Cuántos litros tiene una piscina olímpica?",
+    "title": "¿Cuántos litros tiene una piscina olímpica? Medidas y equivalencias | Hectareómetro"
   }
 ]
