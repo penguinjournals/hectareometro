@@ -633,17 +633,29 @@ function literPage(lang, l) {
 
 // Olympic pool: 50 × 25 m, 2 m minimum depth = 2,500 m³ = 2,500,000 L (World
 // Aquatics facilities rules). Competition pools (Olympics/World Champs) are
-// usually built to 3 m → 3,750 m³. Average Spanish water price 1.92 €/m³
-// (INE, Estadística sobre el suministro y saneamiento del agua, 2024).
+// usually built to 3 m → 3,750 m³. Average Spanish water price 2.02 €/m³
+// (supply + sanitation; INE, Estadística sobre el suministro y saneamiento del
+// agua). Retail reference prices for the per-litre comparison: bottled water
+// ~0.50 €/L in a supermarket, ~2.50 €/L in a bar.
 const POOL_LITERS = 2500000;
-const WATER_PRICE_EUR_M3 = 1.92;
+const WATER_PRICE_EUR_M3 = 2.02;
+const BOTTLE_SUPERMARKET_EUR_L = 0.50;
+const BOTTLE_BAR_EUR_L = 2.50;
 
 function poolArticle() {
   const bathtubs = fmt(Math.round(POOL_LITERS / 150), 0); // 16.667
   const tankers = Math.round(POOL_LITERS / 30000); // 83
   const poolsPerHm3 = fmt(1e9 / POOL_LITERS, 0); // 400
-  const cost2m = fmt(Math.round((POOL_LITERS / 1000) * WATER_PRICE_EUR_M3), 0); // 4.800
-  const cost3m = fmt(Math.round(3750 * WATER_PRICE_EUR_M3), 0); // 7.200
+  // es-ES leaves 4-digit numbers ungrouped ("5050"); force the thousands dot so
+  // these figures match the hardcoded copy around them ("2.500 m³").
+  const fmtG = n => n.toLocaleString('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 });
+  const cost2m = fmtG(Math.round((POOL_LITERS / 1000) * WATER_PRICE_EUR_M3)); // 5.050
+  const cost3m = fmtG(Math.round(3750 * WATER_PRICE_EUR_M3)); // 7.575
+  // Per-litre tap-water price and how many tap litres a bottle's price buys.
+  const pricePerLiter = WATER_PRICE_EUR_M3 / 1000; // 0,00202 €
+  const centsPerLiter = fmt(pricePerLiter * 100, 1); // 0,2 céntimos
+  const superEquiv = fmtG(Math.round(BOTTLE_SUPERMARKET_EUR_L / pricePerLiter)); // 248
+  const barEquiv = fmtG(Math.round(BOTTLE_BAR_EUR_L / pricePerLiter)); // 1.238
   const intro = `      <p>
         Una <b>piscina olímpica</b> contiene unos <b><a href="/2500000-litros/">2,5 millones de
         litros</a></b> de agua, es decir, <b>2.500 metros cúbicos</b>. Esa es la cifra con la
@@ -696,6 +708,27 @@ function poolArticle() {
         ciudad a otra y no incluye el tratamiento ni la parte fija de la factura.
       </p>
 
+      <h2>¿Cuánto cuesta un litro de agua?</h2>
+      <p>
+        Como un metro cúbico son 1.000 litros, para saber lo que cuesta un litro de agua del grifo
+        basta con dividir el precio del metro cúbico entre 1.000. A <b>${fmt(WATER_PRICE_EUR_M3, 2)} €/m³</b>,
+        un <b>litro de agua del grifo</b> sale por unos <b>0,002 €</b>: apenas <b>${centsPerLiter} céntimos</b>.
+        Puesto así se entiende por qué el agua embotellada, y no digamos la de un bar, es cientos o
+        miles de veces más cara que abrir el grifo:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Un litro de agua…</th><th>Precio por litro</th></tr></thead>
+        <tbody>
+          <tr><td>Del grifo</td><td>~0,002 € (${centsPerLiter} céntimos)</td></tr>
+          <tr><td>Embotellada, en el supermercado</td><td>${fmt(BOTTLE_SUPERMARKET_EUR_L, 2)} € (unos ${superEquiv} litros de agua del grifo)</td></tr>
+          <tr><td>En un bar</td><td>${fmt(BOTTLE_BAR_EUR_L, 2)} € (unos ${barEquiv} litros de agua del grifo)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Dicho de otro modo: por lo que cuesta una botella de agua de <b>${fmt(BOTTLE_BAR_EUR_L, 2)} €</b>
+        en un bar tendrías <b>${barEquiv} litros</b> saliendo del grifo de tu casa.
+      </p>
+
       <h2>Preguntas frecuentes</h2>
       <dl class="faq">
         <dt>¿Cuántos litros tiene una piscina olímpica?</dt>
@@ -739,7 +772,7 @@ function poolArticle() {
       { q: '¿Cuántos litros tiene una piscina olímpica?', a: 'Una piscina olímpica (50 × 25 metros, 2 metros de profundidad mínima) contiene unos 2,5 millones de litros, es decir, 2.500 metros cúbicos. Con la profundidad de competición de 3 metros llega hasta unos 3,75 millones de litros (3.750 m³).' },
       { q: '¿Cuánto mide una piscina olímpica?', a: 'Mide 50 metros de largo por 25 de ancho, repartidos en 10 calles de 2,5 metros, con una profundidad mínima de 2 metros (3 en competición), según el reglamento de World Aquatics.' },
       { q: '¿Cuántas bañeras o camiones cisterna caben en una piscina olímpica?', a: 'Unas 16.667 bañeras llenas (de 150 litros) o unos 83 camiones cisterna (de 30.000 litros).' },
-      { q: '¿Cuánto cuesta llenar una piscina olímpica?', a: 'A 1,92 €/m³ (precio medio del agua en España, INE), unos 4.800 € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de 7.200 € para una piscina de competición de 3 metros (3.750 m³).' },
+      { q: '¿Cuánto cuesta llenar una piscina olímpica?', a: `A ${fmt(WATER_PRICE_EUR_M3, 2)} €/m³ (precio medio del agua en España, INE), unos ${cost2m} € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de ${cost3m} € para una piscina de competición de 3 metros (3.750 m³).` },
     ],
     linkLabel: '¿Cuántos litros tiene una piscina olímpica?',
   };
