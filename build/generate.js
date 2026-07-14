@@ -629,7 +629,7 @@ function literPage(lang, l) {
   };
 }
 
-// ---- editorial liters articles (Spanish-only) -----------------------------
+// ---- editorial liters articles (bilingual: es + en) -----------------------
 
 // Olympic pool: 50 × 25 m, 2 m minimum depth = 2,500 m³ = 2,500,000 L (World
 // Aquatics facilities rules). Competition pools (Olympics/World Champs) are
@@ -642,21 +642,37 @@ const WATER_PRICE_EUR_M3 = 2.02;
 const BOTTLE_SUPERMARKET_EUR_L = 0.50;
 const BOTTLE_BAR_EUR_L = 2.50;
 
-function poolArticle() {
-  const bathtubs = fmt(Math.round(POOL_LITERS / 150), 0); // 16.667
+// es ↔ en slugs for the pool article; used for canonical + hreflang cross-refs.
+const POOL_ALTERNATES = {
+  es: '/cuantos-litros-piscina-olimpica/',
+  en: '/en/how-many-litres-in-an-olympic-swimming-pool/',
+};
+
+function poolArticle(lang) {
+  const es = lang === 'es';
+  // es-ES leaves 4-digit numbers ungrouped ("5050"); force the thousands
+  // separator so these figures match the hardcoded copy around them.
+  const grpLocale = es ? 'es-ES' : 'en-GB';
+  const fmtG = n => n.toLocaleString(grpLocale, { useGrouping: 'always', maximumFractionDigits: 0 });
   const tankers = Math.round(POOL_LITERS / 30000); // 83
-  const poolsPerHm3 = fmt(1e9 / POOL_LITERS, 0); // 400
-  // es-ES leaves 4-digit numbers ungrouped ("5050"); force the thousands dot so
-  // these figures match the hardcoded copy around them ("2.500 m³").
-  const fmtG = n => n.toLocaleString('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 });
+  const bathtubs = fmtG(Math.round(POOL_LITERS / 150)); // 16.667 / 16,667
+  const bathYears = Math.floor((POOL_LITERS / 150) / 365); // 45 (one bathtub a day; ~45.7)
+  const poolsPerHm3 = fmtG(1e9 / POOL_LITERS); // 400
+  const gallons = fmtG(Math.round(POOL_LITERS / litersData.GALLON_LITERS)); // 660.430
   const cost2m = fmtG(Math.round((POOL_LITERS / 1000) * WATER_PRICE_EUR_M3)); // 5.050
   const cost3m = fmtG(Math.round(3750 * WATER_PRICE_EUR_M3)); // 7.575
   // Per-litre tap-water price and how many tap litres a bottle's price buys.
   const pricePerLiter = WATER_PRICE_EUR_M3 / 1000; // 0,00202 €
-  const centsPerLiter = fmt(pricePerLiter * 100, 1); // 0,2 céntimos
+  const centsPerLiter = fmt(pricePerLiter * 100, 1, lang); // 0,2 / 0.2
+  const priceM3 = fmt(WATER_PRICE_EUR_M3, 2, lang); // 2,02 / 2.02
+  const superPrice = fmt(BOTTLE_SUPERMARKET_EUR_L, 2, lang); // 0,50 / 0.50
+  const barPrice = fmt(BOTTLE_BAR_EUR_L, 2, lang); // 2,50 / 2.50
   const superEquiv = fmtG(Math.round(BOTTLE_SUPERMARKET_EUR_L / pricePerLiter)); // 248
   const barEquiv = fmtG(Math.round(BOTTLE_BAR_EUR_L / pricePerLiter)); // 1.238
-  const intro = `      <p>
+  const INE_URL = 'https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602';
+
+  if (es) {
+    const intro = `      <p>
         Una <b>piscina olímpica</b> contiene unos <b><a href="/2500000-litros/">2,5 millones de
         litros</a></b> de agua, es decir, <b>2.500 metros cúbicos</b>. Esa es la cifra con la
         profundidad mínima que exige el reglamento (2 metros); en las piscinas de competición, que
@@ -684,13 +700,13 @@ function poolArticle() {
       </table>
       <p>
         Con 50 × 25 metros y 2 metros de fondo salen <b>2.500 m³</b>, que son esos 2,5 millones de
-        litros. En galones estadounidenses, unos <b>660.430 galones</b>.
+        litros. En galones estadounidenses, unos <b>${gallons} galones</b>.
       </p>
 
       <h2>Una piscina olímpica, en cosas que sí te imaginas</h2>
       <p>Pincha en cualquier cifra para verla dibujada arriba a escala:</p>
       <ul class="examples-list">
-        <li>Unas <b><a href="/litros/?l=2500000&v=banera">16.667 bañeras</a></b> llenas (150 litros cada una).</li>
+        <li>Unas <b><a href="/litros/?l=2500000&v=banera">${bathtubs} bañeras</a></b> llenas (más de ${bathYears} años llenando una bañera al día).</li>
         <li>Unos <b><a href="/litros/?l=2500000&v=cisterna">${tankers} camiones cisterna</a></b> de agua (30.000 litros cada uno).</li>
         <li><a href="/litros/?l=2500000">Aproximadamente lo que bebe en un día toda la población de
           Baleares</a> (aunque de <i>beber</i>, apenas gastamos 2 litros al día por persona).</li>
@@ -700,8 +716,8 @@ function poolArticle() {
 
       <h2>¿Cuánto cuesta llenar una piscina olímpica?</h2>
       <p>
-        En España el metro cúbico de agua cuesta de media <b>${fmt(WATER_PRICE_EUR_M3, 2)} €</b>
-        (dato del <a href="https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602" target="_blank" rel="noopener">INE</a>,
+        En España el metro cúbico de agua cuesta de media <b>${priceM3} €</b>
+        (dato del <a href="${INE_URL}" target="_blank" rel="noopener">INE</a>,
         sumando suministro y saneamiento). Llenar los 2.500 m³ de una piscina olímpica costaría, solo
         de agua, alrededor de <b>${cost2m} €</b>; si es una piscina de competición de 3 metros de
         fondo (3.750 m³), unos <b>${cost3m} €</b>. Es una estimación: el precio varía mucho de una
@@ -711,7 +727,7 @@ function poolArticle() {
       <h2>¿Cuánto cuesta un litro de agua?</h2>
       <p>
         Como un metro cúbico son 1.000 litros, para saber lo que cuesta un litro de agua del grifo
-        basta con dividir el precio del metro cúbico entre 1.000. A <b>${fmt(WATER_PRICE_EUR_M3, 2)} €/m³</b>,
+        basta con dividir el precio del metro cúbico entre 1.000. A <b>${priceM3} €/m³</b>,
         un <b>litro de agua del grifo</b> sale por unos <b>0,002 €</b>: apenas <b>${centsPerLiter} céntimos</b>.
         Puesto así se entiende por qué el agua embotellada, y no digamos la de un bar, es cientos o
         miles de veces más cara que abrir el grifo:
@@ -720,12 +736,12 @@ function poolArticle() {
         <thead><tr><th>Un litro de agua…</th><th>Precio por litro</th></tr></thead>
         <tbody>
           <tr><td>Del grifo</td><td>~0,002 € (${centsPerLiter} céntimos)</td></tr>
-          <tr><td>Embotellada, en el supermercado</td><td>${fmt(BOTTLE_SUPERMARKET_EUR_L, 2)} € (unos ${superEquiv} litros de agua del grifo)</td></tr>
-          <tr><td>En un bar</td><td>${fmt(BOTTLE_BAR_EUR_L, 2)} € (unos ${barEquiv} litros de agua del grifo)</td></tr>
+          <tr><td>Embotellada, en el supermercado</td><td>${superPrice} € (unos ${superEquiv} litros de agua del grifo)</td></tr>
+          <tr><td>En un bar</td><td>${barPrice} € (unos ${barEquiv} litros de agua del grifo)</td></tr>
         </tbody>
       </table>
       <p>
-        Dicho de otro modo: por lo que cuesta una botella de agua de <b>${fmt(BOTTLE_BAR_EUR_L, 2)} €</b>
+        Dicho de otro modo: por lo que cuesta una botella de agua de <b>${barPrice} €</b>
         en un bar tendrías <b>${barEquiv} litros</b> saliendo del grifo de tu casa.
       </p>
 
@@ -742,11 +758,11 @@ function poolArticle() {
           profundidad mínima de 2 metros (3 en competición), según el reglamento de World Aquatics.</dd>
 
         <dt>¿Cuántas bañeras o camiones cisterna caben en una piscina olímpica?</dt>
-        <dd>Unas <a href="/litros/?l=2500000&v=banera">16.667 bañeras</a> llenas (de 150 litros) o unos
+        <dd>Unas <a href="/litros/?l=2500000&v=banera">${bathtubs} bañeras</a> llenas (de 150 litros) o unos
           <a href="/litros/?l=2500000&v=cisterna">${tankers} camiones cisterna</a> (de 30.000 litros).</dd>
 
         <dt>¿Cuánto cuesta llenar una piscina olímpica?</dt>
-        <dd>A ${fmt(WATER_PRICE_EUR_M3, 2)} €/m³ (precio medio del agua en España, INE), unos
+        <dd>A ${priceM3} €/m³ (precio medio del agua en España, INE), unos
           ${cost2m} € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de
           ${cost3m} € para una piscina de competición de 3 metros (3.750 m³).</dd>
       </dl>
@@ -758,27 +774,149 @@ function poolArticle() {
         distancias, tienes el <a href="/">Hectareómetro</a> y la herramienta de
         <a href="/distancias/">distancias</a>.
       </p>`;
+    return {
+      section: 'litros', lang: 'es', key: 'piscina-olimpica', l: POOL_LITERS,
+      slug: 'cuantos-litros-piscina-olimpica',
+      path: POOL_ALTERNATES.es, alternates: POOL_ALTERNATES,
+      title: '¿Cuántos litros tiene una piscina olímpica? Medidas y equivalencias | Hectareómetro',
+      description: 'Una piscina olímpica tiene unos 2,5 millones de litros (2.500 m³): unas 16.667 bañeras o 83 camiones cisterna. Medidas oficiales, equivalencias y cuánto cuesta llenarla.',
+      h1: '¿Cuántos litros de agua tiene una piscina olímpica?',
+      intro,
+      question: '¿Cuántos litros tiene una piscina olímpica?',
+      answer: 'Una piscina olímpica (50 × 25 metros y 2 metros de profundidad mínima) contiene unos 2,5 millones de litros de agua, es decir, 2.500 metros cúbicos. En las piscinas de competición, con 3 metros de fondo, sube hasta unos 3,75 millones de litros (3.750 m³).',
+      faqs: [
+        { q: '¿Cuántos litros tiene una piscina olímpica?', a: 'Una piscina olímpica (50 × 25 metros, 2 metros de profundidad mínima) contiene unos 2,5 millones de litros, es decir, 2.500 metros cúbicos. Con la profundidad de competición de 3 metros llega hasta unos 3,75 millones de litros (3.750 m³).' },
+        { q: '¿Cuánto mide una piscina olímpica?', a: 'Mide 50 metros de largo por 25 de ancho, repartidos en 10 calles de 2,5 metros, con una profundidad mínima de 2 metros (3 en competición), según el reglamento de World Aquatics.' },
+        { q: '¿Cuántas bañeras o camiones cisterna caben en una piscina olímpica?', a: 'Unas 16.667 bañeras llenas (de 150 litros) o unos 83 camiones cisterna (de 30.000 litros).' },
+        { q: '¿Cuánto cuesta llenar una piscina olímpica?', a: `A ${priceM3} €/m³ (precio medio del agua en España, INE), unos ${cost2m} € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de ${cost3m} € para una piscina de competición de 3 metros (3.750 m³).` },
+      ],
+      linkLabel: '¿Cuántos litros tiene una piscina olímpica?',
+    };
+  }
+
+  // English
+  const intro = `      <p>
+        An <b>Olympic swimming pool</b> holds about <b><a href="/en/2500000-liters/">2.5 million
+        litres</a></b> of water, i.e. <b>2,500 cubic metres</b>. That is the figure at the minimum
+        depth the rules require (2 metres); competition pools, usually built 3 metres deep, hold up
+        to about <b>3.75 million litres</b> (3,750 m³). The drawing above splits those 2.5 million
+        litres into roughly <b>${tankers} tanker trucks</b>: use the "Show" selector to see it in
+        bathtubs, glasses or whatever you like.
+      </p>
+
+      <h2>How big is an Olympic swimming pool?</h2>
+      <p>
+        The dimensions are set by the facilities rules of
+        <a href="https://www.worldaquatics.com/" target="_blank" rel="noopener">World Aquatics</a>
+        (formerly FINA), the world governing body of swimming:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Dimension</th><th>Official size</th></tr></thead>
+        <tbody>
+          <tr><td>Length</td><td>50 metres</td></tr>
+          <tr><td>Width</td><td>25 metres</td></tr>
+          <tr><td>Lanes</td><td>10 lanes of 2.5 metres</td></tr>
+          <tr><td>Minimum depth</td><td>2 metres (3 m in competition)</td></tr>
+          <tr><td>Water surface</td><td>1,250 m² (0.125 hectares)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        At 50 × 25 metres and 2 metres deep you get <b>2,500 m³</b>, which is those 2.5 million
+        litres. In US gallons, about <b>${gallons} gallons</b>.
+      </p>
+
+      <h2>An Olympic pool, in things you can actually picture</h2>
+      <p>Click any figure to see it drawn to scale above:</p>
+      <ul class="examples-list">
+        <li>About <b><a href="/en/liters/?l=2500000&v=banera">${bathtubs} full bathtubs</a></b> (over ${bathYears} years of filling one bathtub a day).</li>
+        <li>About <b><a href="/en/liters/?l=2500000&v=cisterna">${tankers} tanker trucks</a></b> of water (30,000 litres each).</li>
+        <li><a href="/en/liters/?l=2500000">Roughly what the entire population of the Balearic
+          Islands drinks in a day</a> (though as <i>drinking</i> water we only use about 2 litres a
+          day each).</li>
+        <li>One fortieth of a <b><a href="/en/liters/?l=1&u=hm3">cubic hectometre</a></b>, the unit
+          used for reservoirs: 1 hm³ holds <b>${poolsPerHm3} Olympic pools</b>.</li>
+      </ul>
+
+      <h2>How much does it cost to fill an Olympic swimming pool?</h2>
+      <p>
+        In Spain a cubic metre of water costs <b>€${priceM3}</b> on average
+        (<a href="${INE_URL}" target="_blank" rel="noopener">INE</a> figure, supply plus sanitation).
+        Filling the 2,500 m³ of an Olympic pool would cost, for the water alone, around
+        <b>€${cost2m}</b>; for a 3-metre competition pool (3,750 m³), about <b>€${cost3m}</b>. It is
+        only an estimate: the price varies a lot from town to town and excludes treatment and the
+        fixed part of the bill.
+      </p>
+
+      <h2>How much does a litre of water cost?</h2>
+      <p>
+        Since a cubic metre is 1,000 litres, to work out what a litre of tap water costs you just
+        divide the price of a cubic metre by 1,000. At <b>€${priceM3}/m³</b>, a <b>litre of tap
+        water</b> costs about <b>€0.002</b>: barely <b>${centsPerLiter} cents</b>. Put that way, it
+        is clear why bottled water — let alone water at a bar — is hundreds or thousands of times
+        more expensive than turning on the tap:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>A litre of water…</th><th>Price per litre</th></tr></thead>
+        <tbody>
+          <tr><td>From the tap</td><td>~€0.002 (${centsPerLiter} cents)</td></tr>
+          <tr><td>Bottled, at the supermarket</td><td>€${superPrice} (about ${superEquiv} litres of tap water)</td></tr>
+          <tr><td>At a bar</td><td>€${barPrice} (about ${barEquiv} litres of tap water)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Put another way: for what a <b>€${barPrice}</b> bottle of water costs at a bar you would get
+        <b>${barEquiv} litres</b> straight from the tap at home.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How many litres are in an Olympic swimming pool?</dt>
+        <dd>An Olympic swimming pool (50 × 25 metres, 2-metre minimum depth) holds about
+          <b><a href="/en/2500000-liters/">2.5 million litres</a></b>, i.e. 2,500 cubic metres. At
+          the 3-metre competition depth it reaches about 3.75 million litres (3,750 m³).</dd>
+
+        <dt>How big is an Olympic swimming pool?</dt>
+        <dd>It is 50 metres long by 25 metres wide, split into 10 lanes of 2.5 metres, with a minimum
+          depth of 2 metres (3 in competition), under the World Aquatics rules.</dd>
+
+        <dt>How many bathtubs or tanker trucks fit in an Olympic swimming pool?</dt>
+        <dd>About <a href="/en/liters/?l=2500000&v=banera">${bathtubs} full bathtubs</a> (150 litres each) or about
+          <a href="/en/liters/?l=2500000&v=cisterna">${tankers} tanker trucks</a> (30,000 litres each).</dd>
+
+        <dt>How much does it cost to fill an Olympic swimming pool?</dt>
+        <dd>At €${priceM3}/m³ (Spain's average water price, INE), about €${cost2m} of water for the
+          2,500 m³ at 2 metres deep, and around €${cost3m} for a 3-metre competition pool
+          (3,750 m³).</dd>
+      </dl>
+      <p>
+        Want to picture other amounts of water? Try the
+        <a href="/en/liters/">liters tool</a>, see how much
+        <a href="/en/100000-liters/">100,000 litres</a> is or how big
+        <a href="/en/liters/?l=1&u=hm3">a cubic hectometre</a> is. And if you are after areas or
+        distances, there is the <a href="/en/">Hectareometer</a> and the
+        <a href="/en/distances/">distances tool</a>.
+      </p>`;
   return {
-    section: 'litros', lang: 'es', key: 'piscina-olimpica', l: POOL_LITERS,
-    slug: 'cuantos-litros-piscina-olimpica',
-    path: '/cuantos-litros-piscina-olimpica/',
-    title: '¿Cuántos litros tiene una piscina olímpica? Medidas y equivalencias | Hectareómetro',
-    description: 'Una piscina olímpica tiene unos 2,5 millones de litros (2.500 m³): unas 16.667 bañeras o 83 camiones cisterna. Medidas oficiales, equivalencias y cuánto cuesta llenarla.',
-    h1: '¿Cuántos litros de agua tiene una piscina olímpica?',
+    section: 'litros', lang: 'en', key: 'piscina-olimpica', l: POOL_LITERS,
+    slug: 'how-many-litres-in-an-olympic-swimming-pool',
+    path: POOL_ALTERNATES.en, alternates: POOL_ALTERNATES,
+    title: 'How many litres are in an Olympic swimming pool? Size & equivalents | Hectareometer',
+    description: 'An Olympic swimming pool holds about 2.5 million litres (2,500 m³): some 16,667 bathtubs or 83 tanker trucks. Official size, equivalents and what it costs to fill.',
+    h1: 'How many litres of water are in an Olympic swimming pool?',
     intro,
-    question: '¿Cuántos litros tiene una piscina olímpica?',
-    answer: 'Una piscina olímpica (50 × 25 metros y 2 metros de profundidad mínima) contiene unos 2,5 millones de litros de agua, es decir, 2.500 metros cúbicos. En las piscinas de competición, con 3 metros de fondo, sube hasta unos 3,75 millones de litros (3.750 m³).',
+    question: 'How many litres are in an Olympic swimming pool?',
+    answer: 'An Olympic swimming pool (50 × 25 metres and a 2-metre minimum depth) holds about 2.5 million litres of water, i.e. 2,500 cubic metres. Competition pools, at 3 metres deep, hold up to about 3.75 million litres (3,750 m³).',
     faqs: [
-      { q: '¿Cuántos litros tiene una piscina olímpica?', a: 'Una piscina olímpica (50 × 25 metros, 2 metros de profundidad mínima) contiene unos 2,5 millones de litros, es decir, 2.500 metros cúbicos. Con la profundidad de competición de 3 metros llega hasta unos 3,75 millones de litros (3.750 m³).' },
-      { q: '¿Cuánto mide una piscina olímpica?', a: 'Mide 50 metros de largo por 25 de ancho, repartidos en 10 calles de 2,5 metros, con una profundidad mínima de 2 metros (3 en competición), según el reglamento de World Aquatics.' },
-      { q: '¿Cuántas bañeras o camiones cisterna caben en una piscina olímpica?', a: 'Unas 16.667 bañeras llenas (de 150 litros) o unos 83 camiones cisterna (de 30.000 litros).' },
-      { q: '¿Cuánto cuesta llenar una piscina olímpica?', a: `A ${fmt(WATER_PRICE_EUR_M3, 2)} €/m³ (precio medio del agua en España, INE), unos ${cost2m} € de agua para los 2.500 m³ con 2 metros de profundidad, y alrededor de ${cost3m} € para una piscina de competición de 3 metros (3.750 m³).` },
+      { q: 'How many litres are in an Olympic swimming pool?', a: 'An Olympic swimming pool (50 × 25 metres, 2-metre minimum depth) holds about 2.5 million litres, i.e. 2,500 cubic metres. At the 3-metre competition depth it reaches about 3.75 million litres (3,750 m³).' },
+      { q: 'How big is an Olympic swimming pool?', a: 'It is 50 metres long by 25 metres wide, split into 10 lanes of 2.5 metres, with a minimum depth of 2 metres (3 in competition), under the World Aquatics rules.' },
+      { q: 'How many bathtubs or tanker trucks fit in an Olympic swimming pool?', a: 'About 16,667 full bathtubs (150 litres each) or about 83 tanker trucks (30,000 litres each).' },
+      { q: 'How much does it cost to fill an Olympic swimming pool?', a: `At €${priceM3}/m³ (Spain's average water price, INE), about €${cost2m} of water for the 2,500 m³ at 2 metres deep, and around €${cost3m} for a 3-metre competition pool (3,750 m³).` },
     ],
-    linkLabel: '¿Cuántos litros tiene una piscina olímpica?',
+    linkLabel: 'How many litres are in an Olympic swimming pool?',
   };
 }
 
-const LITER_ARTICLES = [poolArticle()];
+const LITER_ARTICLES = [poolArticle('es'), poolArticle('en')];
 
 // ---- kilos landing pages ---------------------------------------------------
 
@@ -920,7 +1058,18 @@ function render(page, template) {
   const isArticle = !!page.path;
   const other = page.lang === 'es' ? 'en' : 'es';
   let canonical, hreflang, langSwitch;
-  if (isArticle) {
+  if (isArticle && page.alternates) {
+    // Bilingual editorial article: hreflang points each language at its
+    // translation (x-default = Spanish); the switch jumps to the sibling.
+    canonical = BASE_URL + page.path;
+    hreflang = Object.keys(page.alternates)
+      .map(lg => `<link rel="alternate" hreflang="${lg}" href="${BASE_URL + page.alternates[lg]}">`)
+      .concat(`<link rel="alternate" hreflang="x-default" href="${BASE_URL + page.alternates.es}">`)
+      .join('\n');
+    langSwitch = `<a href="${page.alternates[other]}" hreflang="${other}">${UI[page.lang].switchLabel}</a>`;
+  } else if (isArticle) {
+    // Single-language editorial article (es-only): es + x-default, switch to
+    // the section's tool (or home) in the other language.
     canonical = BASE_URL + page.path;
     hreflang = [
       `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
@@ -1061,7 +1210,8 @@ function main() {
     console.log(`generated ${page.path}`);
   });
   LITER_ARTICLES.forEach(page => {
-    const dir = path.join(ROOT, page.slug);
+    // Derive the output dir from the path so en articles land under en/.
+    const dir = path.join(ROOT, page.path.replace(/^\/+|\/+$/g, ''));
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_LITROS));
     manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });

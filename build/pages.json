@@ -362,5 +362,12 @@
     "path": "/cuantos-litros-piscina-olimpica/",
     "label": "¿Cuántos litros tiene una piscina olímpica?",
     "title": "¿Cuántos litros tiene una piscina olímpica? Medidas y equivalencias | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "how-many-litres-in-an-olympic-swimming-pool",
+    "path": "/en/how-many-litres-in-an-olympic-swimming-pool/",
+    "label": "How many litres are in an Olympic swimming pool?",
+    "title": "How many litres are in an Olympic swimming pool? Size & equivalents | Hectareometer"
   }
 ]
