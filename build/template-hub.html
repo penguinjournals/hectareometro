@@ -32,17 +32,11 @@
 {{JSON_LD}}
 </script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script>var PAGE_LANG = '{{PAGE_LANG}}'; var PRESET_KILOS = {{K}};</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/hectareas-utils.js"></script>
-<script type="text/javascript" src="/js/liters-data.js"></script>
-<script type="text/javascript" src="/js/kilos-data.js"></script>
-<script type="text/javascript" src="/js/kilos.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 <script>
@@ -71,8 +65,8 @@ window.cookieconsent.initialise({
       <ul class="nav navbar-nav">
         <li><a href="{{NAV_DIST_URL}}">{{NAV_DIST_LABEL}}</a></li>
         <li><a href="{{NAV_LITERS_URL}}">{{NAV_LITERS_LABEL}}</a></li>
-        <li class="active"><a href="{{NAV_KILOS_URL}}">{{NAV_KILOS_LABEL}}</a></li>
-        <li><a href="{{NAV_ARTICLES_URL}}">{{NAV_ARTICLES_LABEL}}</a></li>
+        <li><a href="{{NAV_KILOS_URL}}">{{NAV_KILOS_LABEL}}</a></li>
+        <li class="active"><a href="{{NAV_ARTICLES_URL}}">{{NAV_ARTICLES_LABEL}}</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>{{LANG_SWITCH}}</li>
@@ -80,73 +74,15 @@ window.cookieconsent.initialise({
     </div>
   </div>
 </nav>
-<div id="litros-tool">
-  <div id="litros-panel">
-    <label for="kilos">{{KILO_TOOL_PRE}}</label>
-    <input type="text" id="kilos" class="customizable-parameter">
-    <select id="kilos-unit" aria-label="{{KILO_ARIA_UNIT}}">
-      {{KILO_UNIT_OPTIONS}}
-    </select>
-    <label for="kilos">?</label>
-    <div id="equivalences" aria-live="polite"></div>
-  </div>
-  <div id="pictogram" role="img"></div>
-  <p id="picto-count" aria-live="polite"></p>
-  <p id="picto-legend"></p>
-  <p id="picto-unit-row">
-    <label for="picto-unit">{{LITER_SEE}}</label>
-    <select id="picto-unit" aria-label="{{LITER_ARIA_DRAW}}"></select>
-  </p>
-  <p id="kilo-phrase"></p>
-  <p id="picto-download-row"><a href="#" id="picto-download"><i class="fa fa-download"></i> {{LITER_DOWNLOAD}}</a></p>
-</div>
 
 <div class="container-fluid">
-  <div id="share-block" class="text-center">
-        <p id="share-cta">{{SHARE_CTA}}</p>
-        <div id="share-social">
-          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
-          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="X/Twitter"></a>
-          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Facebook"></a>
-        </div>
-        <div id="share-details">
-          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
-            <i class="fa fa-caret-down"></i> {{SHARE_MORE}}
-          </a>
-          <div id="share-advanced" class="collapse">
-            <form>
-              <div class="form-group">
-                <label class="control-label" for="url-share">{{LABEL_LINK}}</label>
-                <input type="text" id="url-share" class="share-link form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="iframe-share">{{LABEL_IFRAME}}</label>
-                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-width">{{LABEL_WIDTH}}</label>
-                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
-                </div>
-                <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-height">{{LABEL_HEIGHT}}</label>
-                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
   <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
       <h1>{{H1}}</h1>
-      {{INTRO}}
-
-      <h2>{{RELATED_HEADING}}</h2>
-      <ul class="related-links">
-        {{RELATED_LINKS}}
-      </ul>
-      <p><a href="{{NAV_KILOS_URL}}">{{BACK_TEXT}}</a></p>
+      <p class="section-sub">{{INTRO}}</p>
+      <div class="card-grid">
+{{ARTICLE_CARDS}}
+      </div>
     </div>
   </div>
 </div>

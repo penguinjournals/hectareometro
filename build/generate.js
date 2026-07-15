@@ -89,6 +89,15 @@ const UI = {
     kiloUnitOptions: '<option value="kg" selected>kilos</option>\n      <option value="lb">libras</option>\n      <option value="t">toneladas</option>',
     relatedHeadingKilos: 'Mira otros pesos',
     backTextKilos: '← Volver a la herramienta de kilos',
+    navArticles: 'Artículos',
+    hubTitle: 'Artículos: cantidades y magnitudes explicadas | Hectareómetro',
+    hubDescription: 'Artículos que explican cantidades difíciles de imaginar: hectáreas quemadas en incendios, los litros de una piscina olímpica y más, siempre dibujadas a escala.',
+    hubH1: 'Artículos',
+    hubIntro: 'Historias y guías sobre cantidades difíciles de imaginar: superficies, volúmenes de agua, pesos… siempre con la cifra dibujada a escala para que se entienda de verdad.',
+    hubRead: 'Leer →',
+    familyLabels: { hectareas: 'Hectáreas', litros: 'Litros', kilos: 'Kilos' },
+    allArticles: 'Todos los artículos →',
+    articlesHeading: 'Artículos',
   },
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
@@ -108,6 +117,15 @@ const UI = {
     kiloUnitOptions: '<option value="lb" selected>pounds</option>\n      <option value="kg">kilos</option>\n      <option value="t">tonnes</option>',
     relatedHeadingKilos: 'See other weights',
     backTextKilos: '← Back to the kilos tool',
+    navArticles: 'Articles',
+    hubTitle: 'Articles: quantities and magnitudes explained | Hectareometer',
+    hubDescription: 'Articles that explain hard-to-picture quantities: the litres in an Olympic swimming pool and more, always drawn to scale.',
+    hubH1: 'Articles',
+    hubIntro: 'Stories and guides about hard-to-picture quantities: areas, volumes of water, weights… always with the figure drawn to scale so it actually sinks in.',
+    hubRead: 'Read →',
+    familyLabels: { hectareas: 'Hectares', litros: 'Liters', kilos: 'Kilos' },
+    allArticles: 'All articles →',
+    articlesHeading: 'Articles',
   },
 };
 
@@ -146,6 +164,13 @@ function litersPath(lang) {
 // And so are the kilos tool pages.
 function kilosPath(lang) {
   return lang === 'es' ? '/kilos/' : '/en/kilos/';
+}
+
+// The articles hub, unlike the tool pages, IS generated (writeArticlesHub):
+// it lists every editorial article of its language from ALL_ARTICLES, so a
+// new article shows up there without touching anything else.
+function articlesHubPath(lang) {
+  return lang === 'es' ? '/articulos/' : '/en/articles/';
 }
 
 function fullUrl(lang, key) {
@@ -527,6 +552,7 @@ ${rows}
       </p>`;
   return {
     key: 'burned-area-spain', lang: 'es', ha: Math.round(total),
+    family: 'hectareas', published: '2026-07-09', modified: '2026-07-09',
     slug: 'hectareas-quemadas-incendios-espana',
     path: '/hectareas-quemadas-incendios-espana/',
     presetExtra: ` var PRESET_ZOOM = 8; var PRESET_LAT = ${MADRID.lat}; var PRESET_LON = ${MADRID.lon};`,
@@ -776,6 +802,7 @@ function poolArticle(lang) {
       </p>`;
     return {
       section: 'litros', lang: 'es', key: 'piscina-olimpica', l: POOL_LITERS,
+      family: 'litros', published: '2026-07-14', modified: '2026-07-14',
       slug: 'cuantos-litros-piscina-olimpica',
       path: POOL_ALTERNATES.es, alternates: POOL_ALTERNATES,
       title: '¿Cuántos litros tiene una piscina olímpica? Medidas y equivalencias | Hectareómetro',
@@ -898,6 +925,7 @@ function poolArticle(lang) {
       </p>`;
   return {
     section: 'litros', lang: 'en', key: 'piscina-olimpica', l: POOL_LITERS,
+    family: 'litros', published: '2026-07-14', modified: '2026-07-14',
     slug: 'how-many-litres-in-an-olympic-swimming-pool',
     path: POOL_ALTERNATES.en, alternates: POOL_ALTERNATES,
     title: 'How many litres are in an Olympic swimming pool? Size & equivalents | Hectareometer',
@@ -917,6 +945,17 @@ function poolArticle(lang) {
 }
 
 const LITER_ARTICLES = [poolArticle('es'), poolArticle('en')];
+
+// Every editorial article, whatever its family: the single source for the
+// /articulos/ hub, the article cards and the sitemap. Add new article lists
+// here and they show up everywhere at once.
+function allArticles() {
+  return [...ARTICLES, ...LITER_ARTICLES];
+}
+
+function articlesForLang(lang) {
+  return allArticles().filter(a => a.lang === lang);
+}
 
 // ---- kilos landing pages ---------------------------------------------------
 
@@ -1046,6 +1085,99 @@ function relatedLinks(lang, currentKey) {
   return links.join('\n');
 }
 
+// ---- articles hub (/articulos/, /en/articles/) -----------------------------
+
+const TEMPLATE_HUB = fs.readFileSync(path.join(__dirname, 'template-hub.html'), 'utf8');
+
+// One .card-article. Also reused (as a hand-copied pattern) by the homepages
+// and tool pages, so keep the markup in sync with them if it changes.
+function buildArticleCard(article, lang) {
+  const ui = UI[lang];
+  const kicker = ui.familyLabels[article.family] || '';
+  return `        <div class="card card-article">
+          <a href="${article.path}">
+            <span class="card-kicker">${escapeHtml(kicker)}</span>
+            <h3>${escapeHtml(article.h1)}</h3>
+            <p>${escapeHtml(article.description)}</p>
+            <span class="card-cta">${escapeHtml(ui.hubRead)}</span>
+          </a>
+        </div>`;
+}
+
+function buildHubHreflang() {
+  const lines = LANGS.map(lg => `<link rel="alternate" hreflang="${lg}" href="${BASE_URL + articlesHubPath(lg)}">`);
+  lines.push(`<link rel="alternate" hreflang="x-default" href="${BASE_URL + articlesHubPath('es')}">`);
+  return lines.join('\n');
+}
+
+// CollectionPage + ItemList. The en hub legitimately lists fewer items than
+// the es one (some articles are Spanish-only): equivalent listings, not
+// identical ones.
+function buildHubJsonLd(lang, articles) {
+  const ui = UI[lang];
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        'name': ui.hubH1,
+        'description': ui.hubDescription,
+        'inLanguage': lang,
+        'url': BASE_URL + articlesHubPath(lang),
+      },
+      {
+        '@type': 'ItemList',
+        'itemListElement': articles.map((a, i) => ({
+          '@type': 'ListItem',
+          'position': i + 1,
+          'name': a.h1,
+          'url': BASE_URL + a.path,
+        })),
+      },
+    ],
+  }, null, 2);
+}
+
+function writeArticlesHub(lang) {
+  const ui = UI[lang];
+  const other = lang === 'es' ? 'en' : 'es';
+  const articles = articlesForLang(lang);
+  const repl = {
+    LANG: ui.htmlLang,
+    HREFLANG: buildHubHreflang(),
+    LANG_SWITCH: `<a href="${articlesHubPath(other)}" hreflang="${other}">${ui.switchLabel}</a>`,
+    CANONICAL: BASE_URL + articlesHubPath(lang),
+    TITLE: escapeHtml(ui.hubTitle),
+    OG_TITLE: escapeHtml(ui.hubH1),
+    DESCRIPTION: escapeHtml(ui.hubDescription),
+    SITE_NAME: ui.siteName,
+    OG_LOCALE: ui.ogLocale,
+    JSON_LD: buildHubJsonLd(lang, articles),
+    H1: escapeHtml(ui.hubH1),
+    INTRO: escapeHtml(ui.hubIntro),
+    ARTICLE_CARDS: articles.map(a => buildArticleCard(a, lang)).join('\n'),
+    HOME_URL: homePath(lang),
+    NAV_DIST_URL: distancesPath(lang),
+    NAV_DIST_LABEL: ui.navDistances,
+    NAV_LITERS_URL: litersPath(lang),
+    NAV_LITERS_LABEL: ui.navLiters,
+    NAV_KILOS_URL: kilosPath(lang),
+    NAV_KILOS_LABEL: ui.navKilos,
+    NAV_ARTICLES_URL: articlesHubPath(lang),
+    NAV_ARTICLES_LABEL: ui.navArticles,
+    NAV_MENU_LABEL: ui.navMenu,
+  };
+  let out = TEMPLATE_HUB;
+  Object.keys(repl).forEach(k => {
+    out = out.split('{{' + k + '}}').join(repl[k]);
+  });
+  const dir = path.join(ROOT, articlesHubPath(lang).replace(/^\/+|\/+$/g, ''));
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), out);
+  console.log(`generated ${articlesHubPath(lang)}`);
+  return { lang, slug: lang === 'es' ? 'articulos' : 'articles', path: articlesHubPath(lang), label: ui.navArticles, title: ui.hubTitle };
+}
+
 function render(page, template) {
   const ui = UI[page.lang];
   const isLiters = page.section === 'litros';
@@ -1136,6 +1268,8 @@ function render(page, template) {
     NAV_LITERS_LABEL: ui.navLiters,
     NAV_KILOS_URL: kilosPath(page.lang),
     NAV_KILOS_LABEL: ui.navKilos,
+    NAV_ARTICLES_URL: articlesHubPath(page.lang),
+    NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
     BACK_TEXT: isLiters ? ui.backTextLiters : isKilos ? ui.backTextKilos : ui.backText,
   };
@@ -1151,6 +1285,7 @@ function writeSitemap() {
   LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + litersPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + kilosPath(lang)));
+  LANGS.forEach(lang => urls.push(BASE_URL + articlesHubPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => urls.push(literFullUrl(lang, l))));
   LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => urls.push(kiloFullUrl(lang, k))));
@@ -1158,7 +1293,7 @@ function writeSitemap() {
   LITER_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
-    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang));
+    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + articlesHubPath(lang));
     const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');
@@ -1217,9 +1352,10 @@ function main() {
     manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
     console.log(`generated ${page.path}`);
   });
+  LANGS.forEach(lang => manifest.push(writeArticlesHub(lang)));
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length + LITER_ARTICLES.length} articles).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length + LITER_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
 }
 
 main();

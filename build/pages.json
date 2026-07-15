@@ -369,5 +369,19 @@
     "path": "/en/how-many-litres-in-an-olympic-swimming-pool/",
     "label": "How many litres are in an Olympic swimming pool?",
     "title": "How many litres are in an Olympic swimming pool? Size & equivalents | Hectareometer"
+  },
+  {
+    "lang": "es",
+    "slug": "articulos",
+    "path": "/articulos/",
+    "label": "Artículos",
+    "title": "Artículos: cantidades y magnitudes explicadas | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "articles",
+    "path": "/en/articles/",
+    "label": "Articles",
+    "title": "Articles: quantities and magnitudes explained | Hectareometer"
   }
 ]
