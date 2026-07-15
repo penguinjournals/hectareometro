@@ -1,3 +1,24 @@
+/* Design tokens. Bootstrap 3 predates CSS variables, but the browsers don't:
+   both coexist fine. Keep every color/radius/shadow here so components stay
+   consistent across the hand pages and the generated templates. */
+:root {
+  --c-primary: #2B83D0;
+  --c-primary-dark: #1a5fa0;
+  --c-accent: #25A65A;
+  --c-bg-soft: #f8f9fa;
+  --c-bg-chip: #f1f5fb;
+  --c-bg-chip-hover: #e3eefb;
+  --c-border: #ddd;
+  --c-border-soft: #d6e4f5;
+  --c-text: #333;
+  --c-text-muted: #555;
+  --radius-s: 5px;
+  --radius-m: 10px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 14px rgba(0, 0, 0, 0.06);
+  --space-section: 48px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +26,9 @@
 }
 
 body {
-  line-height: 1.5;
+  line-height: 1.6;
   font-family: 'Open Sans', sans-serif;
+  color: var(--c-text);
 }
 
 /* Map fullscreen */
@@ -60,7 +82,7 @@ body {
 #hectareas-overlay label {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin: 0;
 }
 
@@ -75,7 +97,7 @@ body {
   padding: 8px 10px;
   font-size: 20px;
   font-weight: bold;
-  border: 2px solid #2B83D0;
+  border: 2px solid var(--c-primary);
   border-radius: 5px;
   background: white;
 }
@@ -87,10 +109,10 @@ body {
   padding: 8px 6px;
   font-size: 16px;
   font-weight: 600;
-  border: 2px solid #2B83D0;
+  border: 2px solid var(--c-primary);
   border-radius: 5px;
   background: white;
-  color: #333;
+  color: var(--c-text);
 }
 
 #hectareas:focus,
@@ -102,7 +124,7 @@ body {
 #kilos-unit:focus,
 #picto-unit:focus {
   outline: none;
-  border-color: #1a5fa0;
+  border-color: var(--c-primary-dark);
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
 }
 
@@ -111,7 +133,7 @@ body {
   width: 100%;
   text-align: center;
   font-size: 14px;
-  color: #555;
+  color: var(--c-text-muted);
   margin-top: 4px;
 }
 
@@ -137,7 +159,7 @@ body {
 #litros-panel label {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin: 0;
 }
 
@@ -146,7 +168,7 @@ body {
   width: 100%;
   text-align: center;
   font-size: 14px;
-  color: #555;
+  color: var(--c-text-muted);
   margin-top: 4px;
 }
 
@@ -175,7 +197,7 @@ body {
 .picto-more {
   text-align: center;
   font-weight: bold;
-  color: #555;
+  color: var(--c-text-muted);
 }
 
 /* The fixed-width .picto reserves the whole slot; this inner span crops the
@@ -195,13 +217,13 @@ body {
 #picto-count {
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin: 10px 0 2px;
 }
 
 #picto-legend {
   font-size: 14px;
-  color: #555;
+  color: var(--c-text-muted);
   margin-bottom: 12px;
 }
 
@@ -211,14 +233,14 @@ body {
 
 #picto-unit-row label {
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin-right: 6px;
 }
 
 #liter-phrase,
 #kilo-phrase {
   font-size: 18px;
-  color: #333;
+  color: var(--c-text);
   max-width: 640px;
   margin: 0 auto 6px;
 }
@@ -249,8 +271,8 @@ body {
 #capture-header {
   font-size: 26px;
   font-weight: 700;
-  color: #2B83D0;
-  border-bottom: 3px solid #2B83D0;
+  color: var(--c-primary);
+  border-bottom: 3px solid var(--c-primary);
   padding-bottom: 8px;
   margin-bottom: 14px;
 }
@@ -258,26 +280,26 @@ body {
 #capture-title {
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin-bottom: 4px;
 }
 
 #capture-count {
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin: 12px 0 2px;
 }
 
 #capture-legend {
   font-size: 14px;
-  color: #555;
+  color: var(--c-text-muted);
   margin-bottom: 10px;
 }
 
 #capture-phrase {
   font-size: 17px;
-  color: #333;
+  color: var(--c-text);
   margin-bottom: 16px;
 }
 
@@ -285,13 +307,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--c-border);
   padding-top: 12px;
 }
 
 #capture-url {
   font-size: 14px;
-  color: #2B83D0;
+  color: var(--c-primary);
   text-align: left;
   padding-right: 12px;
   word-break: break-all;
@@ -310,22 +332,22 @@ body {
 
 #capture-qr-caption {
   font-size: 12px;
-  color: #555;
+  color: var(--c-text-muted);
   margin-top: 6px;
 }
 
 /* Share block always visible */
 #share-block {
-  background: #f8f9fa;
+  background: var(--c-bg-soft);
   padding: 20px 15px;
-  border-top: 3px solid #2B83D0;
-  border-bottom: 1px solid #ddd;
+  border-top: 3px solid var(--c-primary);
+  border-bottom: 1px solid var(--c-border);
 }
 
 #share-cta {
   font-size: 16px;
   font-weight: 600;
-  color: #333;
+  color: var(--c-text);
   margin: 0 0 10px;
 }
 
@@ -348,14 +370,14 @@ body {
 #facebook-share, #facebook-share:link, #facebook-share:visited { color: #1877F2; }
 
 .share-toggle {
-  color: #2B83D0;
+  color: var(--c-primary);
   text-decoration: none;
   cursor: pointer;
   font-size: 14px;
 }
 
 .share-toggle:hover {
-  color: #1a5fa0;
+  color: var(--c-primary-dark);
   text-decoration: underline;
 }
 
@@ -363,7 +385,7 @@ body {
   max-width: 720px;
   margin: 15px auto 0;
   padding-top: 15px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--c-border);
 }
 
 .container-fluid {
@@ -371,7 +393,7 @@ body {
 }
 
 h2 {
-  font-size: 28px;
+  font-size: 26px;
   margin-top: 30px;
   margin-bottom: 20px;
 }
@@ -388,7 +410,7 @@ h3 {
 }
 
 a, a:link, a:visited, a:hover, a:active {
-  color: #2B83D0;
+  color: var(--c-primary);
 }
 
 /* Content section */
@@ -401,7 +423,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 
 .content-section h1 {
-  font-size: 30px;
+  font-size: 32px;
   margin-top: 25px;
   margin-bottom: 18px;
 }
@@ -421,17 +443,17 @@ a, a:link, a:visited, a:hover, a:active {
 .equiv-table th,
 .equiv-table td {
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--c-border);
   text-align: left;
 }
 
 .equiv-table thead th {
-  background: #2B83D0;
+  background: var(--c-primary);
   color: #fff;
 }
 
 .equiv-table tbody tr:nth-child(even) {
-  background: #f8f9fa;
+  background: var(--c-bg-soft);
 }
 
 /* Wider variant for tables with an extra comparison column */
@@ -454,7 +476,7 @@ a, a:link, a:visited, a:hover, a:active {
 .ha-vs-field figcaption {
   margin-top: 10px;
   font-size: 14px;
-  color: #555;
+  color: var(--c-text-muted);
 }
 
 .ha-vs-field .legend {
@@ -473,7 +495,7 @@ a, a:link, a:visited, a:hover, a:active {
 
 .ha-vs-field .swatch-ha {
   background: rgba(43, 131, 208, 0.35);
-  border: 1px solid #2B83D0;
+  border: 1px solid var(--c-primary);
 }
 
 .ha-vs-field .swatch-field {
@@ -489,8 +511,8 @@ a, a:link, a:visited, a:hover, a:active {
 
 /* Official rules quote */
 .rules-quote {
-  border-left: 4px solid #2B83D0;
-  background: #f8f9fa;
+  border-left: 4px solid var(--c-primary);
+  background: var(--c-bg-soft);
   margin: 16px 0;
   padding: 12px 18px;
   font-size: 15px;
@@ -528,22 +550,177 @@ a, a:link, a:visited, a:hover, a:active {
 
 .related-links li a {
   display: inline-block;
-  padding: 6px 12px;
-  background: #f1f5fb;
-  border: 1px solid #d6e4f5;
-  border-radius: 16px;
+  padding: 8px 14px;
+  background: var(--c-bg-chip);
+  border: 1px solid var(--c-border-soft);
+  border-radius: var(--radius-pill);
   font-size: 14px;
   text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .related-links li a:hover {
-  background: #e3eefb;
+  background: var(--c-bg-chip-hover);
+  border-color: var(--c-primary);
+}
+
+/* Section rhythm: every content block below the tool lives in a .section-block
+   so home, tool pages and landings share the same vertical cadence. */
+.section-block {
+  margin-top: var(--space-section);
+}
+
+.section-block > h2 {
+  margin-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--c-border-soft);
+}
+
+.section-sub {
+  color: var(--c-text-muted);
+  margin-top: -12px;
+  margin-bottom: 18px;
+}
+
+/* Card grid: flexbox on purpose (not the Bootstrap grid) so it works inside
+   the .col-md-8 content column and wraps to one column on narrow screens. */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0 0 20px;
+}
+
+.card {
+  flex: 1 1 260px;
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-card);
+  padding: 18px 20px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+
+.card:hover {
+  border-color: var(--c-primary);
+  box-shadow: 0 2px 6px rgba(43, 131, 208, 0.15), 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.card > a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card > a:link,
+.card > a:visited,
+.card > a:hover,
+.card > a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card h3 {
+  margin: 6px 0 8px;
+  font-size: 19px;
+  color: var(--c-text);
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--c-text-muted);
+  margin: 0 0 10px;
+}
+
+.card-cta {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-primary);
+}
+
+.card:hover .card-cta {
+  color: var(--c-primary-dark);
+}
+
+/* Tool card: big icon + hook line, links to a section home */
+.card-tool .card-tool-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* Article card: family kicker + title + clamped excerpt */
+.card-article .card-kicker {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-primary);
+  margin-bottom: 2px;
+}
+
+.card-article p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Chip group: a labelled cluster of .related-links chips, used to split the
+   examples block by magnitude (hectáreas / litros / kilos / distancias). */
+.chip-group {
+  margin: 0 0 18px;
+}
+
+.chip-group-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  margin-bottom: 8px;
+}
+
+.chip-group .related-links {
+  margin-bottom: 0;
+}
+
+/* Breadcrumb line under the navbar on generated landings */
+.breadcrumb-line {
+  font-size: 13px;
+  color: var(--c-text-muted);
+  padding: 10px 15px 0;
+  max-width: 100%;
+}
+
+.breadcrumb-line ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.breadcrumb-line li + li::before {
+  content: "›";
+  margin: 0 6px 0 2px;
+  color: var(--c-text-muted);
+}
+
+.breadcrumb-line a {
+  text-decoration: none;
+}
+
+.breadcrumb-line [aria-current="page"] {
+  color: var(--c-text);
 }
 
 /* Site footer with section links */
 .site-footer {
-  background: #f8f9fa;
-  border-top: 3px solid #2B83D0;
+  background: var(--c-bg-soft);
+  border-top: 3px solid var(--c-primary);
   padding: 20px 15px;
   margin-top: 10px;
 }
@@ -569,7 +746,7 @@ a, a:link, a:visited, a:hover, a:active {
   font-weight: 600;
   font-size: 18px;
   margin-top: 18px;
-  color: #333;
+  color: var(--c-text);
 }
 
 .faq dd {
@@ -629,11 +806,24 @@ a, a:link, a:visited, a:hover, a:active {
   }
   
   .content-section h1 {
-    font-size: 25px;
+    font-size: 26px;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .card {
+    padding: 15px 16px;
+  }
+
+  /* Comfortable tap targets for the example chips */
+  .related-links li a {
+    padding: 10px 16px;
+  }
+
+  :root {
+    --space-section: 36px;
   }
 
   h3 {
