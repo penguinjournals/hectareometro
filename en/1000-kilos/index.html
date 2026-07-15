@@ -33,16 +33,43 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "en",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "How heavy is 1,000 kilos?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "1,000 kilos is about 13.3 people. In other units: 2,205 pounds or 1.0 tonnes."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "en",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How heavy is 1,000 kilos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1,000 kilos is about 13.3 people. In other units: 2,205 pounds or 1.0 tonnes."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareometer",
+          "item": "https://hectareometro.com/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Kilos",
+          "item": "https://hectareometro.com/en/kilos/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "1,000 kilos",
+          "item": "https://hectareometro.com/en/1000-kilos/"
+        }
+      ]
     }
   ]
 }
@@ -95,6 +122,13 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><a href="/en/kilos/">Kilos</a></li>
+    <li><span aria-current="page">1,000 kilos</span></li>
+  </ol>
 </nav>
 <div id="litros-tool">
   <div id="litros-panel">
@@ -172,6 +206,7 @@ window.cookieconsent.initialise({
         <li><a href="/en/1000000-kilos/">1,000,000 kilos</a></li>
         <li><a href="/en/kilos/">The kilos tool</a></li>
       </ul>
+
       <p><a href="/en/kilos/">← Back to the kilos tool</a></p>
     </div>
   </div>

@@ -33,16 +33,43 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "en",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "How much is 1,000,000 litres of water?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "1,000,000 litres of water is about 33.3 tanker trucks, i.e. what the population of Vitoria-Gasteiz (255,000 people) drinks in two days. In other units: 1,000 m³ or about 264,172 US gallons."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "en",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much is 1,000,000 litres of water?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1,000,000 litres of water is about 33.3 tanker trucks, i.e. what the population of Vitoria-Gasteiz (255,000 people) drinks in two days. In other units: 1,000 m³ or about 264,172 US gallons."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareometer",
+          "item": "https://hectareometro.com/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Liters",
+          "item": "https://hectareometro.com/en/liters/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "1,000,000 litres",
+          "item": "https://hectareometro.com/en/1000000-liters/"
+        }
+      ]
     }
   ]
 }
@@ -94,6 +121,13 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><a href="/en/liters/">Liters</a></li>
+    <li><span aria-current="page">1,000,000 litres</span></li>
+  </ol>
 </nav>
 <div id="litros-tool">
   <div id="litros-panel">
@@ -169,9 +203,22 @@ window.cookieconsent.initialise({
         <li><a href="/en/10000-liters/">10,000 litres</a></li>
         <li><a href="/en/100000-liters/">100,000 litres</a></li>
         <li><a href="/en/2500000-liters/">2,500,000 litres</a></li>
-        <li><a href="/en/how-many-litres-in-an-olympic-swimming-pool/">How many litres are in an Olympic swimming pool?</a></li>
         <li><a href="/en/liters/">The liters tool</a></li>
       </ul>
+      <div class="section-block">
+        <h2>Articles</h2>
+        <div class="card-grid">
+        <div class="card card-article">
+          <a href="/en/how-many-litres-in-an-olympic-swimming-pool/">
+            <span class="card-kicker">Liters</span>
+            <h3>How many litres of water are in an Olympic swimming pool?</h3>
+            <p>An Olympic swimming pool holds about 2.5 million litres (2,500 m³): some 16,667 bathtubs or 83 tanker trucks. Official size, equivalents and what it costs to fill.</p>
+            <span class="card-cta">Read →</span>
+          </a>
+        </div>
+        </div>
+        <p><a href="/en/articles/">All articles →</a></p>
+      </div>
       <p><a href="/en/liters/">← Back to the liters tool</a></p>
     </div>
   </div>

@@ -594,11 +594,10 @@ function buildLiterLangSwitch(lang, l) {
   return `<a href="${literPathFor(other, l)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
 }
 
+// Amount chips + the tool link; liters articles moved to relatedArticlesBlock.
 function relatedLiterLinks(lang, currentKey) {
   const links = LITER_QUANTITIES.filter(l => l !== currentKey)
     .map(l => `        <li><a href="${literPathFor(lang, l)}">${escapeHtml(literPage(lang, l).linkLabel)}</a></li>`);
-  LITER_ARTICLES.filter(a => a.lang === lang && a.key !== currentKey)
-    .forEach(a => links.push(`        <li><a href="${a.path}">${escapeHtml(a.linkLabel)}</a></li>`));
   const toolLabel = lang === 'es' ? 'La herramienta de litros' : 'The liters tool';
   links.push(`        <li><a href="${litersPath(lang)}">${toolLabel}</a></li>`);
   return links.join('\n');
@@ -1050,20 +1049,96 @@ function kiloPage(lang, k) {
 
 // ---- rendering -----------------------------------------------------------
 
-function buildJsonLd(page) {
+// Breadcrumb trail for a generated page: home › section tool › page, or
+// home › articles hub › page for editorial articles. Used both for the
+// visible .breadcrumb-line nav and the BreadcrumbList JSON-LD.
+function breadcrumbTrail(page, canonical) {
+  const lang = page.lang;
+  const ui = UI[lang];
+  const items = [{ name: ui.siteName, url: BASE_URL + homePath(lang) }];
+  const isArticle = !!page.path;
+  if (isArticle) {
+    items.push({ name: ui.navArticles, url: BASE_URL + articlesHubPath(lang) });
+  } else if (page.section === 'litros') {
+    items.push({ name: ui.navLiters, url: BASE_URL + litersPath(lang) });
+  } else if (page.section === 'kilos') {
+    items.push({ name: ui.navKilos, url: BASE_URL + kilosPath(lang) });
+  }
+  // Hectare landings hang straight off the home (the hectares tool IS the home)
+  items.push({ name: page.linkLabel, url: canonical });
+  return items;
+}
+
+function buildBreadcrumbHtml(items, lang) {
+  const ariaLabel = lang === 'es' ? 'Ruta de navegación' : 'Breadcrumb';
+  const lis = items.map((it, i) => i === items.length - 1
+    ? `    <li><span aria-current="page">${escapeHtml(it.name)}</span></li>`
+    : `    <li><a href="${it.url.replace(BASE_URL, '')}">${escapeHtml(it.name)}</a></li>`);
+  return `<nav class="breadcrumb-line" aria-label="${ariaLabel}">\n  <ol>\n${lis.join('\n')}\n  </ol>\n</nav>`;
+}
+
+function buildJsonLd(page, canonical, breadcrumbItems) {
   // Pages carry a single question/answer; editorial articles can pass a `faqs`
   // array ([{ q, a }, ...]) that mirrors their visible <dl class="faq">.
   const faqs = page.faqs || [{ q: page.question, a: page.answer }];
-  return JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    'inLanguage': page.lang,
-    'mainEntity': faqs.map(f => ({
-      '@type': 'Question',
-      'name': f.q,
-      'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
-    })),
-  }, null, 2);
+  const graph = [
+    {
+      '@type': 'FAQPage',
+      'inLanguage': page.lang,
+      'mainEntity': faqs.map(f => ({
+        '@type': 'Question',
+        'name': f.q,
+        'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': breadcrumbItems.map((it, i) => ({
+        '@type': 'ListItem',
+        'position': i + 1,
+        'name': it.name,
+        'item': it.url,
+      })),
+    },
+  ];
+  // Editorial articles additionally get Article markup (dates come from the
+  // article objects; bump `modified` when their content changes).
+  if (page.path && page.published) {
+    graph.push({
+      '@type': 'Article',
+      'headline': page.h1,
+      'description': page.description,
+      'inLanguage': page.lang,
+      'datePublished': page.published,
+      'dateModified': page.modified || page.published,
+      'author': { '@type': 'Person', 'name': 'David González Diez' },
+      'publisher': {
+        '@type': 'Organization',
+        'name': UI[page.lang].siteName,
+        'logo': { '@type': 'ImageObject', 'url': `${BASE_URL}/images/logo.png` },
+      },
+      'image': `${BASE_URL}/images/logo.png`,
+      'mainEntityOfPage': canonical,
+    });
+  }
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2);
+}
+
+// Article cards of the page's own family (excluding itself) + a link to the
+// hub. Empty when the family has no other articles (e.g. kilos, for now).
+function relatedArticlesBlock(page) {
+  const lang = page.lang;
+  const family = page.section === 'litros' ? 'litros' : page.section === 'kilos' ? 'kilos' : 'hectareas';
+  const articles = articlesForLang(lang).filter(a => a.family === family && a.key !== page.key);
+  if (!articles.length) return '';
+  const ui = UI[lang];
+  return `      <div class="section-block">
+        <h2>${escapeHtml(ui.articlesHeading)}</h2>
+        <div class="card-grid">
+${articles.map(a => buildArticleCard(a, lang)).join('\n')}
+        </div>
+        <p><a href="${articlesHubPath(lang)}">${escapeHtml(ui.allArticles)}</a></p>
+      </div>`;
 }
 
 function buildHreflang(key) {
@@ -1077,12 +1152,12 @@ function buildLangSwitch(lang, key) {
   return `<a href="${pathFor(other, key)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
 }
 
+// Quantity chips only: articles now live in their own cards block
+// (relatedArticlesBlock), not mixed in with the amounts.
 function relatedLinks(lang, currentKey) {
-  const links = KEYS.filter(k => k !== currentKey)
-    .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`);
-  ARTICLES.filter(a => a.lang === lang && a.key !== currentKey)
-    .forEach(a => links.push(`        <li><a href="${a.path}">${escapeHtml(a.linkLabel)}</a></li>`));
-  return links.join('\n');
+  return KEYS.filter(k => k !== currentKey)
+    .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`)
+    .join('\n');
 }
 
 // ---- articles hub (/articulos/, /en/articles/) -----------------------------
@@ -1113,7 +1188,7 @@ function buildHubHreflang() {
 // CollectionPage + ItemList. The en hub legitimately lists fewer items than
 // the es one (some articles are Spanish-only): equivalent listings, not
 // identical ones.
-function buildHubJsonLd(lang, articles) {
+function buildHubJsonLd(lang, articles, crumbs) {
   const ui = UI[lang];
   return JSON.stringify({
     '@context': 'https://schema.org',
@@ -1134,6 +1209,15 @@ function buildHubJsonLd(lang, articles) {
           'url': BASE_URL + a.path,
         })),
       },
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': crumbs.map((it, i) => ({
+          '@type': 'ListItem',
+          'position': i + 1,
+          'name': it.name,
+          'item': it.url,
+        })),
+      },
     ],
   }, null, 2);
 }
@@ -1142,8 +1226,13 @@ function writeArticlesHub(lang) {
   const ui = UI[lang];
   const other = lang === 'es' ? 'en' : 'es';
   const articles = articlesForLang(lang);
+  const crumbs = [
+    { name: ui.siteName, url: BASE_URL + homePath(lang) },
+    { name: ui.navArticles, url: BASE_URL + articlesHubPath(lang) },
+  ];
   const repl = {
     LANG: ui.htmlLang,
+    BREADCRUMB: buildBreadcrumbHtml(crumbs, lang),
     HREFLANG: buildHubHreflang(),
     LANG_SWITCH: `<a href="${articlesHubPath(other)}" hreflang="${other}">${ui.switchLabel}</a>`,
     CANONICAL: BASE_URL + articlesHubPath(lang),
@@ -1152,7 +1241,7 @@ function writeArticlesHub(lang) {
     DESCRIPTION: escapeHtml(ui.hubDescription),
     SITE_NAME: ui.siteName,
     OG_LOCALE: ui.ogLocale,
-    JSON_LD: buildHubJsonLd(lang, articles),
+    JSON_LD: buildHubJsonLd(lang, articles, crumbs),
     H1: escapeHtml(ui.hubH1),
     INTRO: escapeHtml(ui.hubIntro),
     ARTICLE_CARDS: articles.map(a => buildArticleCard(a, lang)).join('\n'),
@@ -1222,6 +1311,7 @@ function render(page, template) {
     hreflang = buildHreflang(page.key);
     langSwitch = buildLangSwitch(page.lang, page.key);
   }
+  const crumbs = breadcrumbTrail(page, canonical);
   const repl = {
     LANG: ui.htmlLang,
     PAGE_LANG: page.lang,
@@ -1233,7 +1323,9 @@ function render(page, template) {
     DESCRIPTION: escapeHtml(page.description),
     SITE_NAME: ui.siteName,
     OG_LOCALE: ui.ogLocale,
-    JSON_LD: buildJsonLd(page),
+    JSON_LD: buildJsonLd(page, canonical, crumbs),
+    BREADCRUMB: buildBreadcrumbHtml(crumbs, page.lang),
+    RELATED_ARTICLES_BLOCK: relatedArticlesBlock(page),
     HA: String(page.ha),
     L: String(page.l || ''),
     K: String(page.k || ''),

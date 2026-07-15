@@ -33,40 +33,89 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "en",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "How many litres are in an Olympic swimming pool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "An Olympic swimming pool (50 × 25 metres, 2-metre minimum depth) holds about 2.5 million litres, i.e. 2,500 cubic metres. At the 3-metre competition depth it reaches about 3.75 million litres (3,750 m³)."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "en",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many litres are in an Olympic swimming pool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An Olympic swimming pool (50 × 25 metres, 2-metre minimum depth) holds about 2.5 million litres, i.e. 2,500 cubic metres. At the 3-metre competition depth it reaches about 3.75 million litres (3,750 m³)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How big is an Olympic swimming pool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is 50 metres long by 25 metres wide, split into 10 lanes of 2.5 metres, with a minimum depth of 2 metres (3 in competition), under the World Aquatics rules."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many bathtubs or tanker trucks fit in an Olympic swimming pool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "About 16,667 full bathtubs (150 litres each) or about 83 tanker trucks (30,000 litres each)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does it cost to fill an Olympic swimming pool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At €2.02/m³ (Spain's average water price, INE), about €5,050 of water for the 2,500 m³ at 2 metres deep, and around €7,575 for a 3-metre competition pool (3,750 m³)."
+          }
+        }
+      ]
     },
     {
-      "@type": "Question",
-      "name": "How big is an Olympic swimming pool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "It is 50 metres long by 25 metres wide, split into 10 lanes of 2.5 metres, with a minimum depth of 2 metres (3 in competition), under the World Aquatics rules."
-      }
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareometer",
+          "item": "https://hectareometro.com/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Articles",
+          "item": "https://hectareometro.com/en/articles/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How many litres are in an Olympic swimming pool?",
+          "item": "https://hectareometro.com/en/how-many-litres-in-an-olympic-swimming-pool/"
+        }
+      ]
     },
     {
-      "@type": "Question",
-      "name": "How many bathtubs or tanker trucks fit in an Olympic swimming pool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "About 16,667 full bathtubs (150 litres each) or about 83 tanker trucks (30,000 litres each)."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does it cost to fill an Olympic swimming pool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "At €2.02/m³ (Spain's average water price, INE), about €5,050 of water for the 2,500 m³ at 2 metres deep, and around €7,575 for a 3-metre competition pool (3,750 m³)."
-      }
+      "@type": "Article",
+      "headline": "How many litres of water are in an Olympic swimming pool?",
+      "description": "An Olympic swimming pool holds about 2.5 million litres (2,500 m³): some 16,667 bathtubs or 83 tanker trucks. Official size, equivalents and what it costs to fill.",
+      "inLanguage": "en",
+      "datePublished": "2026-07-14",
+      "dateModified": "2026-07-14",
+      "author": {
+        "@type": "Person",
+        "name": "David González Diez"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Hectareometer",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://hectareometro.com/images/logo.png"
+        }
+      },
+      "image": "https://hectareometro.com/images/logo.png",
+      "mainEntityOfPage": "https://hectareometro.com/en/how-many-litres-in-an-olympic-swimming-pool/"
     }
   ]
 }
@@ -118,6 +167,13 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><a href="/en/articles/">Articles</a></li>
+    <li><span aria-current="page">How many litres are in an Olympic swimming pool?</span></li>
+  </ol>
 </nav>
 <div id="litros-tool">
   <div id="litros-panel">
@@ -295,6 +351,7 @@ window.cookieconsent.initialise({
         <li><a href="/en/2500000-liters/">2,500,000 litres</a></li>
         <li><a href="/en/liters/">The liters tool</a></li>
       </ul>
+
       <p><a href="/en/liters/">← Back to the liters tool</a></p>
     </div>
   </div>

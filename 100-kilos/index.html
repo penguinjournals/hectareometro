@@ -33,16 +33,43 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "es",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "¿Cuánto son 100 kilos?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "100 kilos son aproximadamente 500 manzanas: el peso de 1,3 personas. En otras unidades: 220 libras."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto son 100 kilos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "100 kilos son aproximadamente 500 manzanas: el peso de 1,3 personas. En otras unidades: 220 libras."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareómetro",
+          "item": "https://hectareometro.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Kilos",
+          "item": "https://hectareometro.com/kilos/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "100 kilos",
+          "item": "https://hectareometro.com/100-kilos/"
+        }
+      ]
     }
   ]
 }
@@ -95,6 +122,13 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Ruta de navegación">
+  <ol>
+    <li><a href="/">Hectareómetro</a></li>
+    <li><a href="/kilos/">Kilos</a></li>
+    <li><span aria-current="page">100 kilos</span></li>
+  </ol>
 </nav>
 <div id="litros-tool">
   <div id="litros-panel">
@@ -172,6 +206,7 @@ window.cookieconsent.initialise({
         <li><a href="/1000000-kilos/">1.000.000 kilos</a></li>
         <li><a href="/kilos/">La herramienta de kilos</a></li>
       </ul>
+
       <p><a href="/kilos/">← Volver a la herramienta de kilos</a></p>
     </div>
   </div>

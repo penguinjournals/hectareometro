@@ -32,16 +32,65 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "es",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Entre 2020 y 2025 se quemaron unas 916.817 hectáreas en incendios forestales en España (9.168 km², más que la superficie de la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000 hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue siendo de 1985, con 484.475 hectáreas."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Entre 2020 y 2025 se quemaron unas 916.817 hectáreas en incendios forestales en España (9.168 km², más que la superficie de la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000 hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue siendo de 1985, con 484.475 hectáreas."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareómetro",
+          "item": "https://hectareometro.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Artículos",
+          "item": "https://hectareometro.com/articulos/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Hectáreas quemadas en incendios en España (2020-2025)",
+          "item": "https://hectareometro.com/hectareas-quemadas-incendios-espana/"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "¿Cuánta superficie se ha quemado en España en incendios forestales?",
+      "description": "Entre 2020 y 2025 ardieron en España 916.817 hectáreas en incendios forestales, más que toda la Comunidad de Madrid. Míralo dibujado a escala sobre un mapa real.",
+      "inLanguage": "es",
+      "datePublished": "2026-07-09",
+      "dateModified": "2026-07-09",
+      "author": {
+        "@type": "Person",
+        "name": "David González Diez"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Hectareómetro",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://hectareometro.com/images/logo.png"
+        }
+      },
+      "image": "https://hectareometro.com/images/logo.png",
+      "mainEntityOfPage": "https://hectareometro.com/hectareas-quemadas-incendios-espana/"
     }
   ]
 }
@@ -93,6 +142,13 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Ruta de navegación">
+  <ol>
+    <li><a href="/">Hectareómetro</a></li>
+    <li><a href="/articulos/">Artículos</a></li>
+    <li><span aria-current="page">Hectáreas quemadas en incendios en España (2020-2025)</span></li>
+  </ol>
 </nav>
 <div id="map-container">
   <div id="map"></div>
@@ -211,6 +267,7 @@ window.cookieconsent.initialise({
         <li><a href="/20000-hectareas/">20.000 hectáreas</a></li>
         <li><a href="/hectarea-campo-de-futbol/">Hectárea vs campo de fútbol</a></li>
       </ul>
+
       <p><a href="/">← Volver al Hectareómetro</a></p>
     </div>
   </div>

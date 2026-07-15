@@ -33,16 +33,37 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "en",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "How many football fields is a hectare?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A hectare is about 1.4 football fields. A standard pitch (~105 × 68 m, about 7,140 m²) covers roughly 0.7 hectares."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "en",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many football fields is a hectare?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A hectare is about 1.4 football fields. A standard pitch (~105 × 68 m, about 7,140 m²) covers roughly 0.7 hectares."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareometer",
+          "item": "https://hectareometro.com/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Hectare vs football field",
+          "item": "https://hectareometro.com/en/hectare-football-field/"
+        }
+      ]
     }
   ]
 }
@@ -94,6 +115,12 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><span aria-current="page">Hectare vs football field</span></li>
+  </ol>
 </nav>
 <div id="map-container">
   <div id="map"></div>
@@ -205,6 +232,7 @@ window.cookieconsent.initialise({
         <li><a href="/en/4000-hectares/">4,000 hectares</a></li>
         <li><a href="/en/20000-hectares/">20,000 hectares</a></li>
       </ul>
+
       <p><a href="/en/">← Back to the Hectareometer</a></p>
     </div>
   </div>

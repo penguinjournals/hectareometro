@@ -33,16 +33,43 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "inLanguage": "es",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "¿Cuánto son 40.000 kilos?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "40.000 kilos son aproximadamente 26,7 coches: el peso de 530 personas. En otras unidades: 88.185 libras o 40 toneladas."
-      }
+      "@type": "FAQPage",
+      "inLanguage": "es",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto son 40.000 kilos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "40.000 kilos son aproximadamente 26,7 coches: el peso de 530 personas. En otras unidades: 88.185 libras o 40 toneladas."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Hectareómetro",
+          "item": "https://hectareometro.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Kilos",
+          "item": "https://hectareometro.com/kilos/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "40.000 kilos",
+          "item": "https://hectareometro.com/40000-kilos/"
+        }
+      ]
     }
   ]
 }
@@ -95,6 +122,13 @@ window.cookieconsent.initialise({
       </ul>
     </div>
   </div>
+</nav>
+<nav class="breadcrumb-line" aria-label="Ruta de navegación">
+  <ol>
+    <li><a href="/">Hectareómetro</a></li>
+    <li><a href="/kilos/">Kilos</a></li>
+    <li><span aria-current="page">40.000 kilos</span></li>
+  </ol>
 </nav>
 <div id="litros-tool">
   <div id="litros-panel">
@@ -172,6 +206,7 @@ window.cookieconsent.initialise({
         <li><a href="/1000000-kilos/">1.000.000 kilos</a></li>
         <li><a href="/kilos/">La herramienta de kilos</a></li>
       </ul>
+
       <p><a href="/kilos/">← Volver a la herramienta de kilos</a></p>
     </div>
   </div>
