@@ -74,6 +74,8 @@ const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
     navDistances: 'Distancias', navLiters: 'Litros', navKilos: 'Kilos', navMenu: 'Menú',
+    navMeasure: 'Medir una superficie', navConverter: 'Conversor',
+    converterChipLabel: 'Hectáreas a metros cuadrados',
     overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
@@ -102,6 +104,8 @@ const UI = {
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
     navDistances: 'Distances', navLiters: 'Liters', navKilos: 'Kilos', navMenu: 'Menu',
+    navMeasure: 'Measure an area', navConverter: 'Converter',
+    converterChipLabel: 'Hectares to square meters',
     overlayPre: 'How big are', overlayPost: 'hectares?',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
@@ -164,6 +168,17 @@ function litersPath(lang) {
 // And so are the kilos tool pages.
 function kilosPath(lang) {
   return lang === 'es' ? '/kilos/' : '/en/kilos/';
+}
+
+// The measure tool (draw a shape on the map, get its area) is hand-maintained.
+function measurePath(lang) {
+  return lang === 'es' ? '/medir-superficie/' : '/en/measure-area/';
+}
+
+// The area converter is hand-maintained too. It is NOT in the navbar (only
+// footer, homes and related links), by design.
+function converterPath(lang) {
+  return lang === 'es' ? '/hectareas-a-metros-cuadrados/' : '/en/hectares-to-square-meters/';
 }
 
 // The articles hub, unlike the tool pages, IS generated (writeArticlesHub):
@@ -1157,6 +1172,7 @@ function buildLangSwitch(lang, key) {
 function relatedLinks(lang, currentKey) {
   return KEYS.filter(k => k !== currentKey)
     .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`)
+    .concat(`        <li><a href="${converterPath(lang)}">${escapeHtml(UI[lang].converterChipLabel)}</a></li>`)
     .join('\n');
 }
 
@@ -1246,12 +1262,16 @@ function writeArticlesHub(lang) {
     INTRO: escapeHtml(ui.hubIntro),
     ARTICLE_CARDS: articles.map(a => buildArticleCard(a, lang)).join('\n'),
     HOME_URL: homePath(lang),
+    NAV_MEASURE_URL: measurePath(lang),
+    NAV_MEASURE_LABEL: ui.navMeasure,
     NAV_DIST_URL: distancesPath(lang),
     NAV_DIST_LABEL: ui.navDistances,
     NAV_LITERS_URL: litersPath(lang),
     NAV_LITERS_LABEL: ui.navLiters,
     NAV_KILOS_URL: kilosPath(lang),
     NAV_KILOS_LABEL: ui.navKilos,
+    NAV_CONVERTER_URL: converterPath(lang),
+    NAV_CONVERTER_LABEL: ui.navConverter,
     NAV_ARTICLES_URL: articlesHubPath(lang),
     NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
@@ -1354,12 +1374,16 @@ function render(page, template) {
       : isKilos ? relatedKiloLinks(page.lang, page.key)
       : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
+    NAV_MEASURE_URL: measurePath(page.lang),
+    NAV_MEASURE_LABEL: ui.navMeasure,
     NAV_DIST_URL: distancesPath(page.lang),
     NAV_DIST_LABEL: ui.navDistances,
     NAV_LITERS_URL: litersPath(page.lang),
     NAV_LITERS_LABEL: ui.navLiters,
     NAV_KILOS_URL: kilosPath(page.lang),
     NAV_KILOS_LABEL: ui.navKilos,
+    NAV_CONVERTER_URL: converterPath(page.lang),
+    NAV_CONVERTER_LABEL: ui.navConverter,
     NAV_ARTICLES_URL: articlesHubPath(page.lang),
     NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
@@ -1374,9 +1398,11 @@ function render(page, template) {
 
 function writeSitemap() {
   const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
+  LANGS.forEach(lang => urls.push(BASE_URL + measurePath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + litersPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + kilosPath(lang)));
+  LANGS.forEach(lang => urls.push(BASE_URL + converterPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + articlesHubPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => urls.push(literFullUrl(lang, l))));
@@ -1385,7 +1411,7 @@ function writeSitemap() {
   LITER_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
-    const isSectionHome = LANGS.some(lang => u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + articlesHubPath(lang));
+    const isSectionHome = LANGS.some(lang => u === BASE_URL + measurePath(lang) || u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + converterPath(lang) || u === BASE_URL + articlesHubPath(lang));
     const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');

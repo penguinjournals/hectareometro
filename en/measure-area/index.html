@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7KGFGQLBRJ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<link rel="canonical" href="https://hectareometro.com/en/measure-area/">
+<link rel="alternate" hreflang="es" href="https://hectareometro.com/medir-superficie/">
+<link rel="alternate" hreflang="en" href="https://hectareometro.com/en/measure-area/">
+<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/medir-superficie/">
+<title>Measure area on a map: draw and calculate hectares, acres &amp; m² | Hectareometer</title>
+<meta name="keywords" content="measure area on map, land area calculator, measure plot on map, calculate hectares on a map, measure field acreage, draw polygon on map">
+<meta name="description" content="Draw a circle, a rectangle or a polygon on a real map and instantly calculate its area in hectares, square metres, acres and km². Measure your plot, field or land for free.">
+<meta name="author" content="David González Diez">
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@penguinjournals">
+<meta name="twitter:title" content="Measure any area by drawing it on the map">
+<meta name="twitter:description" content="Draw a circle, a rectangle or a polygon on a real map and calculate its area in hectares, m², acres and km². Share the drawn area with a link.">
+<meta name="twitter:creator" content="@penguinjournals">
+<meta name="twitter:image" content="https://hectareometro.com/images/logo.png">
+
+
+<!-- Open Graph data -->
+<meta property="og:title" content="Measure any area by drawing it on the map" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hectareometro.com/en/measure-area/" />
+<meta property="og:description" content="Draw a circle, a rectangle or a polygon on a real map and calculate its area in hectares, m², acres and km². Share the drawn area with a link." />
+<meta property="og:site_name" content="Hectareometer, the visual way to understand areas, distances and volumes." />
+<meta property="og:image" content="https://hectareometro.com/images/logo.png" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Structured data (schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Hectareometer — Measure area",
+      "url": "https://hectareometro.com/en/measure-area/",
+      "description": "Tool to measure areas by drawing them on a real map: circles, rectangles or polygons, with the area in hectares, square metres, acres and square kilometres.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "en",
+      "image": "https://hectareometro.com/images/logo.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "David González Diez"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I measure a plot of land on a map?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pick a shape (circle, rectangle or polygon) and draw it on the map. With the polygon you can click the corners of your plot one by one and close the shape by clicking the first point. The tool instantly shows the area in hectares, square metres, acres and square kilometres."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many square metres are in a hectare?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "One hectare is 10,000 square metres: a square measuring 100 × 100 metres. One square kilometre is 100 hectares, and one hectare is about 2.47 acres."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is the measurement?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The area is computed spherically, i.e. taking the curvature of the Earth into account, and coordinates are stored with a precision of roughly one metre. The real accuracy depends on where you click: the more you zoom in while drawing, the finer the measurement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does a self-intersecting polygon give a strange area?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If the sides of the polygon cross each other, the area calculation can be misleading, because some regions subtract from others. Draw the outline without crossings to get a reliable measurement."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='/css/style.css' rel='stylesheet' type='text/css'>
+<script>var PAGE_LANG = 'en';</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/hectareas-utils.js"></script>
+<script type="text/javascript" src="/js/measure.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&libraries=geometry&loading=async&callback=initMap"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#337AB7"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-default site-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
+        <span class="sr-only">Menu</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/en/">Hectareometer</a>
+    </div>
+    <div class="collapse navbar-collapse" id="site-nav-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/en/measure-area/">Measure an area</a></li>
+        <li><a href="/en/distances/">Distances</a></li>
+        <li><a href="/en/liters/">Liters</a></li>
+        <li><a href="/en/kilos/">Kilos</a></li>
+        <li><a href="/en/articles/">Articles</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/medir-superficie/" hreflang="es">Español</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div id="map-container">
+  <div id="map"></div>
+  <div id="hectareas-overlay">
+    <div class="draw-modes" role="toolbar" aria-label="Drawing mode">
+      <button type="button" id="mode-circle" class="draw-mode-btn">◯ Circle</button>
+      <button type="button" id="mode-rect" class="draw-mode-btn">▭ Rectangle</button>
+      <button type="button" id="mode-poly" class="draw-mode-btn">⬠ Polygon</button>
+      <button type="button" id="draw-close" class="draw-mode-btn draw-close" style="display:none">✓ Close shape</button>
+      <button type="button" id="draw-clear" class="draw-mode-btn draw-clear">✕ Clear</button>
+    </div>
+    <div id="draw-hint" aria-live="polite"></div>
+    <div id="area-readout" aria-live="polite"></div>
+    <div id="equivalences" aria-live="polite"></div>
+    <a id="view-as-circle" href="" style="display:none"></a>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div id="share-block" class="text-center">
+        <p id="share-cta">Was it useful? Share it 👇</p>
+        <div id="share-social">
+          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on WhatsApp"></a>
+          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on X/Twitter"></a>
+          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on Facebook"></a>
+        </div>
+        <div id="share-details">
+          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
+            <i class="fa fa-caret-down"></i> More sharing options
+          </a>
+          <div id="share-advanced" class="collapse">
+            <form>
+              <div class="form-group">
+                <label class="control-label" for="url-share">Link:</label>
+                <input type="text" id="url-share" class="share-link form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="iframe-share">Iframe:</label>
+                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-width">Width:</label>
+                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
+                </div>
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-height">Height:</label>
+                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
+      <h1>Measure any area by drawing it on the map</h1>
+      <p>
+        This tool is the Hectareometer in reverse: instead of typing a number of hectares to see
+        them drawn, here <b>you draw</b> a shape on the map and we instantly tell you how much
+        area it contains, in hectares, square metres, acres and square kilometres. Use it to
+        measure a plot, a field, a farm, the roof where you want to fit solar panels, or any
+        patch of the world you are curious about. The area you draw travels in the link: copy
+        the URL and share it, and whoever opens it will see your exact shape.
+      </p>
+
+      <h2>How to use it</h2>
+      <p>
+        Pick a shape with the buttons on the map and draw:
+      </p>
+      <ul>
+        <li><b>◯ Circle</b>: one click to set the centre, another to set the radius.</li>
+        <li><b>▭ Rectangle</b>: one click on a corner, another on the opposite corner.</li>
+        <li><b>⬠ Polygon</b>: click point after point — the corners of your plot, for
+        example — and close the shape by clicking the first point (or with the “Close shape” button).</li>
+      </ul>
+      <p>
+        Afterwards you can <b>adjust the shape</b> by dragging it around or moving its handles,
+        and the measurement recalculates on its own. Press <kbd>Esc</kbd> to cancel a half-drawn
+        shape, or “✕ Clear” to start over.
+      </p>
+
+      <h2>Quick equivalences</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Area</th><th>Equivalence</th></tr></thead>
+        <tbody>
+          <tr><td>1 hectare</td><td>10,000 m² · 2.47 acres · ≈ 1.4 football fields</td></tr>
+          <tr><td>1 acre</td><td>4,046.86 m² · 0.4047 hectares</td></tr>
+          <tr><td>1 km²</td><td>100 hectares · 247.1 acres</td></tr>
+          <tr><td>1 square mile</td><td>640 acres · 259 hectares</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Need to convert between more units (square feet, square yards…)?
+        Use the <a href="/en/hectares-to-square-meters/">area unit converter</a>.
+      </p>
+
+      <h2>Examples: famous areas already drawn</h2>
+      <p>Click one and the shape appears on the map, ready to adjust:</p>
+      <ul class="examples-list">
+        <li>Central Park in New York as a polygon: <a href="/en/measure-area/?s=p&pts=40.76812,-73.98118~40.76443,-73.97243~40.79691,-73.94936~40.80058,-73.95818">about 340 hectares</a></li>
+        <li>Hyde Park in London as a polygon: <a href="/en/measure-area/?s=p&pts=51.51106,-0.17554~51.51278,-0.15963~51.50261,-0.15254~51.50281,-0.16811">about 115 hectares</a></li>
+        <li>A circle with a 1 km radius over Trafalgar Square: <a href="/en/measure-area/?s=c&pts=51.50735,-0.12776&r=1000">about 314 hectares</a></li>
+      </ul>
+      <div class="chip-group">
+        <span class="chip-group-label">Compare with known areas</span>
+        <ul class="related-links">
+          <li><a href="/en/1-hectare/">1 hectare</a></li>
+          <li><a href="/en/100-hectares/">100 hectares</a></li>
+          <li><a href="/en/1000-hectares/">1000 hectares</a></li>
+          <li><a href="/en/hectare-football-field/">Hectare vs football field</a></li>
+          <li><a href="/en/hectares-to-square-meters/">Area unit converter</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section section-block">
+      <h2>Articles</h2>
+      <div class="card-grid">
+        <div class="card card-article">
+          <a href="/en/hectare-football-field/">
+            <span class="card-kicker">Hectares</span>
+            <h3>Is a hectare bigger than a football field?</h3>
+            <p>A standard football pitch is about 7,140 m² — 0.71 hectares. See both drawn to scale on a real map and get a feel for the difference.</p>
+            <span class="card-cta">Read →</span>
+          </a>
+        </div>
+      </div>
+      <p><a href="/en/articles/">All articles →</a></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section section-block">
+      <h2>Frequently asked questions about measuring areas</h2>
+      <dl class="faq">
+        <dt>How do I measure a plot of land on a map?</dt>
+        <dd>Pick a shape (circle, rectangle or <b>polygon</b>) and draw it on the map. With the polygon you can click the corners of your plot one by one and close the shape by clicking the first point. The tool instantly shows the area in hectares, square metres, acres and square kilometres.</dd>
+
+        <dt>How many square metres are in a hectare?</dt>
+        <dd>One hectare is <b><a href="/en/hectares-to-square-meters/">10,000 square metres</a></b>: a square measuring 100 × 100 metres. One square kilometre is 100 hectares, and one hectare is about 2.47 acres.</dd>
+
+        <dt>How accurate is the measurement?</dt>
+        <dd>The area is computed <b>spherically</b>, i.e. taking the curvature of the Earth into account, and coordinates are stored with a precision of roughly one metre. The real accuracy depends on where you click: the more you zoom in while drawing, the finer the measurement.</dd>
+
+        <dt>Why does a self-intersecting polygon give a strange area?</dt>
+        <dd>If the sides of the polygon cross each other, the area calculation can be misleading, because some regions subtract from others. Draw the outline without crossings to get a reliable measurement.</dd>
+      </dl>
+      <p>
+        Prefer the opposite direction — typing a figure and seeing it drawn? That is the classic
+        <a href="/en/">Hectareometer</a>. You can also visualize
+        <a href="/en/distances/">distances</a>, <a href="/en/liters/">liters</a> or
+        <a href="/en/kilos/">kilos</a>, or convert units with the
+        <a href="/en/hectares-to-square-meters/">area converter</a>.
+      </p>
+    </div>
+  </div>
+</div>
+<footer class="site-footer text-center">
+  <ul class="footer-links">
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><a href="/en/measure-area/">Measure an area</a></li>
+    <li><a href="/en/distances/">Distances</a></li>
+    <li><a href="/en/liters/">Liters</a></li>
+    <li><a href="/en/kilos/">Kilos</a></li>
+    <li><a href="/en/hectares-to-square-meters/">Converter</a></li>
+    <li><a href="/en/articles/">Articles</a></li>
+  </ul>
+  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</footer>
+</body>
+</html>

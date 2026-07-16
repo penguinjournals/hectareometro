@@ -89,7 +89,8 @@ body {
 #hectareas,
 #distance,
 #liters,
-#kilos {
+#kilos,
+#area-value {
   width: 80px;
   min-width: 80px;
   max-width: 16ch;
@@ -105,7 +106,8 @@ body {
 #distance-unit,
 #liters-unit,
 #kilos-unit,
-#picto-unit {
+#picto-unit,
+#area-unit {
   padding: 8px 6px;
   font-size: 16px;
   font-weight: 600;
@@ -119,10 +121,12 @@ body {
 #distance:focus,
 #liters:focus,
 #kilos:focus,
+#area-value:focus,
 #distance-unit:focus,
 #liters-unit:focus,
 #kilos-unit:focus,
-#picto-unit:focus {
+#picto-unit:focus,
+#area-unit:focus {
   outline: none;
   border-color: var(--c-primary-dark);
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
@@ -141,13 +145,86 @@ body {
   display: none;
 }
 
-/* Liters tool (no map: a normal-flow panel + the pictogram block) */
-#litros-tool {
+/* Measure tool: drawing-mode toolbar + live area readout in the map overlay */
+.draw-modes {
+  flex-basis: 100%;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.draw-mode-btn {
+  padding: 8px 12px;
+  min-height: 40px; /* comfortable touch target */
+  font-size: 15px;
+  font-weight: 600;
+  border: 2px solid var(--c-primary);
+  border-radius: 5px;
+  background: white;
+  color: var(--c-primary);
+  cursor: pointer;
+}
+
+.draw-mode-btn:hover {
+  border-color: var(--c-primary-dark);
+}
+
+.draw-mode-btn.active {
+  background: var(--c-primary);
+  color: #fff;
+}
+
+.draw-mode-btn.draw-clear {
+  border-color: var(--c-border);
+  color: var(--c-text-muted);
+}
+
+.draw-mode-btn.draw-close {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+#draw-hint {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: var(--c-text-muted);
+}
+
+#draw-hint:empty {
+  display: none;
+}
+
+#area-readout {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1.2;
+}
+
+#area-readout:empty {
+  display: none;
+}
+
+#view-as-circle {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Liters tool (no map: a normal-flow panel + the pictogram block) and the
+   area converter, which shares the same panel layout. */
+#litros-tool,
+#converter-tool {
   text-align: center;
   padding: 25px 15px 20px;
 }
 
-#litros-panel {
+#litros-panel,
+#converter-panel {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -156,11 +233,27 @@ body {
   margin-bottom: 6px;
 }
 
-#litros-panel label {
+#litros-panel label,
+#converter-panel label {
   font-size: 18px;
   font-weight: 600;
   color: var(--c-text);
   margin: 0;
+}
+
+/* Converter results: reuse .equiv-table but center it under the panel and
+   keep the numbers scannable. */
+#converter-tool .equiv-table {
+  margin: 16px auto 0;
+  display: inline-table;
+  width: auto;
+  min-width: 280px;
+  text-align: left;
+}
+
+#converter-tool .area-result-value {
+  text-align: right;
+  white-space: nowrap;
 }
 
 #litros-tool #equivalences {
@@ -773,7 +866,8 @@ a, a:link, a:visited, a:hover, a:active {
   #hectareas,
   #distance,
   #liters,
-  #kilos {
+  #kilos,
+  #area-value {
     width: 60px;
     min-width: 60px;
     font-size: 16px;
@@ -783,13 +877,24 @@ a, a:link, a:visited, a:hover, a:active {
   #distance-unit,
   #liters-unit,
   #kilos-unit,
-  #picto-unit {
+  #picto-unit,
+  #area-unit {
     font-size: 14px;
     padding: 5px 4px;
   }
 
-  #litros-panel label {
+  #litros-panel label,
+  #converter-panel label {
     font-size: 14px;
+  }
+
+  .draw-mode-btn {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  #area-readout {
+    font-size: 22px;
   }
 
   #pictogram.picto-l { font-size: 26px; }

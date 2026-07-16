@@ -11,6 +11,16 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://hectareometro.com/medir-superficie/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/measure-area/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://hectareometro.com/distancias/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -37,6 +47,16 @@
   </url>
   <url>
     <loc>https://hectareometro.com/en/kilos/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/hectareas-a-metros-cuadrados/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/hectares-to-square-meters/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

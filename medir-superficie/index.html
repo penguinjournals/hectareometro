@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang=es>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7KGFGQLBRJ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<link rel="canonical" href="https://hectareometro.com/medir-superficie/">
+<link rel="alternate" hreflang="es" href="https://hectareometro.com/medir-superficie/">
+<link rel="alternate" hreflang="en" href="https://hectareometro.com/en/measure-area/">
+<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/medir-superficie/">
+<title>Medir superficies en un mapa: dibuja y calcula hectáreas y m² | Hectareómetro</title>
+<meta name="keywords" content="medir superficie en mapa, calcular area de un terreno, medir parcela en mapa, calcular hectareas en mapa, medir finca, dibujar poligono en mapa">
+<meta name="description" content="Dibuja un círculo, un rectángulo o un polígono sobre un mapa real y calcula al instante su superficie en hectáreas, metros cuadrados y kilómetros cuadrados. Mide tu parcela, finca o terreno gratis.">
+<meta name="author" content="David González Diez">
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@penguinjournals">
+<meta name="twitter:title" content="Mide una superficie dibujándola sobre el mapa">
+<meta name="twitter:description" content="Dibuja un círculo, un rectángulo o un polígono sobre un mapa real y calcula su superficie en hectáreas, m² y km². Comparte el área dibujada con un enlace.">
+<meta name="twitter:creator" content="@penguinjournals">
+<meta name="twitter:image" content="https://hectareometro.com/images/logo.png">
+
+
+<!-- Open Graph data -->
+<meta property="og:title" content="Mide una superficie dibujándola sobre el mapa" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hectareometro.com/medir-superficie/" />
+<meta property="og:description" content="Dibuja un círculo, un rectángulo o un polígono sobre un mapa real y calcula su superficie en hectáreas, m² y km². Comparte el área dibujada con un enlace." />
+<meta property="og:site_name" content="Hectareómetro, la manera visual de entender superficies, distancias y volúmenes." />
+<meta property="og:image" content="https://hectareometro.com/images/logo.png" />
+<meta property="og:locale" content="es_ES" />
+
+<!-- Structured data (schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Hectareómetro — Medir superficie",
+      "url": "https://hectareometro.com/medir-superficie/",
+      "description": "Herramienta para medir superficies dibujándolas sobre un mapa real: círculos, rectángulos o polígonos, con el área en hectáreas, metros cuadrados y kilómetros cuadrados.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "es",
+      "image": "https://hectareometro.com/images/logo.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "David González Diez"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo medir una parcela o un terreno en un mapa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Elige una forma (círculo, rectángulo o polígono) y dibújala sobre el mapa. Con el polígono puedes ir marcando las esquinas de la parcela con clics y cerrar la figura pinchando en el primer punto. La herramienta muestra al instante la superficie en hectáreas, metros cuadrados y kilómetros cuadrados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuántos metros cuadrados tiene una hectárea?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una hectárea son 10.000 metros cuadrados: un cuadrado de 100 × 100 metros. Un kilómetro cuadrado son 100 hectáreas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué precisión tiene la medición?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El cálculo del área es esférico, es decir, tiene en cuenta la curvatura de la Tierra, y las coordenadas se guardan con una precisión de aproximadamente un metro. La precisión real depende de dónde hagas clic: cuanto más zoom uses al dibujar, más fina será la medida."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué un polígono que se cruza a sí mismo da un área rara?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si los lados del polígono se cruzan entre sí, el cálculo del área puede dar resultados engañosos, porque unas zonas se restan de otras. Dibuja el contorno sin cruces para obtener una medida fiable."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='/css/style.css' rel='stylesheet' type='text/css'>
+<script>var PAGE_LANG = 'es';</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/hectareas-utils.js"></script>
+<script type="text/javascript" src="/js/measure.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&libraries=geometry&loading=async&callback=initMap"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#337AB7"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-default site-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
+        <span class="sr-only">Menú</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Hectareómetro</a>
+    </div>
+    <div class="collapse navbar-collapse" id="site-nav-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/medir-superficie/">Medir una superficie</a></li>
+        <li><a href="/distancias/">Distancias</a></li>
+        <li><a href="/litros/">Litros</a></li>
+        <li><a href="/kilos/">Kilos</a></li>
+        <li><a href="/articulos/">Artículos</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/en/measure-area/" hreflang="en">English</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div id="map-container">
+  <div id="map"></div>
+  <div id="hectareas-overlay">
+    <div class="draw-modes" role="toolbar" aria-label="Modo de dibujo">
+      <button type="button" id="mode-circle" class="draw-mode-btn">◯ Círculo</button>
+      <button type="button" id="mode-rect" class="draw-mode-btn">▭ Rectángulo</button>
+      <button type="button" id="mode-poly" class="draw-mode-btn">⬠ Polígono</button>
+      <button type="button" id="draw-close" class="draw-mode-btn draw-close" style="display:none">✓ Cerrar figura</button>
+      <button type="button" id="draw-clear" class="draw-mode-btn draw-clear">✕ Borrar</button>
+    </div>
+    <div id="draw-hint" aria-live="polite"></div>
+    <div id="area-readout" aria-live="polite"></div>
+    <div id="equivalences" aria-live="polite"></div>
+    <a id="view-as-circle" href="" style="display:none"></a>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div id="share-block" class="text-center">
+        <p id="share-cta">¿Te ha servido? Compártelo 👇</p>
+        <div id="share-social">
+          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Compartir en WhatsApp"></a>
+          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Compartir en X/Twitter"></a>
+          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Compartir en Facebook"></a>
+        </div>
+        <div id="share-details">
+          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
+            <i class="fa fa-caret-down"></i> Más opciones de compartir
+          </a>
+          <div id="share-advanced" class="collapse">
+            <form>
+              <div class="form-group">
+                <label class="control-label" for="url-share">Link:</label>
+                <input type="text" id="url-share" class="share-link form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="iframe-share">Iframe:</label>
+                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-width">Ancho:</label>
+                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
+                </div>
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-height">Alto:</label>
+                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
+      <h1>Mide una superficie dibujándola sobre el mapa</h1>
+      <p>
+        Esta herramienta es el hectareómetro al revés: en lugar de escribir unas hectáreas para
+        verlas dibujadas, aquí <b>dibujas tú</b> una forma sobre el mapa y te decimos al instante
+        cuánta superficie contiene, en hectáreas, metros cuadrados y kilómetros cuadrados. Sirve
+        para medir una parcela, una finca rústica, un campo de cultivo, el tejado donde quieres
+        poner placas solares o cualquier trozo de mundo que te pique la curiosidad. Y el área que
+        dibujes viaja en el enlace: copia la URL y compártela, quien la abra verá tu misma figura.
+      </p>
+
+      <h2>Cómo se usa</h2>
+      <p>
+        Elige una forma en los botones del mapa y dibuja:
+      </p>
+      <ul>
+        <li><b>◯ Círculo</b>: un clic para marcar el centro y otro para fijar el radio.</li>
+        <li><b>▭ Rectángulo</b>: un clic en una esquina y otro en la esquina opuesta.</li>
+        <li><b>⬠ Polígono</b>: ve marcando puntos con clics —las esquinas de tu parcela, por
+        ejemplo— y cierra la figura pinchando en el primer punto (o con el botón «Cerrar figura»).</li>
+      </ul>
+      <p>
+        Después puedes <b>ajustar la figura</b> arrastrándola entera o moviendo sus puntos, y la
+        medida se recalcula sola. Con la tecla <kbd>Esc</kbd> cancelas un dibujo a medias y con
+        «✕ Borrar» empiezas de cero.
+      </p>
+
+      <h2>Equivalencias rápidas</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Superficie</th><th>Equivalencia</th></tr></thead>
+        <tbody>
+          <tr><td>1 hectárea</td><td>10.000 m² · 0,01 km² · ≈ 1,4 campos de fútbol</td></tr>
+          <tr><td>1 acre</td><td>4.046,86 m² · 0,4047 hectáreas</td></tr>
+          <tr><td>1 km²</td><td>100 hectáreas · 1.000.000 m²</td></tr>
+          <tr><td>1 campo de fútbol</td><td>7.140 m² · 0,71 hectáreas</td></tr>
+        </tbody>
+      </table>
+      <p>
+        ¿Necesitas convertir entre más unidades (acres, millas cuadradas, pies cuadrados…)?
+        Usa el <a href="/hectareas-a-metros-cuadrados/">conversor de superficies</a>.
+      </p>
+
+      <h2>Ejemplos: superficies famosas ya dibujadas</h2>
+      <p>Pincha y verás la figura dibujada sobre el mapa, lista para ajustar:</p>
+      <ul class="examples-list">
+        <li>El parque del Retiro de Madrid como polígono: <a href="/medir-superficie/?s=p&pts=40.42,-3.6889~40.4213,-3.6805~40.4085,-3.6753~40.4079,-3.6845">unas 110 hectáreas</a></li>
+        <li>La Plaza Mayor de Madrid como rectángulo: <a href="/medir-superficie/?s=r&pts=40.41508,-3.70779~40.41597,-3.70653">algo más de 1 hectárea</a></li>
+        <li>Un círculo de 1 km de radio sobre la Puerta del Sol: <a href="/medir-superficie/?s=c&pts=40.41694,-3.70379&r=1000">unas 314 hectáreas</a></li>
+      </ul>
+      <div class="chip-group">
+        <span class="chip-group-label">Compara con superficies conocidas</span>
+        <ul class="related-links">
+          <li><a href="/1-hectarea/">1 hectárea</a></li>
+          <li><a href="/100-hectareas/">100 hectáreas</a></li>
+          <li><a href="/1000-hectareas/">1000 hectáreas</a></li>
+          <li><a href="/hectarea-campo-de-futbol/">Hectárea vs campo de fútbol</a></li>
+          <li><a href="/hectareas-a-metros-cuadrados/">Conversor de superficies</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section section-block">
+      <h2>Artículos</h2>
+      <div class="card-grid">
+        <div class="card card-article">
+          <a href="/hectareas-quemadas-incendios-espana/">
+            <span class="card-kicker">Hectáreas</span>
+            <h3>¿Cuánta superficie se ha quemado en España en incendios forestales?</h3>
+            <p>Entre 2020 y 2025 ardieron en España 916.817 hectáreas en incendios forestales, más que toda la Comunidad de Madrid. Míralo dibujado a escala sobre un mapa real.</p>
+            <span class="card-cta">Leer →</span>
+          </a>
+        </div>
+      </div>
+      <p><a href="/articulos/">Todos los artículos →</a></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section section-block">
+      <h2>Preguntas frecuentes sobre medir superficies</h2>
+      <dl class="faq">
+        <dt>¿Cómo medir una parcela o un terreno en un mapa?</dt>
+        <dd>Elige una forma (círculo, rectángulo o <b>polígono</b>) y dibújala sobre el mapa. Con el polígono puedes ir marcando las esquinas de la parcela con clics y cerrar la figura pinchando en el primer punto. La herramienta muestra al instante la superficie en hectáreas, metros cuadrados y kilómetros cuadrados.</dd>
+
+        <dt>¿Cuántos metros cuadrados tiene una hectárea?</dt>
+        <dd>Una hectárea son <b><a href="/hectareas-a-metros-cuadrados/">10.000 metros cuadrados</a></b>: un cuadrado de 100 × 100 metros. Un kilómetro cuadrado son 100 hectáreas.</dd>
+
+        <dt>¿Qué precisión tiene la medición?</dt>
+        <dd>El cálculo del área es <b>esférico</b>, es decir, tiene en cuenta la curvatura de la Tierra, y las coordenadas se guardan con una precisión de aproximadamente un metro. La precisión real depende de dónde hagas clic: cuanto más zoom uses al dibujar, más fina será la medida.</dd>
+
+        <dt>¿Por qué un polígono que se cruza a sí mismo da un área rara?</dt>
+        <dd>Si los lados del polígono se cruzan entre sí, el cálculo del área puede dar resultados engañosos, porque unas zonas se restan de otras. Dibuja el contorno sin cruces para obtener una medida fiable.</dd>
+      </dl>
+      <p>
+        ¿Prefieres el camino contrario, escribir una cifra y verla dibujada? Ese es el
+        <a href="/">Hectareómetro</a> de toda la vida. También puedes visualizar
+        <a href="/distancias/">distancias</a>, <a href="/litros/">litros</a> o
+        <a href="/kilos/">kilos</a>, o convertir unidades con el
+        <a href="/hectareas-a-metros-cuadrados/">conversor de superficies</a>.
+      </p>
+    </div>
+  </div>
+</div>
+<footer class="site-footer text-center">
+  <ul class="footer-links">
+    <li><a href="/">Hectareómetro</a></li>
+    <li><a href="/medir-superficie/">Medir una superficie</a></li>
+    <li><a href="/distancias/">Distancias</a></li>
+    <li><a href="/litros/">Litros</a></li>
+    <li><a href="/kilos/">Kilos</a></li>
+    <li><a href="/hectareas-a-metros-cuadrados/">Conversor</a></li>
+    <li><a href="/articulos/">Artículos</a></li>
+  </ul>
+  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</footer>
+</body>
+</html>

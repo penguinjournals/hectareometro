@@ -244,7 +244,7 @@ function trackEvent(name, params) {
   if (typeof gtag !== 'function' || typeof document === 'undefined') {
     return;
   }
-  var TOOL_BY_ID = { hectareas: 'hectares', distance: 'distances', liters: 'liters', kilos: 'kilos' };
+  var TOOL_BY_ID = { hectareas: 'hectares', distance: 'distances', liters: 'liters', kilos: 'kilos', 'area-value': 'converter' };
   var SHARE_BY_ID = { 'whatsapp-share': 'whatsapp', 'twitter-share': 'twitter', 'facebook-share': 'facebook', 'url-share': 'copy_link' };
   var toolUsed = false;
   var start = function() {
@@ -259,7 +259,7 @@ function trackEvent(name, params) {
     // Unit selectors (input unit) and the "Ver"/"Show" ladder-rung selector.
     document.addEventListener('change', function(e) {
       var id = e.target && e.target.id;
-      if (id === 'distance-unit' || id === 'liters-unit' || id === 'kilos-unit') {
+      if (id === 'distance-unit' || id === 'liters-unit' || id === 'kilos-unit' || id === 'area-unit') {
         trackEvent('unit_change', { kind: 'input_unit', control: id });
       } else if (id === 'picto-unit') {
         trackEvent('unit_change', { kind: 'view', value: e.target.value });
