@@ -682,6 +682,15 @@ const WATER_PRICE_EUR_M3 = 2.02;
 const BOTTLE_SUPERMARKET_EUR_L = 0.50;
 const BOTTLE_BAR_EUR_L = 2.50;
 
+// Cubic hectometre article. 1 hm³ = cube 100 m per side = 1,000,000 m³ =
+// 1,000,000,000 L = 400 Olympic pools. Total Spanish reservoir capacity
+// ≈ 56,000 hm³ (46,915 hm³ = 83.7% of total, MITECO Boletín Hidrológico
+// Semanal, abril 2026 → ~56,050 hm³). Largest reservoir: La Serena (Badajoz,
+// río Zújar) 3,220 hm³ — the biggest in Spain, 3rd in Europe (CH Guadiana).
+// Domestic consumption 128 L/person/day (INE, validated 2026-07-13).
+const SPAIN_RESERVOIR_CAPACITY_HM3 = 56000;
+const LA_SERENA_HM3 = 3220;
+
 // es ↔ en slugs for the pool article; used for canonical + hreflang cross-refs.
 const POOL_ALTERNATES = {
   es: '/cuantos-litros-piscina-olimpica/',
@@ -958,7 +967,124 @@ function poolArticle(lang) {
   };
 }
 
-const LITER_ARTICLES = [poolArticle('es'), poolArticle('en')];
+// ¿Cuánto es un hectómetro cúbico? Spanish-only editorial (es + x-default).
+// The embedded tool is preset to 1 hm³ = 1e9 L, which the pictogram draws as
+// 400 Olympic pools; the copy matches that drawing.
+function cubicHectometreArticle() {
+  const INE_URL = 'https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602';
+  const MITECO_URL = 'https://www.miteco.gob.es/es/agua/temas/evaluacion-de-los-recursos-hidricos/boletin-hidrologico.html';
+  const SERENA_URL = 'https://es.wikipedia.org/wiki/Embalse_de_La_Serena';
+  const intro = `      <p>
+        En los telediarios de verano se repite el dato: «los embalses están al 55 %» o «ha entrado
+        un <b>hectómetro cúbico</b> de agua». Pero casi nadie tiene una imagen mental de cuánto es
+        eso. Un <b>hectómetro cúbico (hm³)</b> es la unidad con la que se mide el agua embalsada en
+        España, y equivale a <b>mil millones de litros</b>: 1.000.000 de metros cúbicos, o el agua
+        que cabe en <b><a href="/litros/?l=1&u=hm3">400 piscinas olímpicas</a></b>. El dibujo de
+        arriba reparte justo ese hectómetro cúbico en esas 400 piscinas.
+      </p>
+
+      <h2>¿Qué es exactamente un hectómetro cúbico?</h2>
+      <p>
+        Un hectómetro son <b>100 metros</b> (del prefijo <i>hecto-</i>, cien). Un hectómetro cúbico
+        es, por tanto, el volumen de un <b>cubo de 100 metros de lado</b>: 100 × 100 × 100 =
+        <b>1.000.000 de metros cúbicos</b>. Y como cada metro cúbico son 1.000 litros, un hm³ son
+        <b>1.000 millones de litros</b> (mil millones, 10⁹). Piensa en un cubo de agua tan alto como
+        un edificio de 30 plantas y con la base de un campo de fútbol y medio: eso es un hm³.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>1 hectómetro cúbico (hm³) es…</th><th>Equivale a</th></tr></thead>
+        <tbody>
+          <tr><td>En metros cúbicos</td><td>1.000.000 m³</td></tr>
+          <tr><td>En litros</td><td>1.000.000.000 L (mil millones)</td></tr>
+          <tr><td>Forma</td><td>un cubo de 100 × 100 × 100 metros</td></tr>
+          <tr><td>En piscinas olímpicas</td><td>400 piscinas</td></tr>
+          <tr><td>En camiones cisterna</td><td>unos 33.333 (de 30.000 litros)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Un hectómetro cúbico, en cosas que sí te imaginas</h2>
+      <p>Pincha en cualquier cifra para verla dibujada arriba a escala:</p>
+      <ul class="examples-list">
+        <li><b><a href="/litros/?l=1&u=hm3">400 piscinas olímpicas</a></b> llenas hasta el borde
+          (cada una, <a href="/cuantos-litros-piscina-olimpica/">2,5 millones de litros</a>).</li>
+        <li>Unos <b><a href="/litros/?l=1000000000&v=cisterna">33.333 camiones cisterna</a></b> de
+          agua, de 30.000 litros cada uno.</li>
+        <li><a href="/litros/?l=1000000000">Aproximadamente lo que bebe en todo un año la población
+          de Aragón</a> (unos 1,4 millones de personas, a 2 litros al día).</li>
+        <li>El <b>consumo doméstico</b> de una ciudad entera: a 128 litros por persona y día (media
+          española, <a href="${INE_URL}" target="_blank" rel="noopener">INE</a>), 1 hm³ da para el
+          gasto de casa de <b>7,8 millones de personas durante un día</b>.</li>
+      </ul>
+
+      <h2>Por qué el hectómetro cúbico es la unidad de los embalses</h2>
+      <p>
+        La capacidad total de embalse en España ronda los <b>${SPAIN_RESERVOIR_CAPACITY_HM3.toLocaleString('es-ES')} hm³</b>
+        (según el <a href="${MITECO_URL}" target="_blank" rel="noopener">Boletín Hidrológico</a>
+        del MITECO). El embalse más grande es el de <b><a href="${SERENA_URL}" target="_blank" rel="noopener">La
+        Serena</a></b> (Badajoz, sobre el río Zújar), con capacidad para <b>3.220 hm³</b>: él solo
+        podría llenar más de <b>1,2 millones de piscinas olímpicas</b>. Manejar el agua de un país
+        en litros sería absurdo (demasiados ceros), así que se usa el hm³, que redondea a cifras
+        manejables: un embalse mediano guarda unas decenas de hm³; uno grande, cientos.
+      </p>
+
+      <h2>Cómo leer «los embalses están al 60 %»</h2>
+      <p>
+        Cuando oyes que los embalses están «al 60 %», significa que entre todos guardan el 60 % de
+        su capacidad: unos <b>33.600 hm³</b> de los ${SPAIN_RESERVOIR_CAPACITY_HM3.toLocaleString('es-ES')} posibles. Por eso los
+        veranos de sequía la cifra baja y salta a los titulares —los mismos años en los que
+        <a href="/hectareas-quemadas-incendios-espana/">arden más hectáreas en incendios</a>—, y un
+        otoño lluvioso puede sumar varios hm³ en una sola semana. Ese porcentaje resume, en una
+        unidad que nadie ve pero todos citan, cuánta agua le queda al país.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos litros tiene un hectómetro cúbico?</dt>
+        <dd>Un hectómetro cúbico son <b>1.000 millones de litros</b> (1.000.000 de metros cúbicos),
+          el agua que cabe en unas <a href="/litros/?l=1&u=hm3">400 piscinas olímpicas</a>.</dd>
+
+        <dt>¿Cuánto es un hm³ en metros cúbicos?</dt>
+        <dd>Un hm³ es 1.000.000 de metros cúbicos: el volumen de un cubo de 100 metros de lado
+          (100 × 100 × 100).</dd>
+
+        <dt>¿Cuánta agua pueden embalsar los pantanos de España?</dt>
+        <dd>La capacidad total ronda los ${SPAIN_RESERVOIR_CAPACITY_HM3.toLocaleString('es-ES')} hm³. El mayor embalse es el de La Serena
+          (Badajoz), que por sí solo puede almacenar 3.220 hm³.</dd>
+
+        <dt>¿Qué significa que un embalse está al 50 %?</dt>
+        <dd>Que guarda la mitad de su capacidad. A escala nacional, «al 50 %» serían unos
+          28.000 hm³ de los ${SPAIN_RESERVOIR_CAPACITY_HM3.toLocaleString('es-ES')} que caben en todos los embalses del país.</dd>
+      </dl>
+      <p>
+        ¿Quieres visualizar otras cantidades de agua? Prueba la
+        <a href="/litros/">herramienta de litros</a>, mira cuánto es
+        <a href="/cuantos-litros-piscina-olimpica/">una piscina olímpica</a> o cuánto son
+        <a href="/100000-litros/">100.000 litros</a>. Y si lo tuyo son las superficies o las
+        distancias, tienes el <a href="/">Hectareómetro</a> y la herramienta de
+        <a href="/distancias/">distancias</a>.
+      </p>`;
+  return {
+    section: 'litros', lang: 'es', key: 'hectometro-cubico', l: 1000000000,
+    family: 'litros', published: '2026-07-20', modified: '2026-07-20',
+    slug: 'cuanto-es-un-hectometro-cubico',
+    path: '/cuanto-es-un-hectometro-cubico/',
+    title: '¿Cuánto es un hectómetro cúbico? La unidad de los embalses, explicada | Hectareómetro',
+    description: 'Un hectómetro cúbico (hm³) son 1.000 millones de litros: 1.000.000 m³, un cubo de 100 metros de lado o 400 piscinas olímpicas. La unidad de los embalses, explicada y dibujada.',
+    h1: '¿Cuánto es un hectómetro cúbico (hm³)?',
+    intro,
+    question: '¿Cuánto es un hectómetro cúbico?',
+    answer: 'Un hectómetro cúbico (hm³) son 1.000 millones de litros, es decir, 1.000.000 de metros cúbicos: el volumen de un cubo de 100 metros de lado, equivalente a unas 400 piscinas olímpicas. Es la unidad con la que se mide el agua de los embalses.',
+    faqs: [
+      { q: '¿Cuántos litros tiene un hectómetro cúbico?', a: 'Un hectómetro cúbico son 1.000 millones de litros (1.000.000 de metros cúbicos), el agua que cabe en unas 400 piscinas olímpicas.' },
+      { q: '¿Cuánto es un hm³ en metros cúbicos?', a: 'Un hm³ es 1.000.000 de metros cúbicos: el volumen de un cubo de 100 metros de lado (100 × 100 × 100).' },
+      { q: '¿Cuánta agua pueden embalsar los pantanos de España?', a: 'La capacidad total ronda los 56.000 hm³. El mayor embalse es el de La Serena (Badajoz), que por sí solo puede almacenar 3.220 hm³.' },
+      { q: '¿Qué significa que un embalse está al 50 %?', a: 'Que guarda la mitad de su capacidad. A escala nacional, «al 50 %» serían unos 28.000 hm³ de los 56.000 que caben en todos los embalses del país.' },
+    ],
+    linkLabel: '¿Cuánto es un hectómetro cúbico?',
+  };
+}
+
+const LITER_ARTICLES = [poolArticle('es'), poolArticle('en'), cubicHectometreArticle()];
 
 // Every editorial article, whatever its family: the single source for the
 // /articulos/ hub, the article cards and the sitemap. Add new article lists
