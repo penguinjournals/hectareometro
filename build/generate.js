@@ -1167,8 +1167,15 @@ function relatedDistanceLinks(lang) {
 // review & dose-response meta-analysis (Ding et al., 57 studies) — ~7,000
 // steps/day cut all-cause mortality by ~47% vs 2,000, with benefits levelling
 // off around 5,000-7,000 and still improving up to ~12,000.
-function tenThousandStepsArticle() {
+const STEPS_ALTERNATES = {
+  es: '/cuanto-son-10000-pasos/',
+  en: '/en/how-far-is-10000-steps/',
+};
+
+function tenThousandStepsArticle(lang) {
+  const es = lang === 'es';
   const LANCET_URL = 'https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(25)00164-1/fulltext';
+  if (es) {
   const distUrl = '/distancias/?d=7.5&u=km&lat=40.4168&lon=-3.7038&z=11';
   const intro = `      <p>
         <b>10.000 pasos son, más o menos, entre 7 y 8 kilómetros</b> de camino: unos
@@ -1288,10 +1295,136 @@ function tenThousandStepsArticle() {
       { q: '¿Cuánto se tarda en dar 10.000 pasos?', a: 'Alrededor de 1 hora y media a ritmo de paseo (5 km/h), o hasta 1 hora y 40 minutos a un paso tranquilo. No hace falta hacerlos seguidos: se acumulan a lo largo del día.' },
     ],
     linkLabel: '¿Cuántos kilómetros son 10.000 pasos?',
+    alternates: STEPS_ALTERNATES,
+  };
+  }
+
+  // English mirror (universal topic). Preset centred on London; leads with the
+  // km answer and gives the mile equivalent alongside (the en tool defaults to
+  // miles, but the article's headline figure is 7.5 km).
+  const distUrl = '/en/distances/?d=7.5&u=km&lat=51.5074&lon=-0.1278&z=11';
+  const intro = `      <p>
+        <b>10,000 steps come to roughly 7 to 8 kilometres</b> of walking: about
+        <b><a href="${distUrl}">7.5 km</a></b> — around <b>4.7 miles</b> — if your stride is close to
+        0.75 metres, the average for an adult. The drawing above shows that 7.5 km radius as a circle
+        centred on London: drag the map to your own city to see how far you would get walking in a
+        straight line from your front door.
+      </p>
+      <p>
+        The maths is simple: with an <b>average step of 0.7 to 0.8 metres</b>, a kilometre takes
+        between <b>1,300 and 1,400 steps</b> (a mile is roughly 2,000–2,250). So 10,000 steps land
+        around 7–8 km depending on your height and pace — taller, faster walkers take longer strides
+        and therefore fewer steps per kilometre.
+      </p>
+
+      <h2>Where does the 10,000-steps figure come from?</h2>
+      <p>
+        It may surprise you: the 10,000-steps target <b>did not come from a medical study</b>, but
+        from a marketing campaign. In <b>1965</b>, shortly after the 1964 Tokyo Olympics, the
+        Japanese company Yamasa launched one of the first pocket pedometers and called it
+        <b>"Manpo-kei"</b> (万歩計), which literally means <b>"10,000-steps meter"</b>. The story goes
+        that they picked the number partly because the Japanese character for "10,000" (万) looks a
+        little like a walking person, and partly because a round figure is easy to remember and to
+        sell. The round goal stuck, and today watches and phones the world over ship with it —
+        even though there was no science behind it to begin with.
+      </p>
+
+      <h2>How many steps do you actually need?</h2>
+      <p>
+        The good news is that <b>you don't have to reach 10,000</b> to get almost all of the benefit.
+        The largest review to date, published in <i>The Lancet Public Health</i> in 2025
+        (<a href="${LANCET_URL}" target="_blank" rel="noopener">a meta-analysis of 57 studies</a>),
+        found that walking about <b>7,000 steps a day</b> is linked to a <b>47% lower risk of dying
+        early</b> compared with 2,000, along with lower risk of cardiovascular disease, type 2
+        diabetes, dementia and depression. The benefit rises quickly up to <b>5,000–7,000 steps</b>
+        and then flattens out: each extra 1,000 steps still helps, but less and less, up to about
+        12,000. In other words, 10,000 is a great goal if you hit it, but <b>7,000 is already an
+        excellent, far more realistic target</b> for most people.
+      </p>
+
+      <h2>How long does it take to walk 10,000 steps?</h2>
+      <p>
+        At a normal walking pace (about 5 km/h, or roughly 3 mph), those 7.5 km take approximately
+        <b>1 hour and a half</b>; at a gentler pace it can stretch to <b>1 hour 40 minutes</b>. You
+        don't have to do them in one go — they add up over the day, from the commute to the shops to
+        walking the dog. As for energy, 10,000 steps burn on the order of <b>300 to 500 kcal</b>,
+        depending on your weight and pace.
+      </p>
+
+      <h2>How far your steps go</h2>
+      <p>Click any distance to see it drawn to scale above, centred on London:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Steps</th><th>Approximate distance</th></tr></thead>
+        <tbody>
+          <tr><td>1,000 steps</td><td><a href="/en/distances/?d=0.75&u=km&lat=51.5074&lon=-0.1278&z=14">0.75 km</a> (~0.47 mi)</td></tr>
+          <tr><td>2,500 steps</td><td><a href="/en/distances/?d=1.9&u=km&lat=51.5074&lon=-0.1278&z=13">1.9 km</a> (~1.2 mi)</td></tr>
+          <tr><td>5,000 steps</td><td><a href="/en/distances/?d=3.75&u=km&lat=51.5074&lon=-0.1278&z=12">3.75 km</a> (~2.3 mi)</td></tr>
+          <tr><td>7,000 steps</td><td><a href="/en/distances/?d=5.25&u=km&lat=51.5074&lon=-0.1278&z=12">5.25 km</a> (~3.3 mi)</td></tr>
+          <tr><td>10,000 steps</td><td><a href="${distUrl}">7.5 km</a> (~4.7 mi)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        These are straight-line distances from the centre: they give you a feel for the magnitude,
+        not the real route you'd follow along streets. Change the number in the
+        <a href="/en/distances/">distances tool</a> to try your own.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How many kilometres is 10,000 steps?</dt>
+        <dd>Between 7 and 8 kilometres — about <a href="${distUrl}">7.5 km</a> (roughly 4.7 miles)
+          with an average stride of 0.75 metres. It depends on your height and pace.</dd>
+
+        <dt>How many steps are there in a kilometre?</dt>
+        <dd>Between 1,300 and 1,400 steps, with an average step of 0.7 to 0.8 metres. The taller you
+          are, the longer your stride and the fewer steps you need per kilometre (a mile is roughly
+          2,000–2,250 steps).</dd>
+
+        <dt>Where does the 10,000-steps idea come from?</dt>
+        <dd>From a 1965 Japanese marketing campaign: the "Manpo-kei" ("10,000-steps meter") pedometer
+          made by Yamasa. It was a round, catchy number, not a recommendation based on studies.</dd>
+
+        <dt>Do you need 10,000 steps a day to be healthy?</dt>
+        <dd>Not necessarily. According to a 2025 meta-analysis in <i>The Lancet Public Health</i>,
+          about 7,000 steps a day already cut the risk of dying early by around 47% compared with
+          2,000, and the benefit flattens out beyond 5,000–7,000 steps. 10,000 is great, but 7,000
+          is an excellent and more realistic target.</dd>
+
+        <dt>How long does it take to walk 10,000 steps?</dt>
+        <dd>About 1 hour and a half at a normal walking pace (5 km/h ≈ 3 mph), or up to 1 hour 40
+          minutes at a gentle pace. You don't have to do them all at once — they add up over the
+          day.</dd>
+      </dl>
+      <p>
+        Want to keep playing with distances? See <a href="/en/distances/?d=42.195&u=km&lat=51.5074&lon=-0.1278&z=9">how
+        long a marathon is</a> or open the <a href="/en/distances/">distances tool</a> and draw your
+        own. And if areas are more your thing, there is the <a href="/en/">Hectareometer</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: '10000-pasos', ha: 0,
+    family: 'distancias', published: '2026-07-21', modified: '2026-07-21',
+    slug: 'how-far-is-10000-steps',
+    path: STEPS_ALTERNATES.en, alternates: STEPS_ALTERNATES,
+    dist: 7.5, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 11; var PRESET_LAT = 51.5074; var PRESET_LON = -0.1278;',
+    title: 'How far is 10,000 steps? In km and miles, on a map | Hectareometer',
+    description: '10,000 steps come to about 7.5 km (4.7 miles) — between 7 and 8 km. Where the figure comes from, how many steps you really need and how long it takes. See it drawn to scale on a map.',
+    h1: 'How far is 10,000 steps?',
+    intro,
+    question: 'How many kilometres is 10,000 steps?',
+    answer: '10,000 steps come to roughly 7 to 8 kilometres: about 7.5 km (4.7 miles) with an average stride of 0.75 metres. A kilometre takes between 1,300 and 1,400 steps.',
+    faqs: [
+      { q: 'How many kilometres is 10,000 steps?', a: 'Between 7 and 8 kilometres — about 7.5 km (roughly 4.7 miles) with an average stride of 0.75 metres. It depends on your height and pace.' },
+      { q: 'How many steps are there in a kilometre?', a: 'Between 1,300 and 1,400 steps, with an average step of 0.7 to 0.8 metres. The taller you are, the longer your stride and the fewer steps you need per kilometre (a mile is roughly 2,000–2,250 steps).' },
+      { q: 'Where does the 10,000-steps idea come from?', a: 'From a 1965 Japanese marketing campaign: the "Manpo-kei" ("10,000-steps meter") pedometer made by Yamasa. It was a round, catchy number, not a recommendation based on studies.' },
+      { q: 'Do you need 10,000 steps a day to be healthy?', a: 'Not necessarily. According to a 2025 meta-analysis in The Lancet Public Health, about 7,000 steps a day already cut the risk of dying early by around 47% compared with 2,000, and the benefit flattens out beyond 5,000–7,000 steps. 10,000 is great, but 7,000 is an excellent and more realistic target.' },
+      { q: 'How long does it take to walk 10,000 steps?', a: 'About 1 hour and a half at a normal walking pace (5 km/h ≈ 3 mph), or up to 1 hour 40 minutes at a gentle pace. You don\'t have to do them all at once — they add up over the day.' },
+    ],
+    linkLabel: 'How far is 10,000 steps?',
   };
 }
 
-const DIST_ARTICLES = [tenThousandStepsArticle()];
+const DIST_ARTICLES = [tenThousandStepsArticle('es'), tenThousandStepsArticle('en')];
 
 // Every editorial article, whatever its family: the single source for the
 // /articulos/ hub, the article cards and the sitemap. Add new article lists
