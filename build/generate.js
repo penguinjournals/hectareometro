@@ -20,6 +20,7 @@ const ROOT = path.join(__dirname, '..');
 const TEMPLATE = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
 const TEMPLATE_LITROS = fs.readFileSync(path.join(__dirname, 'template-litros.html'), 'utf8');
 const TEMPLATE_KILOS = fs.readFileSync(path.join(__dirname, 'template-kilos.html'), 'utf8');
+const TEMPLATE_DISTANCIAS = fs.readFileSync(path.join(__dirname, 'template-distancias.html'), 'utf8');
 const BASE_URL = 'https://hectareometro.com';
 const FOOTBALL_FIELD_M2 = 7140;
 const ACRES_PER_HECTARE = 2.47105;
@@ -91,13 +92,18 @@ const UI = {
     kiloUnitOptions: '<option value="kg" selected>kilos</option>\n      <option value="lb">libras</option>\n      <option value="t">toneladas</option>',
     relatedHeadingKilos: 'Mira otros pesos',
     backTextKilos: '← Volver a la herramienta de kilos',
+    distOverlayPre: '¿Hasta dónde llegaría en', distOverlayPost: '?',
+    distAriaUnit: 'Unidad de distancia',
+    distUnitOptions: '<option value="km" selected>km</option>\n      <option value="m">metros</option>\n      <option value="mi">millas</option>',
+    relatedHeadingDistances: 'Mira otras distancias',
+    backTextDistances: '← Volver a la herramienta de distancias',
     navArticles: 'Artículos',
     hubTitle: 'Artículos: cantidades y magnitudes explicadas | Hectareómetro',
     hubDescription: 'Artículos que explican cantidades difíciles de imaginar: hectáreas quemadas en incendios, los litros de una piscina olímpica y más, siempre dibujadas a escala.',
     hubH1: 'Artículos',
     hubIntro: 'Historias y guías sobre cantidades difíciles de imaginar: superficies, volúmenes de agua, pesos… siempre con la cifra dibujada a escala para que se entienda de verdad.',
     hubRead: 'Leer →',
-    familyLabels: { hectareas: 'Hectáreas', litros: 'Litros', kilos: 'Kilos' },
+    familyLabels: { hectareas: 'Hectáreas', litros: 'Litros', kilos: 'Kilos', distancias: 'Distancias' },
     allArticles: 'Todos los artículos →',
     articlesHeading: 'Artículos',
   },
@@ -121,13 +127,18 @@ const UI = {
     kiloUnitOptions: '<option value="lb" selected>pounds</option>\n      <option value="kg">kilos</option>\n      <option value="t">tonnes</option>',
     relatedHeadingKilos: 'See other weights',
     backTextKilos: '← Back to the kilos tool',
+    distOverlayPre: 'How far would I get in', distOverlayPost: '?',
+    distAriaUnit: 'Distance unit',
+    distUnitOptions: '<option value="km" selected>km</option>\n      <option value="m">metres</option>\n      <option value="mi">miles</option>',
+    relatedHeadingDistances: 'See other distances',
+    backTextDistances: '← Back to the distances tool',
     navArticles: 'Articles',
     hubTitle: 'Articles: quantities and magnitudes explained | Hectareometer',
     hubDescription: 'Articles that explain hard-to-picture quantities: the litres in an Olympic swimming pool and more, always drawn to scale.',
     hubH1: 'Articles',
     hubIntro: 'Stories and guides about hard-to-picture quantities: areas, volumes of water, weights… always with the figure drawn to scale so it actually sinks in.',
     hubRead: 'Read →',
-    familyLabels: { hectareas: 'Hectares', litros: 'Liters', kilos: 'Kilos' },
+    familyLabels: { hectareas: 'Hectares', litros: 'Liters', kilos: 'Kilos', distancias: 'Distances' },
     allArticles: 'All articles →',
     articlesHeading: 'Articles',
   },
@@ -1086,11 +1097,169 @@ function cubicHectometreArticle() {
 
 const LITER_ARTICLES = [poolArticle('es'), poolArticle('en'), cubicHectometreArticle()];
 
+// ---- editorial distances articles (Spanish-only, map-based) ----------------
+
+// Evergreen distance chips for the related block of distances articles (there
+// are no distances landing pages, so we link the tool + a few known-good
+// presets that fit their viewport).
+function relatedDistanceLinks(lang) {
+  const es = lang === 'es';
+  const chips = es ? [
+    ['/distancias/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'Un maratón (42,195 km)'],
+    ['/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
+    ['/distancias/?d=1&u=mi&lat=40.4168&lon=-3.7038&z=12', 'Una milla'],
+    ['/distancias/', 'La herramienta de distancias'],
+  ] : [
+    ['/en/distances/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'A marathon (42.195 km)'],
+    ['/en/distances/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
+    ['/en/distances/?d=1&u=mi&lat=40.4168&lon=-3.7038&z=12', 'One mile'],
+    ['/en/distances/', 'The distances tool'],
+  ];
+  return chips.map(([href, label]) => `        <li><a href="${href}">${escapeHtml(label)}</a></li>`).join('\n');
+}
+
+// ¿Cuánto son 10.000 pasos? Spanish-only editorial (es + x-default). The
+// embedded distances tool is preset to a 7.5 km radius circle over Madrid,
+// which is what 10,000 steps come to at a ~0.75 m stride.
+// Data validated 2026-07-21 (web): average stride 0.70-0.80 m → 1 km ≈
+// 1,300-1,400 steps → 10,000 steps ≈ 7-8 km (7.5 km at 0.75 m). Origin of the
+// figure: the "Manpo-kei" (万歩計, "10,000-steps meter") pedometer sold by
+// Yamasa in 1965, after the 1964 Tokyo Olympics — a marketing number, not a
+// research finding. Current evidence: Lancet Public Health 2025 systematic
+// review & dose-response meta-analysis (Ding et al., 57 studies) — ~7,000
+// steps/day cut all-cause mortality by ~47% vs 2,000, with benefits levelling
+// off around 5,000-7,000 and still improving up to ~12,000.
+function tenThousandStepsArticle() {
+  const LANCET_URL = 'https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(25)00164-1/fulltext';
+  const distUrl = '/distancias/?d=7.5&u=km&lat=40.4168&lon=-3.7038&z=11';
+  const intro = `      <p>
+        <b>10.000 pasos son, más o menos, entre 7 y 8 kilómetros</b> de camino: unos
+        <b><a href="${distUrl}">7,5 kilómetros</a></b> si tu zancada mide alrededor de 0,75 metros,
+        la media de una persona adulta. El dibujo de arriba muestra ese radio de 7,5 km como un
+        círculo con centro en Madrid: arrastra el mapa hasta tu ciudad para ver hasta dónde
+        llegarías caminando en línea recta desde tu casa.
+      </p>
+      <p>
+        La cuenta es sencilla: con un <b>paso medio de 0,7 a 0,8 metros</b>, en un kilómetro caben
+        entre <b>1.300 y 1.400 pasos</b>. Así que 10.000 pasos rondan los 7-8 km según tu estatura y
+        tu ritmo (la gente más alta y más rápida da pasos más largos y, por tanto, menos pasos por
+        kilómetro).
+      </p>
+
+      <h2>¿De dónde salen los 10.000 pasos?</h2>
+      <p>
+        Puede que te sorprenda: la cifra de 10.000 pasos <b>no nació de ningún estudio médico</b>,
+        sino de una campaña de marketing. En <b>1965</b>, poco después de los Juegos Olímpicos de
+        Tokio de 1964, la empresa japonesa Yamasa lanzó uno de los primeros podómetros de bolsillo y
+        lo llamó <b>«Manpo-kei»</b> (万歩計), que significa literalmente <b>«medidor de 10.000
+        pasos»</b>. Se cuenta que eligieron ese número en parte porque el carácter japonés de
+        «10.000» (万) recuerda a una persona caminando, y porque era una cifra redonda, fácil de
+        recordar y de vender. El objetivo redondo se quedó grabado y hoy lo llevan de serie relojes y
+        móviles de todo el mundo, aunque en su origen no había ciencia detrás.
+      </p>
+
+      <h2>¿Cuántos pasos hacen falta de verdad?</h2>
+      <p>
+        La buena noticia es que <b>no necesitas llegar a 10.000</b> para llevarte casi todo el
+        beneficio. La mayor revisión hecha hasta la fecha, publicada en <i>The Lancet Public
+        Health</i> en 2025 (<a href="${LANCET_URL}" target="_blank" rel="noopener">un metaanálisis
+        de 57 estudios</a>), encontró que caminar unos <b>7.000 pasos al día</b> se asocia a un
+        <b>47 % menos de mortalidad</b> frente a quedarse en 2.000, además de menos riesgo de
+        enfermedad cardiovascular, diabetes tipo 2, demencia y depresión. El beneficio crece rápido
+        hasta los <b>5.000-7.000 pasos</b> y a partir de ahí la curva se aplana: cada 1.000 pasos de
+        más siguen sumando algo, pero cada vez menos, hasta unos 12.000. En otras palabras, 10.000
+        es una meta estupenda si la alcanzas, pero <b>7.000 ya es un objetivo excelente</b> y mucho
+        más realista para la mayoría.
+      </p>
+
+      <h2>¿Cuánto se tarda en dar 10.000 pasos?</h2>
+      <p>
+        A un ritmo de paseo normal (unos 5 km/h), esos 7,5 km se recorren en aproximadamente
+        <b>1 hora y media</b>; a un paso más tranquilo puede irse a <b>1 hora y 40 minutos</b>.
+        No hace falta hacerlos del tirón: se van sumando a lo largo del día —ir al trabajo, la
+        compra, pasear al perro—. En cuanto al gasto energético, 10.000 pasos suponen del orden de
+        <b>300 a 500 kcal</b>, según tu peso y el ritmo.
+      </p>
+
+      <h2>Cuántos kilómetros son tus pasos</h2>
+      <p>Pincha en cualquier distancia para verla dibujada arriba a escala, con centro en Madrid:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Pasos</th><th>Distancia aproximada</th></tr></thead>
+        <tbody>
+          <tr><td>1.000 pasos</td><td><a href="/distancias/?d=0.75&u=km&lat=40.4168&lon=-3.7038&z=14">0,75 km</a> (unos 750 m)</td></tr>
+          <tr><td>2.500 pasos</td><td><a href="/distancias/?d=1.9&u=km&lat=40.4168&lon=-3.7038&z=13">1,9 km</a></td></tr>
+          <tr><td>5.000 pasos</td><td><a href="/distancias/?d=3.75&u=km&lat=40.4168&lon=-3.7038&z=12">3,75 km</a></td></tr>
+          <tr><td>7.000 pasos</td><td><a href="/distancias/?d=5.25&u=km&lat=40.4168&lon=-3.7038&z=12">5,25 km</a></td></tr>
+          <tr><td>10.000 pasos</td><td><a href="${distUrl}">7,5 km</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        Son distancias en línea recta desde el centro: sirven para hacerte una idea de la magnitud,
+        no de la ruta real que seguirías por calles. Cambia el número en la
+        <a href="/distancias/">herramienta de distancias</a> para probar la tuya.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos kilómetros son 10.000 pasos?</dt>
+        <dd>Entre 7 y 8 kilómetros, unos <a href="${distUrl}">7,5 km</a> con una zancada media de
+          0,75 metros. Depende de tu estatura y tu ritmo.</dd>
+
+        <dt>¿Cuántos pasos hay en un kilómetro?</dt>
+        <dd>Entre 1.300 y 1.400 pasos, con un paso medio de 0,7 a 0,8 metros. Cuanto más alto eres,
+          más largo es el paso y menos pasos necesitas por kilómetro.</dd>
+
+        <dt>¿De dónde viene lo de los 10.000 pasos?</dt>
+        <dd>De una campaña de marketing japonesa de 1965: el podómetro «Manpo-kei» («medidor de
+          10.000 pasos») de la empresa Yamasa. Era un número redondo y pegadizo, no una
+          recomendación basada en estudios.</dd>
+
+        <dt>¿Hay que hacer 10.000 pasos al día para estar sano?</dt>
+        <dd>No es imprescindible. Según un metaanálisis de 2025 en <i>The Lancet Public Health</i>,
+          unos 7.000 pasos al día ya reducen la mortalidad en torno a un 47 % frente a 2.000, y el
+          beneficio se aplana a partir de los 5.000-7.000 pasos. 10.000 está muy bien, pero 7.000 es
+          un objetivo excelente y más realista.</dd>
+
+        <dt>¿Cuánto se tarda en dar 10.000 pasos?</dt>
+        <dd>Alrededor de 1 hora y media a ritmo de paseo (5 km/h), o hasta 1 hora y 40 minutos a un
+          paso tranquilo. No hace falta hacerlos seguidos: se acumulan a lo largo del día.</dd>
+      </dl>
+      <p>
+        ¿Quieres seguir jugando con distancias? Mira <a href="/distancias/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9">cuánto
+        mide un maratón</a> o abre la <a href="/distancias/">herramienta de distancias</a> y dibuja
+        la tuya. Y si lo tuyo son las superficies, tienes el <a href="/">Hectareómetro</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: '10000-pasos', ha: 0,
+    family: 'distancias', published: '2026-07-21', modified: '2026-07-21',
+    slug: 'cuanto-son-10000-pasos',
+    path: '/cuanto-son-10000-pasos/',
+    dist: 7.5, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 11; var PRESET_LAT = 40.4168; var PRESET_LON = -3.7038;',
+    title: '¿Cuántos kilómetros son 10.000 pasos? Míralo en un mapa | Hectareómetro',
+    description: '10.000 pasos son unos 7,5 km (entre 7 y 8 km). De dónde viene la cifra, cuántos pasos hacen falta de verdad y cuánto se tarda. Míralo dibujado a escala en un mapa.',
+    h1: '¿Cuántos kilómetros son 10.000 pasos?',
+    intro,
+    question: '¿Cuántos kilómetros son 10.000 pasos?',
+    answer: '10.000 pasos son, más o menos, entre 7 y 8 kilómetros: unos 7,5 km con una zancada media de 0,75 metros. En un kilómetro caben entre 1.300 y 1.400 pasos.',
+    faqs: [
+      { q: '¿Cuántos kilómetros son 10.000 pasos?', a: 'Entre 7 y 8 kilómetros, unos 7,5 km con una zancada media de 0,75 metros. Depende de tu estatura y tu ritmo.' },
+      { q: '¿Cuántos pasos hay en un kilómetro?', a: 'Entre 1.300 y 1.400 pasos, con un paso medio de 0,7 a 0,8 metros. Cuanto más alto eres, más largo es el paso y menos pasos necesitas por kilómetro.' },
+      { q: '¿De dónde viene lo de los 10.000 pasos?', a: 'De una campaña de marketing japonesa de 1965: el podómetro «Manpo-kei» («medidor de 10.000 pasos») de la empresa Yamasa. Era un número redondo y pegadizo, no una recomendación basada en estudios.' },
+      { q: '¿Hay que hacer 10.000 pasos al día para estar sano?', a: 'No es imprescindible. Según un metaanálisis de 2025 en The Lancet Public Health, unos 7.000 pasos al día ya reducen la mortalidad en torno a un 47 % frente a 2.000, y el beneficio se aplana a partir de los 5.000-7.000 pasos. 10.000 está muy bien, pero 7.000 es un objetivo excelente y más realista.' },
+      { q: '¿Cuánto se tarda en dar 10.000 pasos?', a: 'Alrededor de 1 hora y media a ritmo de paseo (5 km/h), o hasta 1 hora y 40 minutos a un paso tranquilo. No hace falta hacerlos seguidos: se acumulan a lo largo del día.' },
+    ],
+    linkLabel: '¿Cuántos kilómetros son 10.000 pasos?',
+  };
+}
+
+const DIST_ARTICLES = [tenThousandStepsArticle()];
+
 // Every editorial article, whatever its family: the single source for the
 // /articulos/ hub, the article cards and the sitemap. Add new article lists
 // here and they show up everywhere at once.
 function allArticles() {
-  return [...ARTICLES, ...LITER_ARTICLES];
+  return [...ARTICLES, ...LITER_ARTICLES, ...DIST_ARTICLES];
 }
 
 function articlesForLang(lang) {
@@ -1200,6 +1369,8 @@ function breadcrumbTrail(page, canonical) {
   const isArticle = !!page.path;
   if (isArticle) {
     items.push({ name: ui.navArticles, url: BASE_URL + articlesHubPath(lang) });
+  } else if (page.section === 'distancias') {
+    items.push({ name: ui.navDistances, url: BASE_URL + distancesPath(lang) });
   } else if (page.section === 'litros') {
     items.push({ name: ui.navLiters, url: BASE_URL + litersPath(lang) });
   } else if (page.section === 'kilos') {
@@ -1269,7 +1440,7 @@ function buildJsonLd(page, canonical, breadcrumbItems) {
 // hub. Empty when the family has no other articles (e.g. kilos, for now).
 function relatedArticlesBlock(page) {
   const lang = page.lang;
-  const family = page.section === 'litros' ? 'litros' : page.section === 'kilos' ? 'kilos' : 'hectareas';
+  const family = page.section === 'litros' ? 'litros' : page.section === 'kilos' ? 'kilos' : page.section === 'distancias' ? 'distancias' : 'hectareas';
   const articles = articlesForLang(lang).filter(a => a.family === family && a.key !== page.key);
   if (!articles.length) return '';
   const ui = UI[lang];
@@ -1417,6 +1588,7 @@ function render(page, template) {
   const ui = UI[page.lang];
   const isLiters = page.section === 'litros';
   const isKilos = page.section === 'kilos';
+  const isDistances = page.section === 'distancias';
   // Editorial articles (any section) carry their own path and exist in one
   // language only: canonical = BASE_URL + path, hreflang es + x-default, and
   // the language switch points at the section's tool in the other language
@@ -1442,7 +1614,7 @@ function render(page, template) {
       `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
       `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
     ].join('\n');
-    const switchHref = isLiters ? litersPath(other) : isKilos ? kilosPath(other) : homePath(other);
+    const switchHref = isLiters ? litersPath(other) : isKilos ? kilosPath(other) : isDistances ? distancesPath(other) : homePath(other);
     langSwitch = `<a href="${switchHref}" hreflang="${other}">${UI[page.lang].switchLabel}</a>`;
   } else if (isLiters) {
     canonical = literFullUrl(page.lang, page.key);
@@ -1475,6 +1647,12 @@ function render(page, template) {
     HA: String(page.ha),
     L: String(page.l || ''),
     K: String(page.k || ''),
+    DIST: String(page.dist || ''),
+    DIST_UNIT: page.distUnit || '',
+    DIST_OVERLAY_PRE: ui.distOverlayPre,
+    DIST_OVERLAY_POST: ui.distOverlayPost,
+    DIST_ARIA_UNIT: ui.distAriaUnit,
+    DIST_UNIT_OPTIONS: ui.distUnitOptions,
     PRESET_EXTRA: page.presetExtra || '',
     LITER_TOOL_PRE: ui.literToolPre,
     LITER_UNIT_OPTIONS: ui.literUnitOptions,
@@ -1495,9 +1673,10 @@ function render(page, template) {
     LABEL_HEIGHT: ui.labelHeight,
     H1: escapeHtml(page.h1),
     INTRO: page.intro,
-    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : ui.relatedHeading,
+    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
     RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
       : isKilos ? relatedKiloLinks(page.lang, page.key)
+      : isDistances ? relatedDistanceLinks(page.lang)
       : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
     NAV_MEASURE_URL: measurePath(page.lang),
@@ -1513,7 +1692,7 @@ function render(page, template) {
     NAV_ARTICLES_URL: articlesHubPath(page.lang),
     NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
-    BACK_TEXT: isLiters ? ui.backTextLiters : isKilos ? ui.backTextKilos : ui.backText,
+    BACK_TEXT: isLiters ? ui.backTextLiters : isKilos ? ui.backTextKilos : isDistances ? ui.backTextDistances : ui.backText,
   };
   let out = template || TEMPLATE;
   Object.keys(repl).forEach(k => {
@@ -1535,6 +1714,7 @@ function writeSitemap() {
   LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => urls.push(kiloFullUrl(lang, k))));
   ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   LITER_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
+  DIST_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
     const isSectionHome = LANGS.some(lang => u === BASE_URL + measurePath(lang) || u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + converterPath(lang) || u === BASE_URL + articlesHubPath(lang));
@@ -1596,10 +1776,17 @@ function main() {
     manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
     console.log(`generated ${page.path}`);
   });
+  DIST_ARTICLES.forEach(page => {
+    const dir = path.join(ROOT, page.path.replace(/^\/+|\/+$/g, ''));
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_DISTANCIAS));
+    manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
+    console.log(`generated ${page.path}`);
+  });
   LANGS.forEach(lang => manifest.push(writeArticlesHub(lang)));
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length + LITER_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
 }
 
 main();

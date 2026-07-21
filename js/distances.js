@@ -135,6 +135,21 @@ function refreshDistanceCircle() {
 }
 
 function initMap() {
+  // Landing pages can preset the tool (read BEFORE the URL params so a shared
+  // ?d=&u=&lat= link still wins over the preset, mirroring hectareas.js).
+  if (typeof PRESET_DISTANCE !== 'undefined' && PRESET_DISTANCE) {
+    baseDistance = PRESET_DISTANCE;
+  }
+  if (typeof PRESET_DIST_UNIT !== 'undefined' && UNIT_TO_METERS[PRESET_DIST_UNIT]) {
+    baseUnit = PRESET_DIST_UNIT;
+  }
+  if (typeof PRESET_ZOOM !== 'undefined' && PRESET_ZOOM) {
+    zoomLevel = PRESET_ZOOM;
+  }
+  if (typeof PRESET_LAT !== 'undefined' && typeof PRESET_LON !== 'undefined') {
+    mapLatitude = PRESET_LAT;
+    mapLongitude = PRESET_LON;
+  }
   initializeDistanceParametersIfSet();
   $('#distance').val(baseDistance);
   $('#distance-unit').val(baseUnit);
