@@ -525,6 +525,14 @@ a, a:link, a:visited, a:hover, a:active {
   margin-bottom: 16px;
 }
 
+/* Editorial article byline (published / updated date) */
+.article-date {
+  font-size: 14px;
+  color: var(--c-text-muted);
+  margin-top: -8px;
+  margin-bottom: 20px;
+}
+
 /* Equivalences table */
 .equiv-table {
   width: 100%;

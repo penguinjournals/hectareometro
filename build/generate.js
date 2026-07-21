@@ -69,6 +69,44 @@ function escapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// ---- article dates -------------------------------------------------------
+
+const MONTHS = {
+  es: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+};
+
+// "2026-07-21" -> "21 de julio de 2026" (es) / "21 July 2026" (en). Parsed by
+// components (no Date/timezone shifting).
+function formatArticleDate(dateStr, lang) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const month = MONTHS[lang][m - 1];
+  return lang === 'es' ? `${d} de ${month} de ${y}` : `${d} ${month} ${y}`;
+}
+
+// Byline shown under the H1 of editorial articles: publish date, plus the
+// update date when the article was modified later.
+function articleDateHtml(page) {
+  if (!page.published) return '';
+  const lang = page.lang;
+  const label = lang === 'es' ? 'Publicado el' : 'Published on';
+  let html = `<p class="article-date">${label} <time datetime="${page.published}">${formatArticleDate(page.published, lang)}</time>`;
+  if (page.modified && page.modified !== page.published) {
+    const upd = lang === 'es' ? ' · actualizado el' : ' · updated on';
+    html += `${upd} <time datetime="${page.modified}">${formatArticleDate(page.modified, lang)}</time>`;
+  }
+  return html + '</p>';
+}
+
+// Newest-first: sort a list of article objects by publish date descending
+// (stable: articles sharing a date keep their list order).
+function byNewest(articles) {
+  return articles
+    .map((a, i) => [a, i])
+    .sort((x, y) => (y[0].published || '').localeCompare(x[0].published || '') || x[1] - y[1])
+    .map(pair => pair[0]);
+}
+
 // ---- per-language UI chrome (template placeholders) ----------------------
 
 const UI = {
@@ -1262,8 +1300,10 @@ function allArticles() {
   return [...ARTICLES, ...LITER_ARTICLES, ...DIST_ARTICLES];
 }
 
+// Newest-first, so every listing (the hub, the article cards, the JSON-LD
+// ItemList) shows the most recent articles first.
 function articlesForLang(lang) {
-  return allArticles().filter(a => a.lang === lang);
+  return byNewest(allArticles().filter(a => a.lang === lang));
 }
 
 // ---- kilos landing pages ---------------------------------------------------
@@ -1672,6 +1712,7 @@ function render(page, template) {
     LABEL_WIDTH: ui.labelWidth,
     LABEL_HEIGHT: ui.labelHeight,
     H1: escapeHtml(page.h1),
+    ARTICLE_DATE: isArticle ? articleDateHtml(page) : '',
     INTRO: page.intro,
     RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
     RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
