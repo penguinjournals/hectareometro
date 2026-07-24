@@ -100,6 +100,8 @@ function getRadiusInMetersFromHectareas(hectareas){
 // A standard football pitch (~105 x 68 m) is about 7140 m².
 var FOOTBALL_FIELD_SQUARE_METERS = 7140;
 var ACRES_PER_HECTARE = 2.47105;
+// Metres in an international mile — single source shared by the distance tools.
+var MI_METERS = 1609.344;
 
 // Current language is set per page via PAGE_LANG (defaults to Spanish).
 var SITE_LANG = (typeof PAGE_LANG !== 'undefined') ? PAGE_LANG : 'es';

@@ -113,7 +113,7 @@ const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
     navDistances: 'Distancias', navLiters: 'Litros', navKilos: 'Kilos', navMenu: 'Menú',
-    navMeasure: 'Medir una superficie', navConverter: 'Conversor',
+    navMeasure: 'Medir una superficie', navMeasureDist: 'Medir distancias', navConverter: 'Conversor',
     converterChipLabel: 'Hectáreas a metros cuadrados',
     overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
@@ -148,7 +148,7 @@ const UI = {
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
     navDistances: 'Distances', navLiters: 'Liters', navKilos: 'Kilos', navMenu: 'Menu',
-    navMeasure: 'Measure an area', navConverter: 'Converter',
+    navMeasure: 'Measure an area', navMeasureDist: 'Measure a distance', navConverter: 'Converter',
     converterChipLabel: 'Hectares to square meters',
     overlayPre: 'How big are', overlayPost: 'hectares?',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
@@ -222,6 +222,12 @@ function kilosPath(lang) {
 // The measure tool (draw a shape on the map, get its area) is hand-maintained.
 function measurePath(lang) {
   return lang === 'es' ? '/medir-superficie/' : '/en/measure-area/';
+}
+
+// Its distance sibling (draw a route on the map, get its length) is
+// hand-maintained too; it shares the measure engine (js/measure.js).
+function measureDistancePath(lang) {
+  return lang === 'es' ? '/medir-distancias/' : '/en/measure-distance/';
 }
 
 // The area converter is hand-maintained too. It is NOT in the navbar (only
@@ -1892,6 +1898,8 @@ function writeArticlesHub(lang) {
     HOME_URL: homePath(lang),
     NAV_MEASURE_URL: measurePath(lang),
     NAV_MEASURE_LABEL: ui.navMeasure,
+    NAV_MEASUREDIST_URL: measureDistancePath(lang),
+    NAV_MEASUREDIST_LABEL: ui.navMeasureDist,
     NAV_DIST_URL: distancesPath(lang),
     NAV_DIST_LABEL: ui.navDistances,
     NAV_LITERS_URL: litersPath(lang),
@@ -2013,6 +2021,8 @@ function render(page, template) {
     HOME_URL: homePath(page.lang),
     NAV_MEASURE_URL: measurePath(page.lang),
     NAV_MEASURE_LABEL: ui.navMeasure,
+    NAV_MEASUREDIST_URL: measureDistancePath(page.lang),
+    NAV_MEASUREDIST_LABEL: ui.navMeasureDist,
     NAV_DIST_URL: distancesPath(page.lang),
     NAV_DIST_LABEL: ui.navDistances,
     NAV_LITERS_URL: litersPath(page.lang),
@@ -2036,6 +2046,7 @@ function render(page, template) {
 function writeSitemap() {
   const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
   LANGS.forEach(lang => urls.push(BASE_URL + measurePath(lang)));
+  LANGS.forEach(lang => urls.push(BASE_URL + measureDistancePath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + litersPath(lang)));
   LANGS.forEach(lang => urls.push(BASE_URL + kilosPath(lang)));
@@ -2049,7 +2060,7 @@ function writeSitemap() {
   DIST_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
   const body = urls.map(u => {
     const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
-    const isSectionHome = LANGS.some(lang => u === BASE_URL + measurePath(lang) || u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + converterPath(lang) || u === BASE_URL + articlesHubPath(lang));
+    const isSectionHome = LANGS.some(lang => u === BASE_URL + measurePath(lang) || u === BASE_URL + measureDistancePath(lang) || u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + converterPath(lang) || u === BASE_URL + articlesHubPath(lang));
     const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
     return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');

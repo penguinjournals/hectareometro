@@ -13,30 +13,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="/favicon.ico">
-<link rel="canonical" href="https://hectareometro.com/en/distances/">
-<link rel="alternate" hreflang="es" href="https://hectareometro.com/distancias/">
-<link rel="alternate" hreflang="en" href="https://hectareometro.com/en/distances/">
-<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/distancias/">
-<title>How far is 1,000 miles? Visualize distances on a map | Hectareometer</title>
-<meta name="keywords" content="distance, how far is 1000 miles, how many km is a mile, mile to kilometres, visualize distance on a map, radius on a map">
-<meta name="description" content="Draw on a real map how far a distance goes in miles, kilometres or metres. The circle's radius is the distance you type: compare it with places you know.">
+<link rel="canonical" href="https://hectareometro.com/en/measure-distance/">
+<link rel="alternate" hreflang="es" href="https://hectareometro.com/medir-distancias/">
+<link rel="alternate" hreflang="en" href="https://hectareometro.com/en/measure-distance/">
+<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/medir-distancias/">
+<title>Measure distance on a map: draw a route and get metres, km & miles | Hectareometer</title>
+<meta name="keywords" content="measure distance on map, calculate route distance, measure a route on map, measure distance between points, draw a route on a map, measure a path">
+<meta name="description" content="Draw a route on a real map, point by point, and instantly get its distance in metres, kilometres and miles. Measure walks, trails and journeys for free.">
 <meta name="author" content="David González Diez">
 
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@penguinjournals">
-<meta name="twitter:title" content="How far is 1,000 miles? See it drawn on a map">
-<meta name="twitter:description" content="Draw on a real map how far a distance goes in miles, kilometres or metres and compare it with places you know.">
+<meta name="twitter:title" content="Measure a distance by drawing the route on a map">
+<meta name="twitter:description" content="Draw a route point by point on a real map and get its distance in metres, kilometres and miles. Share the drawn route with a link.">
 <meta name="twitter:creator" content="@penguinjournals">
 <meta name="twitter:image" content="https://hectareometro.com/images/logo.png">
 
 
 <!-- Open Graph data -->
-<meta property="og:title" content="How far is 1,000 miles? See it drawn on a map" />
+<meta property="og:title" content="Measure a distance by drawing the route on a map" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://hectareometro.com/en/distances/" />
-<meta property="og:description" content="Draw on a real map how far a distance goes in miles, kilometres or metres and compare it with places you know." />
-<meta property="og:site_name" content="Hectareometer, the visual way to understand areas and distances." />
+<meta property="og:url" content="https://hectareometro.com/en/measure-distance/" />
+<meta property="og:description" content="Draw a route point by point on a real map and get its distance in metres, kilometres and miles. Share the drawn route with a link." />
+<meta property="og:site_name" content="Hectareometer, the visual way to understand areas, distances and volumes." />
 <meta property="og:image" content="https://hectareometro.com/images/logo.png" />
 <meta property="og:locale" content="en_GB" />
 
@@ -47,9 +47,9 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "Hectareometer — Distances",
-      "url": "https://hectareometro.com/en/distances/",
-      "description": "Visual tool to draw on a real map how far a distance goes in miles, kilometres or metres.",
+      "name": "Hectareometer — Measure distance",
+      "url": "https://hectareometro.com/en/measure-distance/",
+      "description": "A tool to measure the distance of a route by drawing it on a real map, point by point, with the length in metres, kilometres and miles.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "Web",
       "inLanguage": "en",
@@ -69,34 +69,34 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How many kilometres is a mile?",
+          "name": "How do I measure the distance of a route on a map?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A mile equals 1.609344 kilometres, i.e. about 1,609 metres. Conversely, a kilometre is roughly 0.62 miles."
+            "text": "Click along the map to drop the points of the route you want to measure, then finish with a double-click or the “Finish” button. The tool adds up the length of every leg and instantly shows the total distance in metres, kilometres and miles."
           }
         },
         {
           "@type": "Question",
-          "name": "How can I visualize a distance on a map?",
+          "name": "Does it measure road distance?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The most intuitive way is to draw it on a real map, over a place you know. In this tool you type a distance in miles, kilometres or metres and a circle is drawn whose radius is that distance."
+            "text": "No: it measures in a straight line between the points you drop, summing each leg. To follow the shape of a road, a river or a trail, drop more points along its curve and the measurement will hug that route."
           }
         },
         {
           "@type": "Question",
-          "name": "What does the circle on the map mean?",
+          "name": "How many metres are in a kilometre and in a mile?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The circle's radius is the distance you entered: everything inside the circle is closer than that distance to the centre, as the crow flies."
+            "text": "A kilometre is 1,000 metres. A mile is 1,609.344 metres, i.e. about 1.61 kilometres. The tool shows all three units at once so you can compare."
           }
         },
         {
           "@type": "Question",
-          "name": "How long does it take to walk a mile?",
+          "name": "How accurate is the measurement?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "At a normal walking pace (about 3 mph), a mile takes around 20 minutes. Three miles is roughly an hour's walk."
+            "text": "The distance is computed on a sphere, so it accounts for the curvature of the Earth, and coordinates are stored to about one-metre precision. Real accuracy depends on where you click: the more you zoom in while drawing, the finer the measurement."
           }
         }
       ]
@@ -109,12 +109,12 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script>var PAGE_LANG = 'en';</script>
+<script>var PAGE_LANG = 'en'; var PAGE_TOOL = 'distance';</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/js/hectareas-utils.js"></script>
-<script type="text/javascript" src="/js/distances.js"></script>
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&loading=async&callback=initMap"></script>
+<script type="text/javascript" src="/js/measure.js"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&libraries=geometry&loading=async&callback=initMap"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
 <script>
@@ -149,14 +149,14 @@ window.cookieconsent.initialise({
     <div class="collapse navbar-collapse" id="site-nav-collapse">
       <ul class="nav navbar-nav">
         <li><a href="/en/measure-area/">Measure an area</a></li>
-        <li><a href="/en/measure-distance/">Measure a distance</a></li>
-        <li class="active"><a href="/en/distances/">Distances</a></li>
+        <li class="active"><a href="/en/measure-distance/">Measure a distance</a></li>
+        <li><a href="/en/distances/">Distances</a></li>
         <li><a href="/en/liters/">Liters</a></li>
         <li><a href="/en/kilos/">Kilos</a></li>
         <li><a href="/en/articles/">Articles</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/distancias/" hreflang="es">Español</a></li>
+        <li><a href="/medir-distancias/" hreflang="es">Español</a></li>
       </ul>
     </div>
   </div>
@@ -164,14 +164,13 @@ window.cookieconsent.initialise({
 <div id="map-container">
   <div id="map"></div>
   <div id="hectareas-overlay">
-    <label for="distance">How far would I get in</label>
-    <input type="text" id="distance" class="customizable-parameter">
-    <select id="distance-unit" aria-label="Distance unit">
-      <option value="mi" selected>miles</option>
-      <option value="km">km</option>
-      <option value="m">metres</option>
-    </select>
-    <label for="distance">?</label>
+    <div class="draw-modes" role="toolbar" aria-label="Drawing mode">
+      <button type="button" id="mode-line" class="draw-mode-btn">📏 Route</button>
+      <button type="button" id="draw-close" class="draw-mode-btn draw-close" style="display:none">✓ Finish</button>
+      <button type="button" id="draw-clear" class="draw-mode-btn draw-clear">✕ Clear</button>
+    </div>
+    <div id="draw-hint" aria-live="polite"></div>
+    <div id="area-readout" aria-live="polite"></div>
     <div id="equivalences" aria-live="polite"></div>
   </div>
 </div>
@@ -214,44 +213,62 @@ window.cookieconsent.initialise({
       </div>
   <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
-      <h1>How far is 1,000 miles?</h1>
+      <h1>Measure a distance by drawing the route on a map</h1>
       <p>
-        We hear distances all the time — "the fire is 20 miles away", "the stage is 120 miles
-        long", "she lives 1,000 miles from here" — but our brain is bad at picturing them. The map
-        above draws a circle whose <b>radius</b> is the distance you type: everything inside the
-        circle is closer than that distance to the centre, as the crow flies. Type a distance,
-        pick the unit (miles, kilometres or metres) and drag the map to your home or a place you
-        know.
+        This tool is the sibling of <a href="/en/measure-area/">measuring an area</a>, but for
+        lengths: instead of enclosing a surface, you <b>trace a route</b> point by point on the map
+        and we instantly tell you how long it is, in metres, kilometres and miles. It is handy for
+        measuring a hike, your commute, the loop you jog or any path you are curious about. And the
+        route you draw travels in the link: copy the URL and share it — whoever opens it sees your
+        exact route.
       </p>
 
-      <h2>How many kilometres is a mile?</h2>
+      <h2>How to use it</h2>
       <p>
-        A mile equals <b>1.609 kilometres</b> (exactly 1,609.344 metres). Conversely, a kilometre
-        is roughly 0.62 miles — which is why metric distances often "don't add up" at first glance.
+        Click on the map to drop the points of the route:
       </p>
+      <ul>
+        <li><b>📏 Route</b>: click each point of the journey —a corner, a junction, a bend— and the
+        line grows as you go. The more points you drop along the path, the closer the measurement
+        hugs the real route.</li>
+        <li>When you are done, <b>double-click</b> or press the “✓ Finish” button.</li>
+      </ul>
+      <p>
+        You can then <b>adjust the route</b> by dragging it whole or moving its points, and the
+        distance recalculates on its own. Press <kbd>Esc</kbd> to cancel a half-drawn route and
+        “✕ Clear” to start over.
+      </p>
+
+      <h2>Quick equivalences</h2>
       <table class="equiv-table">
         <thead><tr><th>Distance</th><th>Equivalent</th></tr></thead>
         <tbody>
-          <tr><td>1 mile</td><td>1.609 km · 1,609 m</td></tr>
+          <tr><td>1 mile</td><td>1,609.34 m · 1.61 km</td></tr>
           <tr><td>1 kilometre</td><td>1,000 m · 0.62 miles</td></tr>
-          <tr><td>100 miles</td><td>160.93 km</td></tr>
-          <tr><td>100 kilometres</td><td>62.14 miles</td></tr>
-          <tr><td>1,000 miles</td><td>1,609.34 km</td></tr>
+          <tr><td>1 metre</td><td>0.001 km · 0.000621 miles</td></tr>
+          <tr><td>10,000 steps</td><td>≈ 7.5 km (about 4.7 miles)</td></tr>
         </tbody>
       </table>
-
-      <h2>Straight-line distance examples</h2>
-      <p>To get a sense of the magnitudes (approximate straight-line distances):</p>
-      <ul class="examples-list">
-        <li>London–Manchester: about <a href="/en/distances/?d=163&u=mi&lat=51.5074&lon=-0.1278&z=6">163 miles</a> (262 km)</li>
-        <li>London–Edinburgh: about <a href="/en/distances/?d=332&u=mi&lat=51.5074&lon=-0.1278&z=6">332 miles</a> (534 km)</li>
-        <li>London–Paris: about <a href="/en/distances/?d=214&u=mi&lat=51.5074&lon=-0.1278&z=6">214 miles</a> (344 km)</li>
-        <li>New York–Los Angeles: about <a href="/en/distances/?d=2451&u=mi&lat=40.7128&lon=-74.0060&z=3">2,451 miles</a> (3,944 km)</li>
-      </ul>
       <p>
-        Click any of these figures (or type your own into the tool) and move the map: you will see
-        at a glance how far that distance reaches from the point you choose.
+        Prefer to see a distance as a circle on the map (for example, “how far could I get in
+        5 km?”)? Use the <a href="/en/distances/">distances</a> tool.
       </p>
+
+      <h2>Examples: routes already drawn</h2>
+      <p>Click and you will see the route drawn on the map, ready to adjust:</p>
+      <ul class="examples-list">
+        <li>A walk across Hyde Park, London: <a href="/en/measure-distance/?s=l&pts=51.50274,-0.15270~51.50568,-0.16000~51.50900,-0.16400~51.51199,-0.17572">roughly 1.7 km</a></li>
+        <li>The Mall, from Trafalgar Square to Buckingham Palace: <a href="/en/measure-distance/?s=l&pts=51.50692,-0.12805~51.50516,-0.13363~51.50350,-0.13910">about 1 km</a></li>
+      </ul>
+      <div class="chip-group">
+        <span class="chip-group-label">Keep exploring distances</span>
+        <ul class="related-links">
+          <li><a href="/en/distances/">Visualise distances</a></li>
+          <li><a href="/en/how-far-is-10000-steps/">How far is 10,000 steps?</a></li>
+          <li><a href="/en/measure-area/">Measure an area</a></li>
+          <li><a href="/en/">Hectareometer</a></li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -262,15 +279,7 @@ window.cookieconsent.initialise({
           <a href="/en/how-far-is-10000-steps/">
             <span class="card-kicker">Distances</span>
             <h3>How far is 10,000 steps?</h3>
-            <p>10,000 steps come to about 7.5 km (4.7 miles) — between 7 and 8 km. Where the figure comes from, how many steps you really need and how long it takes. See it drawn to scale on a map.</p>
-            <span class="card-cta">Read →</span>
-          </a>
-        </div>
-        <div class="card card-article">
-          <a href="/en/how-many-litres-in-an-olympic-swimming-pool/">
-            <span class="card-kicker">Liters</span>
-            <h3>How many litres of water are in an Olympic swimming pool?</h3>
-            <p>An Olympic swimming pool holds about 2.5 million litres (2,500 m³): some 16,667 bathtubs or 83 tanker trucks. Official size, equivalents and what it costs to fill.</p>
+            <p>10,000 steps is about 7.5 km (roughly 4.7 miles). Where the number comes from, how many steps you really need and how long it takes. See it drawn to scale on a map.</p>
             <span class="card-cta">Read →</span>
           </a>
         </div>
@@ -280,25 +289,25 @@ window.cookieconsent.initialise({
   </div>
   <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2 content-section section-block">
-      <h2>Frequently asked questions about distances</h2>
+      <h2>Frequently asked questions about measuring distances</h2>
       <dl class="faq">
-        <dt>How many kilometres is a mile?</dt>
-        <dd>A mile equals 1.609344 kilometres, i.e. about 1,609 metres. Conversely, a kilometre is roughly 0.62 miles.</dd>
+        <dt>How do I measure the distance of a route on a map?</dt>
+        <dd>Click along the map to drop the points of the route you want to measure, then finish with a <b>double-click</b> or the “Finish” button. The tool adds up the length of every leg and instantly shows the total distance in metres, kilometres and miles.</dd>
 
-        <dt>How can I visualize a distance on a map?</dt>
-        <dd>The most intuitive way is to draw it on a real map, over a place you know. Type the distance in the tool above and the circle will show you how far it reaches.</dd>
+        <dt>Does it measure road distance?</dt>
+        <dd>No: it measures in a <b>straight line</b> between the points you drop, summing each leg. To follow the shape of a road, a river or a trail, drop more points along its curve and the measurement will hug that route.</dd>
 
-        <dt>What does the circle on the map mean?</dt>
-        <dd>The circle's <b>radius</b> is the distance you entered: everything inside the circle is closer than that distance to the centre, as the crow flies.</dd>
+        <dt>How many metres are in a kilometre and in a mile?</dt>
+        <dd>A kilometre is <b>1,000 metres</b>. A mile is <b>1,609.344 metres</b>, i.e. about 1.61 kilometres. The tool shows all three units at once so you can compare.</dd>
 
-        <dt>How long does it take to walk a mile?</dt>
-        <dd>At a normal walking pace (about 3 mph), a mile takes around 20 minutes. Three miles is roughly an hour's walk.</dd>
+        <dt>How accurate is the measurement?</dt>
+        <dd>The distance is computed on a <b>sphere</b>, so it accounts for the curvature of the Earth, and coordinates are stored to about one-metre precision. Real accuracy depends on where you click: the more you zoom in while drawing, the finer the measurement.</dd>
       </dl>
       <p>
-        Want to visualize areas instead of distances? Try the
-        <a href="/en/">Hectareometer</a>, which draws how much space any number of hectares takes,
-        or see examples like <a href="/en/1000-hectares/">1,000 hectares</a>.
-        And for volumes, see <a href="/en/liters/">how much water any amount of litres really is</a>.
+        Would you rather measure an area than a distance? Use
+        <a href="/en/measure-area/">measure an area</a>. You can also visualise
+        <a href="/en/distances/">distances</a>, <a href="/en/liters/">liters</a> or
+        <a href="/en/kilos/">kilos</a>, or go back to the <a href="/en/">Hectareometer</a>.
       </p>
     </div>
   </div>

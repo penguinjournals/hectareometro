@@ -1,13 +1,20 @@
-// Measure tool (/medir-superficie/ and /en/measure-area/): the user draws a
-// circle, a rectangle or a polygon on the map and the tool shows its area live
-// in hectares, m², km² (and acres/sq ft/sq mi on the English page). Loads
-// together with hectareas-utils.js (share-link updaters, getUrlParameter,
+// Measure tool. Two landing pages share this one engine:
+//  - /medir-superficie/, /en/measure-area/ (PAGE_TOOL 'area'): the user draws a
+//    circle, rectangle or polygon and the tool shows its area live in hectares,
+//    m², km² (and acres/sq ft/sq mi on the English page).
+//  - /medir-distancias/, /en/measure-distance/ (PAGE_TOOL 'distance'): the user
+//    draws an open route ('line' mode) and the tool shows its length live in
+//    km · m · miles.
+// The readout is shape-type-driven — a 'line' shows length, the closed shapes
+// show area — so which page you are on only decides the base URL, the auto-armed
+// mode and the share text.
+// Loads together with hectareas-utils.js (share-link updaters, getUrlParameter,
 // formatNumberLocale, getEquivalencesText, trackEvent) and INSTEAD of
 // hectareas.js/distances.js, so initMap can be defined here for the Google
 // Maps callback. Needs the Maps API loaded with &libraries=geometry
-// (spherical.computeArea / computeDistanceBetween). The retired DrawingManager
-// is NOT used: drawing is plain click/mousemove listeners over the core
-// Circle/Rectangle/Polygon classes.
+// (spherical.computeArea / computeLength / computeDistanceBetween). The retired
+// DrawingManager is NOT used: drawing is plain click/mousemove listeners over
+// the core Circle/Rectangle/Polygon/Polyline classes.
 //
 // The drawn shape travels in the URL (?s=&pts=&r=), so a measured area can be
 // shared or embedded. Unlike the rest of the site, this tool also rewrites the
@@ -19,11 +26,15 @@ var mapLatitude = 43.3086485;
 var mapLongitude = -1.9667056;
 var zoomLevel = 12;
 
-// null | 'circle' | 'rect' | 'poly' — the armed drawing mode.
+// 'area' (circle/rect/poly, default) or 'distance' (route/line). The pages set
+// PAGE_TOOL alongside PAGE_LANG; the iframe leaves it unset (renders any shape).
+var MEASURE_TOOL = (typeof PAGE_TOOL !== 'undefined') ? PAGE_TOOL : 'area';
+
+// null | 'circle' | 'rect' | 'poly' | 'line' — the armed drawing mode.
 var drawMode = null;
 // 0 = waiting for first click, 1 = drawing (after first click).
 var drawStep = 0;
-// The finished shape: { type: 'circle'|'rect'|'poly', overlay: google overlay }.
+// The finished shape: { type: 'circle'|'rect'|'poly'|'line', overlay: overlay }.
 var activeShape = null;
 
 // In-progress artifacts.
@@ -53,10 +64,14 @@ var VERTEX_ICON = {
 };
 
 // hectareas-utils.js reads the global baseUrl when building share links, so it
-// must point at this page (per language).
-var baseUrl = (typeof PAGE_LANG !== 'undefined' && PAGE_LANG === 'en')
-  ? 'https://hectareometro.com/en/measure-area/'
-  : 'https://hectareometro.com/medir-superficie/';
+// must point at this page (per language and per tool).
+var baseUrl = MEASURE_TOOL === 'distance'
+  ? ((typeof PAGE_LANG !== 'undefined' && PAGE_LANG === 'en')
+      ? 'https://hectareometro.com/en/measure-distance/'
+      : 'https://hectareometro.com/medir-distancias/')
+  : ((typeof PAGE_LANG !== 'undefined' && PAGE_LANG === 'en')
+      ? 'https://hectareometro.com/en/measure-area/'
+      : 'https://hectareometro.com/medir-superficie/');
 var iframeWidth = 400;
 var iframeHeight = 400;
 // Read by updateIframeShare() in hectareas-utils.js.
@@ -72,12 +87,20 @@ var MEASURE_STRINGS = {
     hintPoly1: 'Haz clic para ir añadiendo puntos',
     hintPolyReady: 'Sigue añadiendo puntos, o cierra la figura pinchando en el primero',
     hintPolyMax: 'Has llegado al máximo de ' + MAX_POLY_VERTICES + ' puntos: cierra la figura',
+    hintLine1: 'Haz clic para ir marcando el recorrido',
+    hintLineReady: 'Sigue añadiendo puntos; doble clic o «Finalizar» para terminar',
+    hintLineMax: 'Has llegado al máximo de ' + MAX_POLY_VERTICES + ' puntos',
+    hintLineDone: 'Arrastra los puntos del recorrido para ajustarlo',
     hintDone: 'Arrastra la figura o sus puntos para ajustarla',
     viewAsCircle: 'Ver esta superficie como un círculo en el Hectareómetro →',
     shareText: function(haText) {
       return 'He medido ' + haText + ' hectáreas dibujándolas sobre el mapa';
     },
-    shareDefault: 'Dibuja una superficie sobre el mapa y mide sus hectáreas'
+    shareDefault: 'Dibuja una superficie sobre el mapa y mide sus hectáreas',
+    shareTextDistance: function(lenText) {
+      return 'He medido un recorrido de ' + lenText + ' dibujándolo sobre el mapa';
+    },
+    shareDefaultDistance: 'Dibuja un recorrido sobre el mapa y mide su distancia'
   },
   en: {
     hintIdle: 'Pick a shape and draw it on the map',
@@ -88,12 +111,20 @@ var MEASURE_STRINGS = {
     hintPoly1: 'Click to add points',
     hintPolyReady: 'Keep adding points, or close the shape by clicking the first one',
     hintPolyMax: 'You reached the maximum of ' + MAX_POLY_VERTICES + ' points: close the shape',
+    hintLine1: 'Click to trace the route point by point',
+    hintLineReady: 'Keep adding points; double-click or “Finish” to end',
+    hintLineMax: 'You reached the maximum of ' + MAX_POLY_VERTICES + ' points',
+    hintLineDone: 'Drag the route points to adjust it',
     hintDone: 'Drag the shape or its handles to adjust it',
     viewAsCircle: 'See this area as a circle on the Hectareometer →',
     shareText: function(haText) {
       return 'I measured ' + haText + ' hectares by drawing them on a map';
     },
-    shareDefault: 'Draw any area on a map and measure its hectares'
+    shareDefault: 'Draw any area on a map and measure its hectares',
+    shareTextDistance: function(lenText) {
+      return 'I measured a ' + lenText + ' route by drawing it on a map';
+    },
+    shareDefaultDistance: 'Draw a route on a map and measure its distance'
   }
 };
 
@@ -150,6 +181,30 @@ function computeShapeArea() {
   return google.maps.geometry.spherical.computeArea(activeShape.overlay.getPath());
 }
 
+// Length of the drawn route, in metres (null unless a line is active).
+function computeShapeLength() {
+  if (!activeShape || activeShape.type !== 'line') {
+    return null;
+  }
+  return google.maps.geometry.spherical.computeLength(activeShape.overlay.getPath());
+}
+
+// The distance readout shows all three units at once, e.g. "3,42 km · 3.420 m · 2,13 mi".
+function formatLengthAllUnits(meters) {
+  return [
+    formatNumberLocale(meters / 1000, 2) + ' km',
+    formatNumberLocale(Math.round(meters)) + ' m',
+    formatNumberLocale(meters / MI_METERS, 2) + ' mi'
+  ].join(i18n().sep);
+}
+
+// A single readable length for share text (km above a kilometre, else metres).
+function formatLengthShort(meters) {
+  return meters >= 1000
+    ? formatNumberLocale(meters / 1000, 2) + ' km'
+    : formatNumberLocale(Math.round(meters)) + ' m';
+}
+
 function shapeBounds() {
   if (!activeShape) {
     return null;
@@ -157,6 +212,7 @@ function shapeBounds() {
   if (activeShape.type === 'circle' || activeShape.type === 'rect') {
     return activeShape.overlay.getBounds();
   }
+  // Polygon and polyline both expose getPath().
   var bounds = new google.maps.LatLngBounds();
   activeShape.overlay.getPath().forEach(function(latLng) {
     bounds.extend(latLng);
@@ -181,6 +237,19 @@ function updateAreaDisplay() {
   var readout = document.getElementById('area-readout');
   var equivalences = document.getElementById('equivalences');
   var viewAsCircle = document.getElementById('view-as-circle');
+  // Route: show length in km · m · mi. "View as circle" is area-only.
+  if (activeShape && activeShape.type === 'line') {
+    if (viewAsCircle) { viewAsCircle.style.display = 'none'; }
+    var meters = computeShapeLength();
+    if (meters === null || meters <= 0) {
+      if (readout) { readout.textContent = ''; }
+      if (equivalences) { equivalences.textContent = ''; }
+      return;
+    }
+    if (readout) { readout.textContent = formatLengthAllUnits(meters); }
+    if (equivalences) { equivalences.textContent = ''; }
+    return;
+  }
   var m2 = computeShapeArea();
   if (m2 === null || m2 <= 0) {
     if (readout) { readout.textContent = ''; }
@@ -226,9 +295,10 @@ function updateAreaDisplay() {
 }
 
 // ---------------------------------------------------------------------------
-// URL scheme: ?s=<c|r|p>&pts=<lat,lon[~lat,lon...]>[&r=<meters>]&lat=&lon=&z=
-// (pts carries the shape's own points — circle center, rect SW~NE corners or
-// polygon vertices — while lat/lon/z always describe the viewport.)
+// URL scheme: ?s=<c|r|p|l>&pts=<lat,lon[~lat,lon...]>[&r=<meters>]&lat=&lon=&z=
+// (pts carries the shape's own points — circle center, rect SW~NE corners,
+// polygon vertices or route/line vertices — while lat/lon/z always describe the
+// viewport.)
 // ---------------------------------------------------------------------------
 
 function round5(v) {
@@ -276,7 +346,8 @@ function serializeShape() {
   activeShape.overlay.getPath().forEach(function(latLng) {
     path.push(latLng);
   });
-  return 's=p&pts=' + pointsToString(path);
+  // Route (open polyline) vs polygon differ only by the shape code.
+  return (activeShape.type === 'line' ? 's=l&pts=' : 's=p&pts=') + pointsToString(path);
 }
 
 // Parsed from the URL before the map exists; drawn by renderShapeFromState().
@@ -307,6 +378,8 @@ function initializeMeasureParametersIfSet() {
     pendingShape = { type: 'rect', sw: points[0], ne: points[1] };
   } else if (paramShape === 'p' && points.length >= 3 && points.length <= MAX_POLY_VERTICES) {
     pendingShape = { type: 'poly', points: points };
+  } else if (paramShape === 'l' && points.length >= 2 && points.length <= MAX_POLY_VERTICES) {
+    pendingShape = { type: 'line', points: points };
   }
 }
 
@@ -330,17 +403,24 @@ function measureParamString() {
 function generateMeasureSharingButtons() {
   var str = measureParamString();
   if (str === null) {
-    updateWhatsappShareLink(baseUrl, measureI18n().shareDefault);
-    updateTwitterShareLink(baseUrl, measureI18n().shareDefault);
-    updateFacebookShareLink(baseUrl, measureI18n().shareDefault);
+    var shareDefault = MEASURE_TOOL === 'distance'
+      ? measureI18n().shareDefaultDistance
+      : measureI18n().shareDefault;
+    updateWhatsappShareLink(baseUrl, shareDefault);
+    updateTwitterShareLink(baseUrl, shareDefault);
+    updateFacebookShareLink(baseUrl, shareDefault);
     updateUrlShareLink(baseUrl);
     updateIframeShare('', iframeWidth, iframeHeight);
     return;
   }
   var shareUrl = baseUrl + '?' + str;
-  var m2 = computeShapeArea();
-  var ha = m2 / 10000;
-  var shareText = measureI18n().shareText(formatNumberLocale(ha, measureAreaDecimals(ha)));
+  var shareText;
+  if (activeShape && activeShape.type === 'line') {
+    shareText = measureI18n().shareTextDistance(formatLengthShort(computeShapeLength()));
+  } else {
+    var ha = computeShapeArea() / 10000;
+    shareText = measureI18n().shareText(formatNumberLocale(ha, measureAreaDecimals(ha)));
+  }
   updateWhatsappShareLink(shareUrl, shareText);
   updateTwitterShareLink(shareUrl, shareText);
   updateFacebookShareLink(shareUrl, shareText);
@@ -436,7 +516,7 @@ function finishShape(shape) {
   activeShape = shape;
   attachEditListeners(shape);
   setDrawMode(null);
-  setHint(measureI18n().hintDone);
+  setHint(shape.type === 'line' ? measureI18n().hintLineDone : measureI18n().hintDone);
   onShapeChanged();
   trackEvent('tool_used', { tool: 'measure', shape: shape.type });
 }
@@ -474,6 +554,17 @@ function renderShapeFromState(state, editable) {
       editable: !!editable,
       draggable: !!editable
     });
+  } else if (state.type === 'line') {
+    overlay = new google.maps.Polyline({
+      map: map,
+      path: state.points.map(function(p) {
+        return new google.maps.LatLng(p.lat, p.lon);
+      }),
+      strokeColor: SHAPE_STYLE.strokeColor,
+      strokeWeight: SHAPE_STYLE.strokeWeight,
+      editable: !!editable,
+      draggable: !!editable
+    });
   } else {
     overlay = new google.maps.Polygon({
       map: map,
@@ -491,7 +582,7 @@ function renderShapeFromState(state, editable) {
   activeShape = { type: state.type, overlay: overlay };
   if (editable) {
     attachEditListeners(activeShape);
-    setHint(measureI18n().hintDone);
+    setHint(state.type === 'line' ? measureI18n().hintLineDone : measureI18n().hintDone);
   }
   updateAreaDisplay();
 }
@@ -502,7 +593,10 @@ function renderShapeFromState(state, editable) {
 
 function hintForModeStart(mode) {
   var S = measureI18n();
-  return mode === 'circle' ? S.hintCircle1 : mode === 'rect' ? S.hintRect1 : S.hintPoly1;
+  return mode === 'circle' ? S.hintCircle1
+    : mode === 'rect' ? S.hintRect1
+    : mode === 'line' ? S.hintLine1
+    : S.hintPoly1;
 }
 
 function toggleCloseButton(visible) {
@@ -513,7 +607,7 @@ function toggleCloseButton(visible) {
 }
 
 function setModeButtonsActive(mode) {
-  var ids = { circle: 'mode-circle', rect: 'mode-rect', poly: 'mode-poly' };
+  var ids = { circle: 'mode-circle', rect: 'mode-rect', poly: 'mode-poly', line: 'mode-line' };
   for (var key in ids) {
     var button = document.getElementById(ids[key]);
     if (button) {
@@ -636,20 +730,25 @@ function refreshPreviewLine(cursorLatLng) {
   }
 }
 
+// Shared by the polygon and the route (line): both grow a path of clicks. A
+// polygon closes on its first vertex and needs 3 points; a route stays open and
+// finishes at 2 points via double-click or the "Finish" button.
 function addPolyVertex(latLng) {
+  var isLine = drawMode === 'line';
   if (polyPath.length && samePoint(polyPath[polyPath.length - 1], latLng)) {
     return; // duplicate click (or the click half of a dblclick)
   }
   if (polyPath.length >= MAX_POLY_VERTICES) {
-    setHint(measureI18n().hintPolyMax);
+    setHint(isLine ? measureI18n().hintLineMax : measureI18n().hintPolyMax);
     return;
   }
   polyPath.push(latLng);
   drawStep = 1;
   refreshPreviewLine();
-  if (polyPath.length === 1) {
+  if (!isLine && polyPath.length === 1) {
     // The first vertex is a clickable marker: its hit area doubles as the
-    // "close the ring" target, no pixel math needed.
+    // "close the ring" target, no pixel math needed. A route never closes, so
+    // it has no such marker.
     firstVertexMarker = new google.maps.Marker({
       map: map,
       position: latLng,
@@ -658,7 +757,12 @@ function addPolyVertex(latLng) {
     });
     firstVertexMarker.addListener('click', closePolygon);
   }
-  if (polyPath.length >= 3) {
+  if (isLine) {
+    if (polyPath.length >= 2) {
+      toggleCloseButton(true);
+      setHint(measureI18n().hintLineReady);
+    }
+  } else if (polyPath.length >= 3) {
     toggleCloseButton(true);
     setHint(measureI18n().hintPolyReady);
   }
@@ -681,6 +785,25 @@ function closePolygon() {
     draggable: true
   });
   finishShape({ type: 'poly', overlay: overlay });
+}
+
+// --- Route: successive clicks; finishes (open) at 2+ points. ---
+
+function finishLine() {
+  if (polyPath.length < 2) {
+    return;
+  }
+  var path = polyPath.slice();
+  removeInProgressArtifacts();
+  var overlay = new google.maps.Polyline({
+    map: map,
+    path: path,
+    strokeColor: SHAPE_STYLE.strokeColor,
+    strokeWeight: SHAPE_STYLE.strokeWeight,
+    editable: true,
+    draggable: true
+  });
+  finishShape({ type: 'line', overlay: overlay });
 }
 
 // --- Map event dispatch. ---
@@ -706,7 +829,7 @@ function handleMapMouseMove(e) {
     previewShape.setRadius(google.maps.geometry.spherical.computeDistanceBetween(previewShape.getCenter(), e.latLng));
   } else if (drawMode === 'rect' && previewShape) {
     previewShape.setBounds(boundsFrom(rectCornerA, e.latLng));
-  } else if (drawMode === 'poly' && polyPath.length) {
+  } else if ((drawMode === 'poly' || drawMode === 'line') && polyPath.length) {
     refreshPreviewLine(e.latLng);
   }
 }
@@ -714,6 +837,8 @@ function handleMapMouseMove(e) {
 function handleMapDblClick() {
   if (drawMode === 'poly') {
     closePolygon();
+  } else if (drawMode === 'line') {
+    finishLine();
   }
 }
 
@@ -745,20 +870,44 @@ function initMap() {
     }
   }
 
-  setHint(activeShape ? measureI18n().hintDone : measureI18n().hintIdle);
+  setHint(activeShape
+    ? (activeShape.type === 'line' ? measureI18n().hintLineDone : measureI18n().hintDone)
+    : measureI18n().hintIdle);
 
   // Native listeners on purpose: measure.js must stay usable next to the old
-  // jQuery shipped by the iframes (no jQuery.on there).
-  document.getElementById('mode-circle').addEventListener('click', function() { setDrawMode('circle'); });
-  document.getElementById('mode-rect').addEventListener('click', function() { setDrawMode('rect'); });
-  document.getElementById('mode-poly').addEventListener('click', function() { setDrawMode('poly'); });
-  document.getElementById('draw-clear').addEventListener('click', function() { setDrawMode(null); clearShape(); });
-  document.getElementById('draw-close').addEventListener('click', closePolygon);
+  // jQuery shipped by the iframes (no jQuery.on there). Each control is guarded
+  // because the distance page ships only #mode-line (no circle/rect/poly).
+  function onClick(id, handler) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('click', handler);
+    }
+  }
+  onClick('mode-circle', function() { setDrawMode('circle'); });
+  onClick('mode-rect', function() { setDrawMode('rect'); });
+  onClick('mode-poly', function() { setDrawMode('poly'); });
+  onClick('mode-line', function() { setDrawMode('line'); });
+  onClick('draw-clear', function() {
+    setDrawMode(null);
+    clearShape();
+    // The distance page has no shape buttons, so it re-arms route mode itself.
+    if (MEASURE_TOOL === 'distance') {
+      setDrawMode('line');
+    }
+  });
+  onClick('draw-close', function() {
+    drawMode === 'line' ? finishLine() : closePolygon();
+  });
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       cancelDrawing();
     }
   });
+
+  // The distance page starts ready to draw a route (no shape to restore).
+  if (MEASURE_TOOL === 'distance' && !activeShape) {
+    setDrawMode('line');
+  }
 
   $('#iframe-share-width').val(iframeWidth);
   $('#iframe-share-height').val(iframeHeight);
