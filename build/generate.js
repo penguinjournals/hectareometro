@@ -630,7 +630,165 @@ ${rows}
   };
 }
 
-const ARTICLES = [burnedAreaArticle()];
+// ¿Cuánto ocupan los centros de datos de AWS en Aragón? Editorial es-only
+// (familia hectáreas). Cifras validadas vía web el 2026-07-24:
+//   - Superficie ~800 ha; 30 edificios de centros de datos, 10 subestaciones
+//     eléctricas y 12 edificios auxiliares, en 11 campus repartidos por las tres
+//     provincias aragonesas. eldiario.es (30 edificios / 10 subestaciones):
+//     https://www.eldiario.es/aragon/economia/expansion-amazon-aragon-incluye-30-edificios-centros-datos-10-subestaciones_1_13131240.html
+//   - Inversión 33.700 M€ hasta 2035; ~29.900 empleos/año y 31.700 M€ al PIB
+//     nacional (estimaciones del propio AWS). Plan de Interés General de Aragón
+//     (PIGA): https://www.aragon.es/-/expansion-aws-aragon
+//   - Energía: la ampliación sumará más de 10.800 GWh/año, más que todo el
+//     consumo eléctrico actual de Aragón.
+//   - Agua: los centros de datos de Amazon en Aragón emplearon unos 68 millones
+//     de litros en 2025 (El Economista):
+//     https://www.eleconomista.es/tecnologia/noticias/13965821/06/26/los-centros-de-datos-de-amazon-en-aragon-emplearon-68-millones-de-litros-de-agua.html
+//     El permiso original contemplaba 36,4 M L/año por centro y la empresa pidió
+//     subir a 53,9 M L/año (+48 %); ~90 % del año se refrigera con aire (free
+//     cooling) y solo con calor extremo se usa refrigeración evaporativa (agua).
+//   - Litigio: Ecologistas en Acción Aragón promueve el primer litigio contra
+//     un centro de datos en España, contra el PIGA. Climática:
+//     https://climatica.coop/aragon-primer-litigio-centros-de-datos-espana-amazon/
+const AWS_ARAGON = {
+  ha: 800,
+  investMeur: 33700,
+  jobs: 29900,
+  gwhYear: 10800,
+  water2025L: 68000000,
+  waterPermitPerCenterL: 36400000,
+  waterRequestedPerCenterL: 53900000,
+};
+
+function awsAragonArticle() {
+  const a = AWS_ARAGON;
+  const ELDIARIO_URL = 'https://www.eldiario.es/aragon/economia/expansion-amazon-aragon-incluye-30-edificios-centros-datos-10-subestaciones_1_13131240.html';
+  const PIGA_URL = 'https://www.aragon.es/-/expansion-aws-aragon';
+  const ECONOMISTA_URL = 'https://www.eleconomista.es/tecnologia/noticias/13965821/06/26/los-centros-de-datos-de-amazon-en-aragon-emplearon-68-millones-de-litros-de-agua.html';
+  const CLIMATICA_URL = 'https://climatica.coop/aragon-primer-litigio-centros-de-datos-espana-amazon/';
+  // Circle of 800 ha (8 km²) centred on Zaragoza, zoomed so it fits.
+  const mapUrl = `/?ha=${a.ha}&lat=41.6488&lon=-0.8891&z=13`;
+  // es-ES leaves 4-digit numbers ungrouped ("1120"); force the thousands dot.
+  const fmtG = n => n.toLocaleString('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 });
+  const pitchesLabel = fmtG(Math.round(a.ha / 0.714)); // 1.120 (FIFA pitch ≈ 0,714 ha)
+  const pools = Math.round(a.water2025L / 2500000); // piscinas olímpicas
+  const investLabel = fmt(a.investMeur, 0); // 33.700
+  const jobsLabel = fmt(a.jobs, 0);
+  const gwhLabel = fmt(a.gwhYear, 0);
+  const water2025Label = fmt(a.water2025L, 0);
+  const intro = `      <p>
+        Amazon Web Services (AWS) está construyendo en Aragón una de las mayores concentraciones de
+        centros de datos de Europa: <b>${investLabel} millones de euros</b> de inversión hasta 2035 y unas
+        <b><a href="${mapUrl}">${a.ha} hectáreas</a></b> de suelo ocupado, repartidas en 11 campus por las
+        tres provincias (Zaragoza, Huesca y Teruel). Pincha en el enlace para ver esas 800 hectáreas
+        dibujadas como un círculo sobre Zaragoza, y arrastra el mapa hasta tu ciudad para hacerte una idea.
+      </p>
+      <p>
+        Ochocientas hectáreas son <b>8 km²</b>: alrededor de <b>${pitchesLabel} campos de fútbol</b>
+        (cada uno, <a href="/hectarea-campo-de-futbol/">unas 0,7 hectáreas</a>) o más de seis veces el
+        parque del Retiro de Madrid. Es la huella de una infraestructura que, sobre el papel, apenas se ve
+        —naves bajas y subestaciones—, pero que en el territorio pesa tanto por el suelo que ocupa como por
+        el agua y la electricidad que consume.
+      </p>
+
+      <h2>800 hectáreas de centros de datos: cuánto es eso</h2>
+      <p>Lo que el <a href="${PIGA_URL}" target="_blank" rel="noopener">Plan de Interés General de Aragón</a>
+        autoriza a AWS, en cifras:</p>
+      <table class="equiv-table">
+        <thead><tr><th>La expansión de AWS en Aragón…</th><th>Cifra</th></tr></thead>
+        <tbody>
+          <tr><td>Superficie ocupada</td><td><a href="${mapUrl}">≈ ${a.ha} hectáreas</a> (8 km²)</td></tr>
+          <tr><td>En campos de fútbol</td><td>unos ${pitchesLabel}</td></tr>
+          <tr><td>Edificios de centros de datos</td><td>30</td></tr>
+          <tr><td>Subestaciones eléctricas</td><td>10</td></tr>
+          <tr><td>Inversión hasta 2035</td><td>${investLabel} millones de euros</td></tr>
+          <tr><td>Empleo estimado (dato de AWS)</td><td>~${jobsLabel} puestos al año</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Las cifras de infraestructura proceden del expediente del PIGA y de la información publicada por
+        <a href="${ELDIARIO_URL}" target="_blank" rel="noopener">eldiario.es</a>; las de empleo e inversión
+        son estimaciones del propio Amazon.
+      </p>
+
+      <h2>El otro coste: agua y electricidad</h2>
+      <p>
+        Un centro de datos no solo ocupa suelo: para enfriar los servidores gasta <b>agua</b> y para
+        alimentarlos, <b>electricidad</b>. En 2025 los centros de datos de Amazon en Aragón emplearon unos
+        <b><a href="/litros/?l=${a.water2025L}">${water2025Label} litros de agua</a></b> —el equivalente a unas
+        ${pools} <a href="/cuantos-litros-piscina-olimpica/">piscinas olímpicas</a>—, según
+        <a href="${ECONOMISTA_URL}" target="_blank" rel="noopener">El Economista</a>. Buena parte del año la
+        refrigeración se hace solo con aire; el agua entra sobre todo en los días de calor extremo, cuando
+        más escasea. El permiso original preveía 36,4 millones de litros al año por centro y la empresa ha
+        pedido elevarlo a 53,9 millones (un 48 % más) por los veranos cada vez más cálidos.
+      </p>
+      <p>
+        En electricidad, la ampliación sumará más de <b>${gwhLabel} GWh al año</b>: más que <b>todo el consumo
+        eléctrico actual de Aragón</b>. De ahí que el proyecto reavive el debate sobre si hay capacidad
+        renovable suficiente y sobre qué otros usos —o industrias— quedan desplazados.
+      </p>
+
+      <h2>La polémica: el primer litigio contra un centro de datos en España</h2>
+      <p>
+        La escala del plan ha abierto la <b>primera batalla judicial contra los centros de datos en España</b>.
+        Ecologistas en Acción Aragón ha promovido un
+        <a href="${CLIMATICA_URL}" target="_blank" rel="noopener">litigio contra el PIGA</a> que autoriza las
+        ampliaciones de AWS, denunciando un modelo de expansión que, dicen, «secuestra el agua, la energía y el
+        futuro» de la comunidad. El proyecto, a la vez, es presentado por el Gobierno de Aragón y por Amazon
+        como una palanca de inversión y empleo. Dibujar sus 800 hectáreas ayuda a poner en perspectiva de qué
+        tamaño de infraestructura estamos hablando.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántas hectáreas ocuparán los centros de datos de AWS en Aragón?</dt>
+        <dd>Unas <b>800 hectáreas</b> (8 km²), repartidas en 11 campus por las tres provincias aragonesas,
+          con 30 edificios de centros de datos y 10 subestaciones eléctricas. Equivale a unos
+          ${pitchesLabel} campos de fútbol.</dd>
+
+        <dt>¿Cuánto va a invertir Amazon en Aragón?</dt>
+        <dd>AWS ha anunciado una inversión de <b>${investLabel} millones de euros</b> hasta 2035, con una
+          estimación de unos ${jobsLabel} empleos al año (dato de la propia empresa).</dd>
+
+        <dt>¿Cuánta agua consume un centro de datos de Amazon en Aragón?</dt>
+        <dd>En 2025, los centros de datos de Amazon en Aragón emplearon unos <b>68 millones de litros</b> de
+          agua (unas ${pools} piscinas olímpicas). El permiso contempla 36,4 millones de litros al año por
+          centro, y la empresa ha pedido subirlo a 53,9 millones.</dd>
+
+        <dt>¿Cuánta electricidad consumirán?</dt>
+        <dd>La ampliación sumará más de <b>10.800 GWh al año</b>, más que todo el consumo eléctrico actual de
+          Aragón.</dd>
+      </dl>
+      <p>
+        ¿Quieres ver otras superficies a escala? Prueba el <a href="/">Hectareómetro</a>, compara
+        <a href="/hectarea-campo-de-futbol/">una hectárea con un campo de fútbol</a> o mira
+        <a href="/hectareas-quemadas-incendios-espana/">cuánta superficie arde en los incendios de España</a>.
+        Y si te interesa el agua, tienes la <a href="/litros/">herramienta de litros</a> y
+        <a href="/cuanto-es-un-hectometro-cubico/">qué es un hectómetro cúbico</a>.
+      </p>`;
+  return {
+    key: 'aws-aragon-data-centers', lang: 'es', ha: a.ha,
+    family: 'hectareas', published: '2026-07-24', modified: '2026-07-24',
+    slug: 'cuanto-ocupan-centros-datos-aws-aragon',
+    path: '/cuanto-ocupan-centros-datos-aws-aragon/',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 41.6488; var PRESET_LON = -0.8891;',
+    title: '¿Cuánto ocupan los centros de datos de AWS (Amazon) en Aragón? | Hectareómetro',
+    description: `Amazon (AWS) invertirá ${investLabel} millones y ocupará unas 800 hectáreas con sus centros de datos en Aragón: unos ${pitchesLabel} campos de fútbol. Míralo dibujado a escala, con su consumo de agua y electricidad.`,
+    h1: '¿Cuánta superficie ocupan los centros de datos de AWS en Aragón?',
+    intro,
+    question: '¿Cuántas hectáreas ocupan los centros de datos de AWS en Aragón?',
+    answer: `Los centros de datos de AWS (Amazon) en Aragón ocuparán unas 800 hectáreas (8 km², unos ${pitchesLabel} campos de fútbol), repartidas en 11 campus por las tres provincias, con una inversión de ${investLabel} millones de euros hasta 2035.`,
+    faqs: [
+      { q: '¿Cuántas hectáreas ocuparán los centros de datos de AWS en Aragón?', a: `Unas 800 hectáreas (8 km²), repartidas en 11 campus por las tres provincias aragonesas, con 30 edificios de centros de datos y 10 subestaciones eléctricas. Equivale a unos ${pitchesLabel} campos de fútbol.` },
+      { q: '¿Cuánto va a invertir Amazon en Aragón?', a: `AWS ha anunciado una inversión de ${investLabel} millones de euros hasta 2035, con una estimación de unos ${jobsLabel} empleos al año (dato de la propia empresa).` },
+      { q: '¿Cuánta agua consume un centro de datos de Amazon en Aragón?', a: `En 2025, los centros de datos de Amazon en Aragón emplearon unos 68 millones de litros de agua (unas ${pools} piscinas olímpicas). El permiso contempla 36,4 millones de litros al año por centro, y la empresa ha pedido subirlo a 53,9 millones.` },
+      { q: '¿Cuánta electricidad consumirán?', a: 'La ampliación sumará más de 10.800 GWh al año, más que todo el consumo eléctrico actual de Aragón.' },
+    ],
+    linkLabel: 'Centros de datos de AWS en Aragón',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle(), awsAragonArticle()];
 
 // ---- liters landing pages ------------------------------------------------
 
