@@ -400,6 +400,20 @@
   },
   {
     "lang": "es",
+    "slug": "cuanto-es-una-milla-nautica",
+    "path": "/cuanto-es-una-milla-nautica/",
+    "label": "¿Cuánto es una milla náutica?",
+    "title": "¿Cuánto es una milla náutica y por qué mide 1.852 metros? | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "how-long-is-a-nautical-mile",
+    "path": "/en/how-long-is-a-nautical-mile/",
+    "label": "How long is a nautical mile?",
+    "title": "How long is a nautical mile, and why 1,852 metres? | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "articulos",
     "path": "/articulos/",
     "label": "Artículos",

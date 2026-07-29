@@ -1588,7 +1588,394 @@ function tenThousandStepsArticle(lang) {
   };
 }
 
-const DIST_ARTICLES = [tenThousandStepsArticle('es'), tenThousandStepsArticle('en')];
+// ¿Cuánto es una milla náutica? Bilingual (universal topic). The embedded
+// distances tool is preset to a 1,852 m radius circle: over the bay of
+// Santander on es, over the Strait of Dover on en.
+// Data validated 2026-07-29 (web): the international nautical mile is exactly
+// 1,852 m, adopted by the First International Extraordinary Hydrographic
+// Conference (Monaco, 1929); the US adopted it in 1954 and the UK in 1970,
+// dropping its Admiralty mile of 6,080 ft = 1,853.184 m. It approximates one
+// minute of arc of a meridian: a minute of latitude runs from ~1,843 m at the
+// equator to ~1,862 m near the poles (the Earth is not a sphere), so 1,852 is
+// a round compromise. 1 knot = 1 nautical mile per hour = 1.852 km/h
+// = 0.514 m/s; the name comes from the chip log, whose line carried knots
+// every 47 ft 3 in and was timed with a 28-second sandglass. Statute mile =
+// 1,609.344 m, so a nautical mile is ~15 % longer (1 nmi = 1.15078 mi) and
+// 6,076.12 ft. UNCLOS limits: territorial sea 12 nmi, contiguous zone 24,
+// exclusive economic zone 200.
+// Sources: https://en.wikipedia.org/wiki/Nautical_mile ·
+// https://www.britannica.com/science/nautical-mile ·
+// https://oceanservice.noaa.gov/facts/nautical-mile-knot.html ·
+// https://en.wikipedia.org/wiki/Chip_log
+const NAUTICAL_ALTERNATES = {
+  es: '/cuanto-es-una-milla-nautica/',
+  en: '/en/how-long-is-a-nautical-mile/',
+};
+
+function nauticalMileArticle(lang) {
+  const es = lang === 'es';
+  const NOAA_URL = 'https://oceanservice.noaa.gov/facts/nautical-mile-knot.html';
+  if (es) {
+  const distUrl = '/distancias/?d=1852&u=m&lat=43.4623&lon=-3.8099&z=13';
+  const dist = (d, z) => `/distancias/?d=${d}&u=km&lat=43.4623&lon=-3.8099&z=${z}`;
+  const intro = `      <p>
+        <b>Una milla náutica son 1.852 metros exactos</b>: <b><a href="${distUrl}">1,852
+        kilómetros</a></b>, o unas <b>1,15 millas terrestres</b>. No es una cifra arbitraria ni un
+        redondeo caprichoso: la milla náutica nació midiendo la Tierra, y equivale
+        aproximadamente a <b>un minuto de arco de meridiano</b>. El dibujo de arriba muestra ese
+        radio de 1.852 metros sobre la bahía de Santander; arrastra el mapa hasta tu costa para
+        verla a escala.
+      </p>
+      <p>
+        Con esa definición, la milla náutica es un <b>15 % más larga</b> que la milla terrestre de
+        toda la vida (1.609,344 m). Por eso, cuando un barco o un avión hablan de «millas», no son
+        las mismas millas que las de una carretera.
+      </p>
+
+      <h2>¿Por qué mide 1.852 metros?</h2>
+      <p>
+        Porque la unidad no se eligió pensando en el metro, sino en el planeta. Una circunferencia
+        tiene 360 grados y cada grado se divide en 60 minutos de arco: en total, <b>21.600
+        minutos</b>. Si a cada minuto de meridiano le asignamos una milla náutica, la vuelta
+        completa a la Tierra por un meridiano mide 21.600 millas náuticas, es decir
+        <b>40.003 kilómetros</b>… y el meridiano real mide unos 40.008 km. La aproximación es
+        asombrosamente buena.
+      </p>
+      <p>
+        Esa elección tiene una ventaja práctica enorme para navegar: sobre una carta náutica,
+        <b>un minuto de latitud es exactamente una milla náutica</b>. Se toma la distancia con el
+        compás, se lleva a la escala de latitudes del margen y se lee directamente. Y un grado
+        completo de latitud son 60 millas náuticas, es decir <a href="${dist('111.12', 8)}">111,12
+        km</a>.
+      </p>
+
+      <h2>De la milla del Almirantazgo a los 1.852 metros</h2>
+      <p>
+        Hasta 1929 no había una milla náutica única: cada país usaba la suya. Los británicos
+        navegaban con la <b>milla del Almirantazgo</b>, 6.080 pies (<b>1.853,184 m</b>), y
+        Estados Unidos manejaba un valor ligeramente distinto. La <b>Conferencia Hidrográfica
+        Internacional Extraordinaria de Mónaco</b>, en <b>1929</b>, zanjó el asunto fijando la
+        <b>milla náutica internacional en 1.852 metros exactos</b>. Estados Unidos adoptó la
+        definición en <b>1954</b> y el Reino Unido en <b>1970</b>, jubilando su milla del
+        Almirantazgo.
+      </p>
+      <p>
+        ¿Por qué 1.852 y no el valor «verdadero»? Porque no hay un único valor verdadero: la Tierra
+        no es una esfera perfecta, sino un elipsoide achatado por los polos, así que un minuto de
+        latitud mide unos <b>1.843 m en el ecuador</b> y hasta unos <b>1.862 m cerca de los
+        polos</b>. Los 1.852 metros son el compromiso redondo que se quedó.
+      </p>
+
+      <h2>¿Y qué es un nudo?</h2>
+      <p>
+        Un <b>nudo</b> es simplemente <b>una milla náutica por hora</b>: 1,852 km/h, o unos
+        0,514 metros por segundo (<a href="${NOAA_URL}" target="_blank" rel="noopener">NOAA</a>).
+        Ojo con el error clásico: <b>no se dice «nudos por hora»</b>, porque la hora ya va dentro
+        del nudo.
+      </p>
+      <p>
+        El nombre viene de cómo se medía la velocidad antes de la electrónica: la <b>corredera de
+        barquilla</b>. Se echaba por la popa una tablilla de madera atada a un cabo que llevaba
+        <b>nudos cada 47 pies y 3 pulgadas</b> (unos 14,4 m) y se contaban los nudos que se
+        soltaban mientras corría un <b>reloj de arena de 28 segundos</b>. Los nudos contados eran,
+        directamente, las millas náuticas por hora.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Velocidad</th><th>Equivale a</th><th>Ejemplo típico</th></tr></thead>
+        <tbody>
+          <tr><td>1 nudo</td><td>1,85 km/h</td><td>una persona paseando muy despacio</td></tr>
+          <tr><td>6 nudos</td><td>11,1 km/h</td><td>un velero de crucero</td></tr>
+          <tr><td>20 nudos</td><td>37 km/h</td><td>un buque portacontenedores</td></tr>
+          <tr><td>30 nudos</td><td>55,6 km/h</td><td>una lancha rápida o una fragata</td></tr>
+          <tr><td>480 nudos</td><td>889 km/h</td><td>un avión de línea en crucero</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Milla náutica, milla terrestre y kilómetro</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Unidad</th><th>En metros</th><th>En millas náuticas</th></tr></thead>
+        <tbody>
+          <tr><td>Kilómetro</td><td>1.000 m</td><td>0,54 mn</td></tr>
+          <tr><td>Milla terrestre</td><td>1.609,344 m</td><td>0,87 mn</td></tr>
+          <tr><td>Milla náutica</td><td>1.852 m</td><td>1 mn</td></tr>
+        </tbody>
+      </table>
+      <p>
+        En sentido contrario: una milla náutica son <b>1,15 millas terrestres</b> y
+        <b>6.076 pies</b>. Se abrevia <b>M</b> en la marina, <b>NM</b> en aviación y <b>nmi</b> o
+        <b>mn</b> en otros contextos.
+      </p>
+
+      <h2>Tabla de conversión de millas náuticas</h2>
+      <p>Pincha en cualquier distancia para verla dibujada arriba a escala:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Millas náuticas</th><th>Distancia</th></tr></thead>
+        <tbody>
+          <tr><td>1 milla náutica</td><td><a href="${distUrl}">1.852 m</a> (1,852 km)</td></tr>
+          <tr><td>2 millas náuticas</td><td><a href="${dist('3.704', 12)}">3,7 km</a></td></tr>
+          <tr><td>5 millas náuticas</td><td><a href="${dist('9.26', 11)}">9,26 km</a></td></tr>
+          <tr><td>10 millas náuticas</td><td><a href="${dist('18.52', 10)}">18,52 km</a></td></tr>
+          <tr><td>12 millas náuticas (aguas territoriales)</td><td><a href="${dist('22.224', 10)}">22,2 km</a></td></tr>
+          <tr><td>100 millas náuticas</td><td><a href="${dist('185.2', 7)}">185,2 km</a></td></tr>
+          <tr><td>200 millas náuticas (zona económica exclusiva)</td><td><a href="${dist('370.4', 6)}">370,4 km</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Dónde te vas a encontrar millas náuticas</h2>
+      <p>
+        Además de en el mar y en el aire, la milla náutica es la unidad con la que se dibujan las
+        fronteras marítimas. El derecho del mar (la Convención de las Naciones Unidas sobre el
+        Derecho del Mar) mide desde la costa <b>12 millas náuticas de aguas territoriales</b>
+        (unos <a href="${dist('22.224', 10)}">22,2 km</a>), 24 para la zona contigua y
+        <b>200 millas náuticas de zona económica exclusiva</b>
+        (<a href="${dist('370.4', 6)}">370,4 km</a>): de ahí las famosas «200 millas» de los
+        caladeros de pesca.
+      </p>
+      <p>
+        Si lo que quieres es medir una travesía concreta y no un radio, dibújala punto a punto con
+        la <a href="/medir-distancias/">herramienta de medir distancias</a>: te da los kilómetros
+        de la ruta que tracees sobre el mapa.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos metros tiene una milla náutica?</dt>
+        <dd>Exactamente <a href="${distUrl}">1.852 metros</a>, es decir 1,852 km. Es un valor
+          definido por convenio internacional desde 1929, no una medida aproximada.</dd>
+
+        <dt>¿Cuántos kilómetros son una milla náutica?</dt>
+        <dd>1,852 km. A la inversa, un kilómetro son 0,54 millas náuticas.</dd>
+
+        <dt>¿Por qué una milla náutica mide 1.852 metros?</dt>
+        <dd>Porque equivale aproximadamente a un minuto de arco de meridiano: 21.600 minutos por
+          vuelta a la Tierra × 1.852 m dan 40.003 km, casi exactamente el meridiano terrestre. Así,
+          en una carta náutica un minuto de latitud es una milla náutica.</dd>
+
+        <dt>¿Qué diferencia hay entre una milla náutica y una milla terrestre?</dt>
+        <dd>La milla terrestre mide 1.609,344 m y la náutica 1.852 m: la náutica es un 15 % más
+          larga. Una milla náutica equivale a 1,15 millas terrestres.</dd>
+
+        <dt>¿Cuánto es un nudo en kilómetros por hora?</dt>
+        <dd>Un nudo es una milla náutica por hora, o sea 1,852 km/h. Un barco a 20 nudos navega a
+          unos 37 km/h. No se dice «nudos por hora»: la hora ya está incluida en el nudo.</dd>
+
+        <dt>¿Cuántas millas náuticas son las aguas territoriales?</dt>
+        <dd>12 millas náuticas desde la costa, unos 22,2 km. La zona económica exclusiva llega a
+          200 millas náuticas, unos 370,4 km.</dd>
+      </dl>
+      <p>
+        ¿Quieres seguir jugando con distancias? Mira <a href="/cuanto-son-10000-pasos/">cuántos
+        kilómetros son 10.000 pasos</a> o abre la <a href="/distancias/">herramienta de
+        distancias</a> y dibuja la tuya. Y si lo tuyo son las superficies, tienes el
+        <a href="/">Hectareómetro</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'milla-nautica', ha: 0,
+    family: 'distancias', published: '2026-07-29', modified: '2026-07-29',
+    slug: 'cuanto-es-una-milla-nautica',
+    path: NAUTICAL_ALTERNATES.es, alternates: NAUTICAL_ALTERNATES,
+    dist: 1852, distUnit: 'm',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 43.4623; var PRESET_LON = -3.8099;',
+    title: '¿Cuánto es una milla náutica y por qué mide 1.852 metros? | Hectareómetro',
+    description: 'Una milla náutica son 1.852 metros exactos (1,852 km, un 15 % más que una milla terrestre). Por qué mide eso, qué es un nudo y tabla de conversión. Míralo dibujado en un mapa.',
+    h1: '¿Cuánto es una milla náutica?',
+    intro,
+    question: '¿Cuánto es una milla náutica?',
+    answer: 'Una milla náutica son 1.852 metros exactos, es decir 1,852 kilómetros o unas 1,15 millas terrestres. Equivale aproximadamente a un minuto de arco de meridiano.',
+    faqs: [
+      { q: '¿Cuántos metros tiene una milla náutica?', a: 'Exactamente 1.852 metros, es decir 1,852 km. Es un valor definido por convenio internacional desde 1929, no una medida aproximada.' },
+      { q: '¿Cuántos kilómetros son una milla náutica?', a: '1,852 km. A la inversa, un kilómetro son 0,54 millas náuticas.' },
+      { q: '¿Por qué una milla náutica mide 1.852 metros?', a: 'Porque equivale aproximadamente a un minuto de arco de meridiano: 21.600 minutos por vuelta a la Tierra × 1.852 m dan 40.003 km, casi exactamente el meridiano terrestre. Así, en una carta náutica un minuto de latitud es una milla náutica.' },
+      { q: '¿Qué diferencia hay entre una milla náutica y una milla terrestre?', a: 'La milla terrestre mide 1.609,344 m y la náutica 1.852 m: la náutica es un 15 % más larga. Una milla náutica equivale a 1,15 millas terrestres.' },
+      { q: '¿Cuánto es un nudo en kilómetros por hora?', a: 'Un nudo es una milla náutica por hora, o sea 1,852 km/h. Un barco a 20 nudos navega a unos 37 km/h. No se dice «nudos por hora»: la hora ya está incluida en el nudo.' },
+      { q: '¿Cuántas millas náuticas son las aguas territoriales?', a: '12 millas náuticas desde la costa, unos 22,2 km. La zona económica exclusiva llega a 200 millas náuticas, unos 370,4 km.' },
+    ],
+    linkLabel: '¿Cuánto es una milla náutica?',
+  };
+  }
+
+  // English mirror (universal topic). Preset centred on the Strait of Dover;
+  // leads with metres (the definition) and gives feet and statute miles too.
+  const distUrl = '/en/distances/?d=1852&u=m&lat=51.1279&lon=1.3134&z=13';
+  const dist = (d, z) => `/en/distances/?d=${d}&u=km&lat=51.1279&lon=1.3134&z=${z}`;
+  const intro = `      <p>
+        <b>A nautical mile is exactly 1,852 metres</b>: <b><a href="${distUrl}">1.852
+        kilometres</a></b>, about <b>1.15 statute miles</b> or <b>6,076 feet</b>. The figure is not
+        arbitrary — the nautical mile was born measuring the Earth, and it corresponds to roughly
+        <b>one minute of arc of a meridian</b>. The drawing above shows that 1,852 m radius over the
+        Strait of Dover; drag the map to your own coast to see it to scale.
+      </p>
+      <p>
+        That makes the nautical mile <b>15 % longer</b> than the statute mile you use on land
+        (1,609.344 m). So when a ship or an aircraft talks about "miles", they are not the same
+        miles as the ones on a road sign.
+      </p>
+
+      <h2>Why is it 1,852 metres?</h2>
+      <p>
+        Because the unit was not built around the metre, but around the planet. A circle has 360
+        degrees and each degree is split into 60 minutes of arc: <b>21,600 minutes</b> in all. Give
+        each minute of a meridian one nautical mile and a full meridian comes to 21,600 nautical
+        miles, that is <b>40,003 kilometres</b> — while the real meridian measures about 40,008 km.
+        A remarkably good approximation.
+      </p>
+      <p>
+        That choice has a huge practical advantage at sea: on a nautical chart, <b>one minute of
+        latitude is exactly one nautical mile</b>. You pick up the distance with dividers, take it
+        to the latitude scale in the margin and read it off directly. And a full degree of latitude
+        is 60 nautical miles, or <a href="${dist('111.12', 8)}">111.12 km</a>.
+      </p>
+
+      <h2>From the Admiralty mile to 1,852 metres</h2>
+      <p>
+        Until 1929 there was no single nautical mile: every country used its own. Britain sailed
+        with the <b>Admiralty mile</b> of 6,080 feet (<b>1,853.184 m</b>), and the United States
+        worked with a slightly different value. The <b>First International Extraordinary
+        Hydrographic Conference</b>, held in Monaco in <b>1929</b>, settled it by fixing the
+        <b>international nautical mile at exactly 1,852 metres</b>. The United States adopted the
+        definition in <b>1954</b> and the United Kingdom in <b>1970</b>, retiring its Admiralty
+        mile.
+      </p>
+      <p>
+        Why 1,852 and not the "true" value? Because there is no single true value: the Earth is not
+        a perfect sphere but an ellipsoid flattened at the poles, so a minute of latitude runs from
+        about <b>1,843 m at the equator</b> to some <b>1,862 m near the poles</b>. The 1,852 metres
+        are the round compromise that stuck.
+      </p>
+
+      <h2>So what is a knot?</h2>
+      <p>
+        A <b>knot</b> is simply <b>one nautical mile per hour</b>: 1.852 km/h, about 1.15 mph or
+        0.514 metres per second (<a href="${NOAA_URL}" target="_blank" rel="noopener">NOAA</a>).
+        Watch out for the classic mistake: there is <b>no such thing as "knots per hour"</b>,
+        because the hour is already baked into the knot.
+      </p>
+      <p>
+        The name comes from how speed was measured before electronics: the <b>chip log</b>. A
+        wooden board tied to a line was thrown off the stern; the line carried <b>knots every 47
+        feet 3 inches</b> (about 14.4 m) and the crew counted how many ran out while a
+        <b>28-second sandglass</b> emptied. The knots counted were, directly, the nautical miles
+        per hour.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Speed</th><th>Equals</th><th>Typical example</th></tr></thead>
+        <tbody>
+          <tr><td>1 knot</td><td>1.85 km/h (1.15 mph)</td><td>a very slow stroll</td></tr>
+          <tr><td>6 knots</td><td>11.1 km/h (6.9 mph)</td><td>a cruising sailboat</td></tr>
+          <tr><td>20 knots</td><td>37 km/h (23 mph)</td><td>a container ship</td></tr>
+          <tr><td>30 knots</td><td>55.6 km/h (35 mph)</td><td>a speedboat or a frigate</td></tr>
+          <tr><td>480 knots</td><td>889 km/h (552 mph)</td><td>an airliner at cruise</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Nautical mile, statute mile and kilometre</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Unit</th><th>In metres</th><th>In nautical miles</th></tr></thead>
+        <tbody>
+          <tr><td>Kilometre</td><td>1,000 m</td><td>0.54 nmi</td></tr>
+          <tr><td>Statute mile</td><td>1,609.344 m</td><td>0.87 nmi</td></tr>
+          <tr><td>Nautical mile</td><td>1,852 m</td><td>1 nmi</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The other way round: one nautical mile is <b>1.15 statute miles</b> and <b>6,076 feet</b>.
+        It is abbreviated <b>M</b> at sea, <b>NM</b> in aviation and <b>nmi</b> elsewhere.
+      </p>
+
+      <h2>Nautical mile conversion table</h2>
+      <p>Click any distance to see it drawn to scale above:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Nautical miles</th><th>Distance</th></tr></thead>
+        <tbody>
+          <tr><td>1 nautical mile</td><td><a href="${distUrl}">1,852 m</a> (1.852 km · 1.15 mi)</td></tr>
+          <tr><td>2 nautical miles</td><td><a href="${dist('3.704', 12)}">3.7 km</a> (2.3 mi)</td></tr>
+          <tr><td>5 nautical miles</td><td><a href="${dist('9.26', 11)}">9.26 km</a> (5.75 mi)</td></tr>
+          <tr><td>10 nautical miles</td><td><a href="${dist('18.52', 10)}">18.52 km</a> (11.5 mi)</td></tr>
+          <tr><td>12 nautical miles (territorial waters)</td><td><a href="${dist('22.224', 10)}">22.2 km</a> (13.8 mi)</td></tr>
+          <tr><td>100 nautical miles</td><td><a href="${dist('185.2', 7)}">185.2 km</a> (115 mi)</td></tr>
+          <tr><td>200 nautical miles (exclusive economic zone)</td><td><a href="${dist('370.4', 6)}">370.4 km</a> (230 mi)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Where you will run into nautical miles</h2>
+      <p>
+        Beyond ships and aircraft, the nautical mile is the unit that draws maritime borders. The
+        law of the sea (the United Nations Convention on the Law of the Sea) measures from the coast
+        <b>12 nautical miles of territorial waters</b> (about
+        <a href="${dist('22.224', 10)}">22.2 km</a>), 24 for the contiguous zone and
+        <b>200 nautical miles of exclusive economic zone</b>
+        (<a href="${dist('370.4', 6)}">370.4 km</a>) — hence the famous "200-mile limit" of fishing
+        grounds. For scale, the Strait of Dover under the map above is about 18 nautical miles
+        across at its narrowest, so those 12 miles of territorial waters nearly meet in the middle.
+      </p>
+      <p>
+        If you want to measure an actual passage rather than a radius, trace it point by point with
+        the <a href="/en/measure-distance/">measure-a-distance tool</a>: it gives you the length of
+        whatever route you draw on the map.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How many metres are in a nautical mile?</dt>
+        <dd>Exactly <a href="${distUrl}">1,852 metres</a>, that is 1.852 km. It is a value fixed by
+          international agreement since 1929, not an approximation.</dd>
+
+        <dt>How long is a nautical mile in miles?</dt>
+        <dd>1.15 statute miles (1.852 km, or 6,076 feet). The other way round, a statute mile is
+          0.87 nautical miles.</dd>
+
+        <dt>Why is a nautical mile 1,852 metres?</dt>
+        <dd>Because it corresponds to roughly one minute of arc of a meridian: 21,600 minutes around
+          the Earth × 1,852 m give 40,003 km, almost exactly the Earth's meridian. That is why one
+          minute of latitude on a chart is one nautical mile.</dd>
+
+        <dt>What is the difference between a nautical mile and a statute mile?</dt>
+        <dd>The statute mile is 1,609.344 m and the nautical mile is 1,852 m: the nautical mile is
+          15 % longer, or 1.15 statute miles.</dd>
+
+        <dt>How fast is one knot?</dt>
+        <dd>A knot is one nautical mile per hour, so 1.852 km/h or about 1.15 mph. A ship doing 20
+          knots is sailing at roughly 37 km/h (23 mph). Never say "knots per hour": the hour is
+          already part of the knot.</dd>
+
+        <dt>How many nautical miles are territorial waters?</dt>
+        <dd>12 nautical miles from the coast, about 22.2 km. The exclusive economic zone extends to
+          200 nautical miles, some 370.4 km.</dd>
+      </dl>
+      <p>
+        Want to keep playing with distances? See <a href="/en/how-far-is-10000-steps/">how far
+        10,000 steps is</a> or open the <a href="/en/distances/">distances tool</a> and draw your
+        own. And if areas are more your thing, there is the <a href="/en/">Hectareometer</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'milla-nautica', ha: 0,
+    family: 'distancias', published: '2026-07-29', modified: '2026-07-29',
+    slug: 'how-long-is-a-nautical-mile',
+    path: NAUTICAL_ALTERNATES.en, alternates: NAUTICAL_ALTERNATES,
+    dist: 1852, distUnit: 'm',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 51.1279; var PRESET_LON = 1.3134;',
+    title: 'How long is a nautical mile, and why 1,852 metres? | Hectareometer',
+    description: 'A nautical mile is exactly 1,852 metres (1.852 km, 1.15 statute miles) — 15 % longer than a land mile. Why it measures that, what a knot is and a conversion table, drawn on a map.',
+    h1: 'How long is a nautical mile?',
+    intro,
+    question: 'How long is a nautical mile?',
+    answer: 'A nautical mile is exactly 1,852 metres: 1.852 kilometres, about 1.15 statute miles or 6,076 feet. It corresponds to roughly one minute of arc of a meridian.',
+    faqs: [
+      { q: 'How many metres are in a nautical mile?', a: 'Exactly 1,852 metres, that is 1.852 km. It is a value fixed by international agreement since 1929, not an approximation.' },
+      { q: 'How long is a nautical mile in miles?', a: '1.15 statute miles (1.852 km, or 6,076 feet). The other way round, a statute mile is 0.87 nautical miles.' },
+      { q: 'Why is a nautical mile 1,852 metres?', a: "Because it corresponds to roughly one minute of arc of a meridian: 21,600 minutes around the Earth × 1,852 m give 40,003 km, almost exactly the Earth's meridian. That is why one minute of latitude on a chart is one nautical mile." },
+      { q: 'What is the difference between a nautical mile and a statute mile?', a: 'The statute mile is 1,609.344 m and the nautical mile is 1,852 m: the nautical mile is 15 % longer, or 1.15 statute miles.' },
+      { q: 'How fast is one knot?', a: 'A knot is one nautical mile per hour, so 1.852 km/h or about 1.15 mph. A ship doing 20 knots is sailing at roughly 37 km/h (23 mph). Never say "knots per hour": the hour is already part of the knot.' },
+      { q: 'How many nautical miles are territorial waters?', a: '12 nautical miles from the coast, about 22.2 km. The exclusive economic zone extends to 200 nautical miles, some 370.4 km.' },
+    ],
+    linkLabel: 'How long is a nautical mile?',
+  };
+}
+
+const DIST_ARTICLES = [
+  tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),
+  nauticalMileArticle('es'), nauticalMileArticle('en'),
+];
 
 // Every editorial article, whatever its family: the single source for the
 // /articulos/ hub, the article cards and the sitemap. Add new article lists
