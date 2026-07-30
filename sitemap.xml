@@ -101,7 +101,17 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hectareometro.com/500-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://hectareometro.com/1000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/2000-hectareas/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -116,7 +126,42 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hectareometro.com/5000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/10000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/15000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://hectareometro.com/20000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/30000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/50000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/100000-hectareas/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/200000-hectareas/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -146,7 +191,17 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hectareometro.com/en/500-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://hectareometro.com/en/1000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/2000-hectares/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -161,7 +216,42 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hectareometro.com/en/5000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/10000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/15000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://hectareometro.com/en/20000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/30000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/50000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/100000-hectares/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/200000-hectares/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

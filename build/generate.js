@@ -33,7 +33,13 @@ const kilosLib = require('../js/kilos.js');
 const kilosData = require('../js/kilos-data.js');
 
 const LANGS = ['es', 'en'];
-const QUANTITIES = [1, 100, 300, 400, 1000, 3000, 4000, 20000];
+// Round figures plus the ones the press actually uses when reporting wildfires
+// and land deals. Every quantity added here needs a COMPARISONS entry in both
+// languages; everything else (pages, sitemap, chips, hreflang) follows.
+const QUANTITIES = [
+  1, 100, 300, 400, 500, 1000, 2000, 3000, 4000, 5000,
+  10000, 15000, 20000, 30000, 50000, 100000, 200000,
+];
 const KEYS = [...QUANTITIES, 'comparison'];
 // Liters landings: round mid-range figures plus the Olympic pool (2.5M L),
 // the headline figure of the family (same round+headline mix as QUANTITIES).
@@ -271,10 +277,20 @@ const COMPARISONS = {
       'algo más que Central Park de Nueva York (341 ha)',
       'casi tres veces el Hyde Park de Londres (142 ha)',
     ],
+    500: [
+      'unas cuatro veces el Parque del Retiro de Madrid (118 ha)',
+      'dos veces y media el Principado de Mónaco (202 ha)',
+      'casi el doble de la primera sección del Bosque de Chapultepec (~274 ha)',
+    ],
     1000: [
       'el Bois de Boulogne de París (unas 846 ha)',
       'el aeropuerto de Londres-Heathrow (~1.270 ha)',
       'casi tres veces Central Park de Nueva York (341 ha)',
+    ],
+    2000: [
+      'el Bois de Boulogne y el Bois de Vincennes de París juntos (~1.840 ha)',
+      'un tercio de la isla de Manhattan (~5.900 ha)',
+      'unas seis veces Central Park de Nueva York (341 ha)',
     ],
     3000: [
       'el aeropuerto Adolfo Suárez Madrid-Barajas (unas 3.050 ha)',
@@ -286,10 +302,45 @@ const COMPARISONS = {
       'dos tercios de la isla de Manhattan (~5.900 ha)',
       'unas doce veces Central Park de Nueva York (341 ha)',
     ],
+    5000: [
+      'casi toda la isla de Manhattan (~5.900 ha)',
+      'la mitad de la ciudad de Barcelona (~10.100 ha)',
+      'unas quince veces Central Park de Nueva York (341 ha)',
+    ],
+    10000: [
+      'un cuadrado de 10 × 10 kilómetros (100 km²)',
+      'toda la ciudad de Barcelona (~10.100 ha)',
+      'casi el doble de la isla de Manhattan (~5.900 ha)',
+    ],
+    15000: [
+      'casi todo el país de Liechtenstein (~16.000 ha)',
+      'una vez y media la ciudad de Barcelona (~10.100 ha)',
+      'unas cuarenta y cuatro veces Central Park de Nueva York (341 ha)',
+    ],
     20000: [
       'casi el doble de la ciudad de Barcelona (~10.100 ha)',
       'más que todo el país de Liechtenstein (~16.000 ha)',
       'un tercio del término municipal de Madrid (~60.400 ha)',
+    ],
+    30000: [
+      'la mitad del término municipal de Madrid (~60.400 ha)',
+      'casi el doble del país de Liechtenstein (~16.000 ha)',
+      'unas tres veces la ciudad de Barcelona (~10.100 ha)',
+    ],
+    50000: [
+      'casi toda la isla de Ibiza (~57.200 ha)',
+      'cuatro quintas partes del término municipal de Madrid (~60.400 ha)',
+      'unas cinco veces la ciudad de Barcelona (~10.100 ha)',
+    ],
+    100000: [
+      'casi el doble de la isla de Ibiza (~57.200 ha)',
+      'una vez y media el término municipal de Madrid (~60.400 ha)',
+      'dos tercios de la isla de Gran Canaria (~156.000 ha)',
+    ],
+    200000: [
+      'algo más que toda la provincia de Guipúzcoa (~198.000 ha)',
+      'más que la isla de Gran Canaria (~156.000 ha)',
+      'más de tres veces el término municipal de Madrid (~60.400 ha)',
     ],
   },
   en: {
@@ -313,10 +364,20 @@ const COMPARISONS = {
       "slightly more than New York's Central Park (341 ha)",
       "almost three times London's Hyde Park (142 ha)",
     ],
+    500: [
+      "about three and a half times London's Hyde Park (142 ha)",
+      'two and a half times the Principality of Monaco (202 ha)',
+      "one and a half times New York's Central Park (341 ha)",
+    ],
     1000: [
       'the Bois de Boulogne in Paris (~846 ha)',
       'London Heathrow airport (~1,270 ha)',
       "almost three times New York's Central Park (341 ha)",
+    ],
+    2000: [
+      'the Bois de Boulogne and Bois de Vincennes in Paris combined (~1,840 ha)',
+      'a third of the island of Manhattan (~5,900 ha)',
+      "about six times New York's Central Park (341 ha)",
     ],
     3000: [
       'Madrid-Barajas airport (~3,050 ha)',
@@ -328,15 +389,68 @@ const COMPARISONS = {
       "about twelve times New York's Central Park (341 ha)",
       'the Principality of Monaco roughly twenty times over (202 ha)',
     ],
+    5000: [
+      'most of the island of Manhattan (~5,900 ha)',
+      'about half the city of Paris (~10,500 ha)',
+      "roughly fifteen times New York's Central Park (341 ha)",
+    ],
+    10000: [
+      'a square 10 × 10 kilometres (100 km²)',
+      'the whole city of Paris (~10,500 ha)',
+      'almost twice the island of Manhattan (~5,900 ha)',
+    ],
+    15000: [
+      'almost the whole country of Liechtenstein (~16,000 ha)',
+      'one and a half times the city of Paris (~10,500 ha)',
+      "about forty-four times New York's Central Park (341 ha)",
+    ],
     20000: [
       'larger than the entire country of Liechtenstein (~16,000 ha)',
       'almost twice the city of Paris (~10,500 ha)',
       'over three times the island of Manhattan (~5,900 ha)',
     ],
+    30000: [
+      'half the municipality of Madrid (~60,400 ha)',
+      'almost twice the country of Liechtenstein (~16,000 ha)',
+      'nearly three times the city of Paris (~10,500 ha)',
+    ],
+    50000: [
+      'almost the whole island of Ibiza (~57,200 ha)',
+      'about five times the city of Paris (~10,500 ha)',
+      'three times the country of Liechtenstein (~16,000 ha)',
+    ],
+    100000: [
+      'almost two-thirds of Greater London (~157,200 ha)',
+      'ten times the city of Paris (~10,500 ha)',
+      'almost twice the island of Ibiza (~57,200 ha)',
+    ],
+    200000: [
+      'larger than the whole of Greater London (~157,200 ha)',
+      'more than the island of Gran Canaria (~156,000 ha)',
+      'about three-quarters of the country of Luxembourg (~258,600 ha)',
+    ],
   },
 };
 
 // ---- page content builders ----------------------------------------------
+
+// Latitude the tool centres on when a page sets no PRESET_LAT (the default in
+// js/hectareas.js). Only used to size the zoom below.
+const DEFAULT_MAP_LAT = 43.3086485;
+// Narrowest map viewport we design for, in CSS pixels (mobile is ~72% of
+// sessions). The circle has to fit inside it at the preset zoom.
+const MAP_MIN_WIDTH_PX = 260;
+
+// Without this every quantity page loaded at the js default zoom of 12, where
+// 1 ha is a 4-pixel dot and 200.000 ha overflow the viewport entirely. Pick the
+// closest zoom in that still fits the whole circle: Web Mercator ground
+// resolution is 156543.03 * cos(lat) / 2^zoom metres per pixel.
+function zoomForHa(ha) {
+  const diameter = 2 * Math.sqrt((ha * 10000) / Math.PI);
+  const mppAtZoom0 = 156543.03392 * Math.cos((DEFAULT_MAP_LAT * Math.PI) / 180);
+  const zoom = Math.floor(Math.log2((MAP_MIN_WIDTH_PX * mppAtZoom0) / diameter));
+  return Math.max(8, Math.min(18, zoom));
+}
 
 function quantityPage(lang, ha) {
   const m2 = fmt(ha * 10000, 0, lang);
@@ -373,6 +487,7 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
       question: ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${n} hectáreas?`,
       answer: `${haLabel} son ${m2} metros cuadrados (${km2} km²), aproximadamente ${ff} campos de fútbol.`,
       linkLabel: haLabel,
+      presetExtra: ` var PRESET_ZOOM = ${zoomForHa(ha)};`,
     };
   }
 
@@ -402,6 +517,7 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
     question: ha === 1 ? 'How big is a hectare?' : `How big are ${n} hectares?`,
     answer: `${haLabel} are ${m2} square metres (${km2} km²), about ${ff} football fields or ${ac} acres.`,
     linkLabel: haLabel,
+    presetExtra: ` var PRESET_ZOOM = ${zoomForHa(ha)};`,
   };
 }
 
