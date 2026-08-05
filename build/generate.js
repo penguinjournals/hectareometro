@@ -1413,7 +1413,188 @@ function cubicHectometreArticle() {
   };
 }
 
-const LITER_ARTICLES = [poolArticle('es'), poolArticle('en'), cubicHectometreArticle()];
+// ¿Cuántos litros tiene un camión cisterna? Spanish-only editorial
+// (es + x-default). The embedded tool is preset to the site's canonical tanker,
+// 30,000 L, which the pictogram draws as 200 bathtubs with the phrase «lo que
+// beben 15.000 personas en un día» — the copy matches both.
+// Data validated 2026-08-05 (web):
+// · Capacities by type (Nieves Energía, sector blog): small 5,000-10,000 L,
+//   medium 15,000-20,000 L, large 30,000-40,000 L (articulated tractor +
+//   tank semi-trailer); the most common hydrocarbon tankers in Spain and
+//   Europe hold 32,000-36,000 L, split into 4-8 compartments (ADR).
+//   Drinking-water tanks on rigid trucks: ~6,000-24,000 L (frenoscamino.com).
+// · Weight, not volume, is the real limit: water is 1 kg/L, so 30,000 L = 30 t.
+//   Maximum authorised mass for an articulated set in Spain went from 40 to
+//   44 t on 2025-10-23 (BOE, July 2025), with tankers phased in from January
+//   2026 (aupatrans.com). Diesel is ~0.835 kg/L, so 36,000 L of diesel ≈ 30 t
+//   — that is why fuel tankers carry more litres than water tankers.
+// · Real 2026 drought case: Karrantza (Bizkaia, 2,715 inhabitants) receives
+//   250 m³ = 250,000 L of water a day, Monday to Friday, trucked from the
+//   Zalla reservoir of the Consorcio de Aguas Bilbao-Bizkaia (eldiario.es,
+//   August 2026) → ~8 tankers of 30,000 L a day, ~92 L per inhabitant a day.
+// Sources: https://nievesenergia.com/blog/transporte-combustible/capacidad-tanques-camiones-cisterna/ ·
+// https://aupatrans.com/44-toneladas/ ·
+// https://www.eldiario.es/euskadi/camiones-cisterna-paliar-sequia-karrantza-recibira-mes-250-000-litros-agua-dia-lunes-viernes_1_13424347.html
+const TANKER_LITERS = 30000;
+
+function tankerTruckArticle() {
+  const INE_URL = 'https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602';
+  const CAPACITY_URL = 'https://nievesenergia.com/blog/transporte-combustible/capacidad-tanques-camiones-cisterna/';
+  const MASS_URL = 'https://aupatrans.com/44-toneladas/';
+  const KARRANTZA_URL = 'https://www.eldiario.es/euskadi/camiones-cisterna-paliar-sequia-karrantza-recibira-mes-250-000-litros-agua-dia-lunes-viernes_1_13424347.html';
+  const intro = `      <p>
+        Un <b>camión cisterna</b> lleva, según el tipo, entre <b>10.000 y 40.000 litros</b>. El
+        valor que se usa como referencia cuando se habla de agua es de
+        <b><a href="/litros/?l=30000">30.000 litros</a></b>, y esa es la cantidad que dibuja el
+        mapa de arriba: <b>200 bañeras</b> llenas, o lo que <b>beben 15.000 personas en un día</b>.
+        Cambia la referencia con el selector «Ver» para verlo en vasos, en botellas o en piscinas.
+      </p>
+      <p>
+        Los camiones pequeños de reparto urbano se quedan en 5.000-10.000 litros; los grandes
+        conjuntos articulados (tractora + cisterna de semirremolque) llegan a 30.000-40.000. En
+        España, las cisternas de hidrocarburos más habituales rondan los <b>32.000-36.000
+        litros</b>, repartidos en <b>entre 4 y 8 compartimentos</b> independientes para poder
+        entregar distintos productos y evitar que la carga se mueva
+        (<a href="${CAPACITY_URL}" target="_blank" rel="noopener">datos del sector</a>).
+      </p>
+
+      <h2>Capacidad de un camión cisterna, por tipos</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Tipo de cisterna</th><th>Capacidad habitual</th></tr></thead>
+        <tbody>
+          <tr><td>Pequeña, reparto urbano o rural</td><td>5.000 – 10.000 litros</td></tr>
+          <tr><td>Camión rígido (4x2, 6x4, 8x4)</td><td>10.000 – 24.000 litros</td></tr>
+          <tr><td>Conjunto articulado (tractora + semirremolque)</td><td>30.000 – 40.000 litros</td></tr>
+          <tr><td>Cisterna de hidrocarburos típica en España</td><td>32.000 – 36.000 litros</td></tr>
+          <tr><td>Referencia de agua de esta web</td><td><a href="/litros/?l=30000">30.000 litros</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>El límite no es el volumen: es el peso</h2>
+      <p>
+        ¿Por qué no se fabrican cisternas de agua de 60.000 litros, si el espacio daría? Porque el
+        agua pesa: <b>un litro de agua es un kilo</b>, así que <b>30.000 litros son 30
+        toneladas</b> —<a href="/kilos/?k=30000">míralas dibujadas</a>— solo de carga, sin contar
+        el camión. Y la <b>masa máxima autorizada</b> de un conjunto articulado en España pasó de
+        <b>40 a 44 toneladas</b> en octubre de 2025, con las cisternas incorporadas desde enero de
+        2026 (<a href="${MASS_URL}" target="_blank" rel="noopener">reforma publicada en el BOE</a>).
+        Descontada la tara del conjunto, unas 15 toneladas, la carga útil se queda en el entorno de
+        las 25-29 toneladas: de ahí los 30.000 litros.
+      </p>
+      <p>
+        Ese mismo cálculo explica una curiosidad: las cisternas de <b>combustible</b> llevan más
+        litros que las de agua. El gasóleo pesa unos <b>0,835 kg por litro</b>, así que
+        <b>36.000 litros de gasóleo son también unas 30 toneladas</b>. Mismo peso, un 20 % más de
+        volumen.
+      </p>
+
+      <h2>¿A cuánta gente abastece un camión cisterna?</h2>
+      <p>Pincha en cualquier cifra para verla dibujada arriba a escala:</p>
+      <ul class="examples-list">
+        <li><b><a href="/litros/?l=30000&v=persona">15.000 personas</a></b> tienen agua para beber
+          un día entero (a 2 litros por persona).</li>
+        <li>Un camión cubre el <b>consumo doméstico completo</b> —ducha, cisterna del váter,
+          lavadora, cocina— de
+          <b><a href="/litros/?l=30000&v=hogar">234 personas durante un día</a></b>, a los 128
+          litros por habitante y día de media española
+          (<a href="${INE_URL}" target="_blank" rel="noopener">INE</a>). Dicho de otra forma: el
+          gasto de casa de una sola persona durante más de siete meses.</li>
+        <li>Son <b><a href="/litros/?l=30000&v=banera">200 bañeras</a></b> llenas de 150 litros.</li>
+      </ul>
+      <p>
+        No es un cálculo teórico: en los veranos de sequía hay pueblos que viven de los camiones.
+        En <b>agosto de 2026</b>, la localidad vizcaína de <b>Karrantza</b> (2.715 habitantes)
+        recibe <b>250.000 litros de agua al día</b> de lunes a viernes en camiones cisterna desde el
+        depósito de Zalla (<a href="${KARRANTZA_URL}" target="_blank" rel="noopener">eldiario.es</a>).
+        Eso son unos <b>8 camiones de 30.000 litros cada día</b>, es decir <b>92 litros por
+        habitante y día</b>: por debajo de la media española de 128, porque el agua traída en camión
+        se destina a lo imprescindible.
+      </p>
+
+      <h2>¿Cuántos camiones cisterna hacen falta para…?</h2>
+      <p>
+        Aquí es donde la unidad se vuelve útil: el camión cisterna es una buena regla mental para
+        cantidades grandes de agua.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Para llenar…</th><th>Camiones de 30.000 litros</th></tr></thead>
+        <tbody>
+          <tr><td><a href="/cuantos-litros-piscina-olimpica/">Una piscina olímpica</a> (2,5 millones de litros)</td><td><a href="/litros/?l=2500000&v=cisterna">83 camiones</a></td></tr>
+          <tr><td><a href="/100000-litros/">100.000 litros</a></td><td>algo más de 3 camiones</td></tr>
+          <tr><td>Una piscina particular de 50.000 litros</td><td>menos de 2 camiones</td></tr>
+          <tr><td><a href="/cuanto-es-un-hectometro-cubico/">Un hectómetro cúbico</a> (1.000 millones de litros)</td><td><a href="/litros/?l=1000000000&v=cisterna">33.333 camiones</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        Puesto en fila —un camión articulado mide unos 16,5 metros—, los 33.333 camiones que llenan
+        un solo hectómetro cúbico formarían una caravana de
+        <b><a href="/distancias/?d=550&u=km&lat=40.4168&lon=-3.7038&z=6">550 kilómetros</a></b>: más
+        que la distancia en línea recta entre
+        <a href="/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6">Madrid y Barcelona</a>. Por eso
+        el agua de los embalses se mide en hm³ y no en camiones.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos litros tiene un camión cisterna?</dt>
+        <dd>Entre 10.000 y 40.000 litros según el tipo. La referencia habitual para el agua son
+          <a href="/litros/?l=30000">30.000 litros</a>; las cisternas de combustible más comunes en
+          España llevan entre 32.000 y 36.000 litros.</dd>
+
+        <dt>¿Cuánto pesa un camión cisterna lleno de agua?</dt>
+        <dd>Como un litro de agua pesa un kilo, 30.000 litros son <a href="/kilos/?k=30000">30
+          toneladas</a> solo de carga. Sumada la tara del conjunto (unas 15 toneladas), se roza la
+          masa máxima autorizada, que en España es de 44 toneladas para vehículos articulados.</dd>
+
+        <dt>¿Por qué las cisternas de combustible llevan más litros que las de agua?</dt>
+        <dd>Porque el gasóleo pesa menos: unos 0,835 kg por litro frente al kilo por litro del agua.
+          Con el mismo límite de peso caben unos 36.000 litros de gasóleo donde solo entrarían
+          30.000 de agua.</dd>
+
+        <dt>¿Para cuánta gente da el agua de un camión cisterna?</dt>
+        <dd>Un camión de 30.000 litros da agua de beber a unas 15.000 personas durante un día, o
+          cubre el consumo doméstico completo (128 litros por persona y día, media del INE) de
+          234 personas durante un día.</dd>
+
+        <dt>¿Cuántos camiones cisterna llenan una piscina olímpica?</dt>
+        <dd>Unos <a href="/litros/?l=2500000&v=cisterna">83 camiones</a> de 30.000 litros, porque
+          una <a href="/cuantos-litros-piscina-olimpica/">piscina olímpica</a> contiene 2,5 millones
+          de litros.</dd>
+      </dl>
+      <p>
+        ¿Quieres visualizar otras cantidades de agua? Prueba la
+        <a href="/litros/">herramienta de litros</a>, mira cuánto es
+        <a href="/cuantos-litros-piscina-olimpica/">una piscina olímpica</a> o cuánto es
+        <a href="/cuanto-es-un-hectometro-cubico/">un hectómetro cúbico</a>. Y si lo tuyo son las
+        superficies o los pesos, tienes el <a href="/">Hectareómetro</a> y la
+        <a href="/kilos/">herramienta de kilos</a>.
+      </p>`;
+  return {
+    section: 'litros', lang: 'es', key: 'camion-cisterna', l: TANKER_LITERS,
+    family: 'litros', published: '2026-08-05', modified: '2026-08-05',
+    slug: 'cuantos-litros-tiene-un-camion-cisterna',
+    path: '/cuantos-litros-tiene-un-camion-cisterna/',
+    title: '¿Cuántos litros lleva un camión cisterna? | Hectareómetro',
+    description: 'Un camión cisterna lleva entre 10.000 y 40.000 litros; la referencia del agua son 30.000 litros (30 toneladas). Capacidades por tipo, por qué manda el peso y a cuánta gente abastece.',
+    h1: '¿Cuántos litros de agua caben en un camión cisterna?',
+    intro,
+    question: '¿Cuántos litros tiene un camión cisterna?',
+    answer: 'Un camión cisterna lleva entre 10.000 y 40.000 litros según el tipo. La referencia habitual para el agua son 30.000 litros, que pesan 30 toneladas; las cisternas de hidrocarburos más comunes en España llevan entre 32.000 y 36.000 litros.',
+    faqs: [
+      { q: '¿Cuántos litros tiene un camión cisterna?', a: 'Entre 10.000 y 40.000 litros según el tipo. La referencia habitual para el agua son 30.000 litros; las cisternas de combustible más comunes en España llevan entre 32.000 y 36.000 litros.' },
+      { q: '¿Cuánto pesa un camión cisterna lleno de agua?', a: 'Como un litro de agua pesa un kilo, 30.000 litros son 30 toneladas solo de carga. Sumada la tara del conjunto (unas 15 toneladas), se roza la masa máxima autorizada, que en España es de 44 toneladas para vehículos articulados.' },
+      { q: '¿Por qué las cisternas de combustible llevan más litros que las de agua?', a: 'Porque el gasóleo pesa menos: unos 0,835 kg por litro frente al kilo por litro del agua. Con el mismo límite de peso caben unos 36.000 litros de gasóleo donde solo entrarían 30.000 de agua.' },
+      { q: '¿Para cuánta gente da el agua de un camión cisterna?', a: 'Un camión de 30.000 litros da agua de beber a unas 15.000 personas durante un día, o cubre el consumo doméstico completo (128 litros por persona y día, media del INE) de 234 personas durante un día.' },
+      { q: '¿Cuántos camiones cisterna llenan una piscina olímpica?', a: 'Unos 83 camiones de 30.000 litros, porque una piscina olímpica contiene 2,5 millones de litros.' },
+    ],
+    linkLabel: '¿Cuántos litros lleva un camión cisterna?',
+  };
+}
+
+const LITER_ARTICLES = [
+  poolArticle('es'), poolArticle('en'), cubicHectometreArticle(),
+  tankerTruckArticle(),
+];
 
 // ---- editorial distances articles (Spanish-only, map-based) ----------------
 
@@ -2088,9 +2269,392 @@ function nauticalMileArticle(lang) {
   };
 }
 
+// ¿Cuánto mide un maratón? Bilingual (universal topic). The embedded distances
+// tool is preset to a 42.195 km radius circle over Madrid (es) and a 26.2-mile
+// one over London (en) — same circle, each language's headline figure.
+// Data validated 2026-08-05 (web):
+// · The distance is 42.195 km exactly (26 miles 385 yards = 41,842.94 m +
+//   352.04 m); half marathon 21.0975 km (13.11 mi).
+// · 1896 Athens: ~40 km, Marathon to Athens. Distances varied for two decades:
+//   Stockholm 1912 ran 40.2 km, Antwerp 1920 ran 42.75 km.
+// · London 1908: the course started on the East Lawn of Windsor Castle (with
+//   Edward VII's permission, so the royal children could watch) and finished at
+//   White City Stadium, where the lap was cut to 385 yards to end in front of
+//   the royal box → "about 26 miles plus 385 yards on the track". The IAAF
+//   adopted that distance in 1921; its minutes are silent as to why.
+//   (Wikipedia, Athletics at the 1908 Summer Olympics – Men's marathon.)
+// · Straight-line distances computed with the haversine formula: Windsor Castle
+//   → White City 26.5 km; Madrid → El Escorial 42.2 km; Madrid → Aranjuez
+//   43.7 km; central London → Guildford 43.0 km.
+// · Average finish times: 4:29:53 overall, 4:21:03 men, 4:48:45 women — the
+//   RunRepeat study of 19,614,975 results from 32,335 races (2008-2018).
+// · World records: men 1:59:30, Sabastian Sawe (KEN), London, 2026-04-26 (first
+//   sub-2-hour marathon in a race); women mixed-sex 2:09:56, Ruth Chepng'etich
+//   (KEN), Chicago, 2024-10-13; women-only 2:15:41, Tigst Assefa (ETH), London,
+//   2026-04-26.
+// Sources: https://en.wikipedia.org/wiki/Athletics_at_the_1908_Summer_Olympics_%E2%80%93_Men%27s_marathon ·
+// https://en.wikipedia.org/wiki/Marathon_world_record_progression ·
+// https://runrepeat.com/research-marathon-performance-across-nations
+const MARATHON_KM = 42.195;
+const MARATHON_ALTERNATES = {
+  es: '/cuanto-mide-un-maraton/',
+  en: '/en/how-long-is-a-marathon/',
+};
+
+function marathonArticle(lang) {
+  const es = lang === 'es';
+  const OLYMPIC_1908_URL = 'https://en.wikipedia.org/wiki/Athletics_at_the_1908_Summer_Olympics_%E2%80%93_Men%27s_marathon';
+  const WR_URL = 'https://en.wikipedia.org/wiki/Marathon_world_record_progression';
+  const RUNREPEAT_URL = 'https://runrepeat.com/research-marathon-performance-across-nations';
+
+  if (es) {
+  const distUrl = '/distancias/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9';
+  const dist = (d, z) => `/distancias/?d=${d}&u=km&lat=40.4168&lon=-3.7038&z=${z}`;
+  const intro = `      <p>
+        Un <b>maratón mide 42,195 kilómetros</b>: <b><a href="${distUrl}">42.195 metros</a></b>
+        exactos, o 26 millas y 385 yardas, que es de donde sale la cifra. El
+        <b>medio maratón</b> son justo la mitad, <b><a href="${dist('21.0975', 10)}">21,0975
+        km</a></b>. El dibujo de arriba pone esos 42,195 km como radio con centro en Madrid:
+        arrastra el mapa hasta tu ciudad para ver hasta dónde llegarías en línea recta si corrieras
+        un maratón sin girar.
+      </p>
+      <p>
+        Desde el centro de Madrid, 42 kilómetros en línea recta te dejan justo en <b>El
+        Escorial</b> (42,2 km) o pasado <b>Aranjuez</b> (43,7 km). Es la magnitud que sorprende
+        cuando se dibuja: un maratón no es «una carrera larga», es cruzar una provincia entera de
+        parte a parte.
+      </p>
+
+      <h2>¿Por qué un maratón mide 42,195 km?</h2>
+      <p>
+        Porque una familia real quiso ver la salida desde su jardín. Suena a chiste, pero es
+        básicamente lo que pasó.
+      </p>
+      <p>
+        El primer maratón olímpico, en <b>Atenas 1896</b>, recorrió unos <b>40 kilómetros</b>: los
+        que separan la localidad de Maratón de Atenas, en homenaje a la leyenda del soldado que
+        llevó corriendo la noticia de la victoria sobre los persas. Durante dos décadas la distancia
+        fue orientativa y cambiaba en cada edición: <b>Estocolmo 1912</b> corrió 40,2 km y
+        <b>Amberes 1920</b>, 42,75 km.
+      </p>
+      <p>
+        La cifra definitiva nació en <b>Londres 1908</b>. La organización quiso que la carrera
+        saliera del <b>castillo de Windsor</b> —concretamente del <i>East Lawn</i>, el jardín junto
+        a la terraza privada, con permiso de Eduardo VII, para que los niños de la familia real
+        vieran la salida desde allí— y terminara en el <b>estadio de White City</b>, en Londres.
+        Para que la meta quedara <b>frente al palco real</b>, la última vuelta a la pista se recortó
+        a <b>385 yardas</b> (352 metros). Total: <b>26 millas y 385 yardas</b>, es decir
+        <b>42.195 metros</b>
+        (<a href="${OLYMPIC_1908_URL}" target="_blank" rel="noopener">actas de la carrera</a>).
+      </p>
+      <p>
+        En <b>1921</b>, la IAAF (hoy World Athletics) decidió unificar la distancia y eligió
+        precisamente la de Londres 1908. Las actas de aquella reunión <b>no explican por qué</b>:
+        simplemente se adoptó, y de ahí que hoy medio mundo corra una distancia que se fijó para
+        cuadrar con un palco.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>42,195 km son…</th><th>Equivalen a</th></tr></thead>
+        <tbody>
+          <tr><td>En metros</td><td>42.195 m</td></tr>
+          <tr><td>En millas</td><td>26,22 millas (26 millas y 385 yardas)</td></tr>
+          <tr><td>En medios maratones</td><td>2 (de 21,0975 km)</td></tr>
+          <tr><td>En pasos</td><td>unos 56.000 (<a href="/cuanto-son-10000-pasos/">a 0,75 m por paso</a>)</td></tr>
+          <tr><td>En millas náuticas</td><td>22,8 (<a href="/cuanto-es-una-milla-nautica/">de 1.852 m</a>)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Un detalle curioso del recorrido de 1908</h2>
+      <p>
+        En línea recta, del castillo de Windsor al estadio de White City hay
+        <b><a href="${dist('26.5', 10)}">26,5 kilómetros</a></b>. Los corredores hicieron 42,195: el
+        recorrido real da vueltas, como cualquier maratón urbano. Es la diferencia entre el radio que
+        dibuja esta herramienta y los kilómetros que de verdad se corren, y por eso ningún maratón
+        «llega» tan lejos como parece: <a href="/medir-distancias/">dibuja la ruta punto a punto</a>
+        si quieres medir un trazado real.
+      </p>
+
+      <h2>Ritmos y tiempos: cuánto se tarda en correr un maratón</h2>
+      <p>
+        La media mundial está en torno a las <b>4 horas y media</b>. El mayor análisis publicado,
+        con <b>19,6 millones de resultados</b> de más de 32.000 carreras
+        (<a href="${RUNREPEAT_URL}" target="_blank" rel="noopener">RunRepeat</a>), da un tiempo medio
+        de <b>4 h 29 min</b>: <b>4 h 21 min</b> los hombres y <b>4 h 49 min</b> las mujeres.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Tiempo final</th><th>Ritmo</th><th>Velocidad</th></tr></thead>
+        <tbody>
+          <tr><td>3 h 00 min</td><td>4:16 min/km</td><td>14,1 km/h</td></tr>
+          <tr><td>3 h 30 min</td><td>4:59 min/km</td><td>12,1 km/h</td></tr>
+          <tr><td>4 h 00 min</td><td>5:41 min/km</td><td>10,6 km/h</td></tr>
+          <tr><td>4 h 30 min (la media)</td><td>6:24 min/km</td><td>9,4 km/h</td></tr>
+          <tr><td>5 h 00 min</td><td>7:07 min/km</td><td>8,4 km/h</td></tr>
+          <tr><td>6 h 00 min</td><td>8:32 min/km</td><td>7,0 km/h</td></tr>
+        </tbody>
+      </table>
+      <p>
+        En el otro extremo está el <b>récord del mundo masculino</b>: <b>1 h 59 min 30 s</b>, de
+        <b>Sabastian Sawe</b> en el maratón de Londres del 26 de abril de 2026, la primera vez que se
+        baja de dos horas en competición
+        (<a href="${WR_URL}" target="_blank" rel="noopener">World Athletics</a>). Son
+        <b>2:50 min/km</b> durante 42 kilómetros seguidos, a <b>21,2 km/h</b>: el ritmo al que la
+        mayoría de la gente corre 400 metros. En mujeres, el récord en carrera mixta es de
+        <b>2 h 09 min 56 s</b> (Ruth Chepng'etich, Chicago 2024) y el de carrera solo femenina,
+        <b>2 h 15 min 41 s</b> (Tigst Assefa, Londres 2026).
+      </p>
+
+      <h2>Las distancias de carrera, dibujadas</h2>
+      <p>Pincha en cualquiera para verla a escala arriba, con centro en Madrid:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Carrera</th><th>Distancia</th></tr></thead>
+        <tbody>
+          <tr><td>5K</td><td><a href="${dist('5', 12)}">5 km</a></td></tr>
+          <tr><td>10K</td><td><a href="${dist('10', 11)}">10 km</a></td></tr>
+          <tr><td>Media maratón</td><td><a href="${dist('21.0975', 10)}">21,0975 km</a></td></tr>
+          <tr><td>Maratón</td><td><a href="${distUrl}">42,195 km</a></td></tr>
+          <tr><td>100 km (ultramaratón)</td><td><a href="${dist('100', 8)}">100 km</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        Ojo: son radios en línea recta desde el centro del mapa, no rutas. Sirven para captar la
+        magnitud —cuánto abarca un maratón sobre tu ciudad—, no para trazar el recorrido.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos kilómetros tiene un maratón?</dt>
+        <dd>Un maratón mide <a href="${distUrl}">42,195 kilómetros</a>: 42.195 metros, o 26 millas y
+          385 yardas.</dd>
+
+        <dt>¿Por qué el maratón mide 42,195 km y no 42 justos?</dt>
+        <dd>Por el recorrido de los Juegos Olímpicos de Londres 1908: salía del jardín del castillo
+          de Windsor y la última vuelta en el estadio de White City se recortó a 385 yardas para
+          acabar frente al palco real, lo que dio 26 millas y 385 yardas. La IAAF adoptó esa
+          distancia como oficial en 1921.</dd>
+
+        <dt>¿Cuánto mide un medio maratón?</dt>
+        <dd>21,0975 km, exactamente la mitad de un maratón. Suele redondearse a 21 km o 21,1 km.</dd>
+
+        <dt>¿Cuánto se tarda en correr un maratón?</dt>
+        <dd>La media mundial ronda las 4 horas y media (4 h 29 min según el análisis de RunRepeat con
+          19,6 millones de resultados: 4 h 21 min los hombres y 4 h 49 min las mujeres). Bajar de
+          3 horas se considera una marca de corredor avanzado.</dd>
+
+        <dt>¿Cuál es el récord del mundo de maratón?</dt>
+        <dd>1 h 59 min 30 s, de Sabastian Sawe en el maratón de Londres del 26 de abril de 2026: la
+          primera vez que se bajó de dos horas en competición, a un ritmo de 2:50 min/km. En mujeres,
+          2 h 09 min 56 s (Ruth Chepng'etich, Chicago 2024) en carrera mixta.</dd>
+
+        <dt>¿Cuántos pasos son un maratón?</dt>
+        <dd>Unos 56.000 pasos, con una zancada de 0,75 m; corriendo, la zancada es más larga
+          (1-1,5 m), así que un maratón puede quedarse en 30.000-40.000 zancadas.</dd>
+      </dl>
+      <p>
+        ¿Quieres seguir jugando con distancias? Mira <a href="/cuanto-son-10000-pasos/">cuántos
+        kilómetros son 10.000 pasos</a>, <a href="/cuanto-es-una-milla-nautica/">cuánto es una milla
+        náutica</a> o abre la <a href="/distancias/">herramienta de distancias</a> y dibuja la tuya.
+        Y si lo tuyo son las superficies, tienes el <a href="/">Hectareómetro</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'maraton', ha: 0,
+    family: 'distancias', published: '2026-08-05', modified: '2026-08-05',
+    slug: 'cuanto-mide-un-maraton',
+    path: MARATHON_ALTERNATES.es, alternates: MARATHON_ALTERNATES,
+    dist: MARATHON_KM, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 9; var PRESET_LAT = 40.4168; var PRESET_LON = -3.7038;',
+    title: '¿Cuántos kilómetros tiene un maratón y por qué 42,195? | Hectareómetro',
+    description: 'Un maratón mide 42,195 km (26 millas y 385 yardas) y el medio maratón 21,0975 km. Por qué esa cifra tan rara, ritmos y tiempos, y el maratón dibujado a escala sobre tu ciudad.',
+    h1: '¿Cuánto mide un maratón?',
+    intro,
+    question: '¿Cuánto mide un maratón?',
+    answer: 'Un maratón mide 42,195 kilómetros, es decir 42.195 metros o 26 millas y 385 yardas. El medio maratón es exactamente la mitad: 21,0975 km.',
+    faqs: [
+      { q: '¿Cuántos kilómetros tiene un maratón?', a: 'Un maratón mide 42,195 kilómetros: 42.195 metros, o 26 millas y 385 yardas.' },
+      { q: '¿Por qué el maratón mide 42,195 km y no 42 justos?', a: 'Por el recorrido de los Juegos Olímpicos de Londres 1908: salía del jardín del castillo de Windsor y la última vuelta en el estadio de White City se recortó a 385 yardas para acabar frente al palco real, lo que dio 26 millas y 385 yardas. La IAAF adoptó esa distancia como oficial en 1921.' },
+      { q: '¿Cuánto mide un medio maratón?', a: '21,0975 km, exactamente la mitad de un maratón. Suele redondearse a 21 km o 21,1 km.' },
+      { q: '¿Cuánto se tarda en correr un maratón?', a: 'La media mundial ronda las 4 horas y media (4 h 29 min según el análisis de RunRepeat con 19,6 millones de resultados: 4 h 21 min los hombres y 4 h 49 min las mujeres). Bajar de 3 horas se considera una marca de corredor avanzado.' },
+      { q: '¿Cuál es el récord del mundo de maratón?', a: '1 h 59 min 30 s, de Sabastian Sawe en el maratón de Londres del 26 de abril de 2026: la primera vez que se bajó de dos horas en competición, a un ritmo de 2:50 min/km. En mujeres, 2 h 09 min 56 s (Ruth Chepng\'etich, Chicago 2024) en carrera mixta.' },
+      { q: '¿Cuántos pasos son un maratón?', a: 'Unos 56.000 pasos, con una zancada de 0,75 m; corriendo, la zancada es más larga (1-1,5 m), así que un maratón puede quedarse en 30.000-40.000 zancadas.' },
+    ],
+    linkLabel: '¿Cuánto mide un maratón?',
+  };
+  }
+
+  // English mirror (universal topic). Preset centred on London and expressed in
+  // miles (26.2 mi is the iconic figure in English; the circle is the same
+  // 42.195 km radius), which is also the en tool's default unit.
+  const distUrl = '/en/distances/?d=26.2&u=mi&lat=51.5074&lon=-0.1278&z=9';
+  const dist = (d, z) => `/en/distances/?d=${d}&u=mi&lat=51.5074&lon=-0.1278&z=${z}`;
+  const intro = `      <p>
+        A <b>marathon is 26.2 miles</b> — <b><a href="${distUrl}">26 miles and 385 yards</a></b>, to
+        be exact, or <b>42.195 kilometres</b>. A <b>half marathon</b> is precisely half of that:
+        <b><a href="${dist('13.11', 10)}">13.11 miles</a></b> (21.0975 km). The drawing above uses
+        those 26.2 miles as a radius centred on London: drag the map to your own city to see how far
+        you would get if you ran a marathon in a straight line.
+      </p>
+      <p>
+        From central London, 26.2 miles as the crow flies lands you in <b>Guildford</b> (26.7 mi /
+        43.0 km). That is the thing the drawing makes obvious: a marathon is not "a long race", it
+        is crossing a whole county.
+      </p>
+
+      <h2>Why is a marathon 26.2 miles?</h2>
+      <p>
+        Because a royal family wanted to watch the start from its garden. It sounds like a joke, but
+        that is essentially what happened.
+      </p>
+      <p>
+        The first Olympic marathon, in <b>Athens 1896</b>, covered about <b>40 km</b> (25 miles) —
+        the road from the town of Marathon to Athens, honouring the legend of the soldier who ran to
+        announce the victory over the Persians. For two decades the distance was approximate and
+        changed every Games: <b>Stockholm 1912</b> ran 40.2 km and <b>Antwerp 1920</b> ran 42.75 km.
+      </p>
+      <p>
+        The figure we use today was born at <b>London 1908</b>. The organisers wanted the race to
+        start at <b>Windsor Castle</b> — on the <i>East Lawn</i>, beside the private terrace, with
+        Edward VII's permission, so the royal children could watch the start — and to finish inside
+        <b>White City Stadium</b>. To bring the finish line <b>in front of the royal box</b>, the
+        final lap of the track was cut to <b>385 yards</b> (352 m). The total: <b>26 miles and 385
+        yards</b>, i.e. <b>42,195 metres</b>
+        (<a href="${OLYMPIC_1908_URL}" target="_blank" rel="noopener">race records</a>).
+      </p>
+      <p>
+        In <b>1921</b> the IAAF (now World Athletics) standardised the marathon and picked exactly
+        the London 1908 distance. The minutes of that meeting <b>give no reason why</b>: it was
+        simply adopted — which is how half the world came to run a distance set to line up with a
+        grandstand.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>26.2 miles is…</th><th>Equal to</th></tr></thead>
+        <tbody>
+          <tr><td>In kilometres</td><td>42.195 km (42,195 m)</td></tr>
+          <tr><td>In miles and yards</td><td>26 miles 385 yards</td></tr>
+          <tr><td>In half marathons</td><td>2 (of 13.11 mi / 21.0975 km)</td></tr>
+          <tr><td>In steps</td><td>about 56,000 (<a href="/en/how-far-is-10000-steps/">at a 0.75 m stride</a>)</td></tr>
+          <tr><td>In nautical miles</td><td>22.8 (<a href="/en/how-long-is-a-nautical-mile/">of 1,852 m</a>)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>A curious detail about the 1908 course</h2>
+      <p>
+        In a straight line, Windsor Castle to White City Stadium is
+        <b><a href="${dist('16.5', 10)}">16.5 miles</a></b> (26.5 km). The runners covered 26.2
+        miles: the real course winds, as every city marathon does. That is the difference between the
+        radius this tool draws and the miles actually run — and why no marathon reaches as far as it
+        sounds. <a href="/en/measure-distance/">Trace a route point by point</a> if you want to
+        measure an actual course.
+      </p>
+
+      <h2>Pace and finishing times</h2>
+      <p>
+        The worldwide average is around <b>4 hours 30 minutes</b>. The largest published analysis,
+        covering <b>19.6 million results</b> from more than 32,000 races
+        (<a href="${RUNREPEAT_URL}" target="_blank" rel="noopener">RunRepeat</a>), puts the average
+        finish at <b>4:29:53</b> — <b>4:21:03</b> for men and <b>4:48:45</b> for women.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Finish time</th><th>Pace</th><th>Speed</th></tr></thead>
+        <tbody>
+          <tr><td>3:00</td><td>6:52 min/mi (4:16 min/km)</td><td>8.7 mph</td></tr>
+          <tr><td>3:30</td><td>8:01 min/mi (4:59 min/km)</td><td>7.5 mph</td></tr>
+          <tr><td>4:00</td><td>9:09 min/mi (5:41 min/km)</td><td>6.6 mph</td></tr>
+          <tr><td>4:30 (the average)</td><td>10:18 min/mi (6:24 min/km)</td><td>5.8 mph</td></tr>
+          <tr><td>5:00</td><td>11:27 min/mi (7:07 min/km)</td><td>5.2 mph</td></tr>
+          <tr><td>6:00</td><td>13:44 min/mi (8:32 min/km)</td><td>4.4 mph</td></tr>
+        </tbody>
+      </table>
+      <p>
+        At the other end sits the <b>men's world record</b>: <b>1:59:30</b>, set by <b>Sabastian
+        Sawe</b> at the London Marathon on 26 April 2026 — the first sub-two-hour marathon in a race
+        (<a href="${WR_URL}" target="_blank" rel="noopener">World Athletics</a>). That is
+        <b>4:34 min/mi</b> (2:50 min/km) held for 26.2 miles, at <b>13.2 mph</b>: roughly the pace
+        most people can hold for 400 metres. For women, the mixed-race record is <b>2:09:56</b>
+        (Ruth Chepng'etich, Chicago 2024) and the women-only record <b>2:15:41</b> (Tigst Assefa,
+        London 2026).
+      </p>
+
+      <h2>Race distances, drawn to scale</h2>
+      <p>Click any of them to see it above, centred on London:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Race</th><th>Distance</th></tr></thead>
+        <tbody>
+          <tr><td>5K</td><td><a href="${dist('3.11', 12)}">3.11 mi</a> (5 km)</td></tr>
+          <tr><td>10K</td><td><a href="${dist('6.21', 11)}">6.21 mi</a> (10 km)</td></tr>
+          <tr><td>Half marathon</td><td><a href="${dist('13.11', 10)}">13.11 mi</a> (21.0975 km)</td></tr>
+          <tr><td>Marathon</td><td><a href="${distUrl}">26.2 mi</a> (42.195 km)</td></tr>
+          <tr><td>100 km (ultramarathon)</td><td><a href="${dist('62.14', 8)}">62.14 mi</a> (100 km)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Bear in mind these are straight-line radii from the centre of the map, not routes. They are
+        for grasping the scale — how much of your city a marathon spans — not for plotting a course.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How long is a marathon?</dt>
+        <dd>A marathon is <a href="${distUrl}">26.2 miles</a>: 26 miles and 385 yards, or
+          42.195 kilometres (42,195 m).</dd>
+
+        <dt>Why is a marathon 26 miles and 385 yards?</dt>
+        <dd>Because of the 1908 London Olympic course: it started on the lawn of Windsor Castle and
+          the final lap inside White City Stadium was cut to 385 yards so the finish line sat in
+          front of the royal box, giving 26 miles 385 yards. The IAAF made that distance official in
+          1921.</dd>
+
+        <dt>How long is a half marathon?</dt>
+        <dd>13.11 miles (21.0975 km), exactly half a marathon. It is usually rounded to 13.1 miles or
+          21 km.</dd>
+
+        <dt>How long does it take to run a marathon?</dt>
+        <dd>The worldwide average is about 4 hours 30 minutes (4:29:53 in RunRepeat's analysis of
+          19.6 million results: 4:21:03 for men and 4:48:45 for women). Breaking 3 hours is
+          considered an advanced-runner mark.</dd>
+
+        <dt>What is the marathon world record?</dt>
+        <dd>1:59:30, set by Sabastian Sawe at the London Marathon on 26 April 2026 — the first
+          sub-two-hour marathon in a race, at 2:50 min/km (4:34 min/mi). For women, 2:09:56 (Ruth
+          Chepng'etich, Chicago 2024) in a mixed race.</dd>
+
+        <dt>How many steps are in a marathon?</dt>
+        <dd>About 56,000 walking steps at a 0.75 m stride. Running strides are longer (1–1.5 m), so
+          running a marathon can take 30,000–40,000 strides.</dd>
+      </dl>
+      <p>
+        Want to keep playing with distances? See <a href="/en/how-far-is-10000-steps/">how far
+        10,000 steps is</a>, <a href="/en/how-long-is-a-nautical-mile/">how long a nautical mile
+        is</a>, or open the <a href="/en/distances/">distances tool</a> and draw your own. And if
+        areas are more your thing, there is the <a href="/en/">Hectareometer</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'maraton', ha: 0,
+    family: 'distancias', published: '2026-08-05', modified: '2026-08-05',
+    slug: 'how-long-is-a-marathon',
+    path: MARATHON_ALTERNATES.en, alternates: MARATHON_ALTERNATES,
+    dist: 26.2, distUnit: 'mi',
+    presetExtra: ' var PRESET_ZOOM = 9; var PRESET_LAT = 51.5074; var PRESET_LON = -0.1278;',
+    title: 'How long is a marathon, and why 26.2 miles? | Hectareometer',
+    description: 'A marathon is 26.2 miles — 26 miles 385 yards, or 42.195 km — and a half marathon 13.11 miles. Why that odd figure, pace and finishing times, drawn to scale on a map.',
+    h1: 'How long is a marathon?',
+    intro,
+    question: 'How long is a marathon?',
+    answer: 'A marathon is 26.2 miles: 26 miles and 385 yards, or 42.195 kilometres. A half marathon is exactly half of that, 13.11 miles (21.0975 km).',
+    faqs: [
+      { q: 'How long is a marathon?', a: 'A marathon is 26.2 miles: 26 miles and 385 yards, or 42.195 kilometres (42,195 m).' },
+      { q: 'Why is a marathon 26 miles and 385 yards?', a: 'Because of the 1908 London Olympic course: it started on the lawn of Windsor Castle and the final lap inside White City Stadium was cut to 385 yards so the finish line sat in front of the royal box, giving 26 miles 385 yards. The IAAF made that distance official in 1921.' },
+      { q: 'How long is a half marathon?', a: '13.11 miles (21.0975 km), exactly half a marathon. It is usually rounded to 13.1 miles or 21 km.' },
+      { q: 'How long does it take to run a marathon?', a: "The worldwide average is about 4 hours 30 minutes (4:29:53 in RunRepeat's analysis of 19.6 million results: 4:21:03 for men and 4:48:45 for women). Breaking 3 hours is considered an advanced-runner mark." },
+      { q: 'What is the marathon world record?', a: "1:59:30, set by Sabastian Sawe at the London Marathon on 26 April 2026 — the first sub-two-hour marathon in a race, at 2:50 min/km (4:34 min/mi). For women, 2:09:56 (Ruth Chepng'etich, Chicago 2024) in a mixed race." },
+      { q: 'How many steps are in a marathon?', a: 'About 56,000 walking steps at a 0.75 m stride. Running strides are longer (1–1.5 m), so running a marathon can take 30,000–40,000 strides.' },
+    ],
+    linkLabel: 'How long is a marathon?',
+  };
+}
+
 const DIST_ARTICLES = [
   tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),
   nauticalMileArticle('es'), nauticalMileArticle('en'),
+  marathonArticle('es'), marathonArticle('en'),
 ];
 
 // Every editorial article, whatever its family: the single source for the
