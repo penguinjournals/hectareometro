@@ -1571,7 +1571,7 @@ function tankerTruckArticle() {
       </p>`;
   return {
     section: 'litros', lang: 'es', key: 'camion-cisterna', l: TANKER_LITERS,
-    family: 'litros', published: '2026-08-05', modified: '2026-08-05',
+    family: 'litros', published: '2026-08-02', modified: '2026-08-02',
     slug: 'cuantos-litros-tiene-un-camion-cisterna',
     path: '/cuantos-litros-tiene-un-camion-cisterna/',
     title: '¿Cuántos litros lleva un camión cisterna? | Hectareómetro',
@@ -2457,7 +2457,7 @@ function marathonArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'maraton', ha: 0,
-    family: 'distancias', published: '2026-08-05', modified: '2026-08-05',
+    family: 'distancias', published: '2026-08-04', modified: '2026-08-04',
     slug: 'cuanto-mide-un-maraton',
     path: MARATHON_ALTERNATES.es, alternates: MARATHON_ALTERNATES,
     dist: MARATHON_KM, distUnit: 'km',
@@ -2628,7 +2628,7 @@ function marathonArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'maraton', ha: 0,
-    family: 'distancias', published: '2026-08-05', modified: '2026-08-05',
+    family: 'distancias', published: '2026-08-04', modified: '2026-08-04',
     slug: 'how-long-is-a-marathon',
     path: MARATHON_ALTERNATES.en, alternates: MARATHON_ALTERNATES,
     dist: 26.2, distUnit: 'mi',
