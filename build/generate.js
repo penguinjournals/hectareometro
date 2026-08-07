@@ -1591,9 +1591,480 @@ function tankerTruckArticle() {
   };
 }
 
+// ¿Cuántos litros tiene una bañera? Bilingual (bath vs shower is universal).
+// The embedded tool is preset to the site's canonical bathtub, 150 L, which the
+// pictogram draws as «≈ 75 personas bebiendo durante un día» — the copy matches.
+// Data validated 2026-08-07 (web):
+// · Manufacturer capacities, Roca technical sheets (roca.es, "Capacidad (l)"):
+//   Contesa steel 150×70 → 153 L; Contesa steel 170×70 → 183 L (interior
+//   1,525 × 575 × 395 mm); Vythos acrylic two-seater 170×75 → 208 L; Easy
+//   acrylic 170×75 → 215 L.
+// · The 170×70 interior bounding box is 1.525 × 0.575 × 0.395 = 346 L, so the
+//   declared 183 L is only ~53 % of it: a tub is not a box (sloped backrest,
+//   narrower bottom, water stops at the overflow). Computed here, not copied.
+// · Displacement: human density ≈ 1 kg/L, so a 70 kg body pushes up ~70 L.
+// · Shower flow rates span the whole range in the sources — 10-12 L/min
+//   (Geberit), up to 20 L/min (Fundación Aquae), 6-9 L/min for a low-flow head
+//   — hence the article gives a crossover TABLE plus a way to measure your own
+//   instead of one bogus number. Bottle test: L/min = 90 / seconds to fill a
+//   1.5 L bottle.
+// · EN side: EPA WaterSense says a shower uses 10-25 gallons and "a bath takes
+//   up to 70 gallons"; the federal showerhead cap is 2.5 gpm (Energy Policy Act
+//   of 1992) and WaterSense-labelled heads ≤ 2.0 gpm, "nearly 40 gallons per
+//   day" for the average family's showering — which is exactly one 150 L bath.
+// · Heating: 1 kWh raises 860 L by 1 °C, so 150 L from 15 to 40 °C = 4.4 kWh.
+// Sources: https://www.roca.es/productos/banera-acero-rectangular-235860..0 ·
+// https://www.epa.gov/watersense/showerheads ·
+// https://19january2017snapshot.epa.gov/www3/watersense/kids/showerpower.html ·
+// https://www.geberit.es/productos-para-el-bano/inspiracion/consejos-y-trucos/ahorrar-agua-en-el-bano/ ·
+// https://www.fundacionaquae.org/cuanta-agua-consume-la-ducha-minuto/
+const BATHTUB_LITERS = 150;
+// Roca catalogue capacities, in litres, for the by-size table.
+const TUB_150x70 = 153;
+const TUB_170x70 = 183;
+const TUB_170x75_BIPLAZA = 208;
+const TUB_170x75_ACRYLIC = 215;
+// Interior of the 170×70 Contesa, in metres, for the bounding-box calculation.
+const TUB_INTERIOR = { l: 1.525, w: 0.575, h: 0.395 };
+// Body volume displaced by an average adult, in litres (≈ 1 kg/L).
+const BODY_DISPLACEMENT_L = 70;
+// Shower flow rates for the crossover table, in litres per minute.
+const SHOWER_FLOWS = [6, 9, 12, 15, 20];
+// A moderate bath: filled to about two thirds, not to the overflow.
+const MODERATE_BATH_L = 100;
+
+const BATHTUB_ALTERNATES = {
+  es: '/cuantos-litros-tiene-una-banera/',
+  en: '/en/how-many-litres-in-a-bathtub/',
+};
+
+function bathtubArticle(lang) {
+  const es = lang === 'es';
+  const grpLocale = es ? 'es-ES' : 'en-GB';
+  const fmtG = n => n.toLocaleString(grpLocale, { useGrouping: 'always', maximumFractionDigits: 0 });
+  const n1 = n => fmt(n, 1, lang);
+  const ROCA_URL = 'https://www.roca.es/productos/banera-acero-rectangular-235860..0';
+  const INE_URL = 'https://www.ine.es/dyngs/INEbase/operacion.htm?c=Estadistica_C&cid=1254736176834&menu=ultiDatos&idp=1254735976602';
+  const GEBERIT_URL = 'https://www.geberit.es/productos-para-el-bano/inspiracion/consejos-y-trucos/ahorrar-agua-en-el-bano/';
+  const AQUAE_URL = 'https://www.fundacionaquae.org/cuanta-agua-consume-la-ducha-minuto/';
+  const EPA_URL = 'https://www.epa.gov/watersense/showerheads';
+  const EPA_KIDS_URL = 'https://19january2017snapshot.epa.gov/www3/watersense/kids/showerpower.html';
+
+  const boxL = Math.round(TUB_INTERIOR.l * TUB_INTERIOR.w * TUB_INTERIOR.h * 1000); // 346
+  const boxPct = Math.round((TUB_170x70 / boxL) * 100); // 53
+  const drinkDays = BATHTUB_LITERS / litersData.DRINK_L_PER_DAY; // 75
+  const householdDay = litersData.HOUSEHOLD_L_PER_PERSON_DAY; // 128
+  const yearOfBaths = BATHTUB_LITERS * 365; // 54,750
+  const yearOfHousehold = householdDay * 365; // 46,720
+  const tanker = Math.round(30000 / BATHTUB_LITERS); // 200
+  const perPool = Math.round(POOL_LITERS / BATHTUB_LITERS); // 16,667
+  const perHm3 = Math.round(1e9 / BATHTUB_LITERS); // 6,666,667
+  const gallons = BATHTUB_LITERS / litersData.GALLON_LITERS; // 39.6
+  const waterCost = (BATHTUB_LITERS / 1000) * WATER_PRICE_EUR_M3; // 0.30 €
+  // 1 kWh heats 860 L by 1 °C: kWh = litres × ΔT × 4.186 / 3600.
+  const heatKwh = (BATHTUB_LITERS * 25 * 4.186) / 3600; // 4.36
+  // Spanish crossover table only; the English one is told in gpm (see gpmRows).
+  const flowNotes = { 6: ' (cabezal de bajo consumo)', 12: ' (cabezal normal)', 20: ' (cabezal antiguo)' };
+  const flowRows = SHOWER_FLOWS.map(q =>
+    `          <tr><td>${fmt(q, 0, lang)} litros/minuto${flowNotes[q] || ''}</td><td>${n1(BATHTUB_LITERS / q)} min</td><td>${n1(MODERATE_BATH_L / q)} min</td></tr>`
+  ).join('\n');
+
+  if (es) {
+    const intro = `      <p>
+        Una <b>bañera</b> estándar llena hasta el rebosadero contiene entre <b>150 y 220 litros</b>
+        de agua: la clásica de 170 × 70 centímetros que hay en medio país declara
+        <b>${TUB_170x70} litros</b> en la ficha del fabricante
+        (<a href="${ROCA_URL}" target="_blank" rel="noopener">Roca</a>). Pero el agua que gastas al
+        bañarte es menos, unos <b><a href="/litros/?l=150">150 litros</a></b>, porque nadie la llena
+        hasta el borde y porque tu propio cuerpo desplaza unos ${BODY_DISPLACEMENT_L} litros. Esos
+        150 litros son los que dibuja el pictograma de arriba: <b>${drinkDays} personas bebiendo
+        durante un día</b>. Cambia la referencia con el selector «Ver» para verlos en vasos o en
+        botellas.
+      </p>
+
+      <h2>¿Cuántos litros tiene una bañera, por tamaños?</h2>
+      <p>
+        Los fabricantes publican la capacidad en la ficha técnica de cada modelo, así que no hace
+        falta estimarla. Estas son las de cuatro bañeras de catálogo de
+        <a href="${ROCA_URL}" target="_blank" rel="noopener">Roca</a>:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Bañera</th><th>Capacidad</th></tr></thead>
+        <tbody>
+          <tr><td>Acero, 150 × 70 cm</td><td>${TUB_150x70} litros</td></tr>
+          <tr><td>Acero, 170 × 70 cm (la más común)</td><td>${TUB_170x70} litros</td></tr>
+          <tr><td>Acrílica biplaza, 170 × 75 cm</td><td>${TUB_170x75_BIPLAZA} litros</td></tr>
+          <tr><td>Acrílica, 170 × 75 cm</td><td>${TUB_170x75_ACRYLIC} litros</td></tr>
+          <tr><td>Referencia de esta web</td><td><a href="/litros/?l=150">150 litros</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Por qué caben menos litros de los que parece</h2>
+      <p>
+        Si mides una bañera por dentro y la tratas como una caja, la cuenta se dispara. La de
+        170 × 70 tiene un hueco interior de <b>1,525 × 0,575 × 0,395 metros</b>, que serían
+        <b>${boxL} litros</b>… pero el fabricante declara ${TUB_170x70}: apenas el <b>${boxPct} %</b>.
+        Una bañera no es una caja. El respaldo va inclinado, el fondo es más estrecho que el borde,
+        las esquinas están redondeadas y el agua deja de subir en el rebosadero, unos centímetros
+        por debajo del filo. De ahí que casi todo el mundo sobreestime cuánta agua cabe.
+      </p>
+
+      <h2>El agua que gastas no es la capacidad de la bañera</h2>
+      <p>
+        Hay una segunda razón, y es de Arquímedes: <b>tú también ocupas sitio</b>. El cuerpo humano
+        tiene prácticamente la densidad del agua (un kilo por litro), así que una persona de
+        ${BODY_DISPLACEMENT_L} kilos desplaza unos <b>${BODY_DISPLACEMENT_L} litros</b>. Al meterte,
+        el nivel sube el equivalente a esos ${BODY_DISPLACEMENT_L} litros que <i>no</i> has tenido
+        que abrir del grifo. Por eso un baño normal —agua hasta la cintura, contigo dentro— gasta
+        del orden de <b><a href="/litros/?l=100">100</a> a <a href="/litros/?l=150">150 litros</a></b>
+        aunque la bañera admita ${TUB_170x75_ACRYLIC}.
+      </p>
+      <p>
+        Y como un litro de agua pesa un kilo, esos 150 litros son también
+        <b><a href="/kilos/?k=150">150 kilos</a></b> de agua apoyados en el suelo de tu baño,
+        más tu peso.
+      </p>
+
+      <h2>¿Gasta más un baño o una ducha?</h2>
+      <p>
+        La respuesta honesta es: <b>depende del caudal de tu ducha y de lo que tardes</b>, y por eso
+        las cifras que circulan no coinciden. Las fuentes van de los
+        <a href="${GEBERIT_URL}" target="_blank" rel="noopener">10-12 litros por minuto</a> de un
+        cabezal normal a los <a href="${AQUAE_URL}" target="_blank" rel="noopener">20 litros por
+        minuto</a> de uno antiguo, y bajan a 6-9 con un cabezal de bajo consumo. Con esos números,
+        estos son los <b>minutos de ducha que equivalen a un baño</b>:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Caudal de la ducha</th><th>= baño de 150 litros</th><th>= baño de 100 litros</th></tr></thead>
+        <tbody>
+${flowRows}
+        </tbody>
+      </table>
+      <p>
+        Traducido: con un cabezal de bajo consumo la ducha gana casi siempre, porque tendrías que
+        estar <b>25 minutos</b> debajo para igualar un baño. Con una ducha vieja de 20 litros por
+        minuto, en cambio, <b>a los siete minutos y medio ya has gastado la bañera entera</b>. La
+        ducha no ahorra por ser ducha: ahorra por ser corta y por el cabezal.
+      </p>
+
+      <h2>Mide el caudal de tu ducha en diez segundos</h2>
+      <p>
+        No hace falta creerse ninguna media. Coge una <b>botella de litro y medio</b>, ponla bajo la
+        ducha abierta del todo y cronometra lo que tarda en llenarse. El caudal sale de una división:
+      </p>
+      <p style="text-align:center"><b>litros por minuto = 90 ÷ segundos que tarda la botella</b></p>
+      <p>
+        Si tarda 6 segundos, tu ducha son 15 litros por minuto; si tarda 9, son 10. Con un cubo de
+        10 litros la fórmula es <b>600 ÷ segundos</b>. Una vez sabes tu caudal, la tabla de arriba
+        deja de ser una estimación y pasa a ser tu número.
+      </p>
+
+      <h2>Una bañera, en cosas que sí te imaginas</h2>
+      <p>Pincha en cualquier cifra para verla dibujada arriba a escala:</p>
+      <ul class="examples-list">
+        <li>Es lo que <b><a href="/litros/?l=150">bebe una persona en ${drinkDays} días</a></b>, a
+          dos litros al día.</li>
+        <li>Es algo más que <b>todo el consumo doméstico de una persona en un día</b> en España:
+          <a href="/litros/?l=128">${householdDay} litros</a> entre ducha, cisterna, lavadora y
+          cocina (<a href="${INE_URL}" target="_blank" rel="noopener">INE</a>). Un solo baño gasta
+          el agua de un día entero de casa.</li>
+        <li>En un <a href="/cuantos-litros-tiene-un-camion-cisterna/">camión cisterna</a> caben
+          <b><a href="/litros/?l=30000&v=banera">${tanker} bañeras</a></b>.</li>
+        <li>En una <a href="/cuantos-litros-piscina-olimpica/">piscina olímpica</a>,
+          <b><a href="/litros/?l=2500000&v=banera">${fmtG(perPool)} bañeras</a></b>; en un
+          <a href="/cuanto-es-un-hectometro-cubico/">hectómetro cúbico</a>, ${fmtG(perHm3)}.</li>
+        <li>En galones estadounidenses, unos <b>${n1(gallons)} galones</b>.</li>
+      </ul>
+      <p>
+        El dato que mejor coloca la cifra es el anual. <b>Bañarte todos los días</b> son
+        <b><a href="/litros/?l=54750">${fmtG(yearOfBaths)} litros al año</a></b>, más que
+        los ${fmtG(yearOfHousehold)} litros que consume en casa un español medio en todo el año
+        contando absolutamente todo. Dicho de otra forma: bañarse a diario gasta más agua que todo
+        lo demás que haces en casa junto.
+      </p>
+
+      <h2>¿Cuánto cuesta llenar una bañera?</h2>
+      <p>
+        Poco, si hablamos del agua: a <b>${fmt(WATER_PRICE_EUR_M3, 2, lang)} €/m³</b> de media en
+        España, los 150 litros de un baño cuestan <b>${fmt(waterCost, 2, lang)} €</b>. Treinta
+        céntimos.
+      </p>
+      <p>
+        Lo caro es <b>calentarla</b>. Subir 150 litros de los 15 °C que salen del grifo a los 40 °C
+        de un baño necesita unos <b>${n1(heatKwh)} kWh</b> —un kilovatio-hora calienta 860 litros un
+        grado—, y eso cuesta varias veces más que el agua, se caliente con gas o con electricidad. La
+        cuenta, por si quieres hacerla con tu temperatura: <b>kWh = litros × grados a subir ÷ 860</b>.
+        Ahí está el verdadero coste de un baño, y también su huella de carbono.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos litros tiene una bañera?</dt>
+        <dd>Una bañera estándar de 170 × 70 cm declara <b>${TUB_170x70} litros</b> de capacidad, y
+          los modelos más grandes llegan a ${TUB_170x75_ACRYLIC}. Un baño real gasta menos, del
+          orden de <a href="/litros/?l=150">150 litros</a>, porque no se llena hasta el borde y el
+          cuerpo desplaza unos ${BODY_DISPLACEMENT_L} litros.</dd>
+
+        <dt>¿Gasta más agua un baño o una ducha?</dt>
+        <dd>Depende del caudal. Con un cabezal de bajo consumo (6 litros por minuto) harían falta
+          25 minutos de ducha para igualar un baño de 150 litros; con uno antiguo de 20 litros por
+          minuto bastan 7 minutos y medio. La ducha ahorra si es corta y el cabezal es eficiente.</dd>
+
+        <dt>¿Cuántos litros gasta una ducha de 5 minutos?</dt>
+        <dd>Entre 30 y 100 litros según el cabezal: 30 con uno de bajo consumo de 6 litros por
+          minuto, unos 60 con uno normal de 12 y hasta 100 con uno antiguo de 20. Puedes medir el
+          tuyo cronometrando cuánto tarda en llenarse una botella de litro y medio: litros por
+          minuto = 90 ÷ segundos.</dd>
+
+        <dt>¿Cuánto pesa una bañera llena de agua?</dt>
+        <dd>Un litro de agua pesa un kilo, así que 150 litros son <a href="/kilos/?k=150">150
+          kilos</a> de agua, y una bañera llena hasta el rebosadero con ${TUB_170x70} litros pesa
+          ${TUB_170x70} kilos más la propia bañera y la persona que se baña.</dd>
+
+        <dt>¿Cuánto cuesta llenar una bañera?</dt>
+        <dd>Unos ${fmt(waterCost, 2, lang)} € de agua a ${fmt(WATER_PRICE_EUR_M3, 2, lang)} €/m³, el
+          precio medio en España. Calentarla es lo caro: pasar 150 litros de 15 a 40 °C necesita
+          unos ${n1(heatKwh)} kWh de gas o electricidad.</dd>
+      </dl>
+      <p>
+        ¿Quieres visualizar otras cantidades de agua? Prueba la
+        <a href="/litros/">herramienta de litros</a>, mira cuánto lleva un
+        <a href="/cuantos-litros-tiene-un-camion-cisterna/">camión cisterna</a>, cuánto es
+        <a href="/cuantos-litros-piscina-olimpica/">una piscina olímpica</a> o cuánto es
+        <a href="/cuanto-es-un-hectometro-cubico/">un hectómetro cúbico</a>. Y si lo tuyo son las
+        superficies o los pesos, tienes el <a href="/">Hectareómetro</a> y la
+        <a href="/kilos/">herramienta de kilos</a>.
+      </p>`;
+    return {
+      section: 'litros', lang: 'es', key: 'banera', l: BATHTUB_LITERS,
+      family: 'litros', published: '2026-08-07', modified: '2026-08-07',
+      slug: 'cuantos-litros-tiene-una-banera',
+      path: BATHTUB_ALTERNATES.es, alternates: BATHTUB_ALTERNATES,
+      title: '¿Cuántos litros tiene una bañera? Baño vs ducha, con números | Hectareómetro',
+      description: 'Una bañera de 170 × 70 cm declara 183 litros y un baño real gasta unos 150. Capacidades por tamaño, cuántos minutos de ducha equivalen a un baño y cómo medir el caudal de la tuya.',
+      h1: '¿Cuántos litros de agua caben en una bañera?',
+      intro,
+      question: '¿Cuántos litros tiene una bañera?',
+      answer: 'Una bañera estándar de 170 × 70 cm declara 183 litros de capacidad y los modelos grandes llegan a 215. Un baño real gasta menos, unos 150 litros, porque no se llena hasta el borde y el cuerpo desplaza unos 70 litros.',
+      faqs: [
+        { q: '¿Cuántos litros tiene una bañera?', a: `Una bañera estándar de 170 × 70 cm declara ${TUB_170x70} litros de capacidad, y los modelos más grandes llegan a ${TUB_170x75_ACRYLIC}. Un baño real gasta menos, del orden de 150 litros, porque no se llena hasta el borde y el cuerpo desplaza unos ${BODY_DISPLACEMENT_L} litros.` },
+        { q: '¿Gasta más agua un baño o una ducha?', a: 'Depende del caudal. Con un cabezal de bajo consumo (6 litros por minuto) harían falta 25 minutos de ducha para igualar un baño de 150 litros; con uno antiguo de 20 litros por minuto bastan 7 minutos y medio. La ducha ahorra si es corta y el cabezal es eficiente.' },
+        { q: '¿Cuántos litros gasta una ducha de 5 minutos?', a: 'Entre 30 y 100 litros según el cabezal: 30 con uno de bajo consumo de 6 litros por minuto, unos 60 con uno normal de 12 y hasta 100 con uno antiguo de 20. Puedes medir el tuyo cronometrando cuánto tarda en llenarse una botella de litro y medio: litros por minuto = 90 ÷ segundos.' },
+        { q: '¿Cuánto pesa una bañera llena de agua?', a: `Un litro de agua pesa un kilo, así que 150 litros son 150 kilos de agua, y una bañera llena hasta el rebosadero con ${TUB_170x70} litros pesa ${TUB_170x70} kilos más la propia bañera y la persona que se baña.` },
+        { q: '¿Cuánto cuesta llenar una bañera?', a: `Unos ${fmt(waterCost, 2, lang)} € de agua a ${fmt(WATER_PRICE_EUR_M3, 2, lang)} €/m³, el precio medio en España. Calentarla es lo caro: pasar 150 litros de 15 a 40 °C necesita unos ${n1(heatKwh)} kWh de gas o electricidad.` },
+      ],
+      linkLabel: '¿Cuántos litros tiene una bañera?',
+    };
+  }
+
+  // English. Same skeleton, but the shower crossover is told in US terms:
+  // 2.5 gpm is the federal cap, 2.0 gpm the WaterSense limit, and EPA's "nearly
+  // 40 gallons a day" of family showering is exactly one 150 L / 40 gal bath.
+  const gpmRows = [
+    { gpm: 1.5, note: ' (efficient head)' },
+    { gpm: 2.0, note: ' (WaterSense limit)' },
+    { gpm: 2.5, note: ' (US federal maximum)' },
+  ].map(r =>
+    `          <tr><td>${fmt(r.gpm, 1, lang)} gpm${r.note} = ${fmt(r.gpm * litersData.GALLON_LITERS, 1, lang)} litres/min</td><td>${n1(gallons / r.gpm)} min</td><td>${n1((MODERATE_BATH_L / litersData.GALLON_LITERS) / r.gpm)} min</td></tr>`
+  ).join('\n');
+
+  const intro = `      <p>
+        A standard <b>bathtub</b> filled to the overflow holds between <b>150 and 220 litres</b>
+        (40 to 58 US gallons) of water: the common 170 × 70 cm tub is rated at
+        <b>${TUB_170x70} litres</b> — ${n1(TUB_170x70 / litersData.GALLON_LITERS)} gallons — on the
+        manufacturer's spec sheet (<a href="${ROCA_URL}" target="_blank" rel="noopener">Roca</a>).
+        The water you actually use for a bath is less, around
+        <b><a href="/en/liters/?l=150&u=l">150 litres</a></b> or ${n1(gallons)} gallons, because
+        nobody fills a tub to the brim and because your own body displaces about
+        ${BODY_DISPLACEMENT_L} litres. That is what the pictogram above draws:
+        <b>${drinkDays} people drinking for a day</b>. Use the "Show" selector to see it in glasses
+        or bottles instead.
+      </p>
+
+      <h2>How many litres is a bathtub, by size?</h2>
+      <p>
+        Manufacturers publish the capacity on every model's spec sheet, so there is no need to
+        estimate it. These are four catalogue tubs from
+        <a href="${ROCA_URL}" target="_blank" rel="noopener">Roca</a>:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Bathtub</th><th>Capacity</th></tr></thead>
+        <tbody>
+          <tr><td>Steel, 150 × 70 cm</td><td>${TUB_150x70} litres (${n1(TUB_150x70 / litersData.GALLON_LITERS)} gal)</td></tr>
+          <tr><td>Steel, 170 × 70 cm (the common one)</td><td>${TUB_170x70} litres (${n1(TUB_170x70 / litersData.GALLON_LITERS)} gal)</td></tr>
+          <tr><td>Acrylic two-seater, 170 × 75 cm</td><td>${TUB_170x75_BIPLAZA} litres (${n1(TUB_170x75_BIPLAZA / litersData.GALLON_LITERS)} gal)</td></tr>
+          <tr><td>Acrylic, 170 × 75 cm</td><td>${TUB_170x75_ACRYLIC} litres (${n1(TUB_170x75_ACRYLIC / litersData.GALLON_LITERS)} gal)</td></tr>
+          <tr><td>This site's reference</td><td><a href="/en/liters/?l=150&u=l">150 litres</a> (${n1(gallons)} gal)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Big soaking and freestanding tubs go further: the US Environmental Protection Agency puts a
+        full bath at <a href="${EPA_KIDS_URL}" target="_blank" rel="noopener">up to 70 gallons</a>
+        (265 litres) against 10 to 25 gallons for a shower.
+      </p>
+
+      <h2>Why a tub holds less than it looks</h2>
+      <p>
+        Measure a bathtub inside and treat it as a box and the number runs away from you. The
+        170 × 70 tub has an interior of <b>1.525 × 0.575 × 0.395 metres</b>, which would be
+        <b>${boxL} litres</b>… yet the maker rates it at ${TUB_170x70}: only <b>${boxPct} %</b> of
+        that. A tub is not a box. The backrest slopes, the bottom is narrower than the rim, the
+        corners are rounded, and the water stops rising at the overflow, a few centimetres below the
+        edge. That is why almost everybody overestimates how much water fits.
+      </p>
+
+      <h2>The water you use is not the tub's capacity</h2>
+      <p>
+        There is a second reason, and it is Archimedes: <b>you take up room too</b>. The human body
+        is almost exactly as dense as water (one kilo per litre), so a ${BODY_DISPLACEMENT_L} kg
+        (155 lb) person displaces about <b>${BODY_DISPLACEMENT_L} litres</b>, roughly 18 gallons.
+        Getting in raises the level by that much water you never had to run from the tap. So a
+        normal bath — water at waist height, with you in it — uses on the order of
+        <b><a href="/en/liters/?l=100&u=l">100</a> to
+        <a href="/en/liters/?l=150&u=l">150 litres</a></b> even in a tub rated for
+        ${TUB_170x75_ACRYLIC}.
+      </p>
+      <p>
+        And since a litre of water weighs a kilo, those 150 litres are also
+        <b><a href="/en/kilos/?k=150&u=kg">150 kilos</a></b> (330 lb) of water resting on your
+        bathroom floor, plus your own weight.
+      </p>
+
+      <h2>Does a bath or a shower use more water?</h2>
+      <p>
+        The honest answer is: <b>it depends on your showerhead and how long you take</b>. In the US
+        the federal cap has been <b>2.5 gallons per minute</b> since the Energy Policy Act of 1992,
+        and <a href="${EPA_URL}" target="_blank" rel="noopener">WaterSense-labelled heads</a> use no
+        more than 2.0 gpm. Here is how many <b>minutes of shower equal one bath</b>:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Shower flow</th><th>= 150 L / ${n1(gallons)} gal bath</th><th>= 100 L / ${n1(MODERATE_BATH_L / litersData.GALLON_LITERS)} gal bath</th></tr></thead>
+        <tbody>
+${gpmRows}
+        </tbody>
+      </table>
+      <p>
+        In other words, with a standard 2.5 gpm head you would have to stand under it for
+        <b>${n1(gallons / 2.5)} minutes</b> to match a single bath — and with an efficient one, for
+        ${n1(gallons / 1.5)}. That is why the shower almost always wins in the US, and why EPA can
+        say the average family uses <a href="${EPA_URL}" target="_blank" rel="noopener">nearly 40
+        gallons a day</a> showering: the whole family's showers add up to about one bath.
+      </p>
+
+      <h2>Measure your shower in ten seconds</h2>
+      <p>
+        You do not have to trust any average. Put a <b>one-gallon jug</b> under the shower running
+        full and time how long it takes to fill:
+      </p>
+      <p style="text-align:center"><b>gallons per minute = 60 ÷ seconds to fill the jug</b></p>
+      <p>
+        If it fills in 24 seconds, your shower is 2.5 gpm; in 30 seconds, 2.0. With a 1.5-litre
+        bottle the formula is <b>litres per minute = 90 ÷ seconds</b>. Once you know your flow, the
+        table above stops being an estimate and becomes your number.
+      </p>
+
+      <h2>A bathtub, in things you can picture</h2>
+      <p>Click any figure to see it drawn to scale above:</p>
+      <ul class="examples-list">
+        <li>It is what <b><a href="/en/liters/?l=150&u=l">one person drinks in ${drinkDays}
+          days</a></b>, at two litres a day.</li>
+        <li>It is slightly more than <b>one person's entire household water use for a day</b>:
+          <a href="/en/liters/?l=128&u=l">${householdDay} litres</a> covering showers, toilet,
+          laundry and cooking (<a href="${INE_URL}" target="_blank" rel="noopener">Spanish national
+          statistics office</a>). A single bath spends a whole day of home water.</li>
+        <li>A <a href="/en/liters/?l=30000&u=l&v=banera">tanker truck</a> holds <b>${tanker}
+          bathtubs</b>.</li>
+        <li>An <a href="/en/how-many-litres-in-an-olympic-swimming-pool/">Olympic swimming pool</a>
+          holds <b><a href="/en/liters/?l=2500000&u=l&v=banera">${fmtG(perPool)} bathtubs</a></b>;
+          a cubic hectometre, ${fmtG(perHm3)}.</li>
+      </ul>
+      <p>
+        The figure that really lands is the yearly one. <b>Bathing every day</b> comes to
+        <b><a href="/en/liters/?l=54750&u=l">${fmtG(yearOfBaths)} litres a year</a></b>
+        (${fmtG(Math.round(yearOfBaths / litersData.GALLON_LITERS))} gallons), more than the
+        ${fmtG(yearOfHousehold)} litres an average person uses at home in a whole year for
+        everything else combined. Put another way: bathing daily uses more water than everything
+        else you do at home put together.
+      </p>
+
+      <h2>What does a bath cost?</h2>
+      <p>
+        Not much, if you mean the water: at about €${fmt(WATER_PRICE_EUR_M3, 2, lang)} per cubic
+        metre — Spain's average, the reference this site uses — the 150 litres of a bath cost
+        €${fmt(waterCost, 2, lang)}. Thirty cents.
+      </p>
+      <p>
+        The expensive part is <b>heating it</b>. Taking 150 litres from the 15 °C (59 °F) that comes
+        out of the tap to a 40 °C (104 °F) bath needs about <b>${n1(heatKwh)} kWh</b> — one
+        kilowatt-hour heats 860 litres by one degree — which costs several times the water itself,
+        on gas or on electricity. The formula, if you want to run it at your own temperature:
+        <b>kWh = litres × degrees of rise ÷ 860</b>. That is the real cost of a bath, and its
+        carbon footprint too.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How many litres are in a bathtub?</dt>
+        <dd>A standard 170 × 70 cm bathtub is rated at <b>${TUB_170x70} litres</b>
+          (${n1(TUB_170x70 / litersData.GALLON_LITERS)} US gallons), and larger models reach
+          ${TUB_170x75_ACRYLIC}. A real bath uses less, around
+          <a href="/en/liters/?l=150&u=l">150 litres</a>, because nobody fills to the brim and your
+          body displaces about ${BODY_DISPLACEMENT_L} litres.</dd>
+
+        <dt>How many gallons are in a bathtub?</dt>
+        <dd>About ${n1(TUB_170x70 / litersData.GALLON_LITERS)} US gallons for a standard tub filled
+          to the overflow, and ${n1(gallons)} gallons for a typical bath. EPA puts a big full tub at
+          up to 70 gallons.</dd>
+
+        <dt>Does a bath or a shower use more water?</dt>
+        <dd>It depends on the flow. With a standard 2.5 gpm showerhead you would need about
+          ${n1(gallons / 2.5)} minutes to match a ${n1(gallons)}-gallon bath; with an efficient
+          1.5 gpm head, ${n1(gallons / 1.5)} minutes. A shower saves water when it is short and the
+          head is efficient, not just because it is a shower.</dd>
+
+        <dt>How much water does a 5-minute shower use?</dt>
+        <dd>Between 7.5 and 12.5 US gallons (28 to 47 litres) at 1.5 to 2.5 gallons per minute. You
+          can measure your own by timing a one-gallon jug under the shower: gallons per minute =
+          60 ÷ seconds.</dd>
+
+        <dt>How much does a bathtub of water weigh?</dt>
+        <dd>A litre of water weighs a kilo, so 150 litres are
+          <a href="/en/kilos/?k=150&u=kg">150 kilos</a> (330 lb) of water, and a tub filled to the
+          overflow with ${TUB_170x70} litres weighs ${TUB_170x70} kilos plus the tub itself and the
+          person in it.</dd>
+      </dl>
+      <p>
+        Want to visualize other amounts of water? Try the
+        <a href="/en/liters/">liters tool</a>, or see how much
+        <a href="/en/how-many-litres-in-an-olympic-swimming-pool/">an Olympic swimming pool</a>
+        holds. And if you are after areas or weights, there is the
+        <a href="/en/">Hectareometer</a> and the <a href="/en/kilos/">kilos tool</a>.
+      </p>`;
+  return {
+    section: 'litros', lang: 'en', key: 'banera', l: BATHTUB_LITERS,
+    family: 'litros', published: '2026-08-07', modified: '2026-08-07',
+    slug: 'how-many-litres-in-a-bathtub',
+    path: BATHTUB_ALTERNATES.en, alternates: BATHTUB_ALTERNATES,
+    title: 'How many litres (and gallons) are in a bathtub? Bath vs shower | Hectareometer',
+    description: 'A standard 170 × 70 cm bathtub is rated at 183 litres (48 gallons) and a real bath uses about 150. Capacities by size, how many minutes of shower equal a bath, and how to measure your own.',
+    h1: 'How many litres of water are in a bathtub?',
+    intro,
+    question: 'How many litres are in a bathtub?',
+    answer: 'A standard 170 × 70 cm bathtub is rated at 183 litres (48 US gallons) of capacity and larger models reach 215. A real bath uses less, about 150 litres or 40 gallons, because nobody fills a tub to the brim and the body displaces around 70 litres.',
+    faqs: [
+      { q: 'How many litres are in a bathtub?', a: `A standard 170 × 70 cm bathtub is rated at ${TUB_170x70} litres (${n1(TUB_170x70 / litersData.GALLON_LITERS)} US gallons), and larger models reach ${TUB_170x75_ACRYLIC}. A real bath uses less, around 150 litres, because nobody fills to the brim and your body displaces about ${BODY_DISPLACEMENT_L} litres.` },
+      { q: 'How many gallons are in a bathtub?', a: `About ${n1(TUB_170x70 / litersData.GALLON_LITERS)} US gallons for a standard tub filled to the overflow, and ${n1(gallons)} gallons for a typical bath. EPA puts a big full tub at up to 70 gallons.` },
+      { q: 'Does a bath or a shower use more water?', a: `It depends on the flow. With a standard 2.5 gpm showerhead you would need about ${n1(gallons / 2.5)} minutes to match a ${n1(gallons)}-gallon bath; with an efficient 1.5 gpm head, ${n1(gallons / 1.5)} minutes. A shower saves water when it is short and the head is efficient, not just because it is a shower.` },
+      { q: 'How much water does a 5-minute shower use?', a: 'Between 7.5 and 12.5 US gallons (28 to 47 litres) at 1.5 to 2.5 gallons per minute. You can measure your own by timing a one-gallon jug under the shower: gallons per minute = 60 ÷ seconds.' },
+      { q: 'How much does a bathtub of water weigh?', a: `A litre of water weighs a kilo, so 150 litres are 150 kilos (330 lb) of water, and a tub filled to the overflow with ${TUB_170x70} litres weighs ${TUB_170x70} kilos plus the tub itself and the person in it.` },
+    ],
+    linkLabel: 'How many litres are in a bathtub?',
+  };
+}
+
 const LITER_ARTICLES = [
   poolArticle('es'), poolArticle('en'), cubicHectometreArticle(),
-  tankerTruckArticle(),
+  tankerTruckArticle(), bathtubArticle('es'), bathtubArticle('en'),
 ];
 
 // ---- editorial distances articles (Spanish-only, map-based) ----------------
