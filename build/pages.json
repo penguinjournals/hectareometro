@@ -575,6 +575,20 @@
   },
   {
     "lang": "es",
+    "slug": "a-que-distancia-esta-el-horizonte",
+    "path": "/a-que-distancia-esta-el-horizonte/",
+    "label": "¿A qué distancia está el horizonte?",
+    "title": "¿A qué distancia está el horizonte? La fórmula y un mapa | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "how-far-away-is-the-horizon",
+    "path": "/en/how-far-away-is-the-horizon/",
+    "label": "How far away is the horizon?",
+    "title": "How far away is the horizon? The formula and a map | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "articulos",
     "path": "/articulos/",
     "label": "Artículos",

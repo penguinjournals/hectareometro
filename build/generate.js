@@ -3122,10 +3122,463 @@ function marathonArticle(lang) {
   };
 }
 
+// ¿A qué distancia está el horizonte? Bilingual (universal topic).
+// Data validated 2026-08-11 (web + computed here):
+// · Geometric horizon: d = sqrt(2Rh) → with R = 6,371 km, d(km) = 3.57 × sqrt(h in m).
+// · With standard atmospheric refraction the ray curves down, equivalent to an
+//   Earth of radius 7R/6 → d(km) = 3.86 × sqrt(h in m), i.e. ~8 % farther.
+//   Both are rough: good to a few per cent, more with thermal inversions.
+//   Source: Andrew T. Young (SDSU), https://aty.sdsu.edu/explain/atmos_refr/horizon.html
+// · Imperial form of the same rules: d(mi) = 1.22 × sqrt(h in ft) geometric,
+//   1.32 × sqrt(h in ft) with refraction (= sqrt(7h/4), the classic sailor rule).
+// · Curvature drop below the tangent line: 0.0785 m × d(km)² ≈ 8 cm at 1 km,
+//   which in imperial is ~8 inches at 1 mile (0.67 ft × d(mi)²).
+// · Longest photographed line of sight on Earth: Pic de Finestrelles (2,826 m,
+//   Pyrenees) → Pic Gaspard (3,883 m, Écrins, Alps), 443 km, by Marc Bret at
+//   dawn on 2016-07-16; recognised by Guinness World Records. Checked here with
+//   haversine: 442.5 km. Pure geometry caps that pair at 3.57×(√2826+√3883) =
+//   412 km, refraction raises the ceiling to 446 km — the shot only exists
+//   because the air bends light.
+//   Sources: https://en.wikipedia.org/wiki/Pic_de_Finestrelles ·
+//   https://en.wikipedia.org/wiki/Pic_Gaspard ·
+//   https://beyondhorizons.eu/2016/08/03/pic-de-finestrelles-pic-gaspard-ecrins-443-km/
+// · Teide (3,715 m) to the west coast of Gran Canaria (Punta de Sardina):
+//   93.5 km by haversine, well inside the 235 km + 5 km two-height limit.
+const HORIZON_ALTERNATES = {
+  es: '/a-que-distancia-esta-el-horizonte/',
+  en: '/en/how-far-away-is-the-horizon/',
+};
+
+function horizonArticle(lang) {
+  const es = lang === 'es';
+  const YOUNG_URL = 'https://aty.sdsu.edu/explain/atmos_refr/horizon.html';
+  const RECORD_URL = 'https://beyondhorizons.eu/2016/08/03/pic-de-finestrelles-pic-gaspard-ecrins-443-km/';
+
+  if (es) {
+  const distUrl = '/distancias/?d=4.7&u=km&lat=43.3183&lon=-1.9812&z=12';
+  const dist = (d, z) => `/distancias/?d=${d}&u=km&lat=43.3183&lon=-1.9812&z=${z}`;
+  const intro = `      <p>
+        <b>El horizonte está a unos 4,7 kilómetros</b> cuando miras el mar de pie en la playa, con
+        los ojos a 1,70 m sobre la arena. Contando la refracción del aire —que curva la luz y deja
+        ver un poco más lejos— son unos <b><a href="${distUrl}">5 kilómetros</a></b>. Es un paseo de
+        una hora: el borde del mundo visible está mucho más cerca de lo que parece.
+      </p>
+      <p>
+        El círculo de arriba dibuja esos 4,7 km desde la playa de La Concha, en Donostia. Arrastra el
+        mapa hasta tu playa, tu ventana o tu montaña para ver hasta dónde llega tu horizonte.
+      </p>
+
+      <h2>La fórmula de la distancia al horizonte</h2>
+      <p>
+        Solo depende de una cosa: <b>lo alto que tengas los ojos</b>. Con la altura <i>h</i> en
+        metros, la distancia al horizonte en kilómetros es:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Fórmula</th><th>Qué calcula</th><th>Ojos a 1,70 m</th></tr></thead>
+        <tbody>
+          <tr><td><b>d ≈ 3,57 × √h</b></td><td>Horizonte geométrico (Tierra pelada, sin aire)</td><td>4,7 km</td></tr>
+          <tr><td><b>d ≈ 3,86 × √h</b></td><td>Horizonte real, con la refracción atmosférica normal</td><td>5,0 km</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La primera sale de Pitágoras: la línea que va de tus ojos al punto donde la vista roza la
+        Tierra es tangente a la esfera, así que mide √(2·R·h), con <b>R = 6.371 km</b> de radio
+        terrestre. Haciendo la cuenta, √(2 × 6.371.000) = 3.569, de ahí el <b>3,57</b>.
+      </p>
+      <p>
+        La segunda añade el aire. La atmósfera es más densa abajo que arriba, así que los rayos de
+        luz se curvan ligeramente <b>hacia el suelo</b> y siguen un poco la curvatura del planeta:
+        ves algo más lejos de lo que la geometría permitiría. En condiciones normales equivale a una
+        Tierra con un radio 7/6 del real, un <b>8 % más de alcance</b>
+        (<a href="${YOUNG_URL}" target="_blank" rel="noopener">Andrew T. Young, SDSU</a>). Con
+        inversiones térmicas sobre el mar el efecto se dispara, y por eso a veces aparecen espejismos
+        de costas o barcos que «deberían» estar ocultos.
+      </p>
+
+      <h2>Tabla: a qué distancia está el horizonte según la altura</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Desde dónde miras</th><th>Altura de los ojos</th><th>Horizonte (geométrico)</th><th>Con refracción</th></tr></thead>
+        <tbody>
+          <tr><td>Tumbado en la toalla</td><td>0,2 m</td><td>1,6 km</td><td>1,7 km</td></tr>
+          <tr><td>De pie en la playa</td><td>1,70 m</td><td><a href="${distUrl}">4,7 km</a></td><td>5,0 km</td></tr>
+          <tr><td>En el paseo marítimo o una duna</td><td>5 m</td><td>8,0 km</td><td>8,6 km</td></tr>
+          <tr><td>Torre de vigilancia</td><td>10 m</td><td>11,3 km</td><td>12,2 km</td></tr>
+          <tr><td>Un décimo piso</td><td>30 m</td><td>19,6 km</td><td><a href="${dist('21.1', 10)}">21,1 km</a></td></tr>
+          <tr><td>Un faro</td><td>50 m</td><td>25,2 km</td><td>27,3 km</td></tr>
+          <tr><td>Un acantilado</td><td>100 m</td><td>35,7 km</td><td><a href="${dist('38.6', 9)}">38,6 km</a></td></tr>
+          <tr><td>Un rascacielos</td><td>250 m</td><td>56,4 km</td><td>61,0 km</td></tr>
+          <tr><td>Un monte costero</td><td>500 m</td><td>79,8 km</td><td>86,3 km</td></tr>
+          <tr><td>La cima del Teide</td><td>3.715 m</td><td>217,6 km</td><td><a href="${dist('235', 7)}">235,3 km</a></td></tr>
+          <tr><td>Un avión de línea</td><td>10.000 m</td><td>357 km</td><td><a href="${dist('386', 6)}">386 km</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        Desde la Estación Espacial Internacional, a 400 km, el horizonte se va a unos
+        <b>2.300 km</b>: la mitad de Europa de un vistazo. A esas alturas la fórmula corta ya no
+        vale y hay que usar la completa, √(h² + 2·R·h).
+      </p>
+
+      <h2>Para ver el doble de lejos hay que subir cuatro veces más</h2>
+      <p>
+        La raíz cuadrada de la fórmula es la clave y explica lo que todo el mundo nota en la playa:
+        <b>ponerse de puntillas no sirve de nada</b>. Como la distancia crece con la raíz de la
+        altura, para duplicar tu horizonte necesitas <b>cuadruplicar</b> tu altura sobre el suelo.
+      </p>
+      <p>
+        De los 1,70 m de tus ojos a los 6,80 m de un segundo piso, el horizonte pasa de 5,0 a
+        10,1 km. Para verlo al doble otra vez habría que subir a 27 m, y otra vez, a 109 m. Por eso
+        los faros se construyen altos y en promontorios, y por eso hace falta un avión para que el
+        horizonte se vaya a cientos de kilómetros.
+      </p>
+
+      <h2>Por qué se ven montañas a 100 km pero no la costa</h2>
+      <p>
+        Porque el horizonte no es una pared: es el punto donde tu línea de visión roza el suelo. Todo
+        lo que esté <b>más alto</b> que ese punto de roce vuelve a asomar por detrás. Para saber si
+        dos cosas se ven entre sí se suman los dos horizontes:
+      </p>
+      <p>
+        <b>d ≈ 3,86 × (√h₁ + √h₂)</b>, con las dos alturas en metros y el resultado en kilómetros.
+      </p>
+      <p>
+        De pie en la playa (5,0 km) puedes ver la cumbre de un monte de 500 m (86,3 km) que esté
+        hasta a <b>91 km</b>, aunque su pueblo, al nivel del mar, lleve ochenta kilómetros oculto.
+        Es exactamente lo que pasa en Canarias: el <b>Teide</b> (3.715 m) se ve desde la costa oeste
+        de Gran Canaria, a <b>93 km</b>, mientras que la playa de enfrente es invisible.
+      </p>
+      <p>
+        El caso extremo es el <b>récord mundial de línea de visión fotografiada</b>: 443 kilómetros
+        entre el <b>Pic de Finestrelles</b> (2.826 m, Pirineos) y el <b>Pic Gaspard</b> (3.883 m, en
+        los Écrins alpinos), que Marc Bret fotografió al amanecer del 16 de julio de 2016
+        (<a href="${RECORD_URL}" target="_blank" rel="noopener">Beyond Horizons</a>). Y aquí está lo
+        bonito: la geometría pura da para esa pareja de montañas un máximo de <b>412 km</b>. La foto
+        no debería existir. Con la refracción, el techo sube a <b>446 km</b>. Esos 443 km solo son
+        posibles porque el aire curva la luz.
+      </p>
+
+      <h2>Cuánto se hunde lo que está más allá del horizonte</h2>
+      <p>
+        Otra forma de mirarlo: cuánto «cae» la superficie de la Tierra respecto a tu línea de visión.
+        La caída en metros es <b>0,0785 × d²</b>, con la distancia en kilómetros:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>A esta distancia…</th><th>La Tierra se hunde</th></tr></thead>
+        <tbody>
+          <tr><td>1 km</td><td>8 cm</td></tr>
+          <tr><td>5 km</td><td>2,0 m</td></tr>
+          <tr><td>10 km</td><td>7,8 m</td></tr>
+          <tr><td>20 km</td><td>31 m</td></tr>
+          <tr><td>50 km</td><td>196 m</td></tr>
+        </tbody>
+      </table>
+      <p>
+        De ahí el clásico del barco que se aleja y <b>desaparece por abajo</b>, casco primero y
+        mástil al final. Para alguien de pie en la playa, un velero con el mástil a 10 m sigue siendo
+        visible —solo el mástil— hasta unos <b>17 km</b>, más del triple de lo que llega tu
+        horizonte. En millas la regla es igual de redonda: la caída son <b>8 pulgadas por milla al
+        cuadrado</b>.
+      </p>
+
+      <h2>Dibuja tu horizonte</h2>
+      <p>Pincha en cualquiera para verlo a escala arriba, con centro en La Concha:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Mirando desde</th><th>Horizonte</th></tr></thead>
+        <tbody>
+          <tr><td>La playa (1,70 m)</td><td><a href="${distUrl}">4,7 km</a></td></tr>
+          <tr><td>Un décimo piso (30 m)</td><td><a href="${dist('21.1', 10)}">21,1 km</a></td></tr>
+          <tr><td>Un acantilado (100 m)</td><td><a href="${dist('38.6', 9)}">38,6 km</a></td></tr>
+          <tr><td>El Teide (3.715 m)</td><td><a href="${dist('235', 7)}">235 km</a></td></tr>
+          <tr><td>Un avión (10.000 m)</td><td><a href="${dist('386', 6)}">386 km</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        El círculo es el radio en línea recta desde el centro del mapa, así que dibuja justo tu
+        horizonte: todo lo que queda dentro está, en teoría, a la vista. Si lo que quieres es medir
+        la distancia entre dos puntos concretos —tu ventana y esa montaña—, usa la herramienta de
+        <a href="/medir-distancias/">medir distancias</a>.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿A qué distancia está el horizonte?</dt>
+        <dd>Para una persona de pie en la playa, con los ojos a 1,70 m del suelo, el horizonte está a
+          <a href="${distUrl}">4,7 km</a> por geometría pura y a unos 5 km contando la refracción del
+          aire. Cuanto más alto mires, más lejos: 21 km desde un décimo piso, 386 km desde un avión.</dd>
+
+        <dt>¿Cuál es la fórmula para calcular la distancia al horizonte?</dt>
+        <dd>d ≈ 3,57 × √h, con la altura de los ojos h en metros y la distancia d en kilómetros. Sale
+          de la tangente a una esfera de 6.371 km de radio. Si se cuenta la refracción atmosférica
+          normal, la constante sube a 3,86 (un 8 % más lejos).</dd>
+
+        <dt>¿Por qué se ve más lejos desde un sitio alto?</dt>
+        <dd>Porque el horizonte es el punto donde tu línea de visión roza la superficie curva de la
+          Tierra, y cuanto más alto estés, más tarda en rozarla. Ojo: crece con la raíz cuadrada de
+          la altura, así que para ver el doble de lejos hay que subir cuatro veces más alto.</dd>
+
+        <dt>¿Hasta dónde se ve desde un avión?</dt>
+        <dd>A la altitud de crucero de un avión de línea, unos 10.000 metros, el horizonte está a
+          unos 386 km (357 km sin contar la refracción). Desde la Estación Espacial Internacional, a
+          400 km de altura, se va hasta unos 2.300 km.</dd>
+
+        <dt>¿Por qué se ven montañas mucho más lejos que el horizonte?</dt>
+        <dd>Porque lo que sobresale por encima del punto de roce vuelve a asomar. Sumando los dos
+          horizontes, d ≈ 3,86 × (√h₁ + √h₂), un monte de 500 m se ve desde la playa a 91 km, y el
+          Teide (3.715 m) se ve desde Gran Canaria, a 93 km, aunque la costa de enfrente esté oculta.
+          El récord fotografiado son 443 km, del Pic de Finestrelles al Pic Gaspard.</dd>
+
+        <dt>¿Por qué los barcos desaparecen por abajo?</dt>
+        <dd>Porque la superficie del mar se hunde respecto a tu línea de visión: unos 0,0785 × d²
+          metros, con d en kilómetros. Primero se pierde el casco y al final el mástil; un velero con
+          el mástil a 10 m sigue asomando hasta unos 17 km, aunque tu horizonte esté a 5.</dd>
+      </dl>
+      <p>
+        ¿Quieres seguir jugando con distancias? Mira <a href="/cuanto-es-una-milla-nautica/">cuánto es
+        una milla náutica</a>, <a href="/cuanto-mide-un-maraton/">cuánto mide un maratón</a> o abre la
+        <a href="/distancias/">herramienta de distancias</a> y dibuja la tuya. Y si lo tuyo son las
+        superficies, tienes el <a href="/">Hectareómetro</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'horizonte', ha: 0,
+    family: 'distancias', published: '2026-08-11', modified: '2026-08-11',
+    slug: 'a-que-distancia-esta-el-horizonte',
+    path: HORIZON_ALTERNATES.es, alternates: HORIZON_ALTERNATES,
+    dist: 4.7, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 12; var PRESET_LAT = 43.3183; var PRESET_LON = -1.9812;',
+    title: '¿A qué distancia está el horizonte? La fórmula y un mapa | Hectareómetro',
+    description: 'Desde la playa el horizonte está a solo 4,7 km. La fórmula (3,57 × raíz de la altura), la tabla por alturas, por qué se ven montañas a 100 km y tu horizonte dibujado a escala en un mapa.',
+    h1: '¿A qué distancia está el horizonte?',
+    intro,
+    question: '¿A qué distancia está el horizonte?',
+    answer: 'Para una persona de pie en la playa, con los ojos a 1,70 m del suelo, el horizonte está a 4,7 km por geometría pura y a unos 5 km contando la refracción del aire. La fórmula es d ≈ 3,57 × √h, con la altura de los ojos en metros.',
+    faqs: [
+      { q: '¿A qué distancia está el horizonte?', a: 'Para una persona de pie en la playa, con los ojos a 1,70 m del suelo, el horizonte está a 4,7 km por geometría pura y a unos 5 km contando la refracción del aire. Cuanto más alto mires, más lejos: 21 km desde un décimo piso, 386 km desde un avión.' },
+      { q: '¿Cuál es la fórmula para calcular la distancia al horizonte?', a: 'd ≈ 3,57 × √h, con la altura de los ojos h en metros y la distancia d en kilómetros. Sale de la tangente a una esfera de 6.371 km de radio. Si se cuenta la refracción atmosférica normal, la constante sube a 3,86 (un 8 % más lejos).' },
+      { q: '¿Por qué se ve más lejos desde un sitio alto?', a: 'Porque el horizonte es el punto donde tu línea de visión roza la superficie curva de la Tierra, y cuanto más alto estés, más tarda en rozarla. Crece con la raíz cuadrada de la altura, así que para ver el doble de lejos hay que subir cuatro veces más alto.' },
+      { q: '¿Hasta dónde se ve desde un avión?', a: 'A la altitud de crucero de un avión de línea, unos 10.000 metros, el horizonte está a unos 386 km (357 km sin contar la refracción). Desde la Estación Espacial Internacional, a 400 km de altura, se va hasta unos 2.300 km.' },
+      { q: '¿Por qué se ven montañas mucho más lejos que el horizonte?', a: 'Porque lo que sobresale por encima del punto de roce vuelve a asomar. Sumando los dos horizontes, d ≈ 3,86 × (√h₁ + √h₂), un monte de 500 m se ve desde la playa a 91 km, y el Teide (3.715 m) se ve desde Gran Canaria, a 93 km, aunque la costa de enfrente esté oculta. El récord fotografiado son 443 km, del Pic de Finestrelles al Pic Gaspard.' },
+      { q: '¿Por qué los barcos desaparecen por abajo?', a: 'Porque la superficie del mar se hunde respecto a tu línea de visión: unos 0,0785 × d² metros, con d en kilómetros. Primero se pierde el casco y al final el mástil; un velero con el mástil a 10 m sigue asomando hasta unos 17 km, aunque tu horizonte esté a 5.' },
+    ],
+    linkLabel: '¿A qué distancia está el horizonte?',
+  };
+  }
+
+  // English mirror (universal topic). Preset centred on Brighton beach and
+  // expressed in miles, the en tool's default unit: 2.9 mi is the same 4.7 km.
+  const distUrl = '/en/distances/?d=2.9&u=mi&lat=50.8198&lon=-0.1372&z=12';
+  const dist = (d, z) => `/en/distances/?d=${d}&u=mi&lat=50.8198&lon=-0.1372&z=${z}`;
+  const intro = `      <p>
+        <b>The horizon is about 3 miles away</b> — <b><a href="${distUrl}">2.9 miles</a></b>, or
+        4.7 km — when you stand on a beach with your eyes 5 ft 7 in (1.70 m) above the sand. Counting
+        the refraction of the air, which bends light and lets you see slightly farther, it is closer
+        to 3.1 miles (5 km). That is an hour's walk: the edge of the visible world is far nearer than
+        it looks.
+      </p>
+      <p>
+        The circle above draws those 2.9 miles from Brighton beach. Drag the map to your own beach,
+        window or hilltop to see how far your horizon reaches.
+      </p>
+
+      <h2>The horizon distance formula</h2>
+      <p>
+        It depends on one thing only: <b>how high your eyes are</b>. With the height <i>h</i>, the
+        distance to the horizon is:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Formula</th><th>What it gives</th><th>Eyes at 5 ft 7 in</th></tr></thead>
+        <tbody>
+          <tr><td><b>d ≈ 1.22 × √h</b> (miles, h in feet)<br><b>d ≈ 3.57 × √h</b> (km, h in metres)</td><td>Geometric horizon (bare Earth, no air)</td><td>2.9 mi / 4.7 km</td></tr>
+          <tr><td><b>d ≈ 1.32 × √h</b> (miles, h in feet)<br><b>d ≈ 3.86 × √h</b> (km, h in metres)</td><td>Real horizon, with normal atmospheric refraction</td><td>3.1 mi / 5.0 km</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The first comes straight from Pythagoras: the line from your eyes to the point where your
+        sight grazes the ground is tangent to the sphere, so it measures √(2·R·h) with
+        <b>R = 6,371 km</b>, the Earth's radius. Run the numbers and √(2 × 6,371,000) = 3,569 —
+        hence the <b>3.57</b>. Sailors know the imperial version as √(7h/4).
+      </p>
+      <p>
+        The second adds the air. The atmosphere is denser at the bottom than at the top, so light
+        rays bend slightly <b>downwards</b> and follow the curve of the planet a little: you see
+        farther than geometry allows. Under normal conditions it works out as an Earth with 7/6 of
+        the real radius, <b>about 8 % more reach</b>
+        (<a href="${YOUNG_URL}" target="_blank" rel="noopener">Andrew T. Young, SDSU</a>). Over the
+        sea, temperature inversions can push it much further — which is why coastlines and ships that
+        "should" be hidden sometimes appear as mirages.
+      </p>
+
+      <h2>How far is the horizon, by height</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Where you are looking from</th><th>Eye height</th><th>Horizon (geometric)</th><th>With refraction</th></tr></thead>
+        <tbody>
+          <tr><td>Lying on your towel</td><td>8 in (0.2 m)</td><td>1.0 mi (1.6 km)</td><td>1.1 mi (1.7 km)</td></tr>
+          <tr><td>Standing on the beach</td><td>5 ft 7 in (1.70 m)</td><td><a href="${distUrl}">2.9 mi</a> (4.7 km)</td><td>3.1 mi (5.0 km)</td></tr>
+          <tr><td>Seafront promenade or a dune</td><td>16 ft (5 m)</td><td>5.0 mi (8.0 km)</td><td>5.4 mi (8.6 km)</td></tr>
+          <tr><td>A lookout tower</td><td>33 ft (10 m)</td><td>7.0 mi (11.3 km)</td><td>7.6 mi (12.2 km)</td></tr>
+          <tr><td>A tenth-floor window</td><td>98 ft (30 m)</td><td>12.2 mi (19.6 km)</td><td><a href="${dist('13.1', 10)}">13.1 mi</a> (21.1 km)</td></tr>
+          <tr><td>A lighthouse</td><td>164 ft (50 m)</td><td>15.7 mi (25.2 km)</td><td>17.0 mi (27.3 km)</td></tr>
+          <tr><td>A cliff top</td><td>328 ft (100 m)</td><td>22.2 mi (35.7 km)</td><td><a href="${dist('24', 9)}">24.0 mi</a> (38.6 km)</td></tr>
+          <tr><td>A skyscraper</td><td>820 ft (250 m)</td><td>35.1 mi (56.4 km)</td><td>37.9 mi (61.0 km)</td></tr>
+          <tr><td>A coastal hill</td><td>1,640 ft (500 m)</td><td>49.6 mi (79.8 km)</td><td>53.6 mi (86.3 km)</td></tr>
+          <tr><td>The summit of Ben Nevis</td><td>4,413 ft (1,345 m)</td><td>81.4 mi (130.9 km)</td><td><a href="${dist('88', 8)}">88.0 mi</a> (141.6 km)</td></tr>
+          <tr><td>A cruising airliner</td><td>32,808 ft (10,000 m)</td><td>221.8 mi (357 km)</td><td><a href="${dist('240', 6)}">239.8 mi</a> (386 km)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        From the International Space Station, 250 miles (400 km) up, the horizon runs out to about
+        <b>1,425 miles</b> (2,300 km): half of Europe in one glance. That high the short formula
+        breaks down and you need the full one, √(h² + 2·R·h).
+      </p>
+
+      <h2>To see twice as far, you must climb four times higher</h2>
+      <p>
+        The square root in the formula is the whole story, and it explains what everyone notices on a
+        beach: <b>standing on tiptoe achieves nothing</b>. Because distance grows with the square
+        root of height, doubling your horizon means <b>quadrupling</b> your height above the ground.
+      </p>
+      <p>
+        Going from eye level (5 ft 7 in) to a second-floor window (22 ft) takes the horizon from
+        3.1 to 6.3 miles. Doubling it again means climbing to 89 ft, and again, to 357 ft. That is
+        why lighthouses are built tall and on headlands, and why it takes an aircraft to push the
+        horizon out to hundreds of miles.
+      </p>
+
+      <h2>Why you can see mountains 60 miles away but not the coast</h2>
+      <p>
+        Because the horizon is not a wall: it is the point where your line of sight grazes the
+        ground. Anything <b>taller</b> than that grazing point pops back into view behind it. To know
+        whether two things can see each other, add their two horizons:
+      </p>
+      <p>
+        <b>d ≈ 1.32 × (√h₁ + √h₂)</b> in miles and feet, or <b>3.86 × (√h₁ + √h₂)</b> in kilometres
+        and metres.
+      </p>
+      <p>
+        Standing on the beach (3.1 mi of horizon) you can see the top of a 1,640 ft hill (53.6 mi of
+        horizon) up to <b>57 miles</b> (91 km) away — while the village at its foot, at sea level,
+        has been hidden for the last fifty miles.
+      </p>
+      <p>
+        The extreme case is the <b>world record for the longest photographed line of sight</b>:
+        443 km (275 miles) from <b>Pic de Finestrelles</b> (2,826 m, in the Pyrenees) to <b>Pic
+        Gaspard</b> (3,883 m, in the Écrins in the Alps), shot by Marc Bret at dawn on 16 July 2016
+        (<a href="${RECORD_URL}" target="_blank" rel="noopener">Beyond Horizons</a>). Here is the
+        lovely part: pure geometry caps that pair of mountains at <b>412 km</b>. The photograph
+        should not exist. With refraction the ceiling rises to <b>446 km</b>. Those 443 km are only
+        possible because the air bends light.
+      </p>
+
+      <h2>How far the world drops away beyond the horizon</h2>
+      <p>
+        Another way to look at it: how far the Earth's surface falls below your line of sight. The
+        drop is <b>8 inches × d²</b> with the distance in miles (0.0785 m × d² in kilometres):
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>At this distance…</th><th>The Earth drops by</th></tr></thead>
+        <tbody>
+          <tr><td>1 mile (1.6 km)</td><td>8 in (20 cm)</td></tr>
+          <tr><td>3 miles (4.8 km)</td><td>6 ft (1.8 m)</td></tr>
+          <tr><td>6 miles (9.7 km)</td><td>24 ft (7.3 m)</td></tr>
+          <tr><td>12 miles (19.3 km)</td><td>96 ft (29 m)</td></tr>
+          <tr><td>30 miles (48 km)</td><td>600 ft (183 m)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Hence the classic sight of a ship sailing away and <b>disappearing from the bottom up</b>,
+        hull first and mast last. For someone standing on the beach, a yacht with a 33 ft mast is
+        still visible — the mast alone — out to about <b>10.7 miles</b> (17 km), more than three
+        times as far as your own horizon.
+      </p>
+
+      <h2>Draw your horizon</h2>
+      <p>Click any of them to see it above, centred on Brighton:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Looking from</th><th>Horizon</th></tr></thead>
+        <tbody>
+          <tr><td>The beach (5 ft 7 in)</td><td><a href="${distUrl}">2.9 mi</a> (4.7 km)</td></tr>
+          <tr><td>A tenth-floor window (98 ft)</td><td><a href="${dist('13.1', 10)}">13.1 mi</a> (21.1 km)</td></tr>
+          <tr><td>A cliff top (328 ft)</td><td><a href="${dist('24', 9)}">24 mi</a> (38.6 km)</td></tr>
+          <tr><td>Ben Nevis (4,413 ft)</td><td><a href="${dist('88', 8)}">88 mi</a> (141.6 km)</td></tr>
+          <tr><td>An airliner (32,808 ft)</td><td><a href="${dist('240', 6)}">240 mi</a> (386 km)</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The circle is a straight-line radius from the centre of the map, so it draws exactly your
+        horizon: everything inside it is, in theory, in view. If what you want is the distance
+        between two specific points — your window and that mountain — use the
+        <a href="/en/measure-distance/">measure a distance</a> tool.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How far away is the horizon?</dt>
+        <dd>For a person standing on a beach, with their eyes 5 ft 7 in (1.70 m) above the ground,
+          the horizon is <a href="${distUrl}">2.9 miles</a> (4.7 km) away by pure geometry, or about
+          3.1 miles (5 km) counting the refraction of the air. The higher you look from, the farther
+          it goes: 13 miles from a tenth-floor window, 240 miles from an airliner.</dd>
+
+        <dt>What is the formula for the distance to the horizon?</dt>
+        <dd>d ≈ 1.22 × √h with the eye height in feet and the distance in miles, or d ≈ 3.57 × √h in
+          metres and kilometres. It is the tangent to a sphere of radius 6,371 km. Counting normal
+          atmospheric refraction the constants rise to 1.32 and 3.86 — about 8 % farther.</dd>
+
+        <dt>Why can you see farther from higher up?</dt>
+        <dd>Because the horizon is the point where your line of sight grazes the curved surface of
+          the Earth, and the higher you are, the longer it takes to graze it. It grows with the
+          square root of height, so seeing twice as far means climbing four times higher.</dd>
+
+        <dt>How far can you see from a plane?</dt>
+        <dd>At an airliner's cruising altitude, around 33,000 ft (10,000 m), the horizon is about
+          240 miles (386 km) away — 222 miles without refraction. From the International Space
+          Station, 250 miles up, it reaches about 1,425 miles (2,300 km).</dd>
+
+        <dt>Why can you see mountains much farther than the horizon?</dt>
+        <dd>Because anything that rises above the grazing point comes back into view. Adding the two
+          horizons, d ≈ 1.32 × (√h₁ + √h₂) in feet and miles, a 1,640 ft hill is visible from the
+          beach at 57 miles. The photographed record is 443 km (275 miles), from Pic de Finestrelles
+          in the Pyrenees to Pic Gaspard in the Alps.</dd>
+
+        <dt>Why do ships disappear from the bottom up?</dt>
+        <dd>Because the sea surface drops away from your line of sight by roughly 8 inches times the
+          distance in miles squared. The hull goes first and the mast last: a yacht with a 33 ft mast
+          still shows above the water out to about 10.7 miles, even though your own horizon is only
+          3 miles away.</dd>
+      </dl>
+      <p>
+        Want to keep playing with distances? See <a href="/en/how-long-is-a-nautical-mile/">how long
+        a nautical mile is</a>, <a href="/en/how-long-is-a-marathon/">how long a marathon is</a>, or
+        open the <a href="/en/distances/">distances tool</a> and draw your own. And if areas are more
+        your thing, there is the <a href="/en/">Hectareometer</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'horizonte', ha: 0,
+    family: 'distancias', published: '2026-08-11', modified: '2026-08-11',
+    slug: 'how-far-away-is-the-horizon',
+    path: HORIZON_ALTERNATES.en, alternates: HORIZON_ALTERNATES,
+    dist: 2.9, distUnit: 'mi',
+    presetExtra: ' var PRESET_ZOOM = 12; var PRESET_LAT = 50.8198; var PRESET_LON = -0.1372;',
+    title: 'How far away is the horizon? The formula and a map | Hectareometer',
+    description: 'From the beach the horizon is only 2.9 miles (4.7 km) away. The formula (1.22 × the square root of your height), a table by height, why mountains show up 60 miles out, and your horizon drawn to scale on a map.',
+    h1: 'How far away is the horizon?',
+    intro,
+    question: 'How far away is the horizon?',
+    answer: 'For a person standing on a beach, with their eyes 5 ft 7 in (1.70 m) above the ground, the horizon is 2.9 miles (4.7 km) away by pure geometry, or about 3.1 miles (5 km) counting refraction. The formula is d ≈ 1.22 × √h with the eye height in feet.',
+    faqs: [
+      { q: 'How far away is the horizon?', a: 'For a person standing on a beach, with their eyes 5 ft 7 in (1.70 m) above the ground, the horizon is 2.9 miles (4.7 km) away by pure geometry, or about 3.1 miles (5 km) counting the refraction of the air. The higher you look from, the farther it goes: 13 miles from a tenth-floor window, 240 miles from an airliner.' },
+      { q: 'What is the formula for the distance to the horizon?', a: 'd ≈ 1.22 × √h with the eye height in feet and the distance in miles, or d ≈ 3.57 × √h in metres and kilometres. It is the tangent to a sphere of radius 6,371 km. Counting normal atmospheric refraction the constants rise to 1.32 and 3.86 — about 8 % farther.' },
+      { q: 'Why can you see farther from higher up?', a: 'Because the horizon is the point where your line of sight grazes the curved surface of the Earth, and the higher you are, the longer it takes to graze it. It grows with the square root of height, so seeing twice as far means climbing four times higher.' },
+      { q: 'How far can you see from a plane?', a: "At an airliner's cruising altitude, around 33,000 ft (10,000 m), the horizon is about 240 miles (386 km) away — 222 miles without refraction. From the International Space Station, 250 miles up, it reaches about 1,425 miles (2,300 km)." },
+      { q: 'Why can you see mountains much farther than the horizon?', a: 'Because anything that rises above the grazing point comes back into view. Adding the two horizons, d ≈ 1.32 × (√h₁ + √h₂) in feet and miles, a 1,640 ft hill is visible from the beach at 57 miles. The photographed record is 443 km (275 miles), from Pic de Finestrelles in the Pyrenees to Pic Gaspard in the Alps.' },
+      { q: 'Why do ships disappear from the bottom up?', a: 'Because the sea surface drops away from your line of sight by roughly 8 inches times the distance in miles squared. The hull goes first and the mast last: a yacht with a 33 ft mast still shows above the water out to about 10.7 miles, even though your own horizon is only 3 miles away.' },
+    ],
+    linkLabel: 'How far away is the horizon?',
+  };
+}
+
 const DIST_ARTICLES = [
   tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),
   nauticalMileArticle('es'), nauticalMileArticle('en'),
   marathonArticle('es'), marathonArticle('en'),
+  horizonArticle('es'), horizonArticle('en'),
 ];
 
 // Every editorial article, whatever its family: the single source for the
