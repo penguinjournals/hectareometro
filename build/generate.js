@@ -125,6 +125,7 @@ const UI = {
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
     relatedHeading: 'Mira otras cantidades', backText: '← Volver al Hectareómetro',
+    faqHeading: 'Preguntas frecuentes',
     switchLabel: 'English',
     literToolPre: '¿Cuánta agua son', literSee: 'Ver',
     literAriaUnit: 'Unidad de volumen', literAriaDraw: 'Unidad del dibujo',
@@ -160,6 +161,7 @@ const UI = {
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
     relatedHeading: 'See other amounts', backText: '← Back to the Hectareometer',
+    faqHeading: 'Frequently asked questions',
     switchLabel: 'Español',
     literToolPre: 'How much water is', literSee: 'Show',
     literAriaUnit: 'Volume unit', literAriaDraw: 'Drawing unit',
@@ -445,6 +447,15 @@ const MAP_MIN_WIDTH_PX = 260;
 // 1 ha is a 4-pixel dot and 200.000 ha overflow the viewport entirely. Pick the
 // closest zoom in that still fits the whole circle: Web Mercator ground
 // resolution is 156543.03 * cos(lat) / 2^zoom metres per pixel.
+// Lengths for the landing FAQs: metres below 1 km, kilometres above.
+function lenEs(m) {
+  return m >= 1000 ? `${fmt(m / 1000, 2, 'es')} km` : `${fmt(Math.round(m), 0, 'es')} metros`;
+}
+
+function lenEn(m) {
+  return m >= 1000 ? `${fmt(m / 1000, 2, 'en')} km` : `${fmt(Math.round(m), 0, 'en')} metres`;
+}
+
 function zoomForHa(ha) {
   const diameter = 2 * Math.sqrt((ha * 10000) / Math.PI);
   const mppAtZoom0 = 156543.03392 * Math.cos((DEFAULT_MAP_LAT * Math.PI) / 180);
@@ -459,6 +470,9 @@ function quantityPage(lang, ha) {
   const ac = acres(ha, lang);
   const n = fmt(ha, 0, lang);
   const examples = COMPARISONS[lang][ha];
+  // Side of a square of this area and radius of the circle the tool draws.
+  const sideM = Math.sqrt(ha * 10000);
+  const radiusM = Math.sqrt((ha * 10000) / Math.PI);
 
   if (lang === 'es') {
     const noun = ha === 1 ? 'hectárea' : 'hectáreas';
@@ -486,6 +500,20 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
       intro,
       question: ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${n} hectáreas?`,
       answer: `${haLabel} son ${m2} metros cuadrados (${km2} km²), aproximadamente ${ff} campos de fútbol.`,
+      faqs: [
+        {
+          q: ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${n} hectáreas?`,
+          a: `${haLabel} son ${m2} metros cuadrados (${km2} km²), aproximadamente ${ff} campos de fútbol.`,
+        },
+        {
+          q: `¿Cuántos campos de fútbol caben en ${haLabel}?`,
+          a: `Unos ${ff} campos de fútbol reglamentarios. Cada campo mide 105 × 68 metros, unos 7.140 m², es decir, 0,714 hectáreas: una hectárea es más grande que un campo de fútbol, no al revés.`,
+        },
+        {
+          q: `¿Cuánto mide un cuadrado de ${haLabel}?`,
+          a: `Un cuadrado de ${haLabel} mide ${lenEs(sideM)} de lado. Dibujado como círculo, que es lo que hace el Hectareómetro, tendría ${lenEs(radiusM)} de radio.`,
+        },
+      ],
       linkLabel: haLabel,
       presetExtra: ` var PRESET_ZOOM = ${zoomForHa(ha)};`,
     };
@@ -516,6 +544,20 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
     intro,
     question: ha === 1 ? 'How big is a hectare?' : `How big are ${n} hectares?`,
     answer: `${haLabel} are ${m2} square metres (${km2} km²), about ${ff} football fields or ${ac} acres.`,
+    faqs: [
+      {
+        q: ha === 1 ? 'How big is a hectare?' : `How big are ${n} hectares?`,
+        a: `${haLabel} are ${m2} square metres (${km2} km²), about ${ff} football fields or ${ac} acres.`,
+      },
+      {
+        q: `How many football fields fit in ${haLabel}?`,
+        a: `About ${ff} standard football pitches. Each pitch is 105 × 68 metres, roughly 7,140 m², i.e. 0.714 hectares — so a hectare is bigger than a football pitch, not the other way round.`,
+      },
+      {
+        q: `How big is a square of ${haLabel}?`,
+        a: `A square of ${haLabel} measures ${lenEn(sideM)} on each side. Drawn as a circle, which is what the Hectareometer does, it would have a radius of ${lenEn(radiusM)}.`,
+      },
+    ],
     linkLabel: haLabel,
     presetExtra: ` var PRESET_ZOOM = ${zoomForHa(ha)};`,
   };
@@ -594,6 +636,24 @@ ${figure}
       intro,
       question: '¿A cuántos campos de fútbol equivale una hectárea?',
       answer: 'Una hectárea equivale a unos 1,4 campos de fútbol. Un campo reglamentario (~105 × 68 m, unos 7.140 m²) ocupa alrededor de 0,7 hectáreas.',
+      faqs: [
+        {
+          q: '¿A cuántos campos de fútbol equivale una hectárea?',
+          a: 'Una hectárea equivale a unos 1,4 campos de fútbol. Un campo reglamentario (~105 × 68 m, unos 7.140 m²) ocupa alrededor de 0,7 hectáreas.',
+        },
+        {
+          q: '¿Cuántas hectáreas mide un campo de fútbol?',
+          a: 'Un campo de 105 × 68 metros ocupa 7.140 m², es decir, 0,714 hectáreas: algo menos de tres cuartos de hectárea.',
+        },
+        {
+          q: '¿Cuánto mide una hectárea?',
+          a: 'Una hectárea son 10.000 metros cuadrados: un cuadrado de 100 × 100 metros. Cien hectáreas son un kilómetro cuadrado.',
+        },
+        {
+          q: '¿Por qué se miden los incendios en campos de fútbol?',
+          a: 'Porque es una imagen conocida, pero engaña: al ser el campo más pequeño que la hectárea, el número de campos siempre sale mayor y la superficie parece más grande de lo que es. 300 campos de fútbol son solo unas 210 hectáreas.',
+        },
+      ],
       linkLabel: 'Hectárea vs campo de fútbol',
     };
   }
@@ -640,6 +700,24 @@ ${figure}
     intro,
     question: 'How many football fields is a hectare?',
     answer: 'A hectare is about 1.4 football fields. A standard pitch (~105 × 68 m, about 7,140 m²) covers roughly 0.7 hectares.',
+    faqs: [
+      {
+        q: 'How many football fields is a hectare?',
+        a: 'A hectare is about 1.4 football fields. A standard pitch (~105 × 68 m, about 7,140 m²) covers roughly 0.7 hectares.',
+      },
+      {
+        q: 'How many hectares is a football pitch?',
+        a: 'A 105 × 68 metre pitch covers 7,140 m², i.e. 0.714 hectares — a little under three quarters of a hectare.',
+      },
+      {
+        q: 'How big is a hectare?',
+        a: 'A hectare is 10,000 square metres: a square of 100 × 100 metres. One hundred hectares make a square kilometre, and a hectare is about 2.47 acres.',
+      },
+      {
+        q: 'Why are wildfires measured in football fields?',
+        a: 'Because it is a familiar image, but it misleads: as a pitch is smaller than a hectare, the number of pitches always comes out larger and the area sounds bigger than it is. 300 football fields are only about 210 hectares.',
+      },
+    ],
     linkLabel: 'Hectare vs football field',
   };
 }
@@ -735,6 +813,44 @@ ${rows}
         Agricultura y Pesca, Alimentación y Medio Ambiente.
         <a href="${EPDATA_URL}" target="_blank" rel="noopener">Gracias al equipo de EpData por
         recolectar estos datos</a>.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?</dt>
+        <dd>Unas <b><a href="${madridMapUrl(total)}">${totalLabel} hectáreas</a></b> (9.168 km², más
+          que toda la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000
+          hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue
+          siendo 1985, con 484.475 hectáreas.</dd>
+
+        <dt>¿Cuál fue el peor año de incendios en España?</dt>
+        <dd>1985, con <a href="${madridMapUrl(BURNED_1985)}">484.475 hectáreas</a> quemadas: el
+          máximo de la serie histórica, que arranca en 1961. Le sigue 1994, con
+          <a href="${madridMapUrl(BURNED_1994)}">437.602 hectáreas</a>.</dd>
+
+        <dt>¿Cuántas hectáreas ardieron en España en 2025?</dt>
+        <dd><a href="${madridMapUrl(byYear[2025])}">${fmt(Math.round(byYear[2025]), 0)} hectáreas</a>,
+          casi 355.000: el peor año desde 1994 y más de un tercio de todo lo quemado entre 2020
+          y 2025.</dd>
+
+        <dt>¿Cuánto es una hectárea quemada?</dt>
+        <dd>Una <a href="/1-hectarea/">hectárea</a> son 10.000 metros cuadrados: un cuadrado de
+          100 × 100 metros, o algo más de <a href="/hectarea-campo-de-futbol/">un campo de fútbol</a>.
+          Cien hectáreas son un kilómetro cuadrado.</dd>
+
+        <dt>¿De dónde salen los datos de superficie quemada?</dt>
+        <dd>De las estadísticas del Ministerio de Agricultura, Pesca y Alimentación, en la serie
+          recopilada por EpData. Son hectáreas de superficie forestal quemada, sumando arbolado y
+          matorral.</dd>
+      </dl>
+      <p>
+        ¿Quieres ver otras superficies a escala? Compara
+        <a href="/hectarea-campo-de-futbol/">una hectárea con un campo de fútbol</a>, mira
+        <a href="/las-dimensiones-del-eclipse/">cuánta España tapó la sombra del eclipse</a> o
+        <a href="/cuanto-ocupan-centros-datos-aws-aragon/">cuánto ocupan los centros de datos de AWS
+        en Aragón</a>. Y si prefieres dibujar tú, tienes
+        <a href="/medir-superficie/">medir una superficie</a> y el
+        <a href="/">Hectareómetro</a>.
       </p>`;
   return {
     key: 'burned-area-spain', lang: 'es', ha: Math.round(total),
@@ -748,6 +864,13 @@ ${rows}
     intro,
     question: '¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?',
     answer: `Entre 2020 y 2025 se quemaron unas ${totalLabel} hectáreas en incendios forestales en España (9.168 km², más que la superficie de la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000 hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue siendo de 1985, con 484.475 hectáreas.`,
+    faqs: [
+      { q: '¿Cuántas hectáreas se han quemado en España en incendios forestales entre 2020 y 2025?', a: `Unas ${totalLabel} hectáreas (9.168 km², más que toda la Comunidad de Madrid). El peor año del periodo fue 2025, con casi 355.000 hectáreas, el dato más alto desde 1994; el récord de la serie histórica (1961-2025) sigue siendo 1985, con 484.475 hectáreas.` },
+      { q: '¿Cuál fue el peor año de incendios en España?', a: '1985, con 484.475 hectáreas quemadas: el máximo de la serie histórica, que arranca en 1961. Le sigue 1994, con 437.602 hectáreas.' },
+      { q: '¿Cuántas hectáreas ardieron en España en 2025?', a: `${fmt(Math.round(byYear[2025]), 0)} hectáreas, casi 355.000: el peor año desde 1994 y más de un tercio de todo lo quemado entre 2020 y 2025.` },
+      { q: '¿Cuánto es una hectárea quemada?', a: 'Una hectárea son 10.000 metros cuadrados: un cuadrado de 100 × 100 metros, o algo más de un campo de fútbol. Cien hectáreas son un kilómetro cuadrado.' },
+      { q: '¿De dónde salen los datos de superficie quemada?', a: 'De las estadísticas del Ministerio de Agricultura, Pesca y Alimentación, en la serie recopilada por EpData. Son hectáreas de superficie forestal quemada, sumando arbolado y matorral.' },
+    ],
     linkLabel: 'Hectáreas quemadas en incendios en España (2020-2025)',
   };
 }
@@ -1318,6 +1441,17 @@ function literPage(lang, l) {
     return {
       section: 'litros', lang, key: l, l, title, description, h1, intro,
       question: h1, answer, linkLabel: `${fmt(l, 0, lang)} litros`,
+      faqs: [
+        { q: h1, a: answer },
+        {
+          q: `¿Cuántos metros cúbicos ${verb} ${noun}?`,
+          a: `${m3Text} metros cúbicos. Un metro cúbico son exactamente 1.000 litros, así que basta con dividir entre mil.`,
+        },
+        {
+          q: `¿Cuántos galones ${verb} ${noun}?`,
+          a: `Unos ${galText} galones estadounidenses. Un galón US equivale a 3,785 litros (el galón imperial británico, a 4,546).`,
+        },
+      ],
     };
   }
   const title = `How much is ${noun} of water? See it with icons | Hectareometer`;
@@ -1331,6 +1465,17 @@ function literPage(lang, l) {
   return {
     section: 'litros', lang, key: l, l, title, description, h1, intro,
     question: h1, answer, linkLabel: `${fmt(l, 0, lang)} litres`,
+    faqs: [
+      { q: h1, a: answer },
+      {
+        q: `How many cubic metres are ${noun}?`,
+        a: `${m3Text} cubic metres. One cubic metre is exactly 1,000 litres, so you just divide by a thousand.`,
+      },
+      {
+        q: `How many gallons are ${noun}?`,
+        a: `About ${galText} US gallons. One US gallon is 3.785 litres (a British imperial gallon is 4.546).`,
+      },
+    ],
   };
 }
 
@@ -4002,6 +4147,17 @@ function kiloPage(lang, k) {
     return {
       section: 'kilos', lang, key: k, k, title, description, h1, intro,
       question: h1, answer, linkLabel: `${fmt(k, 0, lang)} kilos`,
+      faqs: [
+        { q: h1, a: answer },
+        {
+          q: `¿Cuántas libras ${verb} ${noun}?`,
+          a: `Unas ${lbText} libras. Un kilo equivale a 2,205 libras, y una libra a 0,454 kilos.`,
+        },
+        ...(k >= 1000 ? [{
+          q: `¿Cuántas toneladas ${verb} ${noun}?`,
+          a: `${tText} toneladas. Una tonelada métrica son 1.000 kilos.`,
+        }] : []),
+      ],
     };
   }
   const title = `How heavy is ${noun}? See it with icons | Hectareometer`;
@@ -4018,6 +4174,17 @@ function kiloPage(lang, k) {
   return {
     section: 'kilos', lang, key: k, k, title, description, h1, intro,
     question: h1, answer, linkLabel: `${fmt(k, 0, lang)} kilos`,
+    faqs: [
+      { q: h1, a: answer },
+      {
+        q: `How many pounds is ${noun}?`,
+        a: `About ${lbText} pounds. One kilo is 2.205 pounds, and one pound is 0.454 kilos.`,
+      },
+      ...(k >= 1000 ? [{
+        q: `How many tonnes is ${noun}?`,
+        a: `${tText} tonnes. One metric tonne is 1,000 kilos.`,
+      }] : []),
+    ],
   };
 }
 
@@ -4053,10 +4220,36 @@ function buildBreadcrumbHtml(items, lang) {
   return `<nav class="breadcrumb-line" aria-label="${ariaLabel}">\n  <ol>\n${lis.join('\n')}\n  </ol>\n</nav>`;
 }
 
+// THE single source of a page's FAQ. Both the FAQPage JSON-LD and the visible
+// <dl class="faq"> are built from this list, so they cannot drift apart — which
+// is exactly what had happened: every quantity landing shipped FAQPage markup
+// with a question that appeared nowhere on the page. Pages may carry a `faqs`
+// array ([{ q, a }, ...]); otherwise their single question/answer is used.
+// The strings are PLAIN TEXT (no HTML): they go verbatim into the JSON-LD.
+function faqsFor(page) {
+  return page.faqs || [{ q: page.question, a: page.answer }];
+}
+
+// Visible FAQ block for the quantity landings. Editorial articles (page.path)
+// hand-write their <dl class="faq"> inside `intro`, with links inside, so they
+// are skipped here and keep owning their own markup.
+function faqBlockHtml(page) {
+  if (page.path) return '';
+  const faqs = faqsFor(page).filter(f => f && f.q && f.a);
+  if (!faqs.length) return '';
+  const items = faqs
+    .map(f => `        <dt>${escapeHtml(f.q)}</dt>\n        <dd>${escapeHtml(f.a)}</dd>`)
+    .join('\n\n');
+  return `
+      <h2>${UI[page.lang].faqHeading}</h2>
+      <dl class="faq">
+${items}
+      </dl>
+`;
+}
+
 function buildJsonLd(page, canonical, breadcrumbItems) {
-  // Pages carry a single question/answer; editorial articles can pass a `faqs`
-  // array ([{ q, a }, ...]) that mirrors their visible <dl class="faq">.
-  const faqs = page.faqs || [{ q: page.question, a: page.answer }];
+  const faqs = faqsFor(page);
   const graph = [
     {
       '@type': 'FAQPage',
@@ -4340,6 +4533,7 @@ function render(page, template) {
     H1: escapeHtml(page.h1),
     ARTICLE_DATE: isArticle ? articleDateHtml(page) : '',
     INTRO: page.intro,
+    FAQ_BLOCK: faqBlockHtml(page),
     RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
     RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
       : isKilos ? relatedKiloLinks(page.lang, page.key)
