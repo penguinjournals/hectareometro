@@ -910,7 +910,343 @@ function awsAragonArticle() {
   };
 }
 
-const ARTICLES = [burnedAreaArticle(), awsAragonArticle()];
+// ---- Las dimensiones del eclipse (12 de agosto de 2026) --------------------
+//
+// Editorial data for the eclipse article. Spanish-only (the framing is the band
+// over Spain). Everything below is either quoted from a primary source or
+// computed here from primary-source geometry; nothing is copied from press.
+//
+// PRIMARY SOURCES
+// · Path of the umbra (northern limit, southern limit, central line) and, for
+//   each instant, path width, Sun altitude and central duration: NASA/Fred
+//   Espenak, "Path of the Total Solar Eclipse of 2026 Aug 12".
+//   https://eclipse.gsfc.nasa.gov/SEpath/SEpath2001/SE2026Aug12Tpath.html
+//   Central line fixes over Spain (UT → local = UT+2):
+//     18:26  44 42.8N  8 23.9W   width 311 km  Sun 13°  1m53.0s
+//     18:28  43 22.3N  6 11.3W   width 304 km  Sun 10°  1m49.3s
+//     18:30  41 49.0N  3 11.1W   width 294 km  Sun  8°  1m44.6s
+//     18:32  39 24.5N  2 57.0E   width 270 km  Sun  2°  1m35.8s
+// · Local circumstances, cities and Sun altitudes over Spain: IGN,
+//   https://eclipses.ign.es/eclipse-total-sol-de-12-de-agosto-2026.html
+//   (A Coruña: totality 76 s with the Sun at 12°; the central line passes by
+//   Avilés, Oviedo, Aranda de Duero, Soria, Peñíscola and Palma de Mallorca).
+// · Longest totality in Spain, 1m50s near Luarca (Asturias); the central line
+//   runs Luarca → Peñíscola: https://es.wikipedia.org/wiki/Eclipse_solar_del_12_de_agosto_de_2026
+//
+// COMPUTED HERE (not taken from anyone)
+// · Darkened area: NASA's northern and southern limit polylines were closed
+//   into a corridor polygon, projected to a Lambert azimuthal EQUAL-AREA
+//   projection centred on Spain, and intersected with the geometry of the 52
+//   Spanish provinces on a 1,5 km grid. Accuracy check: the same provinces sum
+//   to 505.684 km², against the official 505.990 km² — a 0,06 % error.
+//   Result: 201.323 km² = 20.132.325 ha of Spanish land inside the band, 39,8 %
+//   of the country, across 31 provinces, 11 of them completely inside.
+// · Umbra ground speed, from the central-line fixes above (haversine / 120 s):
+//   18:26→18:28  231 km → 6.936 km/h · 18:28→18:30  301 km → 9.016 km/h ·
+//   18:30→18:32  583 km → 17.484 km/h. Crossing Luarca (20:27:37 local) to
+//   Peñíscola (20:31:09), 680 km in 3 min 33 s → 11.512 km/h average.
+// · Margins of the cities left out, as the distance to the nearest limit:
+//   Madrid 11 km (southern edge), Pamplona 11 km (northern), Barcelona 31 km,
+//   San Sebastián 42 km, Salamanca 45 km, Toledo 78 km.
+// · Scale model of the 400 rule: Moon = a 24 cm basketball → scale 1:14.478.333
+//   → Moon at 26,6 m and Sun a 96 m sphere at 10,3 km.
+const ECLIPSE_2026 = {
+  ha: 20132325,            // Spanish land inside the band of totality
+  km2: 201323,
+  pctSpain: 39.8,
+  provinces: 31,
+  wholeProvinces: ['León', 'Teruel', 'Burgos', 'Asturias', 'Soria', 'Palencia',
+    'Castellón', 'Cantabria', 'La Rioja', 'Baleares', 'Álava'],
+  widthKm: 294,            // path width over the middle of Spain (18:30 UT)
+  crossKm: 680,            // Luarca → Peñíscola along the central line
+  crossSeconds: 213,
+  speedIn: 6936,           // km/h entering over Asturias
+  speedMid: 9016,          // km/h over Castilla y León / Aragón
+  speedOut: 17484,         // km/h leaving over the Mediterranean
+};
+
+function eclipseArticle() {
+  const e = ECLIPSE_2026;
+  const NASA_URL = 'https://eclipse.gsfc.nasa.gov/SEpath/SEpath2001/SE2026Aug12Tpath.html';
+  const IGN_URL = 'https://eclipses.ign.es/eclipse-total-sol-de-12-de-agosto-2026.html';
+  const CIENCIA_URL = 'https://www.ciencia.gob.es/Noticias/2026/agosto/manana-eclipse-total-sol-Peninsula-Iberica.html';
+  // The band drawn as an equivalent circle (253 km of radius) over the peninsula.
+  const mapUrl = `/?ha=${e.ha}&lat=41.6&lon=-3.2&z=6`;
+  const dist = (d, lat, lon, z) => `/distancias/?d=${d}&u=km&lat=${lat}&lon=${lon}&z=${z}`;
+  // es-ES leaves 4-digit numbers ungrouped ("6936"); force the thousands dot.
+  const fmtG = n => n.toLocaleString('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 });
+  const haLabel = fmt(e.ha, 0);                    // 20.132.325
+  const km2Label = fmt(e.km2, 0);                  // 201.323
+  const pitchesLabel = fmt(Math.round(e.ha / 0.714), 0); // 28.196.534
+  const burnedTimes = Math.round(e.ha / 916817);   // 22
+  const intro = `      <p>
+        El <b>12 de agosto de 2026</b>, a las ocho y media de la tarde, la sombra de la Luna entró en
+        España por la costa de Asturias y salió al Mediterráneo tres minutos y medio después. Era el
+        primer eclipse solar total sobre la Península en <b>114 años</b>
+        (<a href="${CIENCIA_URL}" target="_blank" rel="noopener">el anterior fue en 1912</a>), y
+        durante unos noventa segundos una franja entera del país se quedó a oscuras con el Sol todavía
+        en el cielo.
+      </p>
+      <p>
+        Ya se ha contado el asombro. Aquí vamos a contar <b>las medidas</b>: cuánta superficie de
+        España cabía dentro de esa sombra, a qué velocidad iba y por qué un disco de 1,4 millones de
+        kilómetros tapa exactamente a otro de 3.475. Porque un eclipse, además de bonito, es un
+        problema de escalas —y eso es lo que sabemos dibujar.
+      </p>
+      <p>
+        Empecemos por el titular: la franja de totalidad cubrió
+        <b><a href="${mapUrl}">${haLabel} hectáreas</a></b> de territorio español. El círculo del mapa
+        de arriba tiene exactamente esa superficie.
+      </p>
+
+      <h2>La franja a oscuras: ${haLabel} hectáreas</h2>
+      <p>
+        La <b>franja de totalidad</b> —la única zona donde el Sol se tapa del todo— fue una cinta de
+        unos <b>${e.widthKm} kilómetros de ancho</b> que cruzó la Península en diagonal, de Luarca a
+        Peñíscola, y siguió hasta Baleares. Fuera de ella, el resto del país vio un eclipse parcial,
+        que no es lo mismo ni de lejos: basta que asome un 1 % del Sol para que no anochezca.
+      </p>
+      <p>
+        ¿Cuánta España quedó dentro? Para responderlo hemos cruzado los <b>límites norte y sur de la
+        franja publicados por la NASA</b>
+        (<a href="${NASA_URL}" target="_blank" rel="noopener">tablas de F. Espenak</a>) con la
+        geometría real de las 52 provincias españolas, sobre una malla de 1,5 km y en una proyección
+        de áreas iguales. El resultado:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>La franja de totalidad sobre España</th><th>Cuánto es</th></tr></thead>
+        <tbody>
+          <tr><td>Superficie de territorio español dentro de la franja</td><td><b><a href="${mapUrl}">${haLabel} ha</a></b> (${km2Label} km²)</td></tr>
+          <tr><td>Porcentaje de España</td><td><b>${String(e.pctSpain).replace('.', ',')} %</b> del país</td></tr>
+          <tr><td>Provincias tocadas</td><td>${e.provinces}, de ellas ${e.wholeProvinces.length} enteras</td></tr>
+          <tr><td>En campos de fútbol</td><td>unos <a href="/hectarea-campo-de-futbol/">${pitchesLabel}</a></td></tr>
+          <tr><td>Comparada con Castilla y León</td><td>2,1 veces</td></tr>
+          <tr><td>Comparada con lo quemado en incendios entre 2020 y 2025</td><td><a href="/hectareas-quemadas-incendios-espana/">${burnedTimes} veces</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        Veinte millones de hectáreas es una cifra que no significa nada hasta que se dibuja. Por eso el
+        mapa de arriba pinta un círculo de esa misma superficie: <b>253 kilómetros de radio</b>, más de
+        medio millar de kilómetros de punta a punta. Es
+        <a href="/200000-hectareas/">cien veces</a> la mayor de nuestras páginas de cantidad. Arrástralo
+        sobre tu comunidad y verás lo que significa que casi <b>cuatro de cada diez hectáreas del país</b>
+        se quedaran sin Sol a la vez.
+      </p>
+      <p>
+        Once provincias cupieron <b>enteras</b> dentro de la franja: ${e.wholeProvinces.slice(0, -1).join(', ')} y
+        ${e.wholeProvinces[e.wholeProvinces.length - 1]}. Zaragoza se quedó al 95 %, Guadalajara al 99 %,
+        Valladolid al 98 %. Y luego están las que se partieron por la mitad: Cuenca y Valencia entraron
+        justas al 49 %, Navarra al 53 %.
+      </p>
+
+      <h2>Los que se quedaron a las puertas</h2>
+      <p>
+        Lo más cruel de un eclipse es su borde. La diferencia entre ver la corona solar y ver un Sol
+        mordido no es gradual: es una línea en el suelo. Y esa línea pasó
+        <b><a href="${dist('11', '40.4168', '-3.7038', 10)}">a 11 kilómetros</a></b> del centro de
+        <b>Madrid</b>, por el norte de la ciudad. Once kilómetros: menos de lo que mucha gente hace para
+        ir a trabajar.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Ciudad</th><th>Se quedó a…</th><th>Del borde</th></tr></thead>
+        <tbody>
+          <tr><td>Madrid</td><td><a href="${dist('11', '40.4168', '-3.7038', 10)}">11 km</a></td><td>sur</td></tr>
+          <tr><td>Pamplona</td><td><a href="${dist('11', '42.8125', '-1.6458', 10)}">11 km</a></td><td>norte</td></tr>
+          <tr><td>Barcelona</td><td><a href="${dist('31', '41.3874', '2.1686', 9)}">31 km</a></td><td>norte</td></tr>
+          <tr><td>San Sebastián</td><td>42 km</td><td>norte</td></tr>
+          <tr><td>Salamanca</td><td>45 km</td><td>sur</td></tr>
+          <tr><td>Toledo</td><td>78 km</td><td>sur</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Dentro, en cambio, entraron Oviedo, Santander, Bilbao, Vitoria, Logroño, León, Palencia,
+        Burgos, Valladolid, Soria, Segovia, Guadalajara, Zaragoza, Teruel, Cuenca, Lleida, Tarragona,
+        Castellón, Valencia, Palma, Ibiza y Maó. Un eclipse se mide en kilómetros, y por eso conviene
+        <a href="/medir-distancias/">medirlos bien</a>.
+      </p>
+
+      <h2>La regla del 400: por qué el Sol y la Luna miden lo mismo</h2>
+      <p>
+        Que exista algo llamado «eclipse total» es una casualidad cósmica que roza lo absurdo. El Sol
+        tiene <b>1.392.700 km</b> de diámetro y la Luna <b>3.475 km</b>: el Sol es <b>400 veces más
+        grande</b>. Pero el Sol está a 149,6 millones de kilómetros y la Luna a 384.400: el Sol está
+        <b>389 veces más lejos</b>. Dos cuatrocientos que se cancelan. Por eso los dos discos se ven
+        casi idénticos desde aquí, y por eso la Luna puede tapar el Sol dejando asomar solo la corona.
+      </p>
+      <p>
+        Como los dos números no son exactamente iguales —y además la Luna se acerca y se aleja entre
+        356.500 y 406.700 km—, unas veces el disco lunar sobra y otras se queda corto. Cuando se queda
+        corto, el eclipse es <b>anular</b> y deja un anillo de Sol. El 12 de agosto la Luna venía cerca
+        de su perigeo y sobró un 4 %: por eso hubo totalidad.
+      </p>
+      <p>Puesto a escala humana, con la Luna reducida a un <b>balón de baloncesto</b> de 24 cm:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Escala 1:14.478.333</th><th>Tamaño</th><th>A qué distancia</th></tr></thead>
+        <tbody>
+          <tr><td>La Luna</td><td>un balón de baloncesto (24 cm)</td><td>26,6 m: al fondo de la calle</td></tr>
+          <tr><td>La Tierra</td><td>una pelota de 88 cm</td><td>—</td></tr>
+          <tr><td>El Sol</td><td>una esfera de <b>96 metros</b> (un edificio de 30 plantas)</td><td><b><a href="${dist('10.3', '40.4168', '-3.7038', 11)}">10,3 km</a></b>: al otro lado de la ciudad</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Ahí está el truco entero: un balón a la distancia de un portal tapando un edificio de treinta
+        plantas que está a diez kilómetros. Pincha en los 10,3 km para verlos dibujados sobre tu ciudad
+        y hacerte a la idea de dónde habría que poner ese Sol de juguete.
+      </p>
+
+      <h2>La carrera de la sombra: hasta 17.500 km/h</h2>
+      <p>
+        Aquí está el dato que más nos ha sorprendido al calcularlo. En todas partes se lee que la
+        sombra de un eclipse viaja a <b>2.000 o 3.000 km/h</b>. Es verdad… para un eclipse con el Sol
+        alto. En España no se pareció ni remotamente.
+      </p>
+      <p>
+        Porque el eclipse del 12 de agosto fue <b>un eclipse de atardecer</b>: el Sol estaba a solo
+        <b>12° sobre el horizonte</b> en Galicia y a <b>2°</b> en Menorca, ya casi poniéndose
+        (<a href="${IGN_URL}" target="_blank" rel="noopener">circunstancias locales del IGN</a>). Y cuando
+        el Sol está bajo, la sombra se proyecta de refilón sobre el suelo y se estira muchísimo, igual
+        que tu propia sombra al atardecer. Una sombra estirada barre mucho más terreno en el mismo
+        tiempo: la velocidad se multiplica por <b>1 ÷ seno de la altura del Sol</b>. Con el Sol a 8°,
+        eso es multiplicar por siete.
+      </p>
+      <p>
+        Tomando las posiciones de la línea central que publica la NASA cada dos minutos y midiendo las
+        distancias entre ellas, esto es lo que iba haciendo la sombra sobre España:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Tramo (hora peninsular)</th><th>Recorrido</th><th>Velocidad</th></tr></thead>
+        <tbody>
+          <tr><td>20:26 → 20:28 · entrando por Asturias</td><td>231 km</td><td>${fmtG(e.speedIn)} km/h</td></tr>
+          <tr><td>20:28 → 20:30 · Castilla y León y Aragón</td><td>301 km</td><td>${fmtG(e.speedMid)} km/h</td></tr>
+          <tr><td>20:30 → 20:32 · saliendo al Mediterráneo</td><td>583 km</td><td>${fmt(e.speedOut, 0)} km/h</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La sombra <b>aceleró</b> mientras cruzaba el país, porque el Sol seguía bajando. Salió por
+        Baleares a <b>${fmt(e.speedOut, 0)} km/h</b>: catorce veces la velocidad del sonido, casi cinco
+        kilómetros por segundo, el doble de rápido que el avión más veloz jamás construido.
+      </p>
+      <p>
+        Del punto donde tocó tierra, en <b>Luarca</b>, al punto donde la dejó, en <b>Peñíscola</b>, hay
+        <b><a href="${dist('680', '43.624', '-6.626', 6)}">${e.crossKm} kilómetros</a></b> en línea
+        recta. La sombra los recorrió en <b>3 minutos y 33 segundos</b>, a una media de
+        ${fmt(11512, 0)} km/h. Para poner eso en perspectiva, con la distancia que mejor conocemos:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th><a href="${dist('505', '40.4168', '-3.7038', 6)}">Madrid–Barcelona (505 km)</a></th><th>Tarda</th></tr></thead>
+        <tbody>
+          <tr><td>Andando</td><td>más de 4 días sin parar</td></tr>
+          <tr><td>En coche</td><td>unas 5 horas y media</td></tr>
+          <tr><td>En AVE</td><td>2 h 30 min</td></tr>
+          <tr><td>En avión</td><td>1 h 15 min</td></tr>
+          <tr><td><b>La sombra de la Luna sobre Aragón</b></td><td><b>3 min 22 s</b></td></tr>
+          <tr><td><b>La sombra ya sobre el Mediterráneo</b></td><td><b>1 min 44 s</b></td></tr>
+        </tbody>
+      </table>
+      <p>
+        Y aun así, la totalidad duró <b>menos de dos minutos</b> en cada sitio (1 min 50 s cerca de
+        Luarca, el máximo en España). No es contradictorio: la franja medía ${e.widthKm} km de ancho,
+        pero lo que te pasa por encima es la sombra entera a diez mil kilómetros por hora. Estás dentro
+        el tiempo que tarda en pasarte.
+      </p>
+      <p>
+        Por cierto: que el Sol estuviera tan bajo también explica que hubiera que buscar horizontes
+        despejados hacia el oeste. Si quieres saber hasta dónde llega tu vista cuando el Sol se pone,
+        lo contamos en <a href="/a-que-distancia-esta-el-horizonte/">a qué distancia está el
+        horizonte</a>.
+      </p>
+
+      <h2>Mide tu propio eclipse</h2>
+      <p>
+        Todas las cifras de este artículo son enlaces vivos: puedes moverlos, cambiarlos y ponerlos
+        sobre el sitio que quieras. Si te has quedado con ganas:
+      </p>
+      <ul>
+        <li>Dibuja <a href="${mapUrl}">los ${haLabel} hectáreas</a> de la franja sobre tu comunidad
+          con el <a href="/">Hectareómetro</a>.</li>
+        <li>Mira <a href="${dist('11', '40.4168', '-3.7038', 10)}">los 11 km</a> que dejaron a Madrid
+          fuera, y compáralos con lo que tú recorres cada día.</li>
+        <li>Traza a mano la comarca que te interese y saca su superficie exacta con
+          <a href="/medir-superficie/">medir una superficie</a>, o la distancia entre dos puntos con
+          <a href="/medir-distancias/">medir distancias</a>.</li>
+        <li>Convierte las hectáreas a km² en el
+          <a href="/hectareas-a-metros-cuadrados/">conversor de superficies</a>.</li>
+      </ul>
+      <p>
+        El próximo eclipse total en España es el <b>2 de agosto de 2027</b>, y el siguiente, el
+        <b>26 de enero de 2028</b> (anular). Tres en tres años después de un siglo sin ninguno. Habrá
+        tiempo de medirlos.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuánta superficie de España se quedó a oscuras durante el eclipse?</dt>
+        <dd>Unos <a href="${mapUrl}">${haLabel} hectáreas</a> (${km2Label} km²) de territorio español
+          quedaron dentro de la franja de totalidad, el ${String(e.pctSpain).replace('.', ',')} % del
+          país: casi cuatro de cada diez hectáreas. Es 2,1 veces la superficie de Castilla y León y
+          unos ${pitchesLabel} campos de fútbol.</dd>
+
+        <dt>¿Qué provincias entraron enteras en la franja de totalidad?</dt>
+        <dd>Once: ${e.wholeProvinces.join(', ')}. En total la franja tocó ${e.provinces} provincias;
+          Zaragoza quedó dentro al 95 %, Guadalajara al 99 % y Valladolid al 98 %.</dd>
+
+        <dt>¿Por qué en Madrid no se vio el eclipse total?</dt>
+        <dd>Porque el borde sur de la franja pasó a unos 11 kilómetros del centro de la ciudad, por el
+          norte. En Madrid capital el Sol se tapó casi del todo, pero «casi» no cuenta: basta que
+          asome una uña de Sol para que no se vea la corona ni se haga de noche. El norte de la
+          provincia sí entró: un 41 % de su superficie.</dd>
+
+        <dt>¿A qué velocidad se movió la sombra de la Luna sobre España?</dt>
+        <dd>Entre ${fmtG(e.speedIn)} km/h al entrar por Asturias y ${fmt(e.speedOut, 0)} km/h al salir
+          al Mediterráneo, acelerando durante todo el recorrido. Cruzó la Península, de Luarca a
+          Peñíscola (${e.crossKm} km), en 3 minutos y 33 segundos. Es mucho más que los 2.000-3.000
+          km/h habituales porque el Sol estaba muy bajo, casi poniéndose, y una sombra rasante barre
+          el suelo mucho más deprisa.</dd>
+
+        <dt>¿Por qué el Sol y la Luna se ven del mismo tamaño?</dt>
+        <dd>Por una casualidad: el Sol es unas 400 veces más grande que la Luna (1.392.700 km frente a
+          3.475 km), pero está unas 389 veces más lejos (149,6 millones de kilómetros frente a
+          384.400). Las dos proporciones casi se cancelan, así que los discos se ven casi iguales
+          desde la Tierra.</dd>
+
+        <dt>¿Cuánto duró la totalidad del eclipse en España?</dt>
+        <dd>Menos de dos minutos en cualquier punto: el máximo fueron 1 minuto y 50 segundos cerca de
+          Luarca (Asturias), y fue bajando hasta poco más de minuto y medio en Baleares. La franja
+          medía unos ${e.widthKm} km de ancho, pero la sombra la barría a más de 10.000 km/h.</dd>
+      </dl>
+      <p>
+        ¿Quieres seguir midiendo cosas grandes? Mira
+        <a href="/hectareas-quemadas-incendios-espana/">cuánta superficie arde en los incendios de
+        España</a>, <a href="/cuanto-ocupan-centros-datos-aws-aragon/">cuánto ocupan los centros de
+        datos de AWS en Aragón</a> o compara
+        <a href="/hectarea-campo-de-futbol/">una hectárea con un campo de fútbol</a>. Y si lo tuyo son
+        las distancias, tienes la <a href="/distancias/">herramienta de distancias</a>.
+      </p>`;
+  return {
+    key: 'dimensiones-eclipse-2026', lang: 'es', ha: e.ha,
+    family: 'hectareas', published: '2026-08-13', modified: '2026-08-13',
+    slug: 'las-dimensiones-del-eclipse',
+    path: '/las-dimensiones-del-eclipse/',
+    presetExtra: ' var PRESET_ZOOM = 6; var PRESET_LAT = 41.6; var PRESET_LON = -3.2;',
+    title: 'Las dimensiones del eclipse: 20 millones de hectáreas de España a oscuras | Hectareómetro',
+    description: `La franja de totalidad del eclipse del 12 de agosto de 2026 cubrió ${haLabel} hectáreas de España, el ${String(e.pctSpain).replace('.', ',')} % del país. La superficie, la regla del 400 y la sombra a 17.500 km/h, dibujadas a escala.`,
+    h1: 'Las dimensiones del eclipse',
+    intro,
+    question: '¿Cuánta superficie de España cubrió la franja de totalidad del eclipse?',
+    answer: `La franja de totalidad del eclipse del 12 de agosto de 2026 cubrió unos ${haLabel} hectáreas (${km2Label} km²) de territorio español, el ${String(e.pctSpain).replace('.', ',')} % del país, repartidas por ${e.provinces} provincias, once de ellas enteras.`,
+    faqs: [
+      { q: '¿Cuánta superficie de España se quedó a oscuras durante el eclipse?', a: `Unos ${haLabel} hectáreas (${km2Label} km²) de territorio español quedaron dentro de la franja de totalidad, el ${String(e.pctSpain).replace('.', ',')} % del país: casi cuatro de cada diez hectáreas. Es 2,1 veces la superficie de Castilla y León y unos ${pitchesLabel} campos de fútbol.` },
+      { q: '¿Qué provincias entraron enteras en la franja de totalidad?', a: `Once: ${e.wholeProvinces.join(', ')}. En total la franja tocó ${e.provinces} provincias; Zaragoza quedó dentro al 95 %, Guadalajara al 99 % y Valladolid al 98 %.` },
+      { q: '¿Por qué en Madrid no se vio el eclipse total?', a: 'Porque el borde sur de la franja pasó a unos 11 kilómetros del centro de la ciudad, por el norte. En Madrid capital el Sol se tapó casi del todo, pero «casi» no cuenta: basta que asome una uña de Sol para que no se vea la corona ni se haga de noche. El norte de la provincia sí entró: un 41 % de su superficie.' },
+      { q: '¿A qué velocidad se movió la sombra de la Luna sobre España?', a: `Entre ${fmtG(e.speedIn)} km/h al entrar por Asturias y ${fmt(e.speedOut, 0)} km/h al salir al Mediterráneo, acelerando durante todo el recorrido. Cruzó la Península, de Luarca a Peñíscola (${e.crossKm} km), en 3 minutos y 33 segundos. Es mucho más que los 2.000-3.000 km/h habituales porque el Sol estaba muy bajo, casi poniéndose, y una sombra rasante barre el suelo mucho más deprisa.` },
+      { q: '¿Por qué el Sol y la Luna se ven del mismo tamaño?', a: 'Por una casualidad: el Sol es unas 400 veces más grande que la Luna (1.392.700 km frente a 3.475 km), pero está unas 389 veces más lejos (149,6 millones de kilómetros frente a 384.400). Las dos proporciones casi se cancelan, así que los discos se ven casi iguales desde la Tierra.' },
+      { q: '¿Cuánto duró la totalidad del eclipse en España?', a: `Menos de dos minutos en cualquier punto: el máximo fueron 1 minuto y 50 segundos cerca de Luarca (Asturias), y fue bajando hasta poco más de minuto y medio en Baleares. La franja medía unos ${e.widthKm} km de ancho, pero la sombra la barría a más de 10.000 km/h.` },
+    ],
+    linkLabel: 'Las dimensiones del eclipse',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle()];
 
 // ---- liters landing pages ------------------------------------------------
 
