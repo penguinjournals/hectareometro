@@ -15,6 +15,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const TEMPLATE = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
@@ -854,7 +856,9 @@ ${rows}
       </p>`;
   return {
     key: 'burned-area-spain', lang: 'es', ha: Math.round(total),
-    family: 'hectareas', published: '2026-07-09', modified: '2026-07-09',
+    // modified bumped on 2026-08-13: the article gained its FAQ section and a
+    // closing block of internal links.
+    family: 'hectareas', published: '2026-07-09', modified: '2026-08-13',
     slug: 'hectareas-quemadas-incendios-espana',
     path: '/hectareas-quemadas-incendios-espana/',
     presetExtra: ` var PRESET_ZOOM = 8; var PRESET_LAT = ${MADRID.lat}; var PRESET_LON = ${MADRID.lon};`,
@@ -4564,30 +4568,160 @@ function render(page, template) {
   return out;
 }
 
+// ---- sitemap <lastmod> ----------------------------------------------------
+//
+// A lastmod is only worth having if it is accurate: Google ignores the dates of
+// sitemaps where every URL changes on every deploy. Two things would fake that
+// here — regenerating rewrites all 100+ pages whether or not they changed, and
+// publishing one article rewrites the related-articles block of dozens more.
+// Neither is a reason to recrawl.
+//
+// So the date does not come from file mtimes or from git. Each URL gets a
+// fingerprint of ITS OWN content (title, description, h1, intro, FAQ, the map
+// preset) and the date only moves when that fingerprint moves. The fingerprints
+// and their dates live in build/lastmod.json, which is committed: that file is
+// the memory of when each URL last really changed. Delete it and the dates are
+// re-seeded from git history, so it is recoverable, not precious.
+const LASTMOD_PATH = path.join(__dirname, 'lastmod.json');
+
+function buildDate() {
+  return process.env.SITEMAP_DATE || new Date().toISOString().slice(0, 10);
+}
+
+function sha1(text) {
+  return crypto.createHash('sha1').update(text).digest('hex').slice(0, 16);
+}
+
+function fileForPath(urlPath) {
+  return path.posix.join(urlPath.replace(/^\//, ''), 'index.html');
+}
+
+// Generated pages are fingerprinted from the page object, which contains only
+// their own content. Hand-maintained pages and the article hubs have no page
+// object, so they are hashed from their HTML with the navbar and footer (the
+// 16 lockstep copies) stripped out: editing the shared navigation must not look
+// like 100 pages changed.
+function contentFingerprint(page, file) {
+  if (page) {
+    return sha1(JSON.stringify([
+      page.title, page.description, page.h1, page.intro, faqsFor(page),
+      page.presetExtra || '', page.ha, page.l, page.k, page.dist, page.distUnit,
+    ]));
+  }
+  const html = fs.readFileSync(path.join(ROOT, file), 'utf8')
+    .replace(/<nav[\s\S]*?<\/nav>/g, '')
+    .replace(/<footer[\s\S]*?<\/footer>/g, '');
+  return sha1(html);
+}
+
+function loadLastmodMemory() {
+  try {
+    return JSON.parse(fs.readFileSync(LASTMOD_PATH, 'utf8'));
+  } catch (err) {
+    return {};
+  }
+}
+
+function git(command, fallback) {
+  try {
+    return execSync(command, { cwd: ROOT, maxBuffer: 128 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] }).toString();
+  } catch (err) {
+    return fallback; // no git checkout (or no history): seeding falls back to today
+  }
+}
+
+// Date of the last commit that touched each file, used ONLY to seed a URL the
+// first time it shows up in the memory file.
+let GIT_DATES = null;
+function gitLastCommitDates() {
+  if (GIT_DATES) return GIT_DATES;
+  GIT_DATES = {};
+  let date = null;
+  git('git log --no-renames --date=short --format=@%cd --name-only', '').split('\n').forEach(line => {
+    if (line.startsWith('@')) { date = line.slice(1).trim(); return; }
+    const file = line.trim();
+    if (file && date && !(file in GIT_DATES)) GIT_DATES[file] = date;
+  });
+  return GIT_DATES;
+}
+
+// Files with uncommitted changes are being deployed now, so their last commit
+// date would be a lie: they seed as today.
+let GIT_DIRTY = null;
+function gitDirtyFiles() {
+  if (GIT_DIRTY) return GIT_DIRTY;
+  GIT_DIRTY = new Set(git('git status --porcelain', '').split('\n')
+    .map(line => line.slice(3).trim())
+    .filter(Boolean));
+  return GIT_DIRTY;
+}
+
 function writeSitemap() {
-  const urls = [`${BASE_URL}/`, `${BASE_URL}/en/`];
-  LANGS.forEach(lang => urls.push(BASE_URL + measurePath(lang)));
-  LANGS.forEach(lang => urls.push(BASE_URL + measureDistancePath(lang)));
-  LANGS.forEach(lang => urls.push(BASE_URL + distancesPath(lang)));
-  LANGS.forEach(lang => urls.push(BASE_URL + litersPath(lang)));
-  LANGS.forEach(lang => urls.push(BASE_URL + kilosPath(lang)));
-  LANGS.forEach(lang => urls.push(BASE_URL + converterPath(lang)));
-  LANGS.forEach(lang => urls.push(BASE_URL + articlesHubPath(lang)));
-  LANGS.forEach(lang => KEYS.forEach(key => urls.push(fullUrl(lang, key))));
-  LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => urls.push(literFullUrl(lang, l))));
-  LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => urls.push(kiloFullUrl(lang, k))));
-  ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
-  LITER_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
-  DIST_ARTICLES.forEach(page => urls.push(BASE_URL + page.path));
-  const body = urls.map(u => {
-    const isHome = u === `${BASE_URL}/` || u === `${BASE_URL}/en/`;
-    const isSectionHome = LANGS.some(lang => u === BASE_URL + measurePath(lang) || u === BASE_URL + measureDistancePath(lang) || u === BASE_URL + distancesPath(lang) || u === BASE_URL + litersPath(lang) || u === BASE_URL + kilosPath(lang) || u === BASE_URL + converterPath(lang) || u === BASE_URL + articlesHubPath(lang));
-    const priority = isHome ? '1.0' : isSectionHome ? '0.9' : '0.8';
-    return `  <url>\n    <loc>${u}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  const entries = [];
+  const add = (urlPath, page) => entries.push({ urlPath, page });
+  add('/');
+  add('/en/');
+  LANGS.forEach(lang => add(measurePath(lang)));
+  LANGS.forEach(lang => add(measureDistancePath(lang)));
+  LANGS.forEach(lang => add(distancesPath(lang)));
+  LANGS.forEach(lang => add(litersPath(lang)));
+  LANGS.forEach(lang => add(kilosPath(lang)));
+  LANGS.forEach(lang => add(converterPath(lang)));
+  LANGS.forEach(lang => add(articlesHubPath(lang)));
+  LANGS.forEach(lang => KEYS.forEach(key => add(pathFor(lang, key), buildPage(lang, key))));
+  LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => add(literPathFor(lang, l), literPage(lang, l))));
+  LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => add(kiloPathFor(lang, k), kiloPage(lang, k))));
+  ARTICLES.forEach(page => add(page.path, page));
+  LITER_ARTICLES.forEach(page => add(page.path, page));
+  DIST_ARTICLES.forEach(page => add(page.path, page));
+
+  const remembered = loadLastmodMemory();
+  const memory = {};
+  const today = buildDate();
+  const sectionHomes = new Set([].concat(...LANGS.map(lang => [
+    measurePath(lang), measureDistancePath(lang), distancesPath(lang), litersPath(lang),
+    kilosPath(lang), converterPath(lang), articlesHubPath(lang),
+  ])));
+  let changed = 0;
+  const warnings = [];
+
+  const body = entries.map(({ urlPath, page }) => {
+    const file = fileForPath(urlPath);
+    const fingerprint = contentFingerprint(page, file);
+    const before = remembered[urlPath];
+    let lastmod;
+    if (!before) {
+      const seed = gitLastCommitDates()[file];
+      lastmod = (!seed || gitDirtyFiles().has(file)) ? today : seed;
+    } else if (before.fingerprint !== fingerprint) {
+      lastmod = today;
+      changed++;
+    } else {
+      lastmod = before.lastmod;
+    }
+    // Editorial articles date themselves: their `modified` is what the Article
+    // JSON-LD publishes, so the sitemap says exactly the same thing. If the copy
+    // changed and nobody bumped it, say so instead of drifting silently.
+    if (page && page.path && page.modified) {
+      if (before && before.fingerprint !== fingerprint && page.modified !== today) {
+        warnings.push(`${urlPath}: el contenido ha cambiado pero modified sigue en ${page.modified}`);
+      }
+      lastmod = page.modified;
+    }
+    memory[urlPath] = { fingerprint, lastmod };
+    const priority = (urlPath === '/' || urlPath === '/en/') ? '1.0'
+      : sectionHomes.has(urlPath) ? '0.9' : '0.8';
+    return `  <url>\n    <loc>${BASE_URL}${urlPath}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
   }).join('\n');
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), xml);
-  console.log(`sitemap.xml written with ${urls.length} URLs`);
+  fs.writeFileSync(LASTMOD_PATH, JSON.stringify(memory, null, 2) + '\n');
+  const seeded = entries.filter(e => !remembered[e.urlPath]).length;
+  console.log(`sitemap.xml written with ${entries.length} URLs`
+    + (seeded ? ` (${seeded} lastmod sembrados desde git)` : '')
+    + (changed ? ` · ${changed} con contenido nuevo → ${today}` : ' · sin cambios de contenido'));
+  warnings.forEach(w => console.log(`  ⚠ ${w}`));
 }
 
 function main() {
