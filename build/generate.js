@@ -2547,9 +2547,263 @@ ${gpmRows}
   };
 }
 
+// ¿Cuántos litros de agua consume una persona al día? Editorial es-only
+// (es + x-default): el esqueleto son los datos del INE y el reparto por
+// comunidades, así que es una pieza centrada en España (norma de mirrors).
+//
+// Datos validados 2026-08-14 (web):
+// · Consumo doméstico España: 128 litros por habitante y día, dato de 2024 de
+//   la Estadística sobre el Suministro y Saneamiento del Agua del INE,
+//   publicada el 2 de julio de 2026 (igual que en 2022). Coste unitario total
+//   2,02 €/m³ = 1,09 de suministro + 0,93 de saneamiento (+5,2 %). Extremos por
+//   comunidad: Cantabria 186 L/hab/día, País Vasco 79. Pérdidas reales de la
+//   red (fugas y averías): 14,6 % del agua suministrada = 624 hm³.
+//   https://ine.es/dyngs/Prensa/ESSA2024.htm
+// · Ingesta de agua: la Autoridad Europea de Seguridad Alimentaria (EFSA, 2010)
+//   fija ingestas adecuadas de 2,0 L/día en mujeres y 2,5 L/día en hombres,
+//   pero son de AGUA TOTAL — incluye la de los alimentos y todas las bebidas—
+//   y para temperatura y actividad moderadas. El "2 litros de agua al día" es
+//   una simplificación: parte ya viene en la comida.
+//   https://www.efsa.europa.eu/en/efsajournal/pub/1459
+// · Huella hídrica: 1.385 m³ por persona y año de media mundial (unos 3.800
+//   litros al día), Mekonnen y Hoekstra / Water Footprint Network. Productos:
+//   ternera 15.415 L/kg, taza de café ~132 L, camiseta de algodón 2.700 L.
+//   https://www.waterfootprint.org/resources/multimediahub/Hoekstra-Mekonnen-2012-WaterFootprint-of-Humanity.pdf
+//
+// Cuentas hechas aquí: 128 × 365 = 46.720 L/año = 46,72 m³ → 94 € al año a
+// 2,02 €/m³; 46.720 ÷ 2 = 64 años bebiendo; 624 hm³ ÷ (128 × 365) = 13,4
+// millones de personas durante un año, el 27 % de todo el consumo doméstico
+// español (48,6 M hab × 128 L × 365 = 2.271 hm³); una taza de café al día son
+// 48.180 L al año, MÁS que los 46.720 que salen de los grifos de casa.
+const DAILY_WATER = {
+  drink: 2,
+  household: 128,
+  footprint: 3800,
+  leaksHm3: 624,
+  leaksPct: 14.6,
+  maxRegion: { name: 'Cantabria', l: 186 },
+  minRegion: { name: 'País Vasco', l: 79 },
+  pricePerM3: 2.02,
+};
+
+function dailyWaterArticle() {
+  const w = DAILY_WATER;
+  const INE_URL = 'https://ine.es/dyngs/Prensa/ESSA2024.htm';
+  const EFSA_URL = 'https://www.efsa.europa.eu/en/efsajournal/pub/1459';
+  const WFN_URL = 'https://www.waterfootprint.org/resources/multimediahub/Hoekstra-Mekonnen-2012-WaterFootprint-of-Humanity.pdf';
+  const year = w.household * 365;              // 46.720 L
+  const yearLabel = fmt(year, 0);
+  const costYear = fmt((year / 1000) * w.pricePerM3, 0);   // 94 €
+  const drinkYears = Math.round(year / w.drink / 365);      // 64 años
+  const leaksPeople = ((w.leaksHm3 * 1e9) / year / 1e6).toFixed(1).replace('.', ',');
+  const coffeeYear = fmt(132 * 365, 0);        // 48.180 L
+  const intro = `      <p>
+        <b>Depende de a qué llames «consumir»</b>, y ahí está todo el lío. Hay tres números
+        distintos rondando por ahí, se confunden constantemente y no se parecen en nada: bebemos
+        unos <b><a href="/litros/?l=2">2 litros al día</a></b>, gastamos en casa
+        <b><a href="/litros/?l=128">128</a></b> y, contando el agua que hizo falta para producir lo
+        que comemos y vestimos, arrastramos unos <b><a href="/litros/?l=3800">3.800</a></b>. El
+        primero y el último se llevan un factor de <b>1.900</b>.
+      </p>
+      <p>
+        El dibujo de arriba son esos 128 litros, el consumo doméstico medio en España: la
+        herramienta los pinta como <b>64 personas bebiendo durante un día</b>. Eso es exactamente lo
+        que significa la cifra — lo que tú gastas en casa en una jornada da de beber a 64 personas.
+      </p>
+
+      <h2>Los tres números que nunca son el mismo</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Qué mide</th><th>Al día</th><th>Al año</th><th>De dónde sale</th></tr></thead>
+        <tbody>
+          <tr><td>Lo que <b>bebes</b></td><td><a href="/litros/?l=2">2 L</a></td><td>730 L</td><td>EFSA (ingesta adecuada)</td></tr>
+          <tr><td>Lo que <b>gastas en casa</b></td><td><a href="/litros/?l=128">128 L</a></td><td><a href="/litros/?l=46720">${yearLabel} L</a></td><td>INE 2024</td></tr>
+          <tr><td>Tu <b>huella hídrica</b></td><td><a href="/litros/?l=3800">3.800 L</a></td><td>1.385 m³</td><td>Water Footprint Network</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Fíjate en la segunda fila: <b>lo que sale de tus grifos en un año es lo que una persona bebe
+        en ${drinkYears} años</b>. La herramienta lo redondea a «toda una vida» porque su escalón más
+        alto son 80 años, pero la cuenta exacta es esa: ${yearLabel} litros ÷ 2 al día.
+      </p>
+
+      <h2>2 litros al día: el número que casi todo el mundo cita mal</h2>
+      <p>
+        La <a href="${EFSA_URL}" target="_blank" rel="noopener">Autoridad Europea de Seguridad
+        Alimentaria</a> fija la ingesta adecuada en <b>2,0 litros al día para las mujeres y 2,5 para
+        los hombres</b>. Pero hay una letra pequeña que se cae siempre al citarlo: esas cifras son de
+        <b>agua total</b>, e incluyen la que viene en los alimentos y en todas las bebidas —café,
+        leche, sopa, fruta—, no solo la del vaso. Y valen para temperatura y actividad moderadas: con
+        calor o ejercicio, suben.
+      </p>
+      <p>
+        Así que lo de «hay que beber ocho vasos de agua al día» no es exactamente lo que dice la
+        recomendación. Una parte se la come, literalmente. Aun así, 2 litros de agua bebida al día es
+        la referencia que usa el Hectareómetro para sus equivalencias, y en un año son
+        <a href="/litros/?l=730">730 litros</a>: menos de <a href="/500-litros/">medio metro cúbico</a>.
+      </p>
+
+      <h2>128 litros: lo que de verdad sale de tus grifos</h2>
+      <p>
+        Este es el número serio, y lo publica el INE en su
+        <a href="${INE_URL}" target="_blank" rel="noopener">Estadística sobre el Suministro y
+        Saneamiento del Agua</a>: <b>${w.household} litros por habitante y día</b> en los hogares
+        españoles, dato de 2024 publicado en julio de 2026 e idéntico al de 2022. Incluye ducha,
+        cisterna, lavadora, cocina, limpieza y el grifo que dejas corriendo mientras te cepillas.
+      </p>
+      <p>
+        Al año son <b><a href="/litros/?l=46720">${yearLabel} litros</a></b> por persona, unos
+        <b>46,7 metros cúbicos</b>. A los <b>${String(w.pricePerM3).replace('.', ',')} €/m³</b> que
+        cuesta de media el agua en España (1,09 € de suministro más 0,93 € de saneamiento), eso es
+        alrededor de <b>${costYear} euros al año</b> por persona. Es de las facturas más baratas de
+        la casa, y probablemente por eso nadie mira el contador.
+      </p>
+      <h3>Y depende mucho de dónde vivas</h3>
+      <p>
+        La media nacional esconde una diferencia enorme. En <b>${w.maxRegion.name}</b> se gastan
+        <b><a href="/litros/?l=186">${w.maxRegion.l} litros</a></b> por habitante y día; en el
+        <b>${w.minRegion.name}</b>, <b><a href="/litros/?l=79">${w.minRegion.l}</a></b>. Son
+        <b>2,4 veces más</b> en un extremo que en el otro, dentro del mismo país. Pesa el clima, el
+        tipo de vivienda (los jardines y las piscinas se notan), la antigüedad de las redes y lo que
+        cuesta el metro cúbico en cada sitio.
+      </p>
+
+      <h2>Los 624 hectómetros cúbicos que se pierden por el camino</h2>
+      <p>
+        Aquí está el dato que más nos ha sorprendido de la estadística. Del agua que entra en las
+        redes de distribución españolas, el <b>${String(w.leaksPct).replace('.', ',')} %</b> no llega
+        a ningún grifo: se pierde en <b>fugas y averías</b>. En 2024 fueron
+        <b><a href="/litros/?l=624&u=hm3">${w.leaksHm3} hectómetros cúbicos</a></b>.
+      </p>
+      <p>
+        Un <a href="/cuanto-es-un-hectometro-cubico/">hectómetro cúbico</a> son mil millones de
+        litros, así que hablamos de <b>624.000 millones de litros</b> perdidos en un año. Con eso se
+        abastecería a <b>${leaksPeople} millones de personas</b> durante un año entero al ritmo de
+        128 litros diarios: cerca de una cuarta parte de España. Dicho de otro modo, las fugas
+        equivalen al <b>27 %</b> de todo lo que consumen los hogares españoles juntos.
+      </p>
+      <p>
+        Merece la pena tenerlo en la cabeza cuando llega el verano y las campañas piden cerrar el
+        grifo al enjabonarse. Está bien cerrarlo —abajo van los números—, pero el agujero más grande
+        de la cuenta no está en tu ducha.
+      </p>
+
+      <h2>3.800 litros: el agua que no ves</h2>
+      <p>
+        El tercer número es de otra liga. La <b>huella hídrica</b> cuenta toda el agua que hizo falta
+        para producir lo que consumes: el riego del cereal que comió la vaca, el algodón de tu
+        camiseta, el grano de tu café. Según el trabajo de Mekonnen y Hoekstra para la
+        <a href="${WFN_URL}" target="_blank" rel="noopener">Water Footprint Network</a>, la media
+        mundial es de <b>1.385 m³ por persona y año</b>: unos <b>3.800 litros al día</b>, casi
+        <b>30 veces</b> el consumo doméstico.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Producto</th><th>Agua que hizo falta</th><th>En días de tu consumo doméstico</th></tr></thead>
+        <tbody>
+          <tr><td>1 kg de ternera</td><td><a href="/litros/?l=15415">15.415 L</a></td><td>120 días</td></tr>
+          <tr><td>Un filete de 200 g</td><td>3.083 L</td><td>24 días</td></tr>
+          <tr><td>Una camiseta de algodón</td><td><a href="/litros/?l=2700">2.700 L</a></td><td>21 días</td></tr>
+          <tr><td>Una taza de café</td><td>132 L</td><td>1 día</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La última fila es la que mejor lo resume: <b>una taza de café al día son ${coffeeYear} litros
+        al año</b>, más que los ${yearLabel} litros que salen de todos los grifos de tu casa en el
+        mismo tiempo. El agua que no ves pesa más que la que pagas.
+      </p>
+
+      <h2>Cómo bajar de 128</h2>
+      <p>
+        Una advertencia honesta antes de los consejos: <b>el reparto del consumo por usos varía
+        mucho según la fuente</b>, igual que nos pasó con los caudales de ducha al escribir sobre
+        <a href="/cuantos-litros-tiene-una-banera/">las bañeras</a>. Así que aquí no hay porcentajes
+        inventados, solo litros que puedes medir tú:
+      </p>
+      <ul>
+        <li><b>La ducha manda.</b> Un cabezal normal echa entre 10 y 12 litros por minuto, y los hay
+          de 20. Diez minutos de ducha pueden ser <a href="/litros/?l=120">120 litros</a>: casi tu
+          día entero. Con un cabezal eficiente (6-9 L/min) esa misma ducha baja a 60-90.</li>
+        <li><b>Mide tu caudal</b> con el truco de la botella: llena una de 1,5 litros y cronometra.
+          Litros por minuto = 90 ÷ segundos. Es la cuenta más rentable de este artículo.</li>
+        <li><b>Un baño en bañera</b> son unos <a href="/litros/?l=150">150 litros</a>, más de lo que
+          gastas en todo un día normal.</li>
+        <li><b>Riegos y piscinas</b> son lo que dispara las medias regionales. Llenar una piscina
+          pequeña de 8 × 4 y 1,4 m son <a href="/litros/?l=45000">45.000 litros</a>: tu consumo
+          doméstico de casi un año.</li>
+      </ul>
+      <p>
+        Y por poner la escala en su sitio: si toda España bajara un litro por persona y día,
+        ahorraríamos unos <a href="/litros/?l=18&u=hm3">18 hectómetros cúbicos</a> al año. Las fugas
+        de la red se llevan 624.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántos litros de agua consume una persona al día?</dt>
+        <dd>En España, <b><a href="/litros/?l=128">128 litros por habitante y día</a></b> de consumo
+          doméstico (INE, dato de 2024), que no hay que confundir con los 2 litros que se beben ni
+          con los 3.800 de la huella hídrica, que incluye el agua usada para producir lo que comemos
+          y vestimos.</dd>
+
+        <dt>¿Cuánta agua hay que beber al día?</dt>
+        <dd>La EFSA fija la ingesta adecuada en 2,0 litros diarios para las mujeres y 2,5 para los
+          hombres, pero de agua total: incluye la que viene en los alimentos y en el resto de
+          bebidas, no solo la del vaso. Con calor o ejercicio hace falta más.</dd>
+
+        <dt>¿Cuánta agua consume una persona al año?</dt>
+        <dd>Unos <a href="/litros/?l=46720">${yearLabel} litros</a> de consumo doméstico (46,7 m³),
+          lo que una persona tarda ${drinkYears} años en beberse. Cuestan alrededor de
+          ${costYear} euros al año a los ${String(w.pricePerM3).replace('.', ',')} €/m³ de media
+          española.</dd>
+
+        <dt>¿En qué comunidad se gasta más agua?</dt>
+        <dd>En ${w.maxRegion.name}, con ${w.maxRegion.l} litros por habitante y día, frente a los
+          ${w.minRegion.l} del ${w.minRegion.name}, que es la que menos gasta: 2,4 veces de
+          diferencia (INE, 2024).</dd>
+
+        <dt>¿Cuánta agua se pierde en fugas en España?</dt>
+        <dd>El ${String(w.leaksPct).replace('.', ',')} % del agua suministrada a las redes de
+          distribución, ${w.leaksHm3} hectómetros cúbicos en 2024: 624.000 millones de litros, con
+          los que se abastecería a ${leaksPeople} millones de personas durante un año.</dd>
+
+        <dt>¿Qué es la huella hídrica?</dt>
+        <dd>Toda el agua que hizo falta para producir lo que consumes, no solo la que te llega por la
+          tubería. La media mundial son 1.385 m³ por persona y año, unos 3.800 litros diarios. Un
+          kilo de ternera lleva 15.415 litros detrás y una camiseta de algodón, 2.700.</dd>
+      </dl>
+      <p>
+        ¿Quieres seguir con el agua? Mira <a href="/cuanto-es-un-hectometro-cubico/">cuánto es un
+        hectómetro cúbico</a>, <a href="/cuantos-litros-tiene-una-banera/">cuántos litros tiene una
+        bañera</a> o <a href="/cuantos-litros-piscina-olimpica/">cuántos una piscina olímpica</a>. Y
+        si quieres dibujar tu propia cifra, tienes la
+        <a href="/litros/">herramienta de litros</a>.
+      </p>`;
+  return {
+    section: 'litros', lang: 'es', key: 'consumo-diario', l: w.household,
+    family: 'litros', published: '2026-08-14', modified: '2026-08-14',
+    slug: 'cuantos-litros-consume-una-persona-al-dia',
+    path: '/cuantos-litros-consume-una-persona-al-dia/',
+    title: '¿Cuántos litros de agua consume una persona al día? Beber vs gastar | Hectareómetro',
+    description: 'Bebemos 2 litros al día, gastamos 128 en casa (INE) y arrastramos 3.800 de huella hídrica. Los tres números explicados, el reparto por comunidades y los 624 hm³ que se pierden en fugas.',
+    h1: '¿Cuánta agua consume una persona al día?',
+    intro,
+    question: '¿Cuántos litros de agua consume una persona al día?',
+    answer: `En España el consumo doméstico medio es de ${w.household} litros por habitante y día (INE, dato de 2024), que no hay que confundir con los 2 litros que se beben ni con los 3.800 litros de la huella hídrica, que incluye el agua usada para producir lo que comemos y vestimos.`,
+    faqs: [
+      { q: '¿Cuántos litros de agua consume una persona al día?', a: `En España, ${w.household} litros por habitante y día de consumo doméstico (INE, dato de 2024), que no hay que confundir con los 2 litros que se beben ni con los 3.800 de la huella hídrica, que incluye el agua usada para producir lo que comemos y vestimos.` },
+      { q: '¿Cuánta agua hay que beber al día?', a: 'La EFSA fija la ingesta adecuada en 2,0 litros diarios para las mujeres y 2,5 para los hombres, pero de agua total: incluye la que viene en los alimentos y en el resto de bebidas, no solo la del vaso. Con calor o ejercicio hace falta más.' },
+      { q: '¿Cuánta agua consume una persona al año?', a: `Unos ${yearLabel} litros de consumo doméstico (46,7 m³), lo que una persona tarda ${drinkYears} años en beberse. Cuestan alrededor de ${costYear} euros al año a los ${String(w.pricePerM3).replace('.', ',')} €/m³ de media española.` },
+      { q: '¿En qué comunidad se gasta más agua?', a: `En ${w.maxRegion.name}, con ${w.maxRegion.l} litros por habitante y día, frente a los ${w.minRegion.l} del ${w.minRegion.name}, que es la que menos gasta: 2,4 veces de diferencia (INE, 2024).` },
+      { q: '¿Cuánta agua se pierde en fugas en España?', a: `El ${String(w.leaksPct).replace('.', ',')} % del agua suministrada a las redes de distribución, ${w.leaksHm3} hectómetros cúbicos en 2024: 624.000 millones de litros, con los que se abastecería a ${leaksPeople} millones de personas durante un año.` },
+      { q: '¿Qué es la huella hídrica?', a: 'Toda el agua que hizo falta para producir lo que consumes, no solo la que te llega por la tubería. La media mundial son 1.385 m³ por persona y año, unos 3.800 litros diarios. Un kilo de ternera lleva 15.415 litros detrás y una camiseta de algodón, 2.700.' },
+    ],
+    linkLabel: '¿Cuánta agua consume una persona al día?',
+  };
+}
+
 const LITER_ARTICLES = [
   poolArticle('es'), poolArticle('en'), cubicHectometreArticle(),
   tankerTruckArticle(), bathtubArticle('es'), bathtubArticle('en'),
+  dailyWaterArticle(),
 ];
 
 // ---- editorial distances articles (Spanish-only, map-based) ----------------

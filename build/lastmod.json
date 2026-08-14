@@ -1,7 +1,7 @@
 {
   "/": {
-    "fingerprint": "23457f2b608442b6",
-    "lastmod": "2026-08-13"
+    "fingerprint": "00ea5005a82450fc",
+    "lastmod": "2026-08-14"
   },
   "/en/": {
     "fingerprint": "6fe5b544a214a752",
@@ -32,8 +32,8 @@
     "lastmod": "2026-08-13"
   },
   "/litros/": {
-    "fingerprint": "246cc874b307fc54",
-    "lastmod": "2026-08-07"
+    "fingerprint": "72e5d32ee793d376",
+    "lastmod": "2026-08-14"
   },
   "/en/liters/": {
     "fingerprint": "e5068b116abe6951",
@@ -56,8 +56,8 @@
     "lastmod": "2026-07-24"
   },
   "/articulos/": {
-    "fingerprint": "ac7eb2c1d9973f06",
-    "lastmod": "2026-08-13"
+    "fingerprint": "35d9e3bcca64c016",
+    "lastmod": "2026-08-14"
   },
   "/en/articles/": {
     "fingerprint": "5f5792a54fdef7e9",
@@ -370,6 +370,10 @@
   "/en/how-many-litres-in-a-bathtub/": {
     "fingerprint": "9aae73cbbe57e610",
     "lastmod": "2026-08-07"
+  },
+  "/cuantos-litros-consume-una-persona-al-dia/": {
+    "fingerprint": "b8c78d5282b323cc",
+    "lastmod": "2026-08-14"
   },
   "/cuanto-son-10000-pasos/": {
     "fingerprint": "184bb3107369de5e",
