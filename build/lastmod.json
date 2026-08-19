@@ -1,7 +1,7 @@
 {
   "/": {
-    "fingerprint": "00ea5005a82450fc",
-    "lastmod": "2026-08-14"
+    "fingerprint": "5e69cc044407ebc2",
+    "lastmod": "2026-08-19"
   },
   "/en/": {
     "fingerprint": "6fe5b544a214a752",
@@ -56,8 +56,8 @@
     "lastmod": "2026-07-24"
   },
   "/articulos/": {
-    "fingerprint": "35d9e3bcca64c016",
-    "lastmod": "2026-08-14"
+    "fingerprint": "e9b05f090d7d7cbe",
+    "lastmod": "2026-08-19"
   },
   "/en/articles/": {
     "fingerprint": "5f5792a54fdef7e9",
@@ -132,8 +132,8 @@
     "lastmod": "2026-08-13"
   },
   "/hectarea-campo-de-futbol/": {
-    "fingerprint": "bfa953ec45ef322e",
-    "lastmod": "2026-08-13"
+    "fingerprint": "69463565d5fb1670",
+    "lastmod": "2026-08-19"
   },
   "/en/1-hectare/": {
     "fingerprint": "33f5766c13e6dc07",
@@ -346,6 +346,10 @@
   "/las-dimensiones-del-eclipse/": {
     "fingerprint": "e4dd999881148af8",
     "lastmod": "2026-08-13"
+  },
+  "/cuantas-hectareas-ocupa-una-planta-solar/": {
+    "fingerprint": "32b12fa4b9450d4c",
+    "lastmod": "2026-08-18"
   },
   "/cuantos-litros-piscina-olimpica/": {
     "fingerprint": "20a47dd400ddd00c",

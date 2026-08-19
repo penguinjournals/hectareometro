@@ -655,6 +655,10 @@ ${figure}
           q: '¿Por qué se miden los incendios en campos de fútbol?',
           a: 'Porque es una imagen conocida, pero engaña: al ser el campo más pequeño que la hectárea, el número de campos siempre sale mayor y la superficie parece más grande de lo que es. 300 campos de fútbol son solo unas 210 hectáreas.',
         },
+        {
+          q: '¿Cuántos campos de fútbol ocupa una planta solar?',
+          a: 'Una macroplanta fotovoltaica de las que se tramitan hoy en España ocupa entre 200 y 350 hectáreas, es decir, entre 280 y 490 campos de fútbol. Las 275 hectáreas de la planta de Haza del Sol, en Guadalajara, son unos 385 campos.',
+        },
       ],
       linkLabel: 'Hectárea vs campo de fútbol',
     };
@@ -1373,7 +1377,330 @@ function eclipseArticle() {
   };
 }
 
-const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle()];
+// ---- ¿Cuántas hectáreas ocupa una planta solar? ---------------------------
+//
+// Editorial data for the solar-plant article. Spanish-only (the frame is the
+// debate about rustic land in Spain). Everything below is either quoted from a
+// primary source or computed here from primary-source figures.
+//
+// PRIMARY SOURCES
+// · MAPA, «AgrInfo nº 37. Extensión y evolución de los parques fotovoltaicos en
+//   España» (junio de 2024). https://www.mapa.gob.es/dam/mapa/contenido/ministerio/servicios/servicios-de-informacion/analisis-y-prospectiva/ayp-serie-agrinfo/ayp_37_parquefotovoltaico.pdf
+//   Cifras usadas: ~50.000 ha de parques fotovoltaicos en 2023 (la misma cifra
+//   por dos vías, la encuesta ESYRCE y la inferida desde la potencia registrada
+//   en el MITERD), el 0,2 % de la superficie agraria útil; crecimiento acumulado
+//   2016-2023 del 166 %, por encima del 20 % anual desde 2020; Castilla-La
+//   Mancha 11.460 ha y Extremadura 11.340 ha (el 48 % del total); de las 23.095
+//   ha nuevas de paneles detectadas entre 2012 y 2022, el 82 % (18.905 ha) venía
+//   de secano, el 11 % (2.449 ha) de regadío y el 7 % de forestal y no agrario,
+//   desplazando sobre todo cereal, barbecho, girasol y olivar; los proyectos de
+//   más de 50 MW evaluados favorablemente en enero de 2023 sumaban otras ~50.000
+//   ha, con lo que el total rondaría las 100.000 ha si se ejecutan todos.
+// · Red Eléctrica: 50.000,6 MW de solar fotovoltaica instalada a 1 de febrero de
+//   2026, de los que 8.978,5 MW son autoconsumo (tejados, no ocupan suelo
+//   agrario); más de 41.500 MW conectados a la red sin contar autoconsumo al
+//   cierre de 2025, frente a 32.350 MW al cierre de 2024; 50.188 GWh generados
+//   por la fotovoltaica en 2025, el 18,4 % de la generación nacional.
+//   https://www.pv-magazine.es/2026/02/11/espana-supera-los-50-gw-de-potencia-fotovoltaica-instalada/
+// · IDAE, «Consumos del Sector Residencial en España»: 3.487 kWh al año de
+//   consumo eléctrico medio por hogar.
+// · Haza del Sol (Alfanar Energía España): 275 ha y 150 MW en Fuentelencina y
+//   Berninches, 13 municipios afectados (11 de Guadalajara y 2 de Madrid), línea
+//   de 220 kV y subestación en Berninches; calificación urbanística publicada en
+//   el DOCM el 29 de junio de 2026. https://www.elespanol.com/eldigitalcastillalamancha/region/guadalajara/20260629/macroplanta-solar-hectareas-afecta-municipios-guadalajara-da-nuevo-paso-adelante/1003744303252_0.html
+// · Antequera y Mollina (Jinko Power): cuatro plantas, 329 ha, 175 MWp, 135
+//   millones de euros, 370.000 MWh al año y 60.000 hogares abastecidos según la
+//   promotora. https://elsoldeantequera.com/antequera/una-empresa-china-invertira-135-millones-de-euros-en-una-planta-solar-de-329-hectareas-en-antequera/
+// · Torres de la Alameda y Villalbilla (Madrid): 290 ha y más de 155.000 paneles.
+//   https://www.hibridosyelectricos.com/energia/155000-paneles-solares-en-superficie-400-campos-futbol-macroproyecto-solar-comunidad-madrid-no-gusta-todos_82970_102.html
+// · Llucmajor (Mallorca), 20 de julio de 2026: Calablava 4 (103,69 ha, 67.232
+//   paneles) y Llucmajor Solar (39,4 ha, 70.602 paneles), 143 ha en total.
+//   https://www.ultimahora.es/noticias/part-forana/2026/07/20/2673123/luz-verde-mas-200-campos-futbol-suelo-rustico-ocupados-placas-solares-llucmajor.html
+//
+// CALCULADO AQUÍ
+// · Ratio ha/MW de los dos proyectos con las dos cifras publicadas: 275/150 =
+//   1,8 y 329/175 = 1,9 ha por MW. Confirma la regla de ~2 ha/MW con la que el
+//   MAPA infiere superficie desde la potencia registrada.
+// · Superficie ocupada HOY por las plantas en suelo: 41.500 MW (sin
+//   autoconsumo) × ~2 ha/MW ≈ 80.000 ha = 800 km². Segunda vía de control: las
+//   50.000 ha del MAPA en 2023 escaladas por el crecimiento de potencia
+//   (25.500 → 41.500 MW, ×1,63) dan 81.400 ha. Las dos rutas coinciden.
+// · Círculo equivalente a 80.000 ha: radio de 15,96 km (√(800/π)).
+// · Metros cuadrados de planta por hogar abastecido, por dos vías:
+//   (a) horas equivalentes de 2025 = 50.188 GWh / potencia media del año
+//       ((32.350 + 41.500)/2 = 36.925 MW) = 1.359 h → 1 MW abastece
+//       1.359.000 kWh / 3.487 kWh = 390 hogares → 1,9 ha (19.000 m²) / 390 =
+//       49 m² por hogar;
+//   (b) cifras de la promotora de Antequera: 3.290.000 m² / 60.000 hogares =
+//       55 m² por hogar. Horquilla: medio centenar de metros cuadrados.
+// · Campos de fútbol de cada proyecto a 0,714 ha por campo (105 × 68 m, la
+//   medida que usa todo el sitio): 275 ha → 385, 329 → 461, 290 → 406,
+//   143 → 200, 103,69 → 145 y 39,4 → 55. Sirven para comprobar los titulares.
+const SOLAR = {
+  hazaHa: 275,
+  hazaMw: 150,
+  antequeraHa: 329,
+  antequeraMw: 175,
+  antequeraHomes: 60000,
+  madridHa: 290,
+  madridPanels: 155000,
+  llucmajorHa: 143,
+  calablavaHa: 103.69,
+  llucmajorSolarHa: 39.4,
+  haMapa2023: 50000,
+  clmHa: 11460,
+  extremaduraHa: 11340,
+  growthPct: 166,
+  newHa: 23095,
+  secanoHa: 18905,
+  regadioHa: 2449,
+  haIfAllBuilt: 100000,
+  mwGround2025: 41500,     // REE, sin autoconsumo, cierre de 2025
+  mwGround2024: 32350,     // REE, sin autoconsumo, cierre de 2024
+  mwSelfFeb2026: 8978.5,   // autoconsumo incluido en los 50.000,6 MW totales
+  gwh2025: 50188,
+  homeKwhYear: 3487,       // IDAE
+  haEstimate: 80000,
+};
+
+function solarPlantArticle() {
+  const s = SOLAR;
+  const MAPA_URL = 'https://www.mapa.gob.es/es/prensa/ultimas-noticias/detalle_noticias/los-parques-fotovoltaicos-ocupan-en-espana-una-extension-equivalente-al-0-2---de-la-superficie-agraria-util/f907b139-85d2-411a-b580-62d6e2344545';
+  const AGRINFO_URL = 'https://www.mapa.gob.es/dam/mapa/contenido/ministerio/servicios/servicios-de-informacion/analisis-y-prospectiva/ayp-serie-agrinfo/ayp_37_parquefotovoltaico.pdf';
+  const ESPANOL_URL = 'https://www.elespanol.com/eldigitalcastillalamancha/region/guadalajara/20260629/macroplanta-solar-hectareas-afecta-municipios-guadalajara-da-nuevo-paso-adelante/1003744303252_0.html';
+  const ANTEQUERA_URL = 'https://elsoldeantequera.com/antequera/una-empresa-china-invertira-135-millones-de-euros-en-una-planta-solar-de-329-hectareas-en-antequera/';
+  const MADRID_URL = 'https://www.hibridosyelectricos.com/energia/155000-paneles-solares-en-superficie-400-campos-futbol-macroproyecto-solar-comunidad-madrid-no-gusta-todos_82970_102.html';
+  const LLUCMAJOR_URL = 'https://www.ultimahora.es/noticias/part-forana/2026/07/20/2673123/luz-verde-mas-200-campos-futbol-suelo-rustico-ocupados-placas-solares-llucmajor.html';
+  const REE_URL = 'https://www.pv-magazine.es/2026/02/11/espana-supera-los-50-gw-de-potencia-fotovoltaica-instalada/';
+
+  // The 275 ha of Haza del Sol drawn between Fuentelencina and Berninches.
+  const mapUrl = `/?ha=${s.hazaHa}&lat=40.5445&lon=-2.8415&z=14`;
+  // Every solar park in Spain as a single circle over Madrid (radius ~16 km).
+  const spainMapUrl = `/?ha=${s.haEstimate}&lat=${MADRID.lat}&lon=${MADRID.lon}&z=10`;
+  // es-ES leaves 4-digit numbers ungrouped ("1120"); force the thousands dot.
+  const fmtG = n => n.toLocaleString('es-ES', { useGrouping: 'always', maximumFractionDigits: 0 });
+  const pitches = ha => fmtG(Math.round(ha / 0.714));
+  const dec = (n, d = 1) => fmt(n, d);
+
+  const hazaRatio = dec(s.hazaHa / s.hazaMw);                  // 1,8
+  const antequeraRatio = dec(s.antequeraHa / s.antequeraMw);   // 1,9
+  const avgMw = (s.mwGround2024 + s.mwGround2025) / 2;         // 36.925 MW
+  const eqHours = Math.round((s.gwh2025 * 1000) / avgMw);      // 1.359 h
+  const homesPerMw = Math.round((eqHours * 1000) / s.homeKwhYear); // 390
+  const m2PerHomeCalc = Math.round((1.9 * 10000) / homesPerMw);    // 49 m²
+  const m2PerHomePromo = Math.round((s.antequeraHa * 10000) / s.antequeraHomes); // 55 m²
+  const circleKm = fmt(Math.round(Math.sqrt((s.haEstimate / 100) / Math.PI)), 0); // 16 km
+  const burned2025 = BURNED_BY_YEAR.find(r => r.year === 2025).ha;
+  const burnedShare = Math.round(burned2025 / s.haEstimate * 10) / 10; // 4,4 veces
+  const awsTimes = Math.round(s.haEstimate / AWS_ARAGON.ha);   // 100 veces
+
+  const intro = `      <p>
+        Una planta solar fotovoltaica ocupa <b>alrededor de 2 hectáreas por cada megavatio</b> que instala.
+        Con esa regla, un huerto solar modesto se queda en 10 o 20 hectáreas, y una macroplanta de las que
+        salen en el telediario se va a las <b>200-350 hectáreas</b>. La de <b>Haza del Sol</b>, en tramitación
+        entre Fuentelencina y Berninches (Guadalajara), ocupará
+        <b><a href="${mapUrl}">${s.hazaHa} hectáreas</a></b> con ${s.hazaMw} MW de potencia. Pincha en el enlace
+        para verlas dibujadas a escala sobre la Alcarria, y arrastra el mapa hasta tu pueblo.
+      </p>
+      <p>
+        ${s.hazaHa} hectáreas son <b>2,75 km²</b> y unos <b>${pitches(s.hazaHa)} campos de fútbol</b>
+        (cada campo, <a href="/hectarea-campo-de-futbol/">0,714 hectáreas</a>). No es una cifra excepcional:
+        es más o menos lo que mide hoy cualquier proyecto grande, y por eso el debate sobre el suelo rústico
+        se ha convertido en una discusión sobre hectáreas.
+      </p>
+
+      <h2>La regla: unas 2 hectáreas por megavatio</h2>
+      <p>
+        La superficie no la marcan solo los paneles: entre filas hay que dejar pasillos para que no se den
+        sombra, y a eso se suman los caminos, las zanjas, los inversores y la subestación. De ahí que el
+        <a href="${AGRINFO_URL}" target="_blank" rel="noopener">Ministerio de Agricultura</a> infiera la
+        superficie ocupada a partir de la potencia registrada con una regla de este orden. Los dos proyectos
+        de 2026 que publican a la vez hectáreas y megavatios la confirman:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Proyecto</th><th>Superficie</th><th>Potencia</th><th>ha por MW</th><th>Campos de fútbol</th></tr></thead>
+        <tbody>
+          <tr><td>Haza del Sol (Guadalajara)</td><td><a href="${mapUrl}">${s.hazaHa} ha</a></td><td>${s.hazaMw} MW</td><td>${hazaRatio}</td><td>${pitches(s.hazaHa)}</td></tr>
+          <tr><td>Antequera y Mollina (Málaga)</td><td>${s.antequeraHa} ha</td><td>${s.antequeraMw} MWp</td><td>${antequeraRatio}</td><td>${pitches(s.antequeraHa)}</td></tr>
+          <tr><td>Torres de la Alameda y Villalbilla (Madrid)</td><td>${s.madridHa} ha</td><td>—</td><td>—</td><td>${pitches(s.madridHa)}</td></tr>
+          <tr><td>Calablava 4 y Llucmajor Solar (Mallorca)</td><td>${s.llucmajorHa} ha</td><td>—</td><td>—</td><td>${pitches(s.llucmajorHa)}</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Fuentes: <a href="${ESPANOL_URL}" target="_blank" rel="noopener">El Español</a> (Haza del Sol,
+        promovida por Alfanar y con 13 municipios afectados, once en Guadalajara y dos en Madrid),
+        <a href="${ANTEQUERA_URL}" target="_blank" rel="noopener">El Sol de Antequera</a> (Jinko Power, cuatro
+        plantas y 135 millones de euros), <a href="${MADRID_URL}" target="_blank" rel="noopener">Híbridos y
+        Eléctricos</a> (más de ${fmt(s.madridPanels, 0)} paneles al este de Madrid) y
+        <a href="${LLUCMAJOR_URL}" target="_blank" rel="noopener">Última Hora</a> (Llucmajor, autorizadas el 20
+        de julio de 2026). La columna de campos de fútbol es cuenta nuestra.
+      </p>
+
+      <h2>Por qué se cuentan en campos de fútbol (y por qué esta vez el cálculo está bien)</h2>
+      <p>
+        Este sitio nació porque «se han quemado X campos de fútbol» casi siempre engaña: como
+        <a href="/hectarea-campo-de-futbol/">un campo mide 0,714 hectáreas</a> y no una, el número de campos
+        sale más grande que el de hectáreas y la superficie parece mayor de lo que es. Así que hemos hecho
+        la cuenta con los titulares de las plantas solares de este verano, y la sorpresa es que <b>salen
+        bien</b>:
+      </p>
+      <ul>
+        <li>Llucmajor, «más de 200 campos de fútbol»: ${s.llucmajorHa} ha ÷ 0,714 = <b>${pitches(s.llucmajorHa)} campos</b>. ✔</li>
+        <li>Calablava 4, «unos 145»: ${dec(s.calablavaHa, 2)} ha = <b>${pitches(s.calablavaHa)} campos</b>. ✔</li>
+        <li>Llucmajor Solar, «alrededor de 55»: ${dec(s.llucmajorSolarHa)} ha = <b>${pitches(s.llucmajorSolarHa)} campos</b>. ✔</li>
+        <li>Madrid, «400 campos»: ${s.madridHa} ha = <b>${pitches(s.madridHa)} campos</b>. ✔ (el «450» que también circula sí se pasa).</li>
+      </ul>
+      <p>
+        Es decir: en fotovoltaica la prensa está dividiendo por 0,71 y no confundiendo el campo con la
+        hectárea. La comparación sigue siendo poco útil —casi nadie sabe cuánto ocupan 385 campos de fútbol
+        seguidos—, pero al menos la aritmética es honesta. Si prefieres verlo,
+        <a href="${mapUrl}">dibuja las ${s.hazaHa} hectáreas sobre tu pueblo</a> o compáralas con
+        <a href="/300-hectareas/">300 hectáreas</a>.
+      </p>
+
+      <h2>Cuánto suelo ocupan todas las plantas solares de España</h2>
+      <p>
+        En 2023, el Ministerio de Agricultura midió la fotovoltaica española por dos caminos independientes
+        —la encuesta de superficies ESYRCE y la potencia inscrita en el registro del MITERD— y los dos dieron
+        lo mismo: <b><a href="${MAPA_URL}" target="_blank" rel="noopener">cerca de ${fmt(s.haMapa2023, 0)}
+        hectáreas</a></b> de parques fotovoltaicos, el <b>0,2 % de la superficie agraria útil</b> del país.
+        Castilla-La Mancha (${fmt(s.clmHa, 0)} ha) y Extremadura (${fmt(s.extremaduraHa, 0)} ha) concentraban
+        el 48 %. Desde 2016 esa superficie ha crecido un ${s.growthPct} %, con subidas de más del 20 % cada año.
+      </p>
+      <p>
+        Desde entonces la potencia se ha disparado. Al cierre de 2025 España tenía más de
+        <b>${fmt(s.mwGround2025, 0)} MW</b> fotovoltaicos conectados a la red sin contar el autoconsumo
+        (los cerca de 9.000 MW que hay en tejados no ocupan campo), según
+        <a href="${REE_URL}" target="_blank" rel="noopener">los datos de Red Eléctrica</a>. Aplicando la regla
+        de 2 ha/MW salen <b><a href="${spainMapUrl}">unas ${fmt(s.haEstimate, 0)} hectáreas</a></b>, 800 km².
+        Por la otra vía —escalar las ${fmt(s.haMapa2023, 0)} ha de 2023 con el crecimiento de potencia— salen
+        81.400. Las dos rutas coinciden, así que la cifra es sólida como orden de magnitud.
+      </p>
+      <p>Y ${fmt(s.haEstimate, 0)} hectáreas, puestas en perspectiva, son esto:</p>
+      <table class="equiv-table">
+        <thead><tr><th>Toda la fotovoltaica en suelo de España…</th><th>Equivale a</th></tr></thead>
+        <tbody>
+          <tr><td>Superficie estimada</td><td><a href="${spainMapUrl}">≈ ${fmt(s.haEstimate, 0)} hectáreas</a> (800 km²)</td></tr>
+          <tr><td>Dibujada como un círculo</td><td>${circleKm} km de radio</td></tr>
+          <tr><td>Porcentaje de España</td><td>0,16 %</td></tr>
+          <tr><td>Lo que ardió en España en 2025</td><td>${dec(burnedShare)} veces esta superficie</td></tr>
+          <tr><td>Los centros de datos de AWS en Aragón</td><td>${awsTimes} veces menos</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Dicho de otro modo: todos los huertos solares de España juntos caben en un círculo de
+        ${circleKm} kilómetros de radio, ocupan menos de la cuarta parte de lo que
+        <a href="/hectareas-quemadas-incendios-espana/">ardió en el verano de 2025</a>
+        (${fmt(Math.round(burned2025), 0)} hectáreas) y unas ${awsTimes} veces lo que van a ocupar
+        <a href="/cuanto-ocupan-centros-datos-aws-aragon/">los centros de datos de AWS en Aragón</a>.
+        El propio ministerio avisa de que, si se construyen todos los proyectos de más de 50 MW que ya tenían
+        evaluación favorable, la superficie rondaría las
+        <a href="/100000-hectareas/">${fmt(s.haIfAllBuilt, 0)} hectáreas</a>.
+      </p>
+
+      <h2>¿De qué tierras salen esas hectáreas?</h2>
+      <p>
+        Es la parte que enciende el debate en los pueblos, y hay dato. Entre 2012 y 2022 el ministerio
+        detectó <b>${fmt(s.newHa, 0)} hectáreas nuevas</b> de paneles, y las rastreó hasta el uso que tenía
+        antes cada parcela: el <b>82 %</b> (${fmt(s.secanoHa, 0)} ha) era <b>secano</b>, el <b>11 %</b>
+        (${fmtG(s.regadioHa)} ha) <b>regadío</b> y el 7 % restante, forestal y no agrario. Los cultivos
+        desplazados fueron sobre todo cereal, barbecho, girasol y olivar. Traducido: la fotovoltaica se está
+        comiendo, casi siempre, la tierra agrícola menos productiva —lo que no quita que sea la tierra de
+        alguien, como recuerdan los agricultores de Fuentelencina con sus almendros y sus colmenas.
+      </p>
+
+      <h2>Medio centenar de metros cuadrados por hogar</h2>
+      <p>
+        La cifra que de verdad ayuda a decidir no es cuántas hectáreas ocupa una planta, sino cuánta
+        superficie hace falta <b>por cada hogar al que da luz</b>. Sale por dos caminos y los dos llevan al
+        mismo sitio:
+      </p>
+      <ul>
+        <li>Con los datos de 2025: la fotovoltaica española generó ${fmt(s.gwh2025, 0)} GWh con una potencia
+          media de ${fmt(Math.round(avgMw), 0)} MW, o sea <b>${fmtG(eqHours)} horas equivalentes</b>. Un
+          megavatio da entonces para unos <b>${homesPerMw} hogares</b> (a ${fmtG(s.homeKwhYear)} kWh al año
+          por vivienda, el consumo medio según el IDAE) y ocupa 1,9 hectáreas → <b>${m2PerHomeCalc} m² por
+          hogar</b>.</li>
+        <li>Con las cifras de la promotora de Antequera: ${s.antequeraHa} hectáreas para
+          ${fmt(s.antequeraHomes, 0)} hogares → <b>${m2PerHomePromo} m² por hogar</b>.</li>
+      </ul>
+      <p>
+        <b>Unos 50 metros cuadrados de campo por vivienda</b>: el tamaño de un estudio pequeño, o cuatro
+        plazas de garaje. Es la manera más honesta de mirar la cifra, porque pone el suelo ocupado al lado
+        de lo que se saca de él.
+      </p>
+
+      <h2>Dibuja la planta que te toca de cerca</h2>
+      <p>
+        Si tienes un proyecto en tramitación al lado de casa, la superficie viene en el anuncio del boletín
+        oficial. Escribe ese número de hectáreas en el <a href="/">Hectareómetro</a> y arrastra el círculo
+        hasta tu término municipal; o, si quieres el contorno exacto en vez de un círculo, usa
+        <a href="/medir-superficie/">la herramienta de medir superficies</a> para dibujar el polígono sobre
+        el mapa y compartir el enlace. Y si lo que te dan son metros cuadrados, el
+        <a href="/hectareas-a-metros-cuadrados/">conversor de unidades de superficie</a> los pasa a hectáreas.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuántas hectáreas ocupa una planta solar?</dt>
+        <dd>Unas <b>2 hectáreas por megavatio</b> instalado. Un huerto solar pequeño ocupa 10-20 hectáreas y
+          una macroplanta, entre 200 y 350: la de <a href="${mapUrl}">Haza del Sol</a> (Guadalajara) ocupará
+          ${s.hazaHa} hectáreas con ${s.hazaMw} MW, y la de Antequera y Mollina, ${s.antequeraHa} con
+          ${s.antequeraMw} MWp.</dd>
+
+        <dt>¿Cuántos campos de fútbol son 275 hectáreas?</dt>
+        <dd>Unos <b>${pitches(s.hazaHa)} campos de fútbol</b>, contando cada campo como
+          <a href="/hectarea-campo-de-futbol/">0,714 hectáreas</a> (105 × 68 m). Ojo: un campo de fútbol
+          <b>no</b> es una hectárea, es algo menos de tres cuartos.</dd>
+
+        <dt>¿Cuánto suelo ocupan todas las plantas solares de España?</dt>
+        <dd>El Ministerio de Agricultura midió <b>${fmt(s.haMapa2023, 0)} hectáreas</b> en 2023, el 0,2 % de
+          la superficie agraria útil. Con los ${fmt(s.mwGround2025, 0)} MW en suelo del cierre de 2025 la
+          estimación sube a <a href="${spainMapUrl}">unas ${fmt(s.haEstimate, 0)} hectáreas</a> (800 km², el
+          0,16 % del país).</dd>
+
+        <dt>¿Cuánta superficie hace falta por hogar abastecido?</dt>
+        <dd>Alrededor de <b>50 metros cuadrados</b> de planta por vivienda: entre ${m2PerHomeCalc} m² con las
+          horas equivalentes reales de 2025 y el consumo medio del IDAE, y ${m2PerHomePromo} m² con las cifras
+          que da la promotora de la planta de Antequera.</dd>
+
+        <dt>¿Qué tierras ocupan los parques fotovoltaicos?</dt>
+        <dd>De las ${fmt(s.newHa, 0)} hectáreas nuevas de paneles detectadas entre 2012 y 2022, el 82 % venía
+          de secano, el 11 % de regadío y el 7 % de terreno forestal y no agrario, desplazando sobre todo
+          cereal, barbecho, girasol y olivar.</dd>
+      </dl>
+      <p>
+        ¿Quieres ver otras superficies a escala? Prueba el <a href="/">Hectareómetro</a>, compara
+        <a href="/hectarea-campo-de-futbol/">una hectárea con un campo de fútbol</a>, mira
+        <a href="/cuanto-ocupan-centros-datos-aws-aragon/">cuánto ocupan los centros de datos de AWS en
+        Aragón</a> o <a href="/hectareas-quemadas-incendios-espana/">cuánta superficie arde cada verano en
+        España</a>.
+      </p>`;
+
+  return {
+    key: 'solar-plant-hectares', lang: 'es', ha: s.hazaHa,
+    family: 'hectareas', published: '2026-08-18', modified: '2026-08-18',
+    slug: 'cuantas-hectareas-ocupa-una-planta-solar',
+    path: '/cuantas-hectareas-ocupa-una-planta-solar/',
+    presetExtra: ' var PRESET_ZOOM = 14; var PRESET_LAT = 40.5445; var PRESET_LON = -2.8415;',
+    title: '¿Cuántas hectáreas (y campos de fútbol) ocupa una planta solar? | Hectareómetro',
+    description: `Una planta solar ocupa unas 2 hectáreas por MW: las macroplantas de 2026 rondan las 275-329 hectáreas, unos ${pitches(s.hazaHa)} campos de fútbol. Míralo dibujado a escala, con cuánto suelo ocupa ya la fotovoltaica en España.`,
+    h1: '¿Cuánta superficie ocupa una planta solar fotovoltaica?',
+    intro,
+    question: '¿Cuántas hectáreas ocupa una planta solar?',
+    answer: `Una planta solar fotovoltaica ocupa unas 2 hectáreas por megavatio instalado: los huertos pequeños se quedan en 10-20 hectáreas y las macroplantas rondan las 200-350 (Haza del Sol, en Guadalajara, ${s.hazaHa} hectáreas con ${s.hazaMw} MW, unos ${pitches(s.hazaHa)} campos de fútbol).`,
+    faqs: [
+      { q: '¿Cuántas hectáreas ocupa una planta solar?', a: `Unas 2 hectáreas por megavatio instalado. Un huerto solar pequeño ocupa 10-20 hectáreas y una macroplanta, entre 200 y 350: la de Haza del Sol (Guadalajara) ocupará ${s.hazaHa} hectáreas con ${s.hazaMw} MW, y la de Antequera y Mollina, ${s.antequeraHa} con ${s.antequeraMw} MWp.` },
+      { q: '¿Cuántos campos de fútbol son 275 hectáreas?', a: `Unos ${pitches(s.hazaHa)} campos de fútbol, contando cada campo como 0,714 hectáreas (105 × 68 m). Ojo: un campo de fútbol no es una hectárea, es algo menos de tres cuartos.` },
+      { q: '¿Cuánto suelo ocupan todas las plantas solares de España?', a: `El Ministerio de Agricultura midió ${fmt(s.haMapa2023, 0)} hectáreas en 2023, el 0,2 % de la superficie agraria útil. Con los ${fmt(s.mwGround2025, 0)} MW en suelo del cierre de 2025 la estimación sube a unas ${fmt(s.haEstimate, 0)} hectáreas (800 km², el 0,16 % del país).` },
+      { q: '¿Cuánta superficie hace falta por hogar abastecido?', a: `Alrededor de 50 metros cuadrados de planta por vivienda: entre ${m2PerHomeCalc} m² con las horas equivalentes reales de 2025 y el consumo medio del IDAE, y ${m2PerHomePromo} m² con las cifras que da la promotora de la planta de Antequera.` },
+      { q: '¿Qué tierras ocupan los parques fotovoltaicos?', a: `De las ${fmt(s.newHa, 0)} hectáreas nuevas de paneles detectadas entre 2012 y 2022, el 82 % venía de secano, el 11 % de regadío y el 7 % de terreno forestal y no agrario, desplazando sobre todo cereal, barbecho, girasol y olivar.` },
+    ],
+    linkLabel: 'Cuántas hectáreas ocupa una planta solar',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle()];
 
 // ---- liters landing pages ------------------------------------------------
 
