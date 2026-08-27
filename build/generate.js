@@ -121,8 +121,10 @@ const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
     navDistances: 'Distancias', navLiters: 'Litros', navKilos: 'Kilos', navMenu: 'Menú',
-    navMeasure: 'Medir una superficie', navMeasureDist: 'Medir distancias', navConverter: 'Conversor',
+    navMeasure: 'Medir una superficie', navMeasureDist: 'Medir distancias',
+    navConverter: 'Conversor de superficies', navLengthConverter: 'Conversor de distancias',
     converterChipLabel: 'Hectáreas a metros cuadrados',
+    lengthConverterChipLabel: 'Kilómetros a millas',
     overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
@@ -157,8 +159,10 @@ const UI = {
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
     navDistances: 'Distances', navLiters: 'Liters', navKilos: 'Kilos', navMenu: 'Menu',
-    navMeasure: 'Measure an area', navMeasureDist: 'Measure a distance', navConverter: 'Converter',
+    navMeasure: 'Measure an area', navMeasureDist: 'Measure a distance',
+    navConverter: 'Area converter', navLengthConverter: 'Distance converter',
     converterChipLabel: 'Hectares to square meters',
+    lengthConverterChipLabel: 'Kilometers to miles',
     overlayPre: 'How big are', overlayPost: 'hectares?',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
@@ -244,6 +248,13 @@ function measureDistancePath(lang) {
 // footer, homes and related links), by design.
 function converterPath(lang) {
   return lang === 'es' ? '/hectareas-a-metros-cuadrados/' : '/en/hectares-to-square-meters/';
+}
+
+// Its distance sibling (km, miles, metres, feet, nautical miles…), also
+// hand-maintained and also out of the navbar by design: the four converters
+// live in the footer, the unit hubs and the spokes.
+function lengthConverterPath(lang) {
+  return lang === 'es' ? '/kilometros-a-millas/' : '/en/kilometers-to-miles/';
 }
 
 // The articles hub, unlike the tool pages, IS generated (writeArticlesHub):
@@ -3138,20 +3149,26 @@ const LITER_ARTICLES = [
 // Evergreen distance chips for the related block of distances articles (there
 // are no distances landing pages, so we link the tool + a few known-good
 // presets that fit their viewport).
-function relatedDistanceLinks(lang) {
+function relatedDistanceLinks(lang, currentPath) {
   const es = lang === 'es';
   const chips = es ? [
+    ['/unidades-de-distancia/', 'Las unidades de distancia'],
+    ['/kilometros-a-millas/', 'Kilómetros a millas'],
     ['/distancias/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'Un maratón (42,195 km)'],
     ['/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
     ['/distancias/?d=1&u=mi&lat=40.4168&lon=-3.7038&z=12', 'Una milla'],
     ['/distancias/', 'La herramienta de distancias'],
   ] : [
+    ['/en/distance-units/', 'Distance units'],
+    ['/en/kilometers-to-miles/', 'Kilometers to miles'],
     ['/en/distances/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'A marathon (42.195 km)'],
     ['/en/distances/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
     ['/en/distances/?d=1&u=mi&lat=40.4168&lon=-3.7038&z=12', 'One mile'],
     ['/en/distances/', 'The distances tool'],
   ];
-  return chips.map(([href, label]) => `        <li><a href="${href}">${escapeHtml(label)}</a></li>`).join('\n');
+  return chips
+    .filter(([href]) => href !== currentPath)
+    .map(([href, label]) => `        <li><a href="${href}">${escapeHtml(label)}</a></li>`).join('\n');
 }
 
 // ¿Cuánto son 10.000 pasos? Spanish-only editorial (es + x-default). The
@@ -4640,7 +4657,558 @@ function horizonArticle(lang) {
   };
 }
 
+// ---- HUB · Unidades de distancia ------------------------------------------
+//
+// Hub de la serie «El origen de las unidades» (bloque B, distancias). No es
+// una sección: es un artículo bilingüe normal de DIST_ARTICLES, así que no
+// toca navbar ni footer. Los spokes (milla, metro, pie, legua) se irán
+// enlazando desde la tabla a medida que se publiquen; hasta entonces cada
+// fila apunta al conversor con la unidad precargada.
+//
+// Datos validados 2026-08-27 (web):
+// - Milla romana: mille passus = 1.000 pasos dobles = 5.000 pies romanos
+//   ≈ 1.479 m. https://en.wikipedia.org/wiki/Mile
+// - Milla terrestre: el estatuto de 1593 (35 Eliz. I c. 6) la fijó en 8
+//   furlongs de 40 perchas de 16 pies y medio = 5.280 pies, en vez de recortar
+//   la percha 1/11 — habría equivalido a una subida de impuestos sobre las
+//   tierras medidas en perchas desde Enrique VIII. Su valor exacto de
+//   1.609,344 m es de 1959. https://en.wikipedia.org/wiki/Mile
+// - Metro: 1791, la diezmillonésima parte del cuadrante del meridiano de
+//   París; Delambre y Méchain lo midieron entre 1792 y 1798 (Dunkerque-
+//   Barcelona). El cuadrante real mide ~10.001.966 m, así que el metro se
+//   quedó ~0,2 mm corto. Definición actual: 1/299.792.458 de segundo luz
+//   (17ª CGPM, 1983).
+//   https://en.wikipedia.org/wiki/Arc_measurement_of_Delambre_and_M%C3%A9chain
+// - Yarda/pie/pulgada: exactos desde el International Yard and Pound
+//   Agreement (1 jul 1959): 1 yd = 0,9144 m. El «US survey foot»
+//   (0,30480061 m) se retiró el 1 de enero de 2023 (NIST).
+//   https://www.nist.gov/news-events/news/2023/01/new-years-eve-2023-marked-retirement-us-survey-foot
+// - Pulgada de tres granos de cebada: decreto de Eduardo II (1324); la yarda
+//   del brazo de Enrique I la cuenta Guillermo de Malmesbury, y la coletilla
+//   de la nariz es un añadido de siglos después.
+// - Legua castellana: 20.000 pies castellanos = 5.572,7 m; pie castellano
+//   (de Burgos) 0,278635 m; vara 0,835905 m.
+//   https://es.wikipedia.org/wiki/Legua
+// - España adoptó el sistema métrico por la Ley de Pesas y Medidas de 19 de
+//   julio de 1849 (Isabel II); la obligatoriedad general, prevista para 1860,
+//   se aplazó siete veces y la implantación real se alargó hasta ~1880.
+//   https://www.e-medida.es/numero-25/175-aniversario-de-la-adopcion-del-sistema-metrico-decimal-por-espana/
+const DISTANCE_UNITS_ALTERNATES = {
+  es: '/unidades-de-distancia/',
+  en: '/en/distance-units/',
+};
+
+function distanceUnitsArticle(lang) {
+  const es = lang === 'es';
+  if (es) {
+  const conv = '/kilometros-a-millas/';
+  const intro = `      <p>
+        Un kilómetro son mil metros. Una milla son 1.609,344 metros. La primera cifra es redonda
+        porque alguien la eligió a propósito; la segunda es fea porque no la eligió nadie: se fue
+        acumulando durante dos mil años, desde los pasos de un legionario romano hasta un tratado
+        firmado en 1959. Esa diferencia —medir con el cuerpo y con el trabajo, o medir con el
+        planeta— es toda la historia de las unidades de distancia.
+      </p>
+      <p>
+        El mapa de arriba dibuja <b>una milla</b> de radio. Compárala con
+        <a href="/distancias/?d=1&u=km&lat=40.4168&lon=-3.7038&z=13">un kilómetro</a>: la milla es
+        un 61 % más larga, y esa es la razón de que las distancias de las películas, las carreras y
+        los mapas anglosajones nunca cuadren a la primera. Si solo quieres el número, el
+        <a href="${conv}">conversor de distancias</a> lo hace al instante.
+      </p>
+
+      <h2>Todas las unidades de distancia, de un vistazo</h2>
+      <p>
+        Cada fila lleva a la conversión ya hecha o al artículo que la cuenta entera:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Unidad</th><th>Cuánto es</th><th>De dónde sale</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=m">Metro</a></td><td>la base del SI</td><td>La diezmillonésima parte del cuadrante del meridiano de París (1791)</td></tr>
+          <tr><td><a href="/distancias/?d=1&u=km&lat=40.4168&lon=-3.7038&z=13">Kilómetro</a></td><td>1.000 m</td><td>Mil metros: prefijo griego, decisión de despacho</td></tr>
+          <tr><td><a href="${conv}?d=1&u=cm">Centímetro</a></td><td>0,01 m</td><td>La centésima parte del metro</td></tr>
+          <tr><td><a href="${conv}?d=1&u=mi">Milla</a></td><td>1.609,344 m</td><td>Los mil pasos dobles del legionario romano, estirados por un estatuto de 1593</td></tr>
+          <tr><td><a href="/cuanto-es-una-milla-nautica/">Milla náutica</a></td><td>1.852 m</td><td>Un minuto de arco de meridiano</td></tr>
+          <tr><td><a href="${conv}?d=1&u=yd">Yarda</a></td><td>0,9144 m</td><td>Se dice que el brazo de Enrique I; exacta desde 1959</td></tr>
+          <tr><td><a href="${conv}?d=1&u=ft">Pie</a></td><td>0,3048 m</td><td>Un pie de verdad, y cada reino tenía el suyo</td></tr>
+          <tr><td><a href="${conv}?d=1&u=in">Pulgada</a></td><td>2,54 cm</td><td>Tres granos de cebada puestos en fila (Eduardo II, 1324)</td></tr>
+          <tr><td><a href="${conv}?d=201.168&u=m">Furlong</a></td><td>201,168 m</td><td>El surco que araba una yunta antes de descansar</td></tr>
+          <tr><td><a href="${conv}?d=5.5727&u=km">Legua castellana</a></td><td>5.572,7 m</td><td>Lo que se anda en una hora: 20.000 pies castellanos</td></tr>
+          <tr><td><a href="${conv}?d=0.835905&u=m">Vara castellana</a></td><td>0,835905 m</td><td>Tres pies castellanos; la usaban los sastres y los albañiles</td></tr>
+          <tr><td>Año luz</td><td>9,46 billones de km</td><td>Lo que recorre la luz en un año: es una distancia, no un tiempo</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Primero medimos con el cuerpo</h2>
+      <p>
+        El pie, la pulgada, el codo, la braza, el palmo y el paso son todos lo mismo: una parte del
+        cuerpo convertida en regla. Tenía una ventaja enorme —la regla la llevas puesta— y un
+        defecto fatal: <b>no hay dos cuerpos iguales</b>. Cada reino, cada gremio y a veces cada
+        ciudad tenía su propio pie, y comerciar entre ellos era una discusión permanente.
+      </p>
+      <p>
+        Los intentos de arreglarlo son deliciosamente artesanales. En <b>1324</b>, un decreto de
+        Eduardo II de Inglaterra define la pulgada como <b>tres granos de cebada</b> «secos y
+        redondos» puestos en fila, doce pulgadas el pie y tres pies la yarda. El grano de cebada
+        sigue vivo donde menos te lo esperas: los números de calzado británicos y estadounidenses
+        avanzan de un tercio de pulgada en un tercio de pulgada, que es exactamente un grano de
+        cebada.
+      </p>
+      <p>
+        De la yarda se cuenta que Enrique I la fijó con la medida de su propio brazo. Guillermo de
+        Malmesbury, cronista del siglo XII, sí escribió que se usó «la medida de su brazo» para
+        corregir las varas falsas de los comerciantes; lo de la punta de la nariz al dedo pulgar es
+        un adorno que aparece siglos más tarde. La leyenda es mejor que el dato, como casi siempre.
+      </p>
+
+      <h2>Después, con el trabajo</h2>
+      <p>
+        La otra familia de unidades no mide el cuerpo, mide el <b>esfuerzo</b>. El
+        <b>furlong</b> (201,168 m) es el <i>furrow long</i>: el surco que una yunta de bueyes araba
+        antes de necesitar descansar. La <b>legua</b> es lo que una persona anda en una hora. Y la
+        <b>milla</b> son mil pasos: <i>mille passus</i>, mil pasos dobles de un legionario romano,
+        unos <b>1.479 metros</b>. Son unidades de tiempo y de fatiga disfrazadas de longitud, y por
+        eso ninguna es redonda.
+      </p>
+
+      <h2>La milla: por qué mide 1.609 metros y no 1.500</h2>
+      <p>
+        La milla romana eran 5.000 pies. La milla inglesa mide 5.280. Los 280 pies de diferencia
+        son uno de los mejores ejemplos de la historia de cómo una unidad se tuerce por motivos
+        que no tienen nada que ver con medir.
+      </p>
+      <p>
+        En la Inglaterra del siglo XVI la tierra se medía en <b>perchas</b> (16 pies y medio) y en
+        furlongs (40 perchas, 660 pies). Todas las escrituras, todos los catastros y todos los
+        impuestos sobre la tierra desde Enrique VIII estaban expresados en esas unidades. Cuando el
+        Parlamento quiso cuadrar la milla con el furlong en <b>1593</b>, tenía dos opciones: acortar
+        la percha una onceava parte —lo que habría hecho que todas las fincas del reino
+        <i>midieran más perchas</i>, es decir, una subida encubierta de impuestos— o estirar la
+        milla. Estiró la milla. El estatuto dice que «una milla contendrá ocho furlongs, cada
+        furlong cuarenta perchas, y cada percha contendrá dieciséis pies y medio»: 8 × 40 × 16,5 =
+        <b>5.280 pies</b>.
+      </p>
+      <p>
+        Es decir: la milla mide lo que mide porque en 1593 salía más barato cambiar la milla que
+        volver a medir Inglaterra. Su valor exacto en metros, <b>1.609,344</b>, no llegó hasta
+        1959.
+      </p>
+
+      <h2>El metro: la primera vez que medimos con el planeta</h2>
+      <p>
+        En 1791, en plena Revolución, la Academia de Ciencias francesa decidió que la nueva unidad
+        no saldría del cuerpo de ningún rey, sino de la Tierra: el metro sería la
+        <b>diezmillonésima parte del cuadrante del meridiano</b> que va del Polo Norte al ecuador
+        pasando por París. Una unidad que cualquiera, en cualquier país, pudiera reconstruir con
+        solo mirar el planeta.
+      </p>
+      <p>
+        Faltaba medirlo. Jean-Baptiste Delambre y Pierre Méchain salieron en <b>1792</b> a
+        triangular el arco entre <b>Dunkerque y Barcelona</b>, y tardaron <b>siete años</b>, con
+        una guerra y el Terror de por medio; a Méchain lo detuvieron por espía más de una vez.
+        Méchain cometió además un error en las primeras mediciones, lo descubrió, no se atrevió a
+        contarlo y pasó el resto de su vida intentando taparlo. Murió en 1804, de fiebre amarilla,
+        volviendo a medir.
+      </p>
+      <p>
+        El resultado: el cuadrante real mide unos <b>10.001.966 metros</b>, así que el metro se
+        quedó <b>unos 0,2 milímetros corto</b>. Ese error diminuto sigue dentro de la unidad hoy,
+        porque cada redefinición posterior se hizo para conservar la longitud existente, no para
+        corregirla. Desde <b>1983</b> el metro es la distancia que recorre la luz en el vacío en
+        <b>1/299.792.458 de segundo</b>: la definición más precisa jamás usada, calibrada para
+        seguir teniendo el error de Méchain.
+      </p>
+
+      <h2>El pie, la pulgada y la yarda son métricos desde 1959</h2>
+      <p>
+        Aquí está la ironía que casi nadie sabe: las unidades imperiales <b>se definen en metros</b>.
+        El <b>acuerdo internacional de la yarda y la libra</b>, firmado el 1 de julio de 1959 por
+        Estados Unidos, Reino Unido, Canadá, Australia, Nueva Zelanda y Sudáfrica, fijó la yarda en
+        <b>0,9144 metros exactos</b>. De ahí salen, por pura aritmética, todas las demás:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Unidad</th><th>Valor exacto</th></tr></thead>
+        <tbody>
+          <tr><td>1 yarda</td><td>0,9144 m</td></tr>
+          <tr><td>1 pie (1/3 de yarda)</td><td>0,3048 m</td></tr>
+          <tr><td>1 pulgada (1/36 de yarda)</td><td>0,0254 m = 2,54 cm</td></tr>
+          <tr><td>1 milla (1.760 yardas)</td><td>1.609,344 m</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Antes de 1959 el pie estadounidense y el británico no medían exactamente lo mismo: se
+        diferenciaban en unas dos millonésimas partes, irrelevante para una mesa y muy relevante
+        para un catastro. Estados Unidos mantuvo su viejo <i>US survey foot</i> (0,30480061 m) para
+        topografía durante seis décadas más, y solo lo <b>jubiló el 1 de enero de 2023</b>. Es
+        decir: la última unidad de longitud precientífica del mundo occidental murió hace tres
+        años.
+      </p>
+
+      <h2>La legua, la vara y por qué España tardó tanto</h2>
+      <p>
+        España tuvo su propia familia de unidades corporales y agrarias, encabezada por el
+        <b>pie castellano</b> o pie de Burgos (0,278635 m, bastante más corto que el inglés). Tres
+        pies hacían una <b>vara</b> (0,835905 m), la unidad con la que se compraba la tela y se
+        levantaban las casas. Y 20.000 pies castellanos hacían una <b>legua</b>:
+        <b>5.572,7 metros</b>, la distancia que se suponía que una persona andaba en una hora. Las
+        botas de siete leguas del cuento cubrían, por tanto, unos 39 kilómetros de una zancada.
+      </p>
+      <p>
+        España fue de los primeros países del mundo en adoptar el metro: la <b>Ley de Pesas y
+        Medidas del 19 de julio de 1849</b>, sancionada por Isabel II, lo hizo legal en todos los
+        dominios españoles. Otra cosa fue usarlo. La obligatoriedad general estaba prevista para
+        <b>1860</b> y se aplazó <b>siete veces</b>; la implantación real se arrastró hasta cerca de
+        <b>1880</b>, entre resistencia popular, falta de patrones y siglos de costumbre. Por eso
+        todavía hoy se compran fincas en fanegas y se cuentan caminos en leguas en media España.
+      </p>
+
+      <h2>La milla náutica: la única que le salió bien al planeta</h2>
+      <p>
+        Mientras el metro se peleaba con el meridiano, los marinos ya llevaban siglos usando una
+        unidad sacada del mismo sitio y mucho más práctica: la
+        <a href="/cuanto-es-una-milla-nautica/"><b>milla náutica</b></a> es
+        <b>un minuto de arco</b> de meridiano. Eso significa que 60 millas náuticas son un grado de
+        latitud, y que un navegante puede leer distancias directamente en la carta sin convertir
+        nada. Desde 1929 vale <b>1.852 metros exactos</b>: un 15 % más que la milla terrestre. Un
+        nudo es, simplemente, una milla náutica por hora.
+      </p>
+
+      <h2>Y esto, ¿cuánto es en cosas reales?</h2>
+      <p>
+        Las unidades se entienden mejor puestas encima de algo que conoces. Aquí tienes las
+        distancias de este artículo convertidas en cosas:
+        <a href="/cuanto-mide-un-maraton/">un maratón</a> son 42,195 km, que en el sistema que lo
+        inventó son 26 millas y 385 yardas;
+        <a href="/cuanto-son-10000-pasos/">10.000 pasos</a> son unos 7,5 km, o 4,7 millas;
+        y <a href="/a-que-distancia-esta-el-horizonte/">el horizonte</a>, desde la playa, está a
+        4,7 km, que son 2,5 millas náuticas: la distancia a la que un barco desaparece.
+      </p>
+
+      <h2>Preguntas frecuentes sobre las unidades de distancia</h2>
+      <dl class="faq">
+        <dt>¿Cuáles son las unidades de distancia?</dt>
+        <dd>En el sistema métrico, el <b>metro</b> y sus múltiplos (kilómetro, centímetro,
+          milímetro). En el sistema anglosajón, la <a href="${conv}?d=1&u=mi">milla</a> (1.609,344
+          m), la <a href="${conv}?d=1&u=yd">yarda</a> (0,9144 m), el
+          <a href="${conv}?d=1&u=ft">pie</a> (0,3048 m) y la
+          <a href="${conv}?d=1&u=in">pulgada</a> (2,54 cm). En navegación se usa la
+          <a href="/cuanto-es-una-milla-nautica/">milla náutica</a> (1.852 m), y en astronomía el
+          año luz (9,46 billones de km).</dd>
+
+        <dt>¿Por qué la milla mide 1.609 metros?</dt>
+        <dd>Porque un estatuto inglés de 1593 la fijó en ocho furlongs de cuarenta perchas de
+          dieciséis pies y medio: 5.280 pies. El Parlamento prefirió estirar la milla (la romana
+          eran 5.000 pies) antes que acortar la percha, porque todas las escrituras y todos los
+          impuestos sobre la tierra estaban medidos en perchas y furlongs. Su valor exacto en
+          metros, 1.609,344, es de 1959.</dd>
+
+        <dt>¿De dónde viene el metro?</dt>
+        <dd>De la Tierra. En 1791 la Academia de Ciencias francesa lo definió como la
+          diezmillonésima parte del cuadrante del meridiano que pasa por París, y Delambre y
+          Méchain tardaron siete años (1792-1798) en medir el arco entre Dunkerque y Barcelona. Se
+          equivocaron: el cuadrante real mide unos 10.001.966 metros, así que el metro salió unos
+          0,2 mm corto, y ese error sigue dentro de la unidad.</dd>
+
+        <dt>¿Es verdad que las unidades imperiales se definen en metros?</dt>
+        <dd>Sí. Desde el acuerdo internacional de la yarda y la libra de 1959, una yarda son
+          0,9144 metros <i>exactos</i>, y de ahí salen el pie (0,3048 m), la pulgada (2,54 cm) y la
+          milla (1.609,344 m). Estados Unidos mantuvo un pie topográfico ligeramente distinto hasta
+          que lo retiró el 1 de enero de 2023.</dd>
+
+        <dt>¿Cuánto es una legua?</dt>
+        <dd>La legua castellana son <a href="${conv}?d=5.5727&u=km">5.572,7 metros</a>, es decir,
+          20.000 pies castellanos: la distancia que se suponía que una persona andaba en una hora.
+          Cada reino tenía la suya, así que la cifra varía según la época y el lugar.</dd>
+
+        <dt>¿Cuándo adoptó España el sistema métrico?</dt>
+        <dd>Por la Ley de Pesas y Medidas del 19 de julio de 1849, una de las primeras del mundo
+          fuera de Francia. La obligatoriedad general, prevista para 1860, se aplazó siete veces y
+          la implantación real se alargó hasta cerca de 1880.</dd>
+      </dl>
+      <p>
+        ¿Quieres el número y ya? Usa el <a href="${conv}">conversor de distancias</a>. ¿Quieres
+        verlo? Escribe una distancia en la
+        <a href="/distancias/">herramienta de distancias</a> y se dibuja a escala sobre tu ciudad,
+        o <a href="/medir-distancias/">mide una distancia</a> punto a punto en el mapa. Y si lo
+        tuyo son las superficies, tienes el <a href="/">Hectareómetro</a> y el
+        <a href="/hectareas-a-metros-cuadrados/">conversor de superficies</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'unidades-distancia', ha: 0,
+    family: 'distancias', published: '2026-08-25', modified: '2026-08-25',
+    slug: 'unidades-de-distancia',
+    path: DISTANCE_UNITS_ALTERNATES.es, alternates: DISTANCE_UNITS_ALTERNATES,
+    dist: 1, distUnit: 'mi',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 40.4168; var PRESET_LON = -3.7038;',
+    title: 'Unidades de distancia: metro, milla, pie, legua y de dónde vienen | Hectareómetro',
+    description: 'Un kilómetro son mil metros y una milla 1.609,344: una cifra la eligió alguien y la otra no. La tabla de todas las unidades de distancia, el error de 0,2 mm que sigue dentro del metro y por qué la milla mide lo que mide.',
+    h1: 'Del pie al metro: por qué medimos las distancias como las medimos',
+    intro,
+    question: '¿Cuáles son las unidades de distancia?',
+    answer: 'En el sistema métrico, el metro y sus múltiplos (kilómetro, centímetro, milímetro). En el sistema anglosajón, la milla (1.609,344 m), la yarda (0,9144 m), el pie (0,3048 m) y la pulgada (2,54 cm). En navegación se usa la milla náutica (1.852 m), y en astronomía el año luz.',
+    faqs: [
+      { q: '¿Cuáles son las unidades de distancia?', a: 'En el sistema métrico, el metro y sus múltiplos (kilómetro, centímetro, milímetro). En el sistema anglosajón, la milla (1.609,344 m), la yarda (0,9144 m), el pie (0,3048 m) y la pulgada (2,54 cm). En navegación se usa la milla náutica (1.852 m), y en astronomía el año luz (9,46 billones de km).' },
+      { q: '¿Por qué la milla mide 1.609 metros?', a: 'Porque un estatuto inglés de 1593 la fijó en ocho furlongs de cuarenta perchas de dieciséis pies y medio: 5.280 pies. El Parlamento prefirió estirar la milla (la romana eran 5.000 pies) antes que acortar la percha, porque todas las escrituras y todos los impuestos sobre la tierra estaban medidos en perchas y furlongs. Su valor exacto en metros, 1.609,344, es de 1959.' },
+      { q: '¿De dónde viene el metro?', a: 'De la Tierra. En 1791 la Academia de Ciencias francesa lo definió como la diezmillonésima parte del cuadrante del meridiano que pasa por París, y Delambre y Méchain tardaron siete años (1792-1798) en medir el arco entre Dunkerque y Barcelona. Se equivocaron: el cuadrante real mide unos 10.001.966 metros, así que el metro salió unos 0,2 mm corto, y ese error sigue dentro de la unidad.' },
+      { q: '¿Es verdad que las unidades imperiales se definen en metros?', a: 'Sí. Desde el acuerdo internacional de la yarda y la libra de 1959, una yarda son 0,9144 metros exactos, y de ahí salen el pie (0,3048 m), la pulgada (2,54 cm) y la milla (1.609,344 m). Estados Unidos mantuvo un pie topográfico ligeramente distinto hasta que lo retiró el 1 de enero de 2023.' },
+      { q: '¿Cuánto es una legua?', a: 'La legua castellana son 5.572,7 metros, es decir, 20.000 pies castellanos: la distancia que se suponía que una persona andaba en una hora. Cada reino tenía la suya, así que la cifra varía según la época y el lugar.' },
+      { q: '¿Cuándo adoptó España el sistema métrico?', a: 'Por la Ley de Pesas y Medidas del 19 de julio de 1849, una de las primeras del mundo fuera de Francia. La obligatoriedad general, prevista para 1860, se aplazó siete veces y la implantación real se alargó hasta cerca de 1880.' },
+    ],
+    linkLabel: 'Las unidades de distancia',
+  };
+  }
+  const conv = '/en/kilometers-to-miles/';
+  const intro = `      <p>
+        A kilometre is a thousand metres. A mile is 1,609.344 metres. The first number is round
+        because somebody chose it; the second one is ugly because nobody did: it piled up over two
+        thousand years, from the paces of a Roman legionary to a treaty signed in 1959. That
+        difference — measuring with the body and with work, or measuring with the planet — is the
+        whole history of distance units.
+      </p>
+      <p>
+        The map above draws a <b>one-mile</b> radius. Compare it with
+        <a href="/en/distances/?d=1&u=km&lat=51.5074&lon=-0.1278&z=13">one kilometre</a>: the mile
+        is 61% longer, which is why distances in foreign films, races and road signs never quite
+        line up. If all you want is the number, the <a href="${conv}">distance converter</a> does it
+        instantly.
+      </p>
+
+      <h2>Every distance unit at a glance</h2>
+      <p>
+        Each row goes to the conversion already worked out, or to the article that tells the whole
+        story:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Unit</th><th>How long</th><th>Where it comes from</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=m">Metre</a></td><td>the SI base unit</td><td>One ten-millionth of the quadrant of the Paris meridian (1791)</td></tr>
+          <tr><td><a href="/en/distances/?d=1&u=km&lat=51.5074&lon=-0.1278&z=13">Kilometre</a></td><td>1,000 m</td><td>A thousand metres: a Greek prefix and a committee decision</td></tr>
+          <tr><td><a href="${conv}?d=1&u=cm">Centimetre</a></td><td>0.01 m</td><td>One hundredth of a metre</td></tr>
+          <tr><td><a href="${conv}?d=1&u=mi">Mile</a></td><td>1,609.344 m</td><td>The thousand double paces of a Roman legionary, stretched by a statute of 1593</td></tr>
+          <tr><td><a href="/en/how-long-is-a-nautical-mile/">Nautical mile</a></td><td>1,852 m</td><td>One minute of arc of a meridian</td></tr>
+          <tr><td><a href="${conv}?d=1&u=yd">Yard</a></td><td>0.9144 m</td><td>Said to be the arm of Henry I; exact since 1959</td></tr>
+          <tr><td><a href="${conv}?d=1&u=ft">Foot</a></td><td>0.3048 m</td><td>An actual foot, and every kingdom had its own</td></tr>
+          <tr><td><a href="${conv}?d=1&u=in">Inch</a></td><td>2.54 cm</td><td>Three barleycorns laid end to end (Edward II, 1324)</td></tr>
+          <tr><td><a href="${conv}?d=201.168&u=m">Furlong</a></td><td>201.168 m</td><td>The furrow an ox team ploughed before resting</td></tr>
+          <tr><td><a href="${conv}?d=5.5727&u=km">League</a></td><td>~5,572 m</td><td>How far a person walks in an hour — every kingdom had its own</td></tr>
+          <tr><td><a href="${conv}?d=20.1168&u=m">Chain</a></td><td>20.1168 m</td><td>Gunter's surveying chain, 22 yards: still the length of a cricket pitch</td></tr>
+          <tr><td>Light year</td><td>9.46 trillion km</td><td>How far light travels in a year: it is a distance, not a time</td></tr>
+        </tbody>
+      </table>
+
+      <h2>First we measured with the body</h2>
+      <p>
+        The foot, the inch, the cubit, the fathom, the span and the pace are all the same idea: a
+        body part turned into a ruler. It had one huge advantage — you always have the ruler with
+        you — and one fatal flaw: <b>no two bodies are the same</b>. Every kingdom, every guild and
+        sometimes every town had its own foot, and trading between them was a permanent argument.
+      </p>
+      <p>
+        The attempts to fix it are wonderfully homemade. In <b>1324</b> a decree of Edward II
+        defined the inch as <b>three barleycorns</b>, "dry and round", laid end to end; twelve
+        inches to the foot, three feet to the yard. The barleycorn is still alive where you would
+        least expect it: British and American shoe sizes go up one third of an inch at a time,
+        which is exactly one barleycorn.
+      </p>
+      <p>
+        As for the yard, the story goes that Henry I fixed it with the length of his own arm.
+        William of Malmesbury, a twelfth-century chronicler, did write that "the measure of his arm"
+        was used to correct the false ells of traders; the bit about the tip of his nose to his
+        thumb is an embellishment added centuries later. The legend beats the record, as usual.
+      </p>
+
+      <h2>Then we measured with work</h2>
+      <p>
+        The other family of units does not measure the body, it measures <b>effort</b>. The
+        <b>furlong</b> (201.168 m) is the <i>furrow long</i>: the furrow an ox team could plough
+        before needing a rest. The <b>league</b> is how far a person walks in an hour. And the
+        <b>mile</b> is a thousand paces: <i>mille passus</i>, a thousand double paces of a Roman
+        legionary, about <b>1,479 metres</b>. They are units of time and tiredness dressed up as
+        length, which is why none of them is round.
+      </p>
+
+      <h2>The mile: why it is 5,280 feet and not 5,000</h2>
+      <p>
+        The Roman mile was 5,000 feet. The English mile is 5,280. Those 280 extra feet are one of
+        the finest examples in history of a unit being bent for reasons that have nothing to do
+        with measuring.
+      </p>
+      <p>
+        In sixteenth-century England land was measured in <b>rods</b> (16½ feet) and furlongs
+        (40 rods, 660 feet). Every deed, every survey and every land tax since Henry VIII was
+        written in those units. When Parliament decided to reconcile the mile with the furlong in
+        <b>1593</b>, it had two options: shorten the rod by one eleventh — which would have made
+        every estate in the kingdom <i>measure more rods</i>, a tax rise by the back door — or
+        stretch the mile. It stretched the mile. The statute reads: "A Mile shall contain eight
+        Furlongs, every Furlong forty Poles, and every Pole shall contain sixteen Foot and an
+        half": 8 × 40 × 16.5 = <b>5,280 feet</b>.
+      </p>
+      <p>
+        In other words, the mile is the length it is because in 1593 it was cheaper to change the
+        mile than to re-measure England. Its exact metric value, <b>1,609.344 m</b>, only arrived in
+        1959.
+      </p>
+
+      <h2>The metre: the first time we measured with the planet</h2>
+      <p>
+        In 1791, in the middle of the Revolution, the French Academy of Sciences decided the new
+        unit would not come from any king's body but from the Earth: the metre would be
+        <b>one ten-millionth of the quadrant of the meridian</b> running from the North Pole to the
+        equator through Paris. A unit that anyone, anywhere, could rebuild just by looking at the
+        planet.
+      </p>
+      <p>
+        It still had to be measured. Jean-Baptiste Delambre and Pierre Méchain set out in
+        <b>1792</b> to triangulate the arc between <b>Dunkirk and Barcelona</b>, and it took them
+        <b>seven years</b>, through a war and the Terror; Méchain was arrested as a spy more than
+        once. He also made an error in his early measurements, spotted it, could not bring himself
+        to admit it, and spent the rest of his life trying to paper over it. He died in 1804 of
+        yellow fever, out measuring again.
+      </p>
+      <p>
+        The result: the real quadrant is about <b>10,001,966 metres</b>, so the metre came out
+        <b>roughly 0.2 mm short</b>. That tiny error is still inside the unit today, because every
+        later redefinition was made to preserve the existing length rather than fix it. Since
+        <b>1983</b> the metre is the distance light travels in a vacuum in
+        <b>1/299,792,458 of a second</b>: the most precise definition ever used, calibrated to keep
+        Méchain's mistake.
+      </p>
+
+      <h2>Feet, inches and yards have been metric since 1959</h2>
+      <p>
+        Here is the irony almost nobody knows: imperial units <b>are defined in metres</b>. The
+        <b>International Yard and Pound Agreement</b>, signed on 1 July 1959 by the United States,
+        the United Kingdom, Canada, Australia, New Zealand and South Africa, set the yard at
+        <b>exactly 0.9144 metres</b>. Everything else follows by arithmetic:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Unit</th><th>Exact value</th></tr></thead>
+        <tbody>
+          <tr><td>1 yard</td><td>0.9144 m</td></tr>
+          <tr><td>1 foot (1/3 yard)</td><td>0.3048 m</td></tr>
+          <tr><td>1 inch (1/36 yard)</td><td>0.0254 m = 2.54 cm</td></tr>
+          <tr><td>1 mile (1,760 yards)</td><td>1,609.344 m</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Before 1959 the American and British feet were not quite the same: they differed by about
+        two parts per million, irrelevant for a table and very relevant for a land survey. The
+        United States kept its old <i>US survey foot</i> (0.30480061 m) for surveying for six more
+        decades and only <b>retired it on 1 January 2023</b>. The last pre-scientific unit of length
+        in the Western world died three years ago.
+      </p>
+
+      <h2>The league, and the units that refused to die</h2>
+      <p>
+        The league is the unit of fairy tales and sea stories: seven-league boots, Twenty Thousand
+        Leagues Under the Sea. It was never one length. The Castilian league was 20,000 Castilian
+        feet, <b>5,572.7 metres</b>; the old English land league was three miles, about 4,828 m.
+        What they had in common was the definition: roughly an hour's walk.
+      </p>
+      <p>
+        Spain, incidentally, was one of the first countries in the world to adopt the metre, by the
+        Weights and Measures Act of <b>19 July 1849</b>. Using it was another matter: general
+        compulsion was set for <b>1860</b> and postponed <b>seven times</b>, and real adoption
+        dragged on until around <b>1880</b>. Units built on habit take generations to die — which is
+        exactly what the United States has been demonstrating ever since.
+      </p>
+
+      <h2>The nautical mile: the one that got the planet right</h2>
+      <p>
+        While the metre was wrestling with the meridian, sailors had been using a unit taken from
+        the very same place, and a far more practical one: the
+        <a href="/en/how-long-is-a-nautical-mile/"><b>nautical mile</b></a> is
+        <b>one minute of arc</b> of a meridian. That means 60 nautical miles make one degree of
+        latitude, so a navigator can read distances straight off the chart without converting
+        anything. Since 1929 it has been <b>exactly 1,852 metres</b>: 15% longer than the statute
+        mile. A knot is simply one nautical mile per hour.
+      </p>
+
+      <h2>So how much is that in real things?</h2>
+      <p>
+        Units make more sense laid over something you know. Here are this article's distances turned
+        into things: <a href="/en/how-long-is-a-marathon/">a marathon</a> is 26 miles and 385 yards,
+        or 42.195 km in the system that did not invent it;
+        <a href="/en/how-far-is-10000-steps/">10,000 steps</a> is about 4.7 miles; and
+        <a href="/en/how-far-away-is-the-horizon/">the horizon</a>, seen from the beach, is
+        2.9 miles away — 2.5 nautical miles, the distance at which a ship disappears.
+      </p>
+
+      <h2>Frequently asked questions about distance units</h2>
+      <dl class="faq">
+        <dt>What are the units of distance?</dt>
+        <dd>In the metric system, the <b>metre</b> and its multiples (kilometre, centimetre,
+          millimetre). In the imperial system, the <a href="${conv}?d=1&u=mi">mile</a> (1,609.344 m),
+          the <a href="${conv}?d=1&u=yd">yard</a> (0.9144 m), the
+          <a href="${conv}?d=1&u=ft">foot</a> (0.3048 m) and the
+          <a href="${conv}?d=1&u=in">inch</a> (2.54 cm). At sea and in the air there is the
+          <a href="/en/how-long-is-a-nautical-mile/">nautical mile</a> (1,852 m), and in astronomy
+          the light year.</dd>
+
+        <dt>Why is a mile 5,280 feet?</dt>
+        <dd>Because an English statute of 1593 set it at eight furlongs of forty rods of sixteen and
+          a half feet: 5,280 feet. Parliament chose to stretch the mile (the Roman one was 5,000
+          feet) rather than shorten the rod, because every deed and every land tax was measured in
+          rods and furlongs. Its exact metric value, 1,609.344 m, dates from 1959.</dd>
+
+        <dt>Where does the metre come from?</dt>
+        <dd>From the Earth. In 1791 the French Academy of Sciences defined it as one ten-millionth
+          of the quadrant of the meridian through Paris, and Delambre and Méchain took seven years
+          (1792-1798) to measure the arc between Dunkirk and Barcelona. They got it slightly wrong:
+          the real quadrant is about 10,001,966 metres, so the metre came out roughly 0.2 mm short,
+          and that error is still inside the unit.</dd>
+
+        <dt>Are imperial units really defined in metres?</dt>
+        <dd>Yes. Since the International Yard and Pound Agreement of 1959, a yard is
+          <i>exactly</i> 0.9144 metres, and the foot (0.3048 m), the inch (2.54 cm) and the mile
+          (1,609.344 m) all follow from it. The United States kept a slightly different survey foot
+          until it was retired on 1 January 2023.</dd>
+
+        <dt>How long is a league?</dt>
+        <dd>It was never one fixed length: it meant roughly an hour's walk. The Castilian league was
+          <a href="${conv}?d=5.5727&u=km">5,572.7 metres</a> (20,000 Castilian feet) and the old
+          English land league was three miles, about 4,828 metres.</dd>
+
+        <dt>What is the difference between a mile and a nautical mile?</dt>
+        <dd>A statute mile is 1,609.344 metres and a nautical mile is exactly 1,852 metres, 15%
+          longer. The statute mile comes from Roman paces and English farmland; the nautical mile
+          comes from the planet, being one minute of arc of a meridian.</dd>
+      </dl>
+      <p>
+        Just want the number? Use the <a href="${conv}">distance converter</a>. Want to see it?
+        Type a distance into the <a href="/en/distances/">distances tool</a> and it is drawn to
+        scale over your city, or <a href="/en/measure-distance/">measure a distance</a> point by
+        point on the map. And if areas are more your thing, there is the
+        <a href="/en/">Hectareometer</a> and the
+        <a href="/en/hectares-to-square-meters/">area converter</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'unidades-distancia', ha: 0,
+    family: 'distancias', published: '2026-08-25', modified: '2026-08-25',
+    slug: 'distance-units',
+    path: DISTANCE_UNITS_ALTERNATES.en, alternates: DISTANCE_UNITS_ALTERNATES,
+    dist: 1, distUnit: 'mi',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 51.5074; var PRESET_LON = -0.1278;',
+    title: 'Distance units: metre, mile, foot, league and where they came from | Hectareometer',
+    description: 'A kilometre is a thousand metres and a mile is 1,609.344: one of those numbers was chosen and the other was not. The table of every distance unit, the 0.2 mm error still inside the metre, and why a mile is 5,280 feet.',
+    h1: 'From the foot to the metre: why we measure distance the way we do',
+    intro,
+    question: 'What are the units of distance?',
+    answer: 'In the metric system, the metre and its multiples (kilometre, centimetre, millimetre). In the imperial system, the mile (1,609.344 m), the yard (0.9144 m), the foot (0.3048 m) and the inch (2.54 cm). At sea and in the air there is the nautical mile (1,852 m), and in astronomy the light year.',
+    faqs: [
+      { q: 'What are the units of distance?', a: 'In the metric system, the metre and its multiples (kilometre, centimetre, millimetre). In the imperial system, the mile (1,609.344 m), the yard (0.9144 m), the foot (0.3048 m) and the inch (2.54 cm). At sea and in the air there is the nautical mile (1,852 m), and in astronomy the light year.' },
+      { q: 'Why is a mile 5,280 feet?', a: 'Because an English statute of 1593 set it at eight furlongs of forty rods of sixteen and a half feet: 5,280 feet. Parliament chose to stretch the mile (the Roman one was 5,000 feet) rather than shorten the rod, because every deed and every land tax was measured in rods and furlongs. Its exact metric value, 1,609.344 m, dates from 1959.' },
+      { q: 'Where does the metre come from?', a: 'From the Earth. In 1791 the French Academy of Sciences defined it as one ten-millionth of the quadrant of the meridian through Paris, and Delambre and Méchain took seven years (1792-1798) to measure the arc between Dunkirk and Barcelona. They got it slightly wrong: the real quadrant is about 10,001,966 metres, so the metre came out roughly 0.2 mm short, and that error is still inside the unit.' },
+      { q: 'Are imperial units really defined in metres?', a: 'Yes. Since the International Yard and Pound Agreement of 1959, a yard is exactly 0.9144 metres, and the foot (0.3048 m), the inch (2.54 cm) and the mile (1,609.344 m) all follow from it. The United States kept a slightly different survey foot until it was retired on 1 January 2023.' },
+      { q: 'How long is a league?', a: "It was never one fixed length: it meant roughly an hour's walk. The Castilian league was 5,572.7 metres (20,000 Castilian feet) and the old English land league was three miles, about 4,828 metres." },
+      { q: 'What is the difference between a mile and a nautical mile?', a: 'A statute mile is 1,609.344 metres and a nautical mile is exactly 1,852 metres, 15% longer. The statute mile comes from Roman paces and English farmland; the nautical mile comes from the planet, being one minute of arc of a meridian.' },
+    ],
+    linkLabel: 'Distance units',
+  };
+}
+
 const DIST_ARTICLES = [
+  distanceUnitsArticle('es'), distanceUnitsArticle('en'),
   tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),
   nauticalMileArticle('es'), nauticalMileArticle('en'),
   marathonArticle('es'), marathonArticle('en'),
@@ -5122,7 +5690,7 @@ function render(page, template) {
     RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
     RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
       : isKilos ? relatedKiloLinks(page.lang, page.key)
-      : isDistances ? relatedDistanceLinks(page.lang)
+      : isDistances ? relatedDistanceLinks(page.lang, page.path)
       : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
     NAV_MEASURE_URL: measurePath(page.lang),
@@ -5137,6 +5705,8 @@ function render(page, template) {
     NAV_KILOS_LABEL: ui.navKilos,
     NAV_CONVERTER_URL: converterPath(page.lang),
     NAV_CONVERTER_LABEL: ui.navConverter,
+    NAV_LENGTHCONV_URL: lengthConverterPath(page.lang),
+    NAV_LENGTHCONV_LABEL: ui.navLengthConverter,
     NAV_ARTICLES_URL: articlesHubPath(page.lang),
     NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
@@ -5180,7 +5750,7 @@ function fileForPath(urlPath) {
 // Generated pages are fingerprinted from the page object, which contains only
 // their own content. Hand-maintained pages and the article hubs have no page
 // object, so they are hashed from their HTML with the navbar and footer (the
-// 16 lockstep copies) stripped out: editing the shared navigation must not look
+// 21 lockstep copies) stripped out: editing the shared navigation must not look
 // like 100 pages changed.
 function contentFingerprint(page, file) {
   if (page) {
@@ -5248,6 +5818,7 @@ function writeSitemap() {
   LANGS.forEach(lang => add(litersPath(lang)));
   LANGS.forEach(lang => add(kilosPath(lang)));
   LANGS.forEach(lang => add(converterPath(lang)));
+  LANGS.forEach(lang => add(lengthConverterPath(lang)));
   LANGS.forEach(lang => add(articlesHubPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => add(pathFor(lang, key), buildPage(lang, key))));
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => add(literPathFor(lang, l), literPage(lang, l))));
@@ -5261,7 +5832,7 @@ function writeSitemap() {
   const today = buildDate();
   const sectionHomes = new Set([].concat(...LANGS.map(lang => [
     measurePath(lang), measureDistancePath(lang), distancesPath(lang), litersPath(lang),
-    kilosPath(lang), converterPath(lang), articlesHubPath(lang),
+    kilosPath(lang), converterPath(lang), lengthConverterPath(lang), articlesHubPath(lang),
   ])));
   let changed = 0;
   const warnings = [];

@@ -1,11 +1,11 @@
 {
   "/": {
-    "fingerprint": "5e69cc044407ebc2",
-    "lastmod": "2026-08-19"
+    "fingerprint": "000148b3af776ed3",
+    "lastmod": "2026-08-27"
   },
   "/en/": {
-    "fingerprint": "6fe5b544a214a752",
-    "lastmod": "2026-08-13"
+    "fingerprint": "a266f7d5f66fb5c5",
+    "lastmod": "2026-08-27"
   },
   "/medir-superficie/": {
     "fingerprint": "407ca0b522b2f3d6",
@@ -24,12 +24,12 @@
     "lastmod": "2026-07-24"
   },
   "/distancias/": {
-    "fingerprint": "6d83f5cbe859664e",
-    "lastmod": "2026-08-13"
+    "fingerprint": "98735da7520a1991",
+    "lastmod": "2026-08-27"
   },
   "/en/distances/": {
-    "fingerprint": "f659c92319929f67",
-    "lastmod": "2026-08-13"
+    "fingerprint": "d71f034ad0ca02bb",
+    "lastmod": "2026-08-27"
   },
   "/litros/": {
     "fingerprint": "72e5d32ee793d376",
@@ -55,13 +55,21 @@
     "fingerprint": "4ee446fe8eb86194",
     "lastmod": "2026-07-24"
   },
+  "/kilometros-a-millas/": {
+    "fingerprint": "12cd9b1aeb037637",
+    "lastmod": "2026-08-27"
+  },
+  "/en/kilometers-to-miles/": {
+    "fingerprint": "1619c93da9c01cb6",
+    "lastmod": "2026-08-27"
+  },
   "/articulos/": {
-    "fingerprint": "e9b05f090d7d7cbe",
-    "lastmod": "2026-08-19"
+    "fingerprint": "5462f04b06ceef73",
+    "lastmod": "2026-08-27"
   },
   "/en/articles/": {
-    "fingerprint": "5f5792a54fdef7e9",
-    "lastmod": "2026-08-13"
+    "fingerprint": "a3dc3ad292e99e0e",
+    "lastmod": "2026-08-27"
   },
   "/1-hectarea/": {
     "fingerprint": "11b0b86cf8055283",
@@ -378,6 +386,14 @@
   "/cuantos-litros-consume-una-persona-al-dia/": {
     "fingerprint": "b8c78d5282b323cc",
     "lastmod": "2026-08-14"
+  },
+  "/unidades-de-distancia/": {
+    "fingerprint": "79d4d0acbe49e9f2",
+    "lastmod": "2026-08-25"
+  },
+  "/en/distance-units/": {
+    "fingerprint": "933328a231782f59",
+    "lastmod": "2026-08-25"
   },
   "/cuanto-son-10000-pasos/": {
     "fingerprint": "184bb3107369de5e",

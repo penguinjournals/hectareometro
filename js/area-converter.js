@@ -164,7 +164,7 @@ if (typeof $ !== 'undefined') {
       return;
     }
     var html = buildAreaRows(value, fromId, areaLang).map(function(row) {
-      return '<tr><td class="area-result-value"><b>' + row.valueText + '</b> ' + row.symbol + '</td><td>' + row.label + '</td></tr>';
+      return '<tr><td class="conv-result-value"><b>' + row.valueText + '</b> ' + row.symbol + '</td><td>' + row.label + '</td></tr>';
     }).join('');
     $tbody.html(html);
   };

@@ -90,7 +90,8 @@ body {
 #distance,
 #liters,
 #kilos,
-#area-value {
+#area-value,
+#length-value {
   width: 80px;
   min-width: 80px;
   max-width: 16ch;
@@ -107,7 +108,8 @@ body {
 #liters-unit,
 #kilos-unit,
 #picto-unit,
-#area-unit {
+#area-unit,
+#length-unit {
   padding: 8px 6px;
   font-size: 16px;
   font-weight: 600;
@@ -122,11 +124,13 @@ body {
 #liters:focus,
 #kilos:focus,
 #area-value:focus,
+#length-value:focus,
 #distance-unit:focus,
 #liters-unit:focus,
 #kilos-unit:focus,
 #picto-unit:focus,
-#area-unit:focus {
+#area-unit:focus,
+#length-unit:focus {
   outline: none;
   border-color: var(--c-primary-dark);
   box-shadow: 0 0 5px rgba(43, 131, 208, 0.5);
@@ -216,7 +220,7 @@ body {
 }
 
 /* Liters tool (no map: a normal-flow panel + the pictogram block) and the
-   area converter, which shares the same panel layout. */
+   area and distance converters, which share the same panel layout. */
 #litros-tool,
 #converter-tool {
   text-align: center;
@@ -251,7 +255,7 @@ body {
   text-align: left;
 }
 
-#converter-tool .area-result-value {
+#converter-tool .conv-result-value {
   text-align: right;
   white-space: nowrap;
 }
@@ -875,7 +879,8 @@ a, a:link, a:visited, a:hover, a:active {
   #distance,
   #liters,
   #kilos,
-  #area-value {
+  #area-value,
+  #length-value {
     width: 60px;
     min-width: 60px;
     font-size: 16px;
@@ -886,7 +891,8 @@ a, a:link, a:visited, a:hover, a:active {
   #liters-unit,
   #kilos-unit,
   #picto-unit,
-  #area-unit {
+  #area-unit,
+  #length-unit {
     font-size: 14px;
     padding: 5px 4px;
   }

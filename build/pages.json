@@ -554,6 +554,20 @@
   },
   {
     "lang": "es",
+    "slug": "unidades-de-distancia",
+    "path": "/unidades-de-distancia/",
+    "label": "Las unidades de distancia",
+    "title": "Unidades de distancia: metro, milla, pie, legua y de dónde vienen | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "distance-units",
+    "path": "/en/distance-units/",
+    "label": "Distance units",
+    "title": "Distance units: metre, mile, foot, league and where they came from | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "cuanto-son-10000-pasos",
     "path": "/cuanto-son-10000-pasos/",
     "label": "¿Cuántos kilómetros son 10.000 pasos?",
