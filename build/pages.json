@@ -568,6 +568,20 @@
   },
   {
     "lang": "es",
+    "slug": "que-es-una-milla",
+    "path": "/que-es-una-milla/",
+    "label": "¿Qué es una milla?",
+    "title": "¿Qué es una milla? Por qué mide 1.609 metros y no otra cosa | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "what-is-a-mile",
+    "path": "/en/what-is-a-mile/",
+    "label": "What is a mile?",
+    "title": "What is a mile? Why it is 5,280 feet and not 5,000 | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "cuanto-son-10000-pasos",
     "path": "/cuanto-son-10000-pasos/",
     "label": "¿Cuántos kilómetros son 10.000 pasos?",

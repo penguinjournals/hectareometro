@@ -3156,14 +3156,14 @@ function relatedDistanceLinks(lang, currentPath) {
     ['/kilometros-a-millas/', 'Kilómetros a millas'],
     ['/distancias/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'Un maratón (42,195 km)'],
     ['/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
-    ['/distancias/?d=1&u=mi&lat=40.4168&lon=-3.7038&z=12', 'Una milla'],
+    ['/que-es-una-milla/', '¿Qué es una milla?'],
     ['/distancias/', 'La herramienta de distancias'],
   ] : [
     ['/en/distance-units/', 'Distance units'],
     ['/en/kilometers-to-miles/', 'Kilometers to miles'],
     ['/en/distances/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'A marathon (42.195 km)'],
     ['/en/distances/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
-    ['/en/distances/?d=1&u=mi&lat=40.4168&lon=-3.7038&z=12', 'One mile'],
+    ['/en/what-is-a-mile/', 'What is a mile?'],
     ['/en/distances/', 'The distances tool'],
   ];
   return chips
@@ -3478,8 +3478,8 @@ function nauticalMileArticle(lang) {
         verla a escala.
       </p>
       <p>
-        Con esa definición, la milla náutica es un <b>15 % más larga</b> que la milla terrestre de
-        toda la vida (1.609,344 m). Por eso, cuando un barco o un avión hablan de «millas», no son
+        Con esa definición, la milla náutica es un <b>15 % más larga</b> que
+        <a href="/que-es-una-milla/">la milla terrestre</a> de toda la vida (1.609,344 m). Por eso, cuando un barco o un avión hablan de «millas», no son
         las mismas millas que las de una carretera.
       </p>
 
@@ -3622,7 +3622,7 @@ function nauticalMileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'milla-nautica', ha: 0,
-    family: 'distancias', published: '2026-07-29', modified: '2026-07-29',
+    family: 'distancias', published: '2026-07-29', modified: '2026-09-04',
     slug: 'cuanto-es-una-milla-nautica',
     path: NAUTICAL_ALTERNATES.es, alternates: NAUTICAL_ALTERNATES,
     dist: 1852, distUnit: 'm',
@@ -3657,8 +3657,8 @@ function nauticalMileArticle(lang) {
         Strait of Dover; drag the map to your own coast to see it to scale.
       </p>
       <p>
-        That makes the nautical mile <b>15 % longer</b> than the statute mile you use on land
-        (1,609.344 m). So when a ship or an aircraft talks about "miles", they are not the same
+        That makes the nautical mile <b>15 % longer</b> than
+        <a href="/en/what-is-a-mile/">the statute mile</a> you use on land (1,609.344 m). So when a ship or an aircraft talks about "miles", they are not the same
         miles as the ones on a road sign.
       </p>
 
@@ -3800,7 +3800,7 @@ function nauticalMileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'milla-nautica', ha: 0,
-    family: 'distancias', published: '2026-07-29', modified: '2026-07-29',
+    family: 'distancias', published: '2026-07-29', modified: '2026-09-04',
     slug: 'how-long-is-a-nautical-mile',
     path: NAUTICAL_ALTERNATES.en, alternates: NAUTICAL_ALTERNATES,
     dist: 1852, distUnit: 'm',
@@ -4727,7 +4727,7 @@ function distanceUnitsArticle(lang) {
           <tr><td><a href="${conv}?d=1&u=m">Metro</a></td><td>la base del SI</td><td>La diezmillonésima parte del cuadrante del meridiano de París (1791)</td></tr>
           <tr><td><a href="/distancias/?d=1&u=km&lat=40.4168&lon=-3.7038&z=13">Kilómetro</a></td><td>1.000 m</td><td>Mil metros: prefijo griego, decisión de despacho</td></tr>
           <tr><td><a href="${conv}?d=1&u=cm">Centímetro</a></td><td>0,01 m</td><td>La centésima parte del metro</td></tr>
-          <tr><td><a href="${conv}?d=1&u=mi">Milla</a></td><td>1.609,344 m</td><td>Los mil pasos dobles del legionario romano, estirados por un estatuto de 1593</td></tr>
+          <tr><td><a href="/que-es-una-milla/">Milla</a></td><td>1.609,344 m</td><td>Los mil pasos dobles del legionario romano, estirados por un estatuto de 1593</td></tr>
           <tr><td><a href="/cuanto-es-una-milla-nautica/">Milla náutica</a></td><td>1.852 m</td><td>Un minuto de arco de meridiano</td></tr>
           <tr><td><a href="${conv}?d=1&u=yd">Yarda</a></td><td>0,9144 m</td><td>Se dice que el brazo de Enrique I; exacta desde 1959</td></tr>
           <tr><td><a href="${conv}?d=1&u=ft">Pie</a></td><td>0,3048 m</td><td>Un pie de verdad, y cada reino tenía el suyo</td></tr>
@@ -4791,7 +4791,8 @@ function distanceUnitsArticle(lang) {
       <p>
         Es decir: la milla mide lo que mide porque en 1593 salía más barato cambiar la milla que
         volver a medir Inglaterra. Su valor exacto en metros, <b>1.609,344</b>, no llegó hasta
-        1959.
+        1959. La historia entera —la milla romana, la escocesa, la castellana y la del atletismo—
+        está en <a href="/que-es-una-milla/">qué es una milla</a>.
       </p>
 
       <h2>El metro: la primera vez que medimos con el planeta</h2>
@@ -4935,7 +4936,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-08-25',
+    family: 'distancias', published: '2026-08-25', modified: '2026-09-04',
     slug: 'unidades-de-distancia',
     path: DISTANCE_UNITS_ALTERNATES.es, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -4984,7 +4985,7 @@ function distanceUnitsArticle(lang) {
           <tr><td><a href="${conv}?d=1&u=m">Metre</a></td><td>the SI base unit</td><td>One ten-millionth of the quadrant of the Paris meridian (1791)</td></tr>
           <tr><td><a href="/en/distances/?d=1&u=km&lat=51.5074&lon=-0.1278&z=13">Kilometre</a></td><td>1,000 m</td><td>A thousand metres: a Greek prefix and a committee decision</td></tr>
           <tr><td><a href="${conv}?d=1&u=cm">Centimetre</a></td><td>0.01 m</td><td>One hundredth of a metre</td></tr>
-          <tr><td><a href="${conv}?d=1&u=mi">Mile</a></td><td>1,609.344 m</td><td>The thousand double paces of a Roman legionary, stretched by a statute of 1593</td></tr>
+          <tr><td><a href="/en/what-is-a-mile/">Mile</a></td><td>1,609.344 m</td><td>The thousand double paces of a Roman legionary, stretched by a statute of 1593</td></tr>
           <tr><td><a href="/en/how-long-is-a-nautical-mile/">Nautical mile</a></td><td>1,852 m</td><td>One minute of arc of a meridian</td></tr>
           <tr><td><a href="${conv}?d=1&u=yd">Yard</a></td><td>0.9144 m</td><td>Said to be the arm of Henry I; exact since 1959</td></tr>
           <tr><td><a href="${conv}?d=1&u=ft">Foot</a></td><td>0.3048 m</td><td>An actual foot, and every kingdom had its own</td></tr>
@@ -5046,7 +5047,8 @@ function distanceUnitsArticle(lang) {
       <p>
         In other words, the mile is the length it is because in 1593 it was cheaper to change the
         mile than to re-measure England. Its exact metric value, <b>1,609.344 m</b>, only arrived in
-        1959.
+        1959. The whole story — the Roman mile, the Scots mile, the Irish mile and the one they
+        still race — is in <a href="/en/what-is-a-mile/">what is a mile</a>.
       </p>
 
       <h2>The metre: the first time we measured with the planet</h2>
@@ -5184,7 +5186,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-08-25',
+    family: 'distancias', published: '2026-08-25', modified: '2026-09-04',
     slug: 'distance-units',
     path: DISTANCE_UNITS_ALTERNATES.en, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5207,8 +5209,503 @@ function distanceUnitsArticle(lang) {
   };
 }
 
+// ---- SPOKE · ¿Qué es una milla? -------------------------------------------
+//
+// Primer spoke del hub /unidades-de-distancia/ (serie «El origen de las
+// unidades», bloque B). Reparto de intención: la consulta «millas a km» la
+// sirve el conversor /kilometros-a-millas/; este artículo sirve «qué es una
+// milla», «por qué mide 1.609 metros» y «cuántas millas hay».
+//
+// Datos validados 2026-09-04 (web):
+// - Milla romana: mille passus, mil pasos dobles = 5.000 pies romanos ≈
+//   1.479 m. Milla estatutaria: 5.280 pies = 1.760 yardas = 8 furlongs, y el
+//   estatuto de 1593 (35 Eliz. I c. 6) la fijó así — «eight Furlongs, every
+//   Furlong forty Poles, and every Pole sixteen Foot and an half» — para no
+//   tener que acortar la percha, lo que habría equivalido a subir los
+//   impuestos de las tierras ya medidas. Valor exacto (1.609,344 m) desde el
+//   International Yard and Pound Agreement de 1959.
+//   Milla escocesa 1.976 yardas ≈ 1.807 m; milla irlandesa 2.240 yardas =
+//   2.048,256 m; «mil» escandinava = 10 km desde la metrificación del XIX;
+//   US survey mile 1.609,347 m, retirada el 1 de enero de 2023.
+//   https://en.wikipedia.org/wiki/Mile
+// - Milla escocesa: abolida tres veces (acta del Parlamento escocés de 1685,
+//   Tratado de Unión de 1707 y Weights and Measures Act de 1824); la Royal
+//   Mile de Edimburgo mide aproximadamente una milla escocesa.
+//   https://en.wikipedia.org/wiki/Scottish_mile
+// - Milla castellana: mil pasos geométricos de cinco pies castellanos =
+//   1.393,18 m; la legua común (5.572,7 m) son cuatro de esas millas.
+//   https://es.wikipedia.org/wiki/Anexo:Antiguas_medidas_espa%C3%B1olas
+// - Récord del mundo de la milla: Josh Kerr 3:42,66 el 18 de julio de 2026 en
+//   Londres, rompiendo los 3:43,13 de Hicham El Guerrouj (1999) tras 27 años.
+//   Roger Bannister bajó de cuatro minutos el 6 de mayo de 1954 (3:59,4,
+//   Oxford). Récord femenino: Faith Kipyegon, 4:07,64 (Mónaco, 2023).
+//   https://worldathletics.org/news/report/london-athletics-meet-2026-josh-kerr-world-mile-record
+//   https://en.wikipedia.org/wiki/Mile_run_world_record_progression
+// - Kipyegon corrió 4:06,42 en el Breaking4 de Nike (París, 26 de junio de
+//   2025), la milla más rápida jamás corrida por una mujer, pero no es
+//   récord: llevaba liebres masculinas y zapatillas no homologadas.
+//   https://en.wikipedia.org/wiki/Breaking4
+// - Desde 1976, cuando la federación internacional adoptó el sistema métrico
+//   como norma, la milla es la única distancia no métrica con récord del mundo
+//   oficial. https://en.wikipedia.org/wiki/Mile_run_world_record_progression
+const MILE_ALTERNATES = {
+  es: '/que-es-una-milla/',
+  en: '/en/what-is-a-mile/',
+};
+
+function mileArticle(lang) {
+  const es = lang === 'es';
+  if (es) {
+  const conv = '/kilometros-a-millas/';
+  const hub = '/unidades-de-distancia/';
+  const dist = (d, u, z) => `/distancias/?d=${d}&u=${u}&lat=39.4699&lon=-0.3763&z=${z}`;
+  const intro = `      <p>
+        <b>Una milla son 1.609,344 metros exactos</b>: <b><a href="${dist(1, 'mi', 13)}">1,609
+        kilómetros</a></b>, o lo que es lo mismo, 5.280 pies, 1.760 yardas y ocho furlongs. El mapa
+        de arriba dibuja ese radio de una milla sobre Valencia; arrástralo hasta tu ciudad para
+        verla a escala. Si solo quieres el número, el
+        <a href="${conv}?d=1&u=mi">conversor de distancias</a> lo hace al instante.
+      </p>
+      <p>
+        Lo interesante de la milla no es cuánto mide, sino <b>por qué mide justo eso</b>. Un
+        kilómetro son mil metros porque alguien lo decidió en un despacho de París; una milla son
+        1.609,344 metros porque un legionario romano iba contando pasos, porque una yunta de bueyes
+        se cansaba cada 201 metros y porque en 1593 al Parlamento inglés le salía más barato
+        estirar la milla que volver a medir el país. Este artículo forma parte de
+        <a href="${hub}">las unidades de distancia y de dónde vienen</a>.
+      </p>
+
+      <h2>La milla es romana: mil pasos de un legionario</h2>
+      <p>
+        La palabra lo dice todo. <i>Milla</i> viene de <b><i>mille passus</i></b>, «mil pasos», y el
+        paso romano no era una zancada sino un <b>paso doble</b>: se contaba cada vez que volvía a
+        pisar el mismo pie. Mil de esos pasos son <b>5.000 pies romanos</b>, unos
+        <b><a href="${dist(1479, 'm', 13)}">1.479 metros</a></b>, según las estimaciones modernas.
+      </p>
+      <p>
+        No era una medida teórica: era la unidad con la que el ejército romano administraba un
+        imperio. Cada milla de calzada llevaba clavado un <b>miliario</b>, una columna de piedra con
+        la distancia y el nombre del emperador que había pagado la obra, y en Hispania todavía se
+        conservan muchos. La milla de hoy y aquella se llevan <b>130 metros</b>: la nuestra es un
+        9 % más larga. Ese 9 % lo puso Inglaterra, y tiene una explicación muy concreta.
+      </p>
+
+      <h2>Por qué una milla mide 5.280 pies y no 5.000</h2>
+      <p>
+        Entre los romanos y nosotros se cuela el campo inglés. Los labradores no medían en millas,
+        medían en <b>furlongs</b> (<i>furrow long</i>, «surco de largo»): la distancia que araba una
+        yunta de bueyes antes de parar a descansar, <b>660 pies</b>, unos
+        <a href="${conv}?d=201,168&u=m">201 metros</a>. El furlong se dividía en <b>perchas</b> de
+        <b>16 pies y medio</b>, y en perchas estaban medidas las fincas, las escrituras y los
+        impuestos de toda Inglaterra desde Enrique VIII.
+      </p>
+      <p>
+        El problema es que una milla romana de 5.000 pies no cabe en un número redondo de furlongs:
+        salen 7,57. En <b>1593</b>, un estatuto de Isabel I (35 Eliz. I c. 6) resolvió el desajuste
+        de la única manera que no costaba dinero: en vez de acortar la percha una onceava parte
+        —lo que habría hecho que cada finca del país «midiera» más y pagara más impuestos—,
+        <b>estiró la milla</b> hasta que encajaran ocho furlongs enteros:
+      </p>
+      <p style="text-align:center">
+        <b>8 furlongs × 40 perchas × 16,5 pies = 5.280 pies</b>
+      </p>
+      <p>
+        Por eso la milla mide 1.609 metros y no 1.480: para no tener que recatastrar Inglaterra. El
+        número redondo de la historia no es el 5.280 sino el 8, y está en furlongs, no en pies. Y
+        ese valor tan preciso que usamos hoy, <b>1.609,344 metros</b>, es mucho más moderno: sale
+        del <b>acuerdo internacional de la yarda y la libra de 1959</b>, que definió la yarda como
+        0,9144 metros exactos. Desde entonces <b>la milla se define en metros</b>: es una unidad
+        imperial medida con el sistema métrico.
+      </p>
+
+      <h2>No hay una milla, hay muchas</h2>
+      <p>
+        «Milla» ha sido durante siglos el nombre genérico de «una distancia larga a pie», y cada
+        sitio la ajustó a lo suyo. Estas son las principales:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Milla</th><th>Cuánto mide</th><th>Dónde y cuándo</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1393&u=m">Milla castellana</a></td><td>1.393 m</td><td>Mil pasos de cinco pies castellanos; cuatro de ellas hacen una legua</td></tr>
+          <tr><td><a href="${conv}?d=1479&u=m">Milla romana</a></td><td>≈ 1.479 m</td><td><i>Mille passus</i>: 5.000 pies romanos</td></tr>
+          <tr><td><a href="${conv}?d=1&u=mi">Milla terrestre o estatutaria</a></td><td>1.609,344 m</td><td>La de hoy: Reino Unido, Estados Unidos y poco más</td></tr>
+          <tr><td>US survey mile</td><td>1.609,347 m</td><td>La del catastro estadounidense, retirada el 1 de enero de 2023</td></tr>
+          <tr><td><a href="${conv}?d=1807&u=m">Milla escocesa</a></td><td>≈ 1.807 m</td><td>1.976 yardas; abolida tres veces (1685, 1707 y 1824)</td></tr>
+          <tr><td><a href="/cuanto-es-una-milla-nautica/">Milla náutica</a></td><td>1.852 m</td><td>Un minuto de arco de meridiano; mar y aire</td></tr>
+          <tr><td><a href="${conv}?d=2048&u=m">Milla irlandesa</a></td><td>2.048 m</td><td>2.240 yardas; sobrevivió en los mapas hasta el siglo XX</td></tr>
+          <tr><td><a href="${conv}?d=10&u=km">«Mil» escandinava</a></td><td>10.000 m</td><td>Suecia y Noruega, viva hoy: «está a dos <i>mil</i>» son 20 km</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Dos de esas filas merecen una nota. La <b>escocesa</b> hubo que abolirla tres veces —por el
+        Parlamento escocés en 1685, por el Tratado de Unión de 1707 y por la Weights and Measures
+        Act de 1824— y aun así dejó rastro: la <b>Royal Mile</b> de Edimburgo
+        se llama así porque mide, más o menos, una milla escocesa, y por eso se hace más larga de lo
+        que uno espera. Y la <b>escandinava</b> es la trampa favorita de los viajeros: cuando un
+        sueco dice que algo está «a una <i>mil</i>», está diciendo diez kilómetros, no 1,6.
+      </p>
+
+      <h2>¿Y en España? La milla que se fue y la que se quedó</h2>
+      <p>
+        España también tuvo su milla: mil <b>pasos geométricos</b> de cinco pies castellanos,
+        <b>1.393 metros</b>. Encajaba limpiamente en el sistema de la época, porque
+        <a href="${conv}?d=5,5727&u=km">la legua común</a> (5.572,7 m) son exactamente cuatro
+        millas castellanas. Desapareció con el sistema métrico, adoptado por la Ley de Pesas y
+        Medidas de 1849.
+      </p>
+      <p>
+        Lo que no desapareció es la milla en el mar y en el aire, que es <b>otra unidad distinta</b>
+        y la única «milla» oficial que se usa hoy en España: la
+        <a href="/cuanto-es-una-milla-nautica/">milla náutica</a>, 1.852 metros exactos, un 15 % más
+        larga que la terrestre. Cuando el parte marítimo habla de millas o un avión da su distancia
+        al aeropuerto, son estas.
+      </p>
+
+      <h2>Cuánto es una milla en cosas que conoces</h2>
+      <ul>
+        <li><b>Andando</b>: unos veinte minutos a paso normal (5 km/h). Los famosos
+          <a href="/cuanto-son-10000-pasos/">10.000 pasos</a> son 4,7 millas.</li>
+        <li><b>En coche</b>: el límite de 70 mph de las autopistas británicas y de buena parte de
+          Estados Unidos son 112 km/h; las 30 mph de ciudad, 48 km/h.</li>
+        <li><b>Corriendo</b>: <a href="/cuanto-mide-un-maraton/">un maratón</a> son 26 millas y 385
+          yardas, y una carrera popular de 5 km son 3,1 millas.</li>
+        <li><b>En el horizonte</b>: desde la orilla de la playa,
+          <a href="/a-que-distancia-esta-el-horizonte/">el mar se acaba</a> a 4,7 km, es decir, a
+          menos de tres millas.</li>
+        <li><b>Las 500 millas de Indianápolis</b>: 200 vueltas a un óvalo de 2,5 millas, en total
+          <a href="${dist("804,672", 'km', 6)}">804,672 km</a>.</li>
+      </ul>
+
+      <h2>La milla del atletismo: la unidad imperial que no se rinde</h2>
+      <p>
+        En <b>1976</b>, la federación internacional adoptó el sistema métrico como norma y dejó de
+        homologar récords en distancias imperiales, con una excepción: <b>la milla</b>. Sigue siendo
+        hoy la <b>única distancia no métrica con récord del mundo oficial</b>, y lo es por una razón
+        sentimental —la <b>barrera de los cuatro minutos</b>—.
+        <b>Roger Bannister</b> la rompió el <b>6 de mayo de 1954</b> en Oxford con 3:59,4, en una
+        pista de ceniza y con dos liebres.
+      </p>
+      <p>
+        Setenta y dos años después, el récord aguanta bastante mejor que la unidad: el <b>18 de
+        julio de 2026</b>, en Londres, el británico <b>Josh Kerr</b> corrió la milla en
+        <b>3:42,66</b> y se convirtió en el primer hombre en bajar de 3:43, borrando los 3:43,13 que
+        Hicham El Guerrouj había firmado en 1999 y que llevaban <b>27 años</b> en pie. Son 26 km/h
+        de media sostenidos durante casi cuatro minutos. En mujeres, el récord es de <b>Faith
+        Kipyegon</b>: 4:07,64 en Mónaco (2023). La keniana corrió 4:06,42 en el Breaking4 de París
+        el 26 de junio de 2025 —la milla más rápida jamás corrida por una mujer—, pero no cuenta
+        como récord: llevaba liebres masculinas y zapatillas sin homologar.
+      </p>
+
+      <h2>Tabla de conversión rápida</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Millas</th><th>Kilómetros</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=mi">1 milla</a></td><td>1,609 km</td><td>Veinte minutos andando</td></tr>
+          <tr><td><a href="${conv}?d=3,1&u=mi">3,1 millas</a></td><td>5 km</td><td>La carrera popular de toda la vida</td></tr>
+          <tr><td><a href="${conv}?d=6,2&u=mi">6,2 millas</a></td><td>10 km</td><td>Un diez mil</td></tr>
+          <tr><td><a href="${conv}?d=13,1&u=mi">13,1 millas</a></td><td>21,1 km</td><td>Media maratón</td></tr>
+          <tr><td><a href="${conv}?d=26,219&u=mi">26,219 millas</a></td><td>42,195 km</td><td><a href="/cuanto-mide-un-maraton/">Maratón</a> (26 millas y 385 yardas)</td></tr>
+          <tr><td><a href="${conv}?d=100&u=mi">100 millas</a></td><td>160,9 km</td><td>Una ultramaratón clásica</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Al revés, para hacerlo de cabeza: <b>un kilómetro son 0,62 millas</b>, algo menos de dos
+        tercios. Y ojo con la regla rápida de los corredores: multiplicar las millas por 1,6 se
+        queda corto en 9 metros por milla, que en un maratón son casi 250 metros.
+      </p>
+
+      <h2>Preguntas frecuentes sobre la milla</h2>
+      <dl class="faq">
+        <dt>¿Cuántos kilómetros son una milla?</dt>
+        <dd>Una milla terrestre son <a href="${conv}?d=1&u=mi">1,609344 kilómetros</a>, es decir
+          1.609,344 metros. A la inversa, un kilómetro son 0,621 millas.</dd>
+
+        <dt>¿Por qué una milla mide 1.609 metros?</dt>
+        <dd>Porque un estatuto inglés de 1593 la fijó en ocho furlongs de cuarenta perchas de
+          dieciséis pies y medio: 5.280 pies. El Parlamento prefirió estirar la milla (la romana
+          eran 5.000 pies) antes que acortar la percha, porque todas las escrituras y todos los
+          impuestos sobre la tierra estaban medidos en perchas y furlongs. Su valor exacto en
+          metros, 1.609,344, es del acuerdo internacional de 1959.</dd>
+
+        <dt>¿De dónde viene la palabra milla?</dt>
+        <dd>Del latín mille passus, «mil pasos». El paso romano era doble —se contaba cada vez que
+          volvía a pisar el mismo pie—, así que mil pasos eran 5.000 pies romanos, unos 1.479
+          metros. Cada milla de calzada romana estaba marcada con un miliario de piedra.</dd>
+
+        <dt>¿Cuántos pies y cuántas yardas tiene una milla?</dt>
+        <dd>5.280 pies, 1.760 yardas y 8 furlongs. Los tres números vienen del mismo estatuto de
+          1593: el que es redondo es el 8, porque la milla se ajustó al furlong y no al revés.</dd>
+
+        <dt>¿Qué diferencia hay entre una milla y una milla náutica?</dt>
+        <dd>La milla terrestre mide 1.609,344 metros y viene de los pasos romanos y del campo
+          inglés. La milla náutica mide 1.852 metros exactos y viene del planeta: es un minuto de
+          arco de meridiano. La náutica es un 15 % más larga.</dd>
+
+        <dt>¿Se usa la milla en España?</dt>
+        <dd>En tierra no: España adoptó el sistema métrico en 1849 y la antigua milla castellana de
+          1.393 metros desapareció con él. En el mar y en el aire sí se usa, pero es la milla
+          náutica de 1.852 metros, que es otra unidad.</dd>
+
+        <dt>¿Cuánto se tarda en andar una milla?</dt>
+        <dd>Unos veinte minutos a paso normal (5 km/h) y unos quince a paso ligero. Corriendo, un
+          aficionado la hace en ocho o nueve minutos; el récord del mundo está en 3:42,66.</dd>
+      </dl>
+      <p>
+        ¿Quieres el número y ya? Usa el <a href="${conv}">conversor de kilómetros a millas</a>.
+        ¿Quieres verlo? Escribe una distancia en la
+        <a href="/distancias/">herramienta de distancias</a> y se dibuja a escala sobre tu ciudad, o
+        <a href="/medir-distancias/">mide una distancia</a> punto a punto en el mapa. Y si quieres
+        la historia completa —el metro, el pie, la legua y por qué no nos ponemos de acuerdo—, está
+        en <a href="${hub}">las unidades de distancia</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'que-es-una-milla', ha: 0,
+    family: 'distancias', published: '2026-09-04', modified: '2026-09-04',
+    slug: 'que-es-una-milla',
+    path: MILE_ALTERNATES.es, alternates: MILE_ALTERNATES,
+    dist: 1, distUnit: 'mi',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 39.4699; var PRESET_LON = -0.3763;',
+    title: '¿Qué es una milla? Por qué mide 1.609 metros y no otra cosa | Hectareómetro',
+    description: 'Una milla son 1.609,344 metros: 5.280 pies, 1.760 yardas y ocho furlongs. De los mil pasos del legionario romano al estatuto de 1593 que la estiró para no subir los impuestos. Con tabla de conversión y dibujada a escala en el mapa.',
+    h1: '¿Qué es una milla?',
+    intro,
+    question: '¿Cuánto es una milla?',
+    answer: 'Una milla terrestre son 1.609,344 metros exactos: 1,609 kilómetros, 5.280 pies, 1.760 yardas u ocho furlongs. Viene de la milla romana de mil pasos dobles (unos 1.479 m) y la fijó en su longitud actual un estatuto inglés de 1593.',
+    faqs: [
+      { q: '¿Cuántos kilómetros son una milla?', a: 'Una milla terrestre son 1,609344 kilómetros, es decir 1.609,344 metros. A la inversa, un kilómetro son 0,621 millas.' },
+      { q: '¿Por qué una milla mide 1.609 metros?', a: 'Porque un estatuto inglés de 1593 la fijó en ocho furlongs de cuarenta perchas de dieciséis pies y medio: 5.280 pies. El Parlamento prefirió estirar la milla (la romana eran 5.000 pies) antes que acortar la percha, porque todas las escrituras y todos los impuestos sobre la tierra estaban medidos en perchas y furlongs. Su valor exacto en metros, 1.609,344, es del acuerdo internacional de 1959.' },
+      { q: '¿De dónde viene la palabra milla?', a: 'Del latín mille passus, «mil pasos». El paso romano era doble —se contaba cada vez que volvía a pisar el mismo pie—, así que mil pasos eran 5.000 pies romanos, unos 1.479 metros. Cada milla de calzada romana estaba marcada con un miliario de piedra.' },
+      { q: '¿Cuántos pies y cuántas yardas tiene una milla?', a: '5.280 pies, 1.760 yardas y 8 furlongs. Los tres números vienen del mismo estatuto de 1593: el que es redondo es el 8, porque la milla se ajustó al furlong y no al revés.' },
+      { q: '¿Qué diferencia hay entre una milla y una milla náutica?', a: 'La milla terrestre mide 1.609,344 metros y viene de los pasos romanos y del campo inglés. La milla náutica mide 1.852 metros exactos y viene del planeta: es un minuto de arco de meridiano. La náutica es un 15 % más larga.' },
+      { q: '¿Se usa la milla en España?', a: 'En tierra no: España adoptó el sistema métrico en 1849 y la antigua milla castellana de 1.393 metros desapareció con él. En el mar y en el aire sí se usa, pero es la milla náutica de 1.852 metros, que es otra unidad.' },
+      { q: '¿Cuánto se tarda en andar una milla?', a: 'Unos veinte minutos a paso normal (5 km/h) y unos quince a paso ligero. Corriendo, un aficionado la hace en ocho o nueve minutos; el récord del mundo está en 3:42,66.' },
+    ],
+    linkLabel: '¿Qué es una milla?',
+  };
+  }
+
+  // English mirror (universal topic). Preset: a one-mile radius over Times
+  // Square, and the copy leads with feet/yards because that is how the reader
+  // of the English page thinks about it.
+  const conv = '/en/kilometers-to-miles/';
+  const hub = '/en/distance-units/';
+  const dist = (d, u, z) => `/en/distances/?d=${d}&u=${u}&lat=40.7580&lon=-73.9855&z=${z}`;
+  const intro = `      <p>
+        <b>A mile is 5,280 feet</b>: 1,760 yards, eight furlongs, and — since 1959 —
+        <b><a href="${dist(1, 'mi', 13)}">exactly 1,609.344 metres</a></b>. The map above draws that
+        one-mile radius over Times Square; drag it to your own town to see it to scale. If all you
+        want is the number, the <a href="${conv}?d=1&u=mi">distance converter</a> does it instantly.
+      </p>
+      <p>
+        The interesting thing about the mile is not how long it is, but <b>why it is that long</b>.
+        A kilometre is a thousand metres because somebody decided so in a Paris office; a mile is
+        5,280 feet because a Roman legionary counted paces, because an ox team stopped to rest every
+        660 feet, and because in 1593 Parliament worked out that stretching the mile was cheaper
+        than re-measuring England. This article is part of
+        <a href="${hub}">the distance units and where they came from</a>.
+      </p>
+
+      <h2>The mile is Roman: a thousand paces of a legionary</h2>
+      <p>
+        The name says it. <i>Mile</i> comes from <b><i>mille passus</i></b>, “a thousand paces”, and
+        the Roman pace was not a single step but a <b>double step</b> — counted every time the same
+        foot hit the ground again. A thousand of those are <b>5,000 Roman feet</b>, about
+        <b><a href="${dist(1479, 'm', 13)}">1,479 metres</a></b> by modern estimates.
+      </p>
+      <p>
+        It was not a theory: it was how Rome administered an empire. Every mile of road carried a
+        <b>milestone</b> giving the distance and the name of the emperor who had paid for the
+        paving, and hundreds still stand around the Mediterranean. Today's mile is <b>130 metres</b>
+        longer than that one — 9% longer. England added that 9%, and it had a very specific reason.
+      </p>
+
+      <h2>Why is a mile 5,280 feet and not 5,000?</h2>
+      <p>
+        Between the Romans and us sits the English field. Farmers did not measure in miles, they
+        measured in <b>furlongs</b> (<i>furrow long</i>): the distance an ox team ploughed before
+        stopping to rest, <b>660 feet</b>, about <a href="${conv}?d=201.168&u=m">201 metres</a>. A
+        furlong was forty <b>rods</b> of <b>sixteen and a half feet</b>, and every field, every deed
+        and every land tax in England had been measured in rods since Henry VIII.
+      </p>
+      <p>
+        The trouble is that a Roman mile of 5,000 feet is not a round number of furlongs: it is
+        7.57. In <b>1593</b> a statute of Elizabeth I (35 Eliz. I c. 6) fixed the mismatch the only
+        way that cost nothing: instead of shortening the rod by one eleventh — which would have made
+        every holding in the country “measure” more and pay more tax — it <b>stretched the mile</b>
+        until eight whole furlongs fitted:
+      </p>
+      <p style="text-align:center">
+        <b>8 furlongs × 40 rods × 16.5 feet = 5,280 feet</b>
+      </p>
+      <p>
+        So the mile is 5,280 feet in order to avoid re-surveying England. The round number in the
+        story is not 5,280 but 8, and it is counted in furlongs, not feet. The precise figure we use
+        today, <b>1,609.344 metres</b>, is far more recent: it comes from the <b>International Yard
+        and Pound Agreement of 1959</b>, which defined the yard as exactly 0.9144 metres. Ever since
+        then, <b>the mile is defined in metres</b> — an imperial unit measured by the metric system.
+      </p>
+
+      <h2>There is no such thing as “the” mile</h2>
+      <p>
+        For centuries “mile” was just the generic word for “a long walk”, and every country tuned it
+        to its own. These are the main ones:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Mile</th><th>How long</th><th>Where and when</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1393&u=m">Castilian mile</a></td><td>1,393 m</td><td>A thousand paces of five Castilian feet; four of them made a league</td></tr>
+          <tr><td><a href="${conv}?d=1479&u=m">Roman mile</a></td><td>≈ 1,479 m</td><td><i>Mille passus</i>: 5,000 Roman feet</td></tr>
+          <tr><td><a href="${conv}?d=1&u=mi">Statute mile</a></td><td>1,609.344 m</td><td>Today's mile: the UK, the US and little else</td></tr>
+          <tr><td>US survey mile</td><td>1,609.347 m</td><td>The surveyor's mile, retired on 1 January 2023</td></tr>
+          <tr><td><a href="${conv}?d=1807&u=m">Scots mile</a></td><td>≈ 1,807 m</td><td>1,976 yards; abolished three times (1685, 1707 and 1824)</td></tr>
+          <tr><td><a href="/en/how-long-is-a-nautical-mile/">Nautical mile</a></td><td>1,852 m</td><td>One minute of arc of a meridian; sea and air</td></tr>
+          <tr><td><a href="${conv}?d=2048&u=m">Irish mile</a></td><td>2,048 m</td><td>2,240 yards; still on maps into the 20th century</td></tr>
+          <tr><td><a href="${conv}?d=10&u=km">Scandinavian <i>mil</i></a></td><td>10,000 m</td><td>Sweden and Norway, alive today: “two <i>mil</i> away” means 20 km</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Two of those rows deserve a footnote. The <b>Scots mile</b> had to be abolished three times —
+        by the Scottish Parliament in 1685, by the Treaty of Union in 1707 and by the Weights and
+        Measures Act of 1824 — and it still left a mark:
+        Edinburgh's <b>Royal Mile</b> is called that because it is roughly one Scots mile long,
+        which is why it feels longer than it should. And the Scandinavian <b>mil</b> is the classic
+        traveller's trap: when a Swede says something is “a mil away”, that is ten kilometres, not
+        1.6.
+      </p>
+
+      <h2>Miles, metres and the countries that kept them</h2>
+      <p>
+        The mile survives on road signs in the <b>United Kingdom</b>, the <b>United States</b> and a
+        handful of territories, and almost nowhere else. Britain is the strangest case: it buys
+        petrol in litres and food in kilograms, but still drives in miles and drinks beer in pints.
+        The United States is stranger still — its mile has been legally defined in metres since the
+        nineteenth century, so the country is quietly metric and does not know it.
+      </p>
+      <p>
+        Rough conversions worth memorising: <b>a kilometre is 0.62 miles</b>, a bit under two
+        thirds. And beware the runners' shortcut: multiplying miles by 1.6 falls 9 metres short per
+        mile, which is almost 250 metres over
+        <a href="/en/how-long-is-a-marathon/">a marathon</a>.
+      </p>
+
+      <h2>What a mile looks like in things you know</h2>
+      <ul>
+        <li><b>On foot</b>: about twenty minutes at a normal walking pace (3 mph).
+          <a href="/en/how-far-is-10000-steps/">Ten thousand steps</a> come to 4.7 miles.</li>
+        <li><b>Driving</b>: 70 mph, the British motorway and much of the US interstate limit, is
+          113 km/h; 30 mph in town is 48 km/h.</li>
+        <li><b>Running</b>: <a href="/en/how-long-is-a-marathon/">a marathon</a> is 26 miles and 385
+          yards, and a 5K is 3.1 miles.</li>
+        <li><b>At the beach</b>: <a href="/en/how-far-away-is-the-horizon/">the horizon</a> is under
+          three miles away (4.7 km).</li>
+        <li><b>The Indy 500</b>: 200 laps of a 2.5-mile oval, or
+          <a href="${dist(804.672, 'km', 6)}">804.672 km</a> in total.</li>
+      </ul>
+
+      <h2>The mile in athletics: the imperial unit that refuses to die</h2>
+      <p>
+        In <b>1976</b> World Athletics made the metric system its standard and stopped ratifying
+        records at imperial distances, with one exception: <b>the mile</b>. It is still the
+        <b>only non-metric distance with an official world record</b>, and the reason is sentimental
+        — the <b>four-minute barrier</b>. <b>Roger Bannister</b> broke it on <b>6 May
+        1954</b> at Iffley Road in Oxford, running 3:59.4 on a cinder track behind two pacemakers.
+      </p>
+      <p>
+        Seventy-two years on, the record is aging better than the unit. On <b>18 July 2026</b> in
+        London, Britain's <b>Josh Kerr</b> ran <b>3:42.66</b> and became the first man under 3:43,
+        erasing the 3:43.13 Hicham El Guerrouj had set in 1999 — a mark that had stood for <b>27
+        years</b>. That is an average of 16 mph held for nearly four minutes. The women's record is
+        <b>Faith Kipyegon</b>'s 4:07.64, set in Monaco in 2023; her 4:06.42 at Nike's Breaking4 in
+        Paris on 26 June 2025 is the fastest mile ever run by a woman but does not count, because
+        she used male pacemakers and unapproved shoes.
+      </p>
+
+      <h2>Quick conversion table</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Miles</th><th>Kilometres</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=mi">1 mile</a></td><td>1.609 km</td><td>A twenty-minute walk</td></tr>
+          <tr><td><a href="${conv}?d=3.1&u=mi">3.1 miles</a></td><td>5 km</td><td>The classic fun run</td></tr>
+          <tr><td><a href="${conv}?d=6.2&u=mi">6.2 miles</a></td><td>10 km</td><td>A 10K</td></tr>
+          <tr><td><a href="${conv}?d=13.1&u=mi">13.1 miles</a></td><td>21.1 km</td><td>Half marathon</td></tr>
+          <tr><td><a href="${conv}?d=26.219&u=mi">26.219 miles</a></td><td>42.195 km</td><td><a href="/en/how-long-is-a-marathon/">Marathon</a> (26 miles 385 yards)</td></tr>
+          <tr><td><a href="${conv}?d=100&u=mi">100 miles</a></td><td>160.9 km</td><td>The classic ultra</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Frequently asked questions about the mile</h2>
+      <dl class="faq">
+        <dt>How many kilometres is a mile?</dt>
+        <dd>A statute mile is <a href="${conv}?d=1&u=mi">1.609344 kilometres</a>, or 1,609.344
+          metres. The other way round, a kilometre is 0.621 miles.</dd>
+
+        <dt>Why is a mile 5,280 feet?</dt>
+        <dd>Because an English statute of 1593 set it at eight furlongs of forty rods of sixteen and
+          a half feet. Parliament chose to stretch the mile (the Roman one was 5,000 feet) rather
+          than shorten the rod, because every deed and every land tax was measured in rods and
+          furlongs. Its exact metric value, 1,609.344 m, comes from the international agreement of
+          1959.</dd>
+
+        <dt>Where does the word mile come from?</dt>
+        <dd>From the Latin mille passus, “a thousand paces”. The Roman pace was a double step —
+          counted each time the same foot landed again — so a thousand paces were 5,000 Roman feet,
+          roughly 1,479 metres. Every mile of Roman road was marked with a stone milestone.</dd>
+
+        <dt>How many feet and yards are in a mile?</dt>
+        <dd>5,280 feet, 1,760 yards and 8 furlongs. All three come from the same 1593 statute: the
+          round number is the 8, because the mile was fitted to the furlong and not the other way
+          round.</dd>
+
+        <dt>What is the difference between a mile and a nautical mile?</dt>
+        <dd>The statute mile is 1,609.344 metres and comes from Roman paces and English farmland.
+          The nautical mile is exactly 1,852 metres and comes from the planet: it is one minute of
+          arc of a meridian. The nautical mile is 15% longer.</dd>
+
+        <dt>Which countries still use miles?</dt>
+        <dd>Road signs in miles survive in the United Kingdom, the United States and a handful of
+          territories such as the Bahamas, Belize and the Cayman Islands. Everywhere else signs the
+          roads in kilometres, and even in the US the mile is legally defined in metres.</dd>
+
+        <dt>How long does it take to walk a mile?</dt>
+        <dd>About twenty minutes at a normal pace and fifteen at a brisk one. A recreational runner
+          covers it in eight or nine minutes; the world record is 3:42.66.</dd>
+      </dl>
+      <p>
+        Just want the number? Use the <a href="${conv}">kilometers to miles converter</a>. Want to
+        see it? Type a distance into the <a href="/en/distances/">distances tool</a> and it is drawn
+        to scale over your city, or <a href="/en/measure-distance/">measure a distance</a> point by
+        point on the map. And if you want the whole story — the metre, the foot, the league and why
+        we still cannot agree — it is in <a href="${hub}">the distance units</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'que-es-una-milla', ha: 0,
+    family: 'distancias', published: '2026-09-04', modified: '2026-09-04',
+    slug: 'what-is-a-mile',
+    path: MILE_ALTERNATES.en, alternates: MILE_ALTERNATES,
+    dist: 1, distUnit: 'mi',
+    presetExtra: ' var PRESET_ZOOM = 13; var PRESET_LAT = 40.7580; var PRESET_LON = -73.9855;',
+    title: 'What is a mile? Why it is 5,280 feet and not 5,000 | Hectareometer',
+    description: 'A mile is 5,280 feet: 1,760 yards, eight furlongs and exactly 1,609.344 metres. From the thousand paces of a Roman legionary to the 1593 statute that stretched it to avoid a tax rise. With a conversion table and drawn to scale on the map.',
+    h1: 'What is a mile?',
+    intro,
+    question: 'How long is a mile?',
+    answer: 'A statute mile is exactly 1,609.344 metres: 5,280 feet, 1,760 yards or eight furlongs. It descends from the Roman mile of a thousand double paces (about 1,479 m) and was set at its current length by an English statute of 1593.',
+    faqs: [
+      { q: 'How many kilometres is a mile?', a: 'A statute mile is 1.609344 kilometres, or 1,609.344 metres. The other way round, a kilometre is 0.621 miles.' },
+      { q: 'Why is a mile 5,280 feet?', a: 'Because an English statute of 1593 set it at eight furlongs of forty rods of sixteen and a half feet. Parliament chose to stretch the mile (the Roman one was 5,000 feet) rather than shorten the rod, because every deed and every land tax was measured in rods and furlongs. Its exact metric value, 1,609.344 m, comes from the international agreement of 1959.' },
+      { q: 'Where does the word mile come from?', a: 'From the Latin mille passus, “a thousand paces”. The Roman pace was a double step — counted each time the same foot landed again — so a thousand paces were 5,000 Roman feet, roughly 1,479 metres. Every mile of Roman road was marked with a stone milestone.' },
+      { q: 'How many feet and yards are in a mile?', a: '5,280 feet, 1,760 yards and 8 furlongs. All three come from the same 1593 statute: the round number is the 8, because the mile was fitted to the furlong and not the other way round.' },
+      { q: 'What is the difference between a mile and a nautical mile?', a: 'The statute mile is 1,609.344 metres and comes from Roman paces and English farmland. The nautical mile is exactly 1,852 metres and comes from the planet: it is one minute of arc of a meridian. The nautical mile is 15% longer.' },
+      { q: 'Which countries still use miles?', a: 'Road signs in miles survive in the United Kingdom, the United States and a handful of territories such as the Bahamas, Belize and the Cayman Islands. Everywhere else signs the roads in kilometres, and even in the US the mile is legally defined in metres.' },
+      { q: 'How long does it take to walk a mile?', a: 'About twenty minutes at a normal pace and fifteen at a brisk one. A recreational runner covers it in eight or nine minutes; the world record is 3:42.66.' },
+    ],
+    linkLabel: 'What is a mile?',
+  };
+}
+
 const DIST_ARTICLES = [
   distanceUnitsArticle('es'), distanceUnitsArticle('en'),
+  mileArticle('es'), mileArticle('en'),
   tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),
   nauticalMileArticle('es'), nauticalMileArticle('en'),
   marathonArticle('es'), marathonArticle('en'),

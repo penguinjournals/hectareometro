@@ -1,11 +1,11 @@
 {
   "/": {
-    "fingerprint": "000148b3af776ed3",
-    "lastmod": "2026-08-27"
+    "fingerprint": "f6d7b76058ec6b76",
+    "lastmod": "2026-09-04"
   },
   "/en/": {
-    "fingerprint": "a266f7d5f66fb5c5",
-    "lastmod": "2026-08-27"
+    "fingerprint": "8b8386e2c79fcfef",
+    "lastmod": "2026-09-04"
   },
   "/medir-superficie/": {
     "fingerprint": "407ca0b522b2f3d6",
@@ -24,12 +24,12 @@
     "lastmod": "2026-07-24"
   },
   "/distancias/": {
-    "fingerprint": "98735da7520a1991",
-    "lastmod": "2026-08-27"
+    "fingerprint": "d4f8a1d208a4e4b5",
+    "lastmod": "2026-09-04"
   },
   "/en/distances/": {
-    "fingerprint": "d71f034ad0ca02bb",
-    "lastmod": "2026-08-27"
+    "fingerprint": "a539027312102933",
+    "lastmod": "2026-09-04"
   },
   "/litros/": {
     "fingerprint": "72e5d32ee793d376",
@@ -56,20 +56,20 @@
     "lastmod": "2026-07-24"
   },
   "/kilometros-a-millas/": {
-    "fingerprint": "12cd9b1aeb037637",
-    "lastmod": "2026-08-27"
+    "fingerprint": "ecdc7ba0d238a1dd",
+    "lastmod": "2026-09-04"
   },
   "/en/kilometers-to-miles/": {
-    "fingerprint": "1619c93da9c01cb6",
-    "lastmod": "2026-08-27"
+    "fingerprint": "b304b017a3eb3472",
+    "lastmod": "2026-09-04"
   },
   "/articulos/": {
-    "fingerprint": "5462f04b06ceef73",
-    "lastmod": "2026-08-27"
+    "fingerprint": "bc32311bc1cb3ccc",
+    "lastmod": "2026-09-04"
   },
   "/en/articles/": {
-    "fingerprint": "a3dc3ad292e99e0e",
-    "lastmod": "2026-08-27"
+    "fingerprint": "4b14ce4cd5c63343",
+    "lastmod": "2026-09-04"
   },
   "/1-hectarea/": {
     "fingerprint": "11b0b86cf8055283",
@@ -388,12 +388,20 @@
     "lastmod": "2026-08-14"
   },
   "/unidades-de-distancia/": {
-    "fingerprint": "79d4d0acbe49e9f2",
-    "lastmod": "2026-08-25"
+    "fingerprint": "8bc62a3d8be135bc",
+    "lastmod": "2026-09-04"
   },
   "/en/distance-units/": {
-    "fingerprint": "933328a231782f59",
-    "lastmod": "2026-08-25"
+    "fingerprint": "b2ff1fc8802ce695",
+    "lastmod": "2026-09-04"
+  },
+  "/que-es-una-milla/": {
+    "fingerprint": "8f62e9c49e988004",
+    "lastmod": "2026-09-04"
+  },
+  "/en/what-is-a-mile/": {
+    "fingerprint": "8e41a87cfbe7dd4e",
+    "lastmod": "2026-09-04"
   },
   "/cuanto-son-10000-pasos/": {
     "fingerprint": "184bb3107369de5e",
@@ -404,12 +412,12 @@
     "lastmod": "2026-07-21"
   },
   "/cuanto-es-una-milla-nautica/": {
-    "fingerprint": "e6a95acfb5c84651",
-    "lastmod": "2026-07-29"
+    "fingerprint": "6bdff4828ef38d92",
+    "lastmod": "2026-09-04"
   },
   "/en/how-long-is-a-nautical-mile/": {
-    "fingerprint": "9fe095a4686e1b42",
-    "lastmod": "2026-07-29"
+    "fingerprint": "19a3678a0a741b5f",
+    "lastmod": "2026-09-04"
   },
   "/cuanto-mide-un-maraton/": {
     "fingerprint": "3fdfdb33ccae172f",
