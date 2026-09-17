@@ -568,6 +568,20 @@
   },
   {
     "lang": "es",
+    "slug": "origen-del-metro",
+    "path": "/origen-del-metro/",
+    "label": "El origen del metro",
+    "title": "El origen del metro: por qué mide lo que mide | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "origin-of-the-metre",
+    "path": "/en/origin-of-the-metre/",
+    "label": "The origin of the metre",
+    "title": "The origin of the metre: why it is the length it is | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "que-es-una-milla",
     "path": "/que-es-una-milla/",
     "label": "¿Qué es una milla?",

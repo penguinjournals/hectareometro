@@ -3157,6 +3157,7 @@ function relatedDistanceLinks(lang, currentPath) {
     ['/distancias/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'Un maratón (42,195 km)'],
     ['/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
     ['/que-es-una-milla/', '¿Qué es una milla?'],
+    ['/origen-del-metro/', 'El origen del metro'],
     ['/distancias/', 'La herramienta de distancias'],
   ] : [
     ['/en/distance-units/', 'Distance units'],
@@ -3164,6 +3165,7 @@ function relatedDistanceLinks(lang, currentPath) {
     ['/en/distances/?d=42.195&u=km&lat=40.4168&lon=-3.7038&z=9', 'A marathon (42.195 km)'],
     ['/en/distances/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
     ['/en/what-is-a-mile/', 'What is a mile?'],
+    ['/en/origin-of-the-metre/', 'The origin of the metre'],
     ['/en/distances/', 'The distances tool'],
   ];
   return chips
@@ -4724,7 +4726,7 @@ function distanceUnitsArticle(lang) {
       <table class="equiv-table">
         <thead><tr><th>Unidad</th><th>Cuánto es</th><th>De dónde sale</th></tr></thead>
         <tbody>
-          <tr><td><a href="${conv}?d=1&u=m">Metro</a></td><td>la base del SI</td><td>La diezmillonésima parte del cuadrante del meridiano de París (1791)</td></tr>
+          <tr><td><a href="/origen-del-metro/">Metro</a></td><td>la base del SI</td><td>La diezmillonésima parte del cuadrante del meridiano de París (1791)</td></tr>
           <tr><td><a href="/distancias/?d=1&u=km&lat=40.4168&lon=-3.7038&z=13">Kilómetro</a></td><td>1.000 m</td><td>Mil metros: prefijo griego, decisión de despacho</td></tr>
           <tr><td><a href="${conv}?d=1&u=cm">Centímetro</a></td><td>0,01 m</td><td>La centésima parte del metro</td></tr>
           <tr><td><a href="/que-es-una-milla/">Milla</a></td><td>1.609,344 m</td><td>Los mil pasos dobles del legionario romano, estirados por un estatuto de 1593</td></tr>
@@ -4817,7 +4819,9 @@ function distanceUnitsArticle(lang) {
         porque cada redefinición posterior se hizo para conservar la longitud existente, no para
         corregirla. Desde <b>1983</b> el metro es la distancia que recorre la luz en el vacío en
         <b>1/299.792.458 de segundo</b>: la definición más precisa jamás usada, calibrada para
-        seguir teniendo el error de Méchain.
+        seguir teniendo el error de Méchain. La historia entera —el péndulo que estuvo a punto de
+        ganar, los siete años de triangulación y los dos españoles que firmaron el patrón— está en
+        <a href="/origen-del-metro/">el origen del metro</a>.
       </p>
 
       <h2>El pie, la pulgada y la yarda son métricos desde 1959</h2>
@@ -4936,7 +4940,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-09-04',
+    family: 'distancias', published: '2026-08-25', modified: '2026-09-14',
     slug: 'unidades-de-distancia',
     path: DISTANCE_UNITS_ALTERNATES.es, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -4982,7 +4986,7 @@ function distanceUnitsArticle(lang) {
       <table class="equiv-table">
         <thead><tr><th>Unit</th><th>How long</th><th>Where it comes from</th></tr></thead>
         <tbody>
-          <tr><td><a href="${conv}?d=1&u=m">Metre</a></td><td>the SI base unit</td><td>One ten-millionth of the quadrant of the Paris meridian (1791)</td></tr>
+          <tr><td><a href="/en/origin-of-the-metre/">Metre</a></td><td>the SI base unit</td><td>One ten-millionth of the quadrant of the Paris meridian (1791)</td></tr>
           <tr><td><a href="/en/distances/?d=1&u=km&lat=51.5074&lon=-0.1278&z=13">Kilometre</a></td><td>1,000 m</td><td>A thousand metres: a Greek prefix and a committee decision</td></tr>
           <tr><td><a href="${conv}?d=1&u=cm">Centimetre</a></td><td>0.01 m</td><td>One hundredth of a metre</td></tr>
           <tr><td><a href="/en/what-is-a-mile/">Mile</a></td><td>1,609.344 m</td><td>The thousand double paces of a Roman legionary, stretched by a statute of 1593</td></tr>
@@ -5073,7 +5077,9 @@ function distanceUnitsArticle(lang) {
         later redefinition was made to preserve the existing length rather than fix it. Since
         <b>1983</b> the metre is the distance light travels in a vacuum in
         <b>1/299,792,458 of a second</b>: the most precise definition ever used, calibrated to keep
-        Méchain's mistake.
+        Méchain's mistake. The whole story — the pendulum that nearly won, the seven years of
+        triangulation and the delegates who signed off the standard — is in
+        <a href="/en/origin-of-the-metre/">the origin of the metre</a>.
       </p>
 
       <h2>Feet, inches and yards have been metric since 1959</h2>
@@ -5186,7 +5192,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-09-04',
+    family: 'distancias', published: '2026-08-25', modified: '2026-09-14',
     slug: 'distance-units',
     path: DISTANCE_UNITS_ALTERNATES.en, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5315,7 +5321,9 @@ function mileArticle(lang) {
         ese valor tan preciso que usamos hoy, <b>1.609,344 metros</b>, es mucho más moderno: sale
         del <b>acuerdo internacional de la yarda y la libra de 1959</b>, que definió la yarda como
         0,9144 metros exactos. Desde entonces <b>la milla se define en metros</b>: es una unidad
-        imperial medida con el sistema métrico.
+        imperial medida con el sistema métrico, y el metro, a su vez,
+        <a href="/origen-del-metro/">salió de medir el meridiano terrestre</a> a pie durante siete
+        años. Son las dos formas opuestas de fabricar una unidad.
       </p>
 
       <h2>No hay una milla, hay muchas</h2>
@@ -5460,7 +5468,7 @@ function mileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'que-es-una-milla', ha: 0,
-    family: 'distancias', published: '2026-09-04', modified: '2026-09-04',
+    family: 'distancias', published: '2026-09-04', modified: '2026-09-14',
     slug: 'que-es-una-milla',
     path: MILE_ALTERNATES.es, alternates: MILE_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5543,6 +5551,8 @@ function mileArticle(lang) {
         today, <b>1,609.344 metres</b>, is far more recent: it comes from the <b>International Yard
         and Pound Agreement of 1959</b>, which defined the yard as exactly 0.9144 metres. Ever since
         then, <b>the mile is defined in metres</b> — an imperial unit measured by the metric system.
+        And the metre, in turn, <a href="/en/origin-of-the-metre/">came out of measuring the Earth's
+        meridian</a> on foot over seven years. They are the two opposite ways of building a unit.
       </p>
 
       <h2>There is no such thing as “the” mile</h2>
@@ -5679,7 +5689,7 @@ function mileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'que-es-una-milla', ha: 0,
-    family: 'distancias', published: '2026-09-04', modified: '2026-09-04',
+    family: 'distancias', published: '2026-09-04', modified: '2026-09-14',
     slug: 'what-is-a-mile',
     path: MILE_ALTERNATES.en, alternates: MILE_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5703,8 +5713,692 @@ function mileArticle(lang) {
   };
 }
 
+// ---- SPOKE · El origen del metro ------------------------------------------
+//
+// Spoke de la serie «El origen de las unidades» (bloque B, distancias), pareja
+// por contraste de /que-es-una-milla/. Artículo bilingüe de DIST_ARTICLES: no
+// toca navbar ni footer.
+//
+// Datos validados 2026-09-17 (web):
+// - 1790: Talleyrand propone definir el metro como la longitud del péndulo que
+//   bate segundos a 45° de latitud. La Academia lo rechaza porque la gravedad
+//   varía con el lugar. Ese péndulo mide ~993,6 mm con g0 = 9,80665 m/s², o sea
+//   6,4 mm menos que el metro que salió.
+//   https://en.wikipedia.org/wiki/Seconds_pendulum
+// - 1791: la Academia de Ciencias francesa define el metro como la
+//   diezmillonésima parte del cuadrante del meridiano de París (Polo Norte -
+//   ecuador). https://en.wikipedia.org/wiki/History_of_the_metre
+// - 1792-1798: Delambre mide el tramo norte (Dunkerque-Rodez, 742,7 km) y
+//   Méchain el sur (Rodez-Barcelona, 333,0 km); el arco entero es ~1.076 km,
+//   la décima parte del cuadrante. Vuelven a París a finales de noviembre de
+//   1798. https://en.wikipedia.org/wiki/Arc_measurement_of_Delambre_and_M%C3%A9chain
+// - Méchain: detenido por sospechar que sus instrumentos eran armas e internado
+//   en Barcelona al estallar la guerra; sale hacia Italia y vuelve a Francia en
+//   1795; dudas sobre sus latitudes de Barcelona (Montjuïc) que nunca publicó;
+//   muere de fiebre amarilla el 20 de septiembre de 1804 en Castellón de la
+//   Plana, volviendo a medir. https://en.wikipedia.org/wiki/Pierre_M%C3%A9chain
+// - 1798-1799: congreso internacional de París. España manda a Gabriel Císcar y
+//   a Agustín de Pedrayes (nombramiento del Ministerio de Estado del 12 de
+//   septiembre de 1798). El dictamen de 1799 fija el metro en 443,296 líneas de
+//   la toesa de París (el provisional de 1793 eran 443,44) y se deposita la
+//   barra de platino, el «mètre des Archives».
+//   https://es.wikipedia.org/wiki/Gabriel_Ciscar
+//   https://asclepio.revistas.csic.es/index.php/asclepio/article/view/826
+// - Cuadrante real ≈ 10.001.966 m, así que el metro salió ~0,2 mm corto
+//   (0,1966 mm exactamente: 1.966 m repartidos entre 10 millones).
+// - 1875: Convención del Metro, firmada en París el 20 de mayo por 17 estados,
+//   España entre ellos; crea BIPM, CGPM y CIPM. La revisión del SI de 2019
+//   entró en vigor el 20 de mayo de 2019, en su 144º aniversario.
+//   https://en.wikipedia.org/wiki/Metre_Convention
+// - 1889: prototipo internacional de platino iridiado (90/10) con sección en X.
+// - 1960 (11ª CGPM): 1.650.763,73 longitudes de onda del kriptón 86.
+// - 1983 (17ª CGPM): 1/299.792.458 de segundo luz, definición vigente.
+//   https://en.wikipedia.org/wiki/Metre
+// - España: Ley de Pesas y Medidas del 19 de julio de 1849.
+// - Francia antes del metro: ~800 nombres de unidades y >250.000 valores
+//   distintos; la pinte de París eran 0,93 L y la de Saint-Denis 1,46 L.
+//   https://www.nationalgeographic.com/history/history-magazine/article/french-revolution-toppled-king-forged-metric-system
+// - A finales de 1793 el Comité de Salvación Pública expulsó de la comisión de
+//   pesas y medidas a Delambre, Borda, Laplace, Coulomb, Brisson y Lavoisier;
+//   Lavoisier fue guillotinado el 8 de mayo de 1794.
+//   https://www.sizes.com/units/meter.htm
+const METRE_ALTERNATES = {
+  es: '/origen-del-metro/',
+  en: '/en/origin-of-the-metre/',
+};
+
+function metreArticle(lang) {
+  const es = lang === 'es';
+  if (es) {
+  const conv = '/kilometros-a-millas/';
+  const hub = '/unidades-de-distancia/';
+  const arc = '/distancias/?d=1075&u=km&lat=41.3874&lon=2.1686&z=4';
+  const intro = `      <p>
+        <b>El metro nació en 1791 y salió de la Tierra</b>: se definió como la diezmillonésima
+        parte de la distancia que va del Polo Norte al ecuador pasando por París. Es decir, que ese
+        cuadrante de meridiano mide, por definición, <b>10.000 kilómetros</b>. Nadie lo había
+        medido todavía.
+      </p>
+      <p>
+        El círculo del mapa tiene <b><a href="${arc}">1.075 kilómetros de radio</a></b> y su centro
+        está en Barcelona: el borde pasa por Dunkerque. Ese es exactamente el trozo de meridiano
+        que <b>Jean-Baptiste Delambre y Pierre Méchain</b> salieron a triangular en 1792 para
+        averiguar cuánto medía el metro —la décima parte del cuadrante, extrapolada al resto—.
+        Tardaron siete años, se equivocaron, y ese error sigue dentro de la unidad hoy. Este
+        artículo forma parte de <a href="${hub}">las unidades de distancia y de dónde vienen</a>;
+        su hermano por contraste es <a href="/que-es-una-milla/">la milla</a>, que se hizo justo al
+        revés.
+      </p>
+
+      <h2>Por qué hacía falta inventar el metro</h2>
+      <p>
+        Antes del metro, en Francia convivían unos <b>800 nombres de unidades</b> y, según los
+        historiadores, más de <b>250.000 valores distintos</b>: el mismo nombre medía una cosa en
+        cada sitio. La <i>pinte</i> de París eran 0,93 litros y la de Saint-Denis, a diez
+        kilómetros, 1,46. El pie de un gremio no era el del gremio de al lado, y la medida de grano
+        cambiaba de pueblo a pueblo, casi siempre a favor del señor que la definía. Medir era una
+        forma de cobrar.
+      </p>
+      <p>
+        Todas esas unidades tenían un problema común: salían del cuerpo humano o del trabajo
+        humano —el pie, el codo, el paso, el surco—, y por tanto <b>no había forma de comprobarlas
+        contra nada</b>. La idea revolucionaria, en el sentido literal, fue buscar un patrón que
+        estuviera fuera de la discusión: algo que cualquiera, en cualquier país y en cualquier
+        siglo, pudiera volver a medir por su cuenta. La historia completa de esas unidades viejas
+        está en <a href="${hub}">el pie, la legua y las demás unidades de distancia</a>.
+      </p>
+
+      <h2>El metro que estuvo a punto de ser un péndulo</h2>
+      <p>
+        En <b>1790</b>, Talleyrand propuso a la Asamblea la solución más sencilla: definir la
+        unidad como la longitud de un <b>péndulo que bate segundos</b> a 45° de latitud, es decir,
+        el que tarda un segundo en cada oscilación. Es un experimento que cabe en una habitación y
+        que puede repetir cualquiera con un hilo, un peso y un reloj.
+      </p>
+      <p>
+        La Academia de Ciencias lo rechazó por un motivo incómodo: <b>la gravedad no es la misma en
+        todas partes</b>. Cambia con la latitud y con la altitud, así que el péndulo mediría cosas
+        ligeramente distintas en París, en Quito o en la cima de una montaña, y la unidad
+        dependería de dónde la midieras. Además, definir una longitud a partir de un tiempo
+        obligaba a fijar antes el segundo, que venía del calendario del Antiguo Régimen.
+      </p>
+      <p>
+        Lo divertido es lo cerca que estuvo: un péndulo de segundos mide
+        <b><a href="${conv}?d=0,9936&u=m">993,6 milímetros</a></b> con la gravedad estándar. Si
+        hubiera ganado la propuesta de Talleyrand, el metro sería <b>6,4 milímetros más corto</b> de
+        lo que es, y todo lo demás —el kilómetro, el litro, el kilo— estaría corrido en la misma
+        proporción.
+      </p>
+
+      <h2>1791: medir con el planeta</h2>
+      <p>
+        La Academia eligió el meridiano. El metro sería la <b>diezmillonésima parte del cuadrante</b>
+        del meridiano que pasa por París, del Polo Norte al ecuador. Por qué diez millones y no otra
+        cifra es la parte menos épica y más práctica: se sabía de sobra que esa fracción daba una
+        longitud parecida a la vara de medir de toda la vida, así que la unidad nueva se parecería
+        bastante a lo que la gente ya usaba. El nombre salió del griego <i>métron</i>, «medida».
+      </p>
+      <p>
+        El plan tenía un agujero evidente: nadie podía ir a medir de París al Polo Norte. Lo que sí
+        se podía era medir un trozo de meridiano con mucha precisión, calcular cuántos grados
+        abarcaba y extrapolar el resto. Se eligió el arco entre <b>Dunkerque y Barcelona</b>: unos
+        <b>1.075 kilómetros</b>, la décima parte del cuadrante, casi todo en territorio francés,
+        atravesado por el meridiano de París, con los dos extremos al nivel del mar y repartido a
+        ambos lados del paralelo 45 para que las deformaciones de la Tierra se compensaran.
+      </p>
+
+      <h2>Siete años, una guerra y dos astrónomos</h2>
+      <p>
+        En <b>junio de 1792</b> salieron de París. <b>Delambre</b> se encargó del tramo norte,
+        <b>Dunkerque-Rodez</b>, 742,7 kilómetros; <b>Méchain</b> del sur,
+        <b>Rodez-Barcelona</b>, 333 kilómetros. El método era la <b>triangulación</b>: encadenar
+        triángulos entre campanarios, torres y cumbres, medir a mano una sola base con reglas de
+        platino y deducir por trigonometría todas las demás distancias, sin volver a tocar el suelo.
+      </p>
+      <p>
+        El momento no podía ser peor. Francia estaba en plena Revolución y, poco después, en guerra
+        con España. Dos señores subiendo a los campanarios con instrumentos de latón y banderas de
+        señales eran, para cualquier vecino, espías. A Delambre lo pararon una y otra vez y tuvo que
+        enseñar salvoconductos firmados por autoridades que a veces ya habían sido guillotinadas; a
+        finales de 1793 el Comité de Salvación Pública lo <b>expulsó de la propia comisión de pesas
+        y medidas</b> junto con Borda, Laplace, Coulomb y Lavoisier, por poco republicanos; a
+        Lavoisier, que era el tesorero de la comisión, lo guillotinaron el 8 de mayo de 1794. A
+        <b>Méchain lo detuvieron sospechando que sus instrumentos eran armas</b> y,
+        cuando estalló la guerra, quedó <b>internado en Barcelona</b>: salió hacia Italia y no pudo
+        volver a Francia hasta <b>1795</b>.
+      </p>
+      <p>
+        Volvieron a París <b>a finales de noviembre de 1798</b> con los datos. Siete años para medir
+        mil kilómetros.
+      </p>
+
+      <h2>El error que Méchain no se atrevió a contar</h2>
+      <p>
+        Atrapado en Barcelona, Méchain aprovechó para medir la latitud del castillo de
+        <b>Montjuïc</b> con todo el cuidado del mundo. Y luego la volvió a medir. Y los dos
+        resultados <b>no coincidían</b>: la diferencia era de unos pocos segundos de arco, invisible
+        para cualquiera menos para él, pero suficiente para que el dato que iba a definir la unidad
+        de longitud del mundo entero no fuera de fiar.
+      </p>
+      <p>
+        No dijo nada. Maquilló los cuadernos, entregó la cifra buena y pasó el resto de su vida
+        intentando demostrarse que no se había equivocado. Acabó volviendo a España a prolongar
+        el arco hacia el sur, hasta las Baleares, con la idea de que los números nuevos taparan los
+        viejos. Murió allí, de <b>fiebre amarilla</b>, el <b>20 de septiembre de 1804, en Castellón
+        de la Plana</b>. Delambre heredó los cuadernos, entendió lo que había pasado, publicó los
+        datos y guardó el resto en el Observatorio de París, donde aparecieron un siglo y medio
+        después.
+      </p>
+      <p>
+        Conviene decirlo claro: el error de Méchain no era fraude de resultados, era un
+        <b>problema físico que nadie sabía tratar todavía</b>. La vertical que marca una plomada no
+        apunta exactamente al centro de la Tierra cuando tienes una montaña al lado —lo que hoy se
+        llama desviación de la vertical—, y Montjuïc, con el mar a un lado y la sierra al otro, es
+        un sitio espléndido para que eso pase.
+      </p>
+
+      <h2>Los 0,2 milímetros que siguen dentro del metro</h2>
+      <p>
+        Con la geodesia moderna sabemos cuánto mide de verdad el cuadrante del meridiano:
+        <b>unos 10.001.966 metros</b>. Es decir, <b>1.966 metros más</b> de los 10 millones que
+        decía la definición. Repartido entre diez millones, eso significa que
+        <b>cada metro se quedó 0,2 milímetros corto</b> (0,1966, para ser exactos).
+      </p>
+      <p>
+        Puesto en cosas que se ven:
+      </p>
+      <ul>
+        <li>En una mesa de <b>2 metros</b>, el error es de <b>0,4 mm</b>: nada.</li>
+        <li>En <a href="/cuanto-mide-un-maraton/"><b>un maratón</b></a> (42,195 km) se acumulan
+          <b>8 metros</b>.</li>
+        <li>En los <a href="/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6">505 km de
+          Madrid a Barcelona</a>, <b>99 metros</b>.</li>
+        <li>Y del ecuador al polo, los <b>1.966 metros</b> de partida: casi dos kilómetros de más.</li>
+      </ul>
+      <p>
+        Lo llamativo es que ese error <b>ya no se puede corregir</b>, y no por pereza. Cuando en
+        1799 se fabricó la barra de platino patrón, la unidad dejó de ser «la diezmillonésima parte
+        del meridiano» para ser, en la práctica, «la longitud de esta barra». Todas las
+        redefiniciones posteriores —la de 1889, la de 1960, la de 1983— se calcularon
+        <b>para conservar exactamente la longitud que ya existía</b>, porque cambiarla habría
+        invalidado de golpe todos los planos, todas las máquinas y todos los patrones del mundo.
+        El metro de la velocidad de la luz, la unidad mejor definida de la historia, lleva dentro
+        el error de dos astrónomos del siglo XVIII con un mal día en Montjuïc.
+      </p>
+
+      <h2>España estuvo en la sala: Císcar y Pedrayes</h2>
+      <p>
+        El metro no lo cerró Francia sola. En 1798 se convocó en París un
+        <b>congreso internacional</b> para revisar los cálculos y fijar los patrones definitivos, el
+        primer organismo científico internacional de la historia. España mandó a dos: el marino y
+        matemático valenciano <b>Gabriel Císcar</b> y el matemático asturiano
+        <b>Agustín de Pedrayes</b>, nombrado por el Ministerio de Estado el 12 de septiembre de 1798.
+      </p>
+      <p>
+        El dictamen de <b>1799</b> fijó el metro en <b>443,296 líneas</b> de la toesa de París —el
+        provisional de 1793 eran 443,44, así que el arco de Delambre y Méchain lo acortó unas tres
+        décimas de milímetro— y se depositó en los Archivos de la República la barra de platino que
+        se conoce como <b><i>mètre des Archives</i></b>. Ese es el metro que heredamos.
+      </p>
+      <p>
+        España tardaría medio siglo en usarlo: la <b>Ley de Pesas y Medidas del 19 de julio de
+        1849</b> lo hizo legal, la obligatoriedad se aplazó siete veces y la implantación real se
+        arrastró hasta cerca de 1880. Pero sí estuvo desde el primer minuto en el club
+        internacional: España es uno de los <b>17 países que firmaron la Convención del Metro el 20
+        de mayo de 1875</b> en París, el tratado que creó la Oficina Internacional de Pesas y
+        Medidas y que sigue gobernando el sistema hoy.
+      </p>
+
+      <h2>De una barra de platino a la velocidad de la luz</h2>
+      <p>
+        El metro se ha redefinido cuatro veces, y cada una persigue lo mismo: quitarle precisión al
+        objeto y dársela a la naturaleza.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Año</th><th>Qué era un metro</th><th>Problema que resolvía</th></tr></thead>
+        <tbody>
+          <tr><td><b>1791</b></td><td>La diezmillonésima parte del cuadrante del meridiano de París</td><td>Una unidad que no dependiera de ningún rey</td></tr>
+          <tr><td><b>1799</b></td><td>La longitud del <i>mètre des Archives</i>, una barra de platino</td><td>Tener algo con lo que comparar de verdad</td></tr>
+          <tr><td><b>1889</b></td><td>El prototipo internacional de platino iridiado (90 % / 10 %), con sección en forma de X</td><td>Una aleación estable y una sección que no se comba</td></tr>
+          <tr><td><b>1960</b></td><td>1.650.763,73 longitudes de onda de una raya naranja del kriptón 86</td><td>Cualquier laboratorio podía reproducirlo sin viajar a París</td></tr>
+          <tr><td><b>1983</b></td><td>Lo que recorre la luz en el vacío en 1/299.792.458 de segundo</td><td>Fijar la velocidad de la luz y medir con láser</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La definición de 1983, que es la vigente, tiene una elegancia particular: <b>ya no se mide
+        la velocidad de la luz</b>. Se le asigna el valor exacto de 299.792.458 metros por segundo y
+        es el metro el que se deduce de ahí. Dicho al revés, <b>la luz tarda 3,34 nanosegundos en
+        recorrer un metro</b>, y esa es hoy la definición de la unidad. La revisión del SI de 2019
+        la mantuvo intacta y entró en vigor, con puntería, el 20 de mayo: el 144º aniversario de la
+        Convención del Metro.
+      </p>
+
+      <h2>Un metro en cosas que conoces</h2>
+      <ul>
+        <li><b>Un paso largo</b> de una persona adulta anda por el metro justo; los
+          <a href="/cuanto-son-10000-pasos/">10.000 pasos</a> salen a unos 0,75 m cada uno.</li>
+        <li><b>La red de tenis</b> mide 91,4 cm en el centro: no es casualidad, es
+          <a href="${conv}?d=1&u=yd">una yarda exacta</a>.</li>
+        <li><b>La portería de fútbol</b> mide 2,44 × 7,32 m, cifras rarísimas en métrico y redondas
+          en el sistema en el que se inventó: 8 pies de alto por 8 yardas de ancho.</li>
+        <li><b>Una persona de 1,75 m</b> mide <a href="${conv}?d=1,75&u=m">5 pies y 9 pulgadas</a>.</li>
+        <li><b>Un paso doble romano</b>, la unidad con la que se midió
+          <a href="/que-es-una-milla/">la milla</a>, eran 1,48 m.</li>
+      </ul>
+
+      <h2>Tabla de conversión rápida</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Metros</th><th>Sistema imperial</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=m">1 metro</a></td><td>3,281 pies · 39,37 pulgadas</td><td>La unidad base del SI</td></tr>
+          <tr><td><a href="${conv}?d=0,3048&u=m">0,3048 m</a></td><td>1 pie exacto</td><td>Definido en metros desde 1959</td></tr>
+          <tr><td><a href="${conv}?d=0,9144&u=m">0,9144 m</a></td><td>1 yarda exacta</td><td>De ahí salen el pie y la pulgada</td></tr>
+          <tr><td><a href="${conv}?d=1,8288&u=m">1,8288 m</a></td><td>6 pies</td><td>«Six feet», la altura de las películas</td></tr>
+          <tr><td><a href="${conv}?d=1000&u=m">1.000 m</a></td><td>0,621 millas</td><td>Un kilómetro</td></tr>
+          <tr><td><a href="${conv}?d=1852&u=m">1.852 m</a></td><td>1 <a href="/cuanto-es-una-milla-nautica/">milla náutica</a></td><td>Un minuto de arco de meridiano</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Y una nota que explica media serie: <b>el pie, la pulgada y la yarda se definen en metros</b>
+        desde el acuerdo internacional de 1959. El sistema imperial lleva casi setenta años midiendo
+        con el metro sin decirlo.
+      </p>
+
+      <h2>Preguntas frecuentes sobre el origen del metro</h2>
+      <dl class="faq">
+        <dt>¿De dónde viene el metro?</dt>
+        <dd>De la Tierra. En 1791 la Academia de Ciencias francesa lo definió como la
+          diezmillonésima parte del cuadrante del meridiano que pasa por París, del Polo Norte al
+          ecuador. Para saber cuánto era eso, Delambre y Méchain midieron el arco entre
+          <a href="${arc}">Dunkerque y Barcelona</a> entre 1792 y 1798.</dd>
+
+        <dt>¿Quién inventó el metro?</dt>
+        <dd>No fue una persona sino una comisión de la Academia de Ciencias francesa, en 1791, en
+          plena Revolución. Quienes lo midieron sobre el terreno fueron los astrónomos
+          Jean-Baptiste Delambre, que hizo el tramo Dunkerque-Rodez, y Pierre Méchain, el tramo
+          Rodez-Barcelona. Los patrones definitivos los fijó un congreso internacional en París en
+          1799 en el que España estuvo representada por Gabriel Císcar y Agustín de Pedrayes.</dd>
+
+        <dt>¿Por qué el metro mide exactamente lo que mide?</dt>
+        <dd>Porque salió de una medición con un error. El cuadrante del meridiano mide en realidad
+          unos 10.001.966 metros, no 10 millones, así que el metro se quedó unos 0,2 milímetros
+          corto. Ese error nunca se corrigió: desde 1799 la unidad es la longitud del patrón
+          físico, y todas las redefiniciones posteriores se hicieron para conservarla, no para
+          arreglarla.</dd>
+
+        <dt>¿Cuál es la definición actual del metro?</dt>
+        <dd>Desde 1983, el metro es la distancia que recorre la luz en el vacío en 1/299.792.458 de
+          segundo. Dicho al revés, la luz tarda 3,34 nanosegundos en recorrer un metro. La
+          velocidad de la luz ya no se mide: se le asigna ese valor exacto y el metro se deduce de
+          él.</dd>
+
+        <dt>¿Por qué no se definió el metro con un péndulo?</dt>
+        <dd>Era la propuesta de Talleyrand en 1790: la longitud del péndulo que bate segundos a 45°
+          de latitud. Se descartó porque la gravedad varía con la latitud y la altitud, así que el
+          péndulo daría longitudes distintas en cada sitio. Ese péndulo mide 993,6 milímetros, así
+          que el metro habría sido 6,4 milímetros más corto.</dd>
+
+        <dt>¿Cuándo se adoptó el metro en España?</dt>
+        <dd>La Ley de Pesas y Medidas del 19 de julio de 1849 lo hizo legal en todos los dominios
+          españoles, pero la obligatoriedad se aplazó siete veces y la implantación real se arrastró
+          hasta cerca de 1880. España sí fue uno de los 17 países que firmaron la Convención del
+          Metro el 20 de mayo de 1875.</dd>
+
+        <dt>¿Cuántos pies tiene un metro?</dt>
+        <dd>Un metro son 3,281 pies y 39,37 pulgadas. A la inversa, un pie son 0,3048 metros
+          exactos y una pulgada 2,54 centímetros, valores fijados por el acuerdo internacional de la
+          yarda y la libra de 1959.</dd>
+      </dl>
+      <p>
+        ¿Quieres el número y ya? El <a href="${conv}?d=1&u=m">conversor de distancias</a> pasa
+        metros a pies, yardas, millas o millas náuticas. ¿Quieres verlo? Escribe una distancia en la
+        <a href="/distancias/">herramienta de distancias</a> y se dibuja a escala sobre tu ciudad.
+        Y si quieres la historia completa —la milla, el pie, la legua y por qué no nos ponemos de
+        acuerdo—, está en <a href="${hub}">las unidades de distancia</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'origen-del-metro', ha: 0,
+    family: 'distancias', published: '2026-09-14', modified: '2026-09-14',
+    slug: 'origen-del-metro',
+    path: METRE_ALTERNATES.es, alternates: METRE_ALTERNATES,
+    dist: 1075, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 4; var PRESET_LAT = 41.3874; var PRESET_LON = 2.1686;',
+    title: 'El origen del metro: por qué mide lo que mide | Hectareómetro',
+    description: 'El metro se definió en 1791 como la diezmillonésima parte del cuadrante del meridiano. Delambre y Méchain tardaron siete años en medir el arco entre Dunkerque y Barcelona, se equivocaron, y el metro sigue siendo 0,2 mm más corto de lo que debía.',
+    h1: 'El origen del metro',
+    intro,
+    question: '¿De dónde viene el metro?',
+    answer: 'De la Tierra. En 1791 la Academia de Ciencias francesa definió el metro como la diezmillonésima parte del cuadrante del meridiano que pasa por París, del Polo Norte al ecuador. Delambre y Méchain midieron el arco entre Dunkerque y Barcelona entre 1792 y 1798, y desde 1983 el metro es la distancia que recorre la luz en el vacío en 1/299.792.458 de segundo.',
+    faqs: [
+      { q: '¿De dónde viene el metro?', a: 'De la Tierra. En 1791 la Academia de Ciencias francesa lo definió como la diezmillonésima parte del cuadrante del meridiano que pasa por París, del Polo Norte al ecuador. Para saber cuánto era eso, Delambre y Méchain midieron el arco entre Dunkerque y Barcelona entre 1792 y 1798.' },
+      { q: '¿Quién inventó el metro?', a: 'No fue una persona sino una comisión de la Academia de Ciencias francesa, en 1791, en plena Revolución. Quienes lo midieron sobre el terreno fueron los astrónomos Jean-Baptiste Delambre, que hizo el tramo Dunkerque-Rodez, y Pierre Méchain, el tramo Rodez-Barcelona. Los patrones definitivos los fijó un congreso internacional en París en 1799 en el que España estuvo representada por Gabriel Císcar y Agustín de Pedrayes.' },
+      { q: '¿Por qué el metro mide exactamente lo que mide?', a: 'Porque salió de una medición con un error. El cuadrante del meridiano mide en realidad unos 10.001.966 metros, no 10 millones, así que el metro se quedó unos 0,2 milímetros corto. Ese error nunca se corrigió: desde 1799 la unidad es la longitud del patrón físico, y todas las redefiniciones posteriores se hicieron para conservarla, no para arreglarla.' },
+      { q: '¿Cuál es la definición actual del metro?', a: 'Desde 1983, el metro es la distancia que recorre la luz en el vacío en 1/299.792.458 de segundo. Dicho al revés, la luz tarda 3,34 nanosegundos en recorrer un metro. La velocidad de la luz ya no se mide: se le asigna ese valor exacto y el metro se deduce de él.' },
+      { q: '¿Por qué no se definió el metro con un péndulo?', a: 'Era la propuesta de Talleyrand en 1790: la longitud del péndulo que bate segundos a 45° de latitud. Se descartó porque la gravedad varía con la latitud y la altitud, así que el péndulo daría longitudes distintas en cada sitio. Ese péndulo mide 993,6 milímetros, así que el metro habría sido 6,4 milímetros más corto.' },
+      { q: '¿Cuándo se adoptó el metro en España?', a: 'La Ley de Pesas y Medidas del 19 de julio de 1849 lo hizo legal en todos los dominios españoles, pero la obligatoriedad se aplazó siete veces y la implantación real se arrastró hasta cerca de 1880. España sí fue uno de los 17 países que firmaron la Convención del Metro el 20 de mayo de 1875.' },
+      { q: '¿Cuántos pies tiene un metro?', a: 'Un metro son 3,281 pies y 39,37 pulgadas. A la inversa, un pie son 0,3048 metros exactos y una pulgada 2,54 centímetros, valores fijados por el acuerdo internacional de la yarda y la libra de 1959.' },
+    ],
+    linkLabel: 'El origen del metro',
+  };
+  }
+  const conv = '/en/kilometers-to-miles/';
+  const hub = '/en/distance-units/';
+  const arc = '/en/distances/?d=1075&u=km&lat=51.0344&lon=2.3768&z=4';
+  const intro = `      <p>
+        <b>The metre was born in 1791 and it came out of the Earth</b>: it was defined as one
+        ten-millionth of the distance from the North Pole to the equator along the meridian through
+        Paris. Which means that, by definition, that quadrant of meridian is <b>10,000 kilometres</b>
+        long. Nobody had measured it yet.
+      </p>
+      <p>
+        The circle on the map has a radius of <b><a href="${arc}">1,075 kilometres</a></b> and is
+        centred on Dunkirk: its edge runs through Barcelona. That is exactly the stretch of meridian
+        that <b>Jean-Baptiste Delambre and Pierre Méchain</b> set out to triangulate in 1792 in
+        order to find out how long a metre was — one tenth of the quadrant, with the rest
+        extrapolated. It took them seven years, they got it slightly wrong, and that error is still
+        inside the unit today. This article is part of
+        <a href="${hub}">the distance units and where they come from</a>; its opposite number is
+        <a href="/en/what-is-a-mile/">the mile</a>, which was built the other way round.
+      </p>
+
+      <h2>Why the metre had to be invented</h2>
+      <p>
+        Before the metre, France ran on roughly <b>800 names of units</b> covering, historians
+        reckon, more than <b>250,000 distinct values</b>: the same word meant a different amount in
+        every town. A <i>pinte</i> in Paris was 0.93 litres; in Saint-Denis, ten kilometres away, it
+        was 1.46. One guild's foot was not the next guild's foot, and the grain measure changed from
+        village to village, almost always in favour of the lord who defined it. Measuring was a way
+        of charging.
+      </p>
+      <p>
+        All those units shared one flaw: they came from the human body or from human work — the
+        foot, the cubit, the pace, the furrow — and so <b>there was nothing to check them against</b>.
+        The revolutionary idea, in the literal sense, was to look for a standard that sat outside
+        the argument: something anyone, in any country and in any century, could go and measure
+        again. The full story of the older units is in
+        <a href="${hub}">the foot, the league and the other distance units</a>.
+      </p>
+
+      <h2>The metre that was nearly a pendulum</h2>
+      <p>
+        In <b>1790</b> Talleyrand put the simplest solution to the Assembly: define the unit as the
+        length of a <b>seconds pendulum</b> at 45° of latitude — the one that takes a second per
+        swing. It is an experiment that fits in a room and that anyone can repeat with a string, a
+        weight and a clock.
+      </p>
+      <p>
+        The Academy of Sciences turned it down for an awkward reason: <b>gravity is not the same
+        everywhere</b>. It varies with latitude and with altitude, so the pendulum would measure
+        slightly different lengths in Paris, in Quito or on a mountain top, and the unit would
+        depend on where you stood. Defining a length through a time also meant fixing the second
+        first, and the second came from the calendar of the old regime.
+      </p>
+      <p>
+        The entertaining part is how close it was: a seconds pendulum is
+        <b><a href="${conv}?d=0.9936&u=m">993.6 millimetres</a></b> long under standard gravity. Had
+        Talleyrand's proposal won, the metre would be <b>6.4 millimetres shorter</b> than it is, and
+        everything built on it — the kilometre, the litre, the kilogram — would be shifted by the
+        same proportion.
+      </p>
+
+      <h2>1791: measuring with the planet</h2>
+      <p>
+        The Academy chose the meridian. The metre would be <b>one ten-millionth of the quadrant</b>
+        of the meridian through Paris, from the North Pole to the equator. Why ten million and not
+        some other figure is the least heroic and most practical part of the story: that fraction
+        was known to give a length close to the measuring rods already in daily use, so the new unit
+        would not feel alien. The name came from the Greek <i>metron</i>, “a measure”.
+      </p>
+      <p>
+        The plan had an obvious hole: nobody could walk from Paris to the North Pole. What could be
+        done was to measure a section of meridian very precisely, work out how many degrees it
+        spanned and extrapolate the rest. The arc chosen ran from <b>Dunkirk to Barcelona</b>: about
+        <b>1,075 kilometres</b>, one tenth of the quadrant, almost all of it French, crossed by the
+        Paris meridian, with both ends at sea level and straddling the 45th parallel so that the
+        flattening of the Earth would cancel out.
+      </p>
+
+      <h2>Seven years, a war and two astronomers</h2>
+      <p>
+        They left Paris in <b>June 1792</b>. <b>Delambre</b> took the northern half,
+        <b>Dunkirk to Rodez</b>, 742.7 kilometres; <b>Méchain</b> the southern one,
+        <b>Rodez to Barcelona</b>, 333 kilometres. The method was <b>triangulation</b>: chaining
+        triangles between steeples, towers and summits, measuring one single baseline by hand with
+        platinum rules and deriving every other distance by trigonometry, without touching the
+        ground again.
+      </p>
+      <p>
+        The timing could not have been worse. France was in the middle of the Revolution and, soon
+        after, at war with Spain. Two men climbing church towers with brass instruments and signal
+        flags looked, to any villager, like spies. Delambre was stopped again and again and had to
+        produce safe-conducts signed by officials who had since been guillotined; in late 1793 the
+        Committee of Public Safety <b>threw him off the weights and measures commission itself</b>,
+        along with Borda, Laplace, Coulomb and Lavoisier, for being insufficiently republican —
+        Lavoisier, the commission's treasurer, went to the guillotine on 8 May 1794.
+        <b>Méchain was arrested on suspicion that his instruments were weapons</b> and, once war
+        broke out, was <b>interned in Barcelona</b>: he left for Italy and could not return to
+        France until <b>1795</b>.
+      </p>
+      <p>
+        They were back in Paris with the data <b>at the end of November 1798</b>. Seven years to
+        measure a thousand kilometres.
+      </p>
+
+      <h2>The error Méchain never dared to report</h2>
+      <p>
+        Stuck in Barcelona, Méchain used the time to measure the latitude of the castle of
+        <b>Montjuïc</b> with extreme care. Then he measured it again. And the two results
+        <b>did not agree</b>: the gap was a few seconds of arc, invisible to anyone but him, yet
+        enough to make the figure that was about to define the world's unit of length untrustworthy.
+      </p>
+      <p>
+        He said nothing. He tidied the notebooks, handed over the good number and spent the rest of
+        his life trying to prove to himself that he had not been wrong. He ended up going back to
+        Spain to extend the arc southwards to the Balearics, hoping the new figures would bury
+        the old ones. He died there of <b>yellow fever</b> on <b>20 September 1804, in Castellón de
+        la Plana</b>. Delambre inherited the notebooks, understood what had happened, published the
+        data and locked the rest away at the Paris Observatory, where it surfaced a century and a
+        half later.
+      </p>
+      <p>
+        It is worth being clear about this: Méchain's error was not faked results, it was a
+        <b>physical problem nobody yet knew how to handle</b>. The vertical marked by a plumb line
+        does not point exactly at the centre of the Earth when there is a mountain next to it — what
+        is now called deflection of the vertical — and Montjuïc, with the sea on one side and the
+        hills on the other, is a superb place for that to happen.
+      </p>
+
+      <h2>The 0.2 millimetres still inside the metre</h2>
+      <p>
+        Modern geodesy knows how long the meridian quadrant really is: about
+        <b>10,001,966 metres</b>. That is <b>1,966 metres more</b> than the ten million the
+        definition called for. Spread across ten million, it means <b>every metre came out 0.2
+        millimetres short</b> (0.1966, to be precise).
+      </p>
+      <p>
+        Put into things you can see:
+      </p>
+      <ul>
+        <li>On a <b>2-metre</b> table the error is <b>0.4 mm</b>: nothing.</li>
+        <li>Over <a href="/en/how-long-is-a-marathon/"><b>a marathon</b></a> (42.195 km) it adds up
+          to <b>8 metres</b>.</li>
+        <li>Over the <a href="/en/distances/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6">505 km from
+          Madrid to Barcelona</a>, <b>99 metres</b>.</li>
+        <li>And from the equator to the pole, the original <b>1,966 metres</b>: nearly two
+          kilometres too many.</li>
+      </ul>
+      <p>
+        The striking part is that the error <b>can no longer be corrected</b>, and not out of
+        laziness. When the platinum standard bar was made in 1799, the unit stopped being “one
+        ten-millionth of the meridian” and became, in practice, “the length of this bar”. Every
+        later redefinition — 1889, 1960, 1983 — was calculated <b>to preserve exactly the length
+        that already existed</b>, because changing it would have invalidated every drawing, every
+        machine and every standard in the world overnight. The metre of the speed of light, the best
+        defined unit in history, carries inside it the error of two eighteenth-century astronomers
+        having a bad day on Montjuïc.
+      </p>
+
+      <h2>From a platinum bar to the speed of light</h2>
+      <p>
+        The metre has been redefined four times, and each redefinition does the same thing: take
+        precision away from the object and hand it to nature.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Year</th><th>What a metre was</th><th>What it fixed</th></tr></thead>
+        <tbody>
+          <tr><td><b>1791</b></td><td>One ten-millionth of the quadrant of the Paris meridian</td><td>A unit that depended on no king</td></tr>
+          <tr><td><b>1799</b></td><td>The length of the <i>mètre des Archives</i>, a platinum bar</td><td>Something you could actually compare against</td></tr>
+          <tr><td><b>1889</b></td><td>The international prototype metre, platinum-iridium (90%/10%) with an X-shaped cross section</td><td>A stable alloy and a section that does not sag</td></tr>
+          <tr><td><b>1960</b></td><td>1,650,763.73 wavelengths of an orange line of krypton-86</td><td>Any laboratory could reproduce it without travelling to Paris</td></tr>
+          <tr><td><b>1983</b></td><td>The path light travels in vacuum in 1/299,792,458 of a second</td><td>Fixing the speed of light and measuring with lasers</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The 1983 definition, which is the one in force, has a particular elegance: <b>the speed of
+        light is no longer measured</b>. It is assigned the exact value of 299,792,458 metres per
+        second, and the metre is derived from it. Put the other way round, <b>light takes 3.34
+        nanoseconds to travel one metre</b>, and that is today's definition of the unit. The 2019
+        revision of the SI left it untouched and came into force, neatly, on 20 May: the 144th
+        anniversary of the Metre Convention.
+      </p>
+
+      <h2>Spain, Britain and the club of the metre</h2>
+      <p>
+        The metre was not settled by France alone. In 1798 an <b>international congress</b> met in
+        Paris to check the calculations and fix the definitive standards — arguably the first
+        international scientific body in history. Spain, whose coastline had supplied the southern
+        end of the arc, sent two delegates: the Valencian naval officer and mathematician
+        <b>Gabriel Císcar</b> and the Asturian mathematician <b>Agustín de Pedrayes</b>.
+      </p>
+      <p>
+        The <b>1799</b> verdict set the metre at <b>443.296 lines</b> of the toise of Paris — the
+        1793 provisional value had been 443.44, so the Delambre and Méchain arc shortened it by
+        about three tenths of a millimetre — and the platinum bar known as the
+        <b><i>mètre des Archives</i></b> was deposited in the national archives. That is the metre
+        we inherited.
+      </p>
+      <p>
+        Britain and the United States stayed out of the metric system, but not out of the club: the
+        <b>Metre Convention, signed in Paris on 20 May 1875</b> by seventeen states, created the
+        International Bureau of Weights and Measures, and the United States was a founding
+        signatory. Since the International Yard and Pound Agreement of <b>1959</b>, the yard has
+        been exactly 0.9144 metres — which is to say that
+        <a href="/en/what-is-a-mile/">the mile</a>, the foot and the inch are all defined in metres.
+      </p>
+
+      <h2>A metre in things you know</h2>
+      <ul>
+        <li><b>A long stride</b> by an adult is about a metre; the
+          <a href="/en/how-far-is-10000-steps/">10,000 steps</a> work out at roughly 0.75 m each.</li>
+        <li><b>A tennis net</b> is 91.4 cm at the centre — not a coincidence, that is
+          <a href="${conv}?d=1&u=yd">exactly one yard</a>.</li>
+        <li><b>A football goal</b> is 2.44 × 7.32 m, absurd numbers in metric and round ones in the
+          system that invented it: 8 feet high by 8 yards wide.</li>
+        <li><b>Someone 1.75 m tall</b> is <a href="${conv}?d=1.75&u=m">5 feet 9 inches</a>.</li>
+        <li><b>A Roman double pace</b>, the unit that measured
+          <a href="/en/what-is-a-mile/">the mile</a>, was 1.48 m.</li>
+      </ul>
+
+      <h2>Quick conversion table</h2>
+      <table class="equiv-table">
+        <thead><tr><th>Metres</th><th>Imperial</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=m">1 metre</a></td><td>3.281 feet · 39.37 inches</td><td>The SI base unit</td></tr>
+          <tr><td><a href="${conv}?d=0.3048&u=m">0.3048 m</a></td><td>1 foot exactly</td><td>Defined in metres since 1959</td></tr>
+          <tr><td><a href="${conv}?d=0.9144&u=m">0.9144 m</a></td><td>1 yard exactly</td><td>The foot and the inch derive from it</td></tr>
+          <tr><td><a href="${conv}?d=1.8288&u=m">1.8288 m</a></td><td>6 feet</td><td>The height of the movies</td></tr>
+          <tr><td><a href="${conv}?d=1000&u=m">1,000 m</a></td><td>0.621 miles</td><td>A kilometre</td></tr>
+          <tr><td><a href="${conv}?d=1852&u=m">1,852 m</a></td><td>1 <a href="/en/how-long-is-a-nautical-mile/">nautical mile</a></td><td>One minute of arc of a meridian</td></tr>
+        </tbody>
+      </table>
+      <p>
+        And a note that explains half of this series: <b>the foot, the inch and the yard are defined
+        in metres</b>. The imperial system has been measuring with the metre, quietly, for nearly
+        seventy years.
+      </p>
+
+      <h2>Frequently asked questions about the origin of the metre</h2>
+      <dl class="faq">
+        <dt>Where does the metre come from?</dt>
+        <dd>From the Earth. In 1791 the French Academy of Sciences defined it as one ten-millionth
+          of the quadrant of the meridian through Paris, from the North Pole to the equator. To find
+          out how long that was, Delambre and Méchain measured the arc between
+          <a href="${arc}">Dunkirk and Barcelona</a> between 1792 and 1798.</dd>
+
+        <dt>Who invented the metre?</dt>
+        <dd>Not one person but a commission of the French Academy of Sciences, in 1791, during the
+          Revolution. The men who measured it on the ground were the astronomers Jean-Baptiste
+          Delambre, who covered Dunkirk to Rodez, and Pierre Méchain, who covered Rodez to
+          Barcelona. The definitive standards were fixed by an international congress in Paris in
+          1799.</dd>
+
+        <dt>Why is the metre exactly the length it is?</dt>
+        <dd>Because it came out of a measurement with an error in it. The meridian quadrant is
+          really about 10,001,966 metres, not ten million, so the metre ended up roughly 0.2
+          millimetres short. The error was never corrected: from 1799 the unit was the length of the
+          physical standard, and every later redefinition was made to preserve that length rather
+          than fix it.</dd>
+
+        <dt>What is the current definition of the metre?</dt>
+        <dd>Since 1983, the metre is the distance light travels in vacuum in 1/299,792,458 of a
+          second. Put the other way round, light takes 3.34 nanoseconds to cover one metre. The
+          speed of light is no longer measured: it is assigned that exact value and the metre is
+          derived from it.</dd>
+
+        <dt>Why was the metre not defined with a pendulum?</dt>
+        <dd>That was Talleyrand's 1790 proposal: the length of the pendulum that beats seconds at
+          45° of latitude. It was dropped because gravity varies with latitude and altitude, so the
+          pendulum would give a different length in every place. That pendulum is 993.6 millimetres
+          long, so the metre would have been 6.4 millimetres shorter.</dd>
+
+        <dt>How many feet are in a metre?</dt>
+        <dd>A metre is 3.281 feet and 39.37 inches. The other way round, a foot is exactly 0.3048
+          metres and an inch 2.54 centimetres, values fixed by the International Yard and Pound
+          Agreement of 1959.</dd>
+
+        <dt>Is it metre or meter?</dt>
+        <dd>Both spell the same unit. “Metre” is the international spelling used by the BIPM and in
+          British English; “meter” is the American spelling. The symbol is the same everywhere: a
+          lowercase m, with no full stop and no plural s.</dd>
+      </dl>
+      <p>
+        Just want the number? The <a href="${conv}?d=1&u=m">distance converter</a> turns metres into
+        feet, yards, miles or nautical miles. Want to see it? Type a distance into the
+        <a href="/en/distances/">distances tool</a> and it is drawn to scale over your city, or
+        <a href="/en/measure-distance/">measure a distance</a> point by point on the map. And if you
+        want the whole story — the mile, the foot, the league and why we still cannot agree — it is
+        in <a href="${hub}">the distance units</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'origen-del-metro', ha: 0,
+    family: 'distancias', published: '2026-09-14', modified: '2026-09-14',
+    slug: 'origin-of-the-metre',
+    path: METRE_ALTERNATES.en, alternates: METRE_ALTERNATES,
+    dist: 1075, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 4; var PRESET_LAT = 51.0344; var PRESET_LON = 2.3768;',
+    title: 'The origin of the metre: why it is the length it is | Hectareometer',
+    description: 'The metre was defined in 1791 as one ten-millionth of the meridian quadrant. Delambre and Méchain spent seven years measuring the arc from Dunkirk to Barcelona, got it slightly wrong, and the metre is still 0.2 mm shorter than it should be.',
+    h1: 'The origin of the metre',
+    intro,
+    question: 'Where does the metre come from?',
+    answer: 'From the Earth. In 1791 the French Academy of Sciences defined the metre as one ten-millionth of the quadrant of the meridian through Paris, from the North Pole to the equator. Delambre and Méchain measured the arc between Dunkirk and Barcelona between 1792 and 1798, and since 1983 the metre has been the distance light travels in vacuum in 1/299,792,458 of a second.',
+    faqs: [
+      { q: 'Where does the metre come from?', a: 'From the Earth. In 1791 the French Academy of Sciences defined it as one ten-millionth of the quadrant of the meridian through Paris, from the North Pole to the equator. To find out how long that was, Delambre and Méchain measured the arc between Dunkirk and Barcelona between 1792 and 1798.' },
+      { q: 'Who invented the metre?', a: 'Not one person but a commission of the French Academy of Sciences, in 1791, during the Revolution. The men who measured it on the ground were the astronomers Jean-Baptiste Delambre, who covered Dunkirk to Rodez, and Pierre Méchain, who covered Rodez to Barcelona. The definitive standards were fixed by an international congress in Paris in 1799.' },
+      { q: 'Why is the metre exactly the length it is?', a: 'Because it came out of a measurement with an error in it. The meridian quadrant is really about 10,001,966 metres, not ten million, so the metre ended up roughly 0.2 millimetres short. The error was never corrected: from 1799 the unit was the length of the physical standard, and every later redefinition was made to preserve that length rather than fix it.' },
+      { q: 'What is the current definition of the metre?', a: 'Since 1983, the metre is the distance light travels in vacuum in 1/299,792,458 of a second. Put the other way round, light takes 3.34 nanoseconds to cover one metre. The speed of light is no longer measured: it is assigned that exact value and the metre is derived from it.' },
+      { q: 'Why was the metre not defined with a pendulum?', a: "That was Talleyrand's 1790 proposal: the length of the pendulum that beats seconds at 45° of latitude. It was dropped because gravity varies with latitude and altitude, so the pendulum would give a different length in every place. That pendulum is 993.6 millimetres long, so the metre would have been 6.4 millimetres shorter." },
+      { q: 'How many feet are in a metre?', a: 'A metre is 3.281 feet and 39.37 inches. The other way round, a foot is exactly 0.3048 metres and an inch 2.54 centimetres, values fixed by the International Yard and Pound Agreement of 1959.' },
+      { q: 'Is it metre or meter?', a: 'Both spell the same unit. “Metre” is the international spelling used by the BIPM and in British English; “meter” is the American spelling. The symbol is the same everywhere: a lowercase m, with no full stop and no plural s.' },
+    ],
+    linkLabel: 'The origin of the metre',
+  };
+}
+
+
 const DIST_ARTICLES = [
   distanceUnitsArticle('es'), distanceUnitsArticle('en'),
+  metreArticle('es'), metreArticle('en'),
   mileArticle('es'), mileArticle('en'),
   tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),
   nauticalMileArticle('es'), nauticalMileArticle('en'),
