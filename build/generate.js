@@ -3158,6 +3158,7 @@ function relatedDistanceLinks(lang, currentPath) {
     ['/distancias/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
     ['/que-es-una-milla/', '¿Qué es una milla?'],
     ['/origen-del-metro/', 'El origen del metro'],
+    ['/de-donde-viene-el-pie/', '¿De dónde viene el pie?'],
     ['/distancias/', 'La herramienta de distancias'],
   ] : [
     ['/en/distance-units/', 'Distance units'],
@@ -3166,6 +3167,7 @@ function relatedDistanceLinks(lang, currentPath) {
     ['/en/distances/?d=505&u=km&lat=40.4168&lon=-3.7038&z=6', 'Madrid–Barcelona (505 km)'],
     ['/en/what-is-a-mile/', 'What is a mile?'],
     ['/en/origin-of-the-metre/', 'The origin of the metre'],
+    ['/en/where-the-foot-comes-from/', 'Where the foot comes from'],
     ['/en/distances/', 'The distances tool'],
   ];
   return chips
@@ -4732,7 +4734,7 @@ function distanceUnitsArticle(lang) {
           <tr><td><a href="/que-es-una-milla/">Milla</a></td><td>1.609,344 m</td><td>Los mil pasos dobles del legionario romano, estirados por un estatuto de 1593</td></tr>
           <tr><td><a href="/cuanto-es-una-milla-nautica/">Milla náutica</a></td><td>1.852 m</td><td>Un minuto de arco de meridiano</td></tr>
           <tr><td><a href="${conv}?d=1&u=yd">Yarda</a></td><td>0,9144 m</td><td>Se dice que el brazo de Enrique I; exacta desde 1959</td></tr>
-          <tr><td><a href="${conv}?d=1&u=ft">Pie</a></td><td>0,3048 m</td><td>Un pie de verdad, y cada reino tenía el suyo</td></tr>
+          <tr><td><a href="/de-donde-viene-el-pie/">Pie</a></td><td>0,3048 m</td><td>Un pie de verdad, y cada reino tenía el suyo</td></tr>
           <tr><td><a href="${conv}?d=1&u=in">Pulgada</a></td><td>2,54 cm</td><td>Tres granos de cebada puestos en fila (Eduardo II, 1324)</td></tr>
           <tr><td><a href="${conv}?d=201.168&u=m">Furlong</a></td><td>201,168 m</td><td>El surco que araba una yunta antes de descansar</td></tr>
           <tr><td><a href="${conv}?d=5.5727&u=km">Legua castellana</a></td><td>5.572,7 m</td><td>Lo que se anda en una hora: 20.000 pies castellanos</td></tr>
@@ -4754,7 +4756,9 @@ function distanceUnitsArticle(lang) {
         redondos» puestos en fila, doce pulgadas el pie y tres pies la yarda. El grano de cebada
         sigue vivo donde menos te lo esperas: los números de calzado británicos y estadounidenses
         avanzan de un tercio de pulgada en un tercio de pulgada, que es exactamente un grano de
-        cebada.
+        cebada. Los dieciséis hombres a los que un manual de 1535 mandaba poner el pie izquierdo en
+        fila a la salida de misa, y por qué el pie oficial es más largo que el pie de casi
+        cualquiera, están en <a href="/de-donde-viene-el-pie/">de dónde viene el pie</a>.
       </p>
       <p>
         De la yarda se cuenta que Enrique I la fijó con la medida de su propio brazo. Guillermo de
@@ -4940,7 +4944,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-09-14',
+    family: 'distancias', published: '2026-08-25', modified: '2026-09-24',
     slug: 'unidades-de-distancia',
     path: DISTANCE_UNITS_ALTERNATES.es, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -4992,7 +4996,7 @@ function distanceUnitsArticle(lang) {
           <tr><td><a href="/en/what-is-a-mile/">Mile</a></td><td>1,609.344 m</td><td>The thousand double paces of a Roman legionary, stretched by a statute of 1593</td></tr>
           <tr><td><a href="/en/how-long-is-a-nautical-mile/">Nautical mile</a></td><td>1,852 m</td><td>One minute of arc of a meridian</td></tr>
           <tr><td><a href="${conv}?d=1&u=yd">Yard</a></td><td>0.9144 m</td><td>Said to be the arm of Henry I; exact since 1959</td></tr>
-          <tr><td><a href="${conv}?d=1&u=ft">Foot</a></td><td>0.3048 m</td><td>An actual foot, and every kingdom had its own</td></tr>
+          <tr><td><a href="/en/where-the-foot-comes-from/">Foot</a></td><td>0.3048 m</td><td>An actual foot, and every kingdom had its own</td></tr>
           <tr><td><a href="${conv}?d=1&u=in">Inch</a></td><td>2.54 cm</td><td>Three barleycorns laid end to end (Edward II, 1324)</td></tr>
           <tr><td><a href="${conv}?d=201.168&u=m">Furlong</a></td><td>201.168 m</td><td>The furrow an ox team ploughed before resting</td></tr>
           <tr><td><a href="${conv}?d=5.5727&u=km">League</a></td><td>~5,572 m</td><td>How far a person walks in an hour — every kingdom had its own</td></tr>
@@ -5013,7 +5017,9 @@ function distanceUnitsArticle(lang) {
         defined the inch as <b>three barleycorns</b>, "dry and round", laid end to end; twelve
         inches to the foot, three feet to the yard. The barleycorn is still alive where you would
         least expect it: British and American shoe sizes go up one third of an inch at a time,
-        which is exactly one barleycorn.
+        which is exactly one barleycorn. The sixteen men a 1535 manual told you to line up outside
+        church, and why the official foot is longer than almost anybody's foot, are in
+        <a href="/en/where-the-foot-comes-from/">where the foot comes from</a>.
       </p>
       <p>
         As for the yard, the story goes that Henry I fixed it with the length of his own arm.
@@ -5192,7 +5198,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-09-14',
+    family: 'distancias', published: '2026-08-25', modified: '2026-09-24',
     slug: 'distance-units',
     path: DISTANCE_UNITS_ALTERNATES.en, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5317,7 +5323,9 @@ function mileArticle(lang) {
       </p>
       <p>
         Por eso la milla mide 1.609 metros y no 1.480: para no tener que recatastrar Inglaterra. El
-        número redondo de la historia no es el 5.280 sino el 8, y está en furlongs, no en pies. Y
+        número redondo de la historia no es el 5.280 sino el 8, y está en furlongs, no en pies —una
+        unidad que, por cierto, <a href="/de-donde-viene-el-pie/">tampoco mide lo que mide ningún
+        pie</a>. Y
         ese valor tan preciso que usamos hoy, <b>1.609,344 metros</b>, es mucho más moderno: sale
         del <b>acuerdo internacional de la yarda y la libra de 1959</b>, que definió la yarda como
         0,9144 metros exactos. Desde entonces <b>la milla se define en metros</b>: es una unidad
@@ -5468,7 +5476,7 @@ function mileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'que-es-una-milla', ha: 0,
-    family: 'distancias', published: '2026-09-04', modified: '2026-09-14',
+    family: 'distancias', published: '2026-09-04', modified: '2026-09-24',
     slug: 'que-es-una-milla',
     path: MILE_ALTERNATES.es, alternates: MILE_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5547,7 +5555,8 @@ function mileArticle(lang) {
       </p>
       <p>
         So the mile is 5,280 feet in order to avoid re-surveying England. The round number in the
-        story is not 5,280 but 8, and it is counted in furlongs, not feet. The precise figure we use
+        story is not 5,280 but 8, and it is counted in furlongs, not feet — a unit which, as it
+        happens, <a href="/en/where-the-foot-comes-from/">does not match anybody's foot either</a>. The precise figure we use
         today, <b>1,609.344 metres</b>, is far more recent: it comes from the <b>International Yard
         and Pound Agreement of 1959</b>, which defined the yard as exactly 0.9144 metres. Ever since
         then, <b>the mile is defined in metres</b> — an imperial unit measured by the metric system.
@@ -5689,7 +5698,7 @@ function mileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'que-es-una-milla', ha: 0,
-    family: 'distancias', published: '2026-09-04', modified: '2026-09-14',
+    family: 'distancias', published: '2026-09-04', modified: '2026-09-24',
     slug: 'what-is-a-mile',
     path: MILE_ALTERNATES.en, alternates: MILE_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -6045,9 +6054,10 @@ function metreArticle(lang) {
           Metro el 20 de mayo de 1875.</dd>
 
         <dt>¿Cuántos pies tiene un metro?</dt>
-        <dd>Un metro son 3,281 pies y 39,37 pulgadas. A la inversa, un pie son 0,3048 metros
-          exactos y una pulgada 2,54 centímetros, valores fijados por el acuerdo internacional de la
-          yarda y la libra de 1959.</dd>
+        <dd>Un metro son 3,281 pies y 39,37 pulgadas. A la inversa,
+          <a href="/de-donde-viene-el-pie/">un pie son 0,3048 metros exactos</a> y una pulgada 2,54
+          centímetros, valores fijados por el acuerdo internacional de la yarda y la libra de
+          1959.</dd>
       </dl>
       <p>
         ¿Quieres el número y ya? El <a href="${conv}?d=1&u=m">conversor de distancias</a> pasa
@@ -6058,7 +6068,7 @@ function metreArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'origen-del-metro', ha: 0,
-    family: 'distancias', published: '2026-09-14', modified: '2026-09-14',
+    family: 'distancias', published: '2026-09-14', modified: '2026-09-24',
     slug: 'origen-del-metro',
     path: METRE_ALTERNATES.es, alternates: METRE_ALTERNATES,
     dist: 1075, distUnit: 'km',
@@ -6352,9 +6362,10 @@ function metreArticle(lang) {
           long, so the metre would have been 6.4 millimetres shorter.</dd>
 
         <dt>How many feet are in a metre?</dt>
-        <dd>A metre is 3.281 feet and 39.37 inches. The other way round, a foot is exactly 0.3048
-          metres and an inch 2.54 centimetres, values fixed by the International Yard and Pound
-          Agreement of 1959.</dd>
+        <dd>A metre is 3.281 feet and 39.37 inches. The other way round,
+          <a href="/en/where-the-foot-comes-from/">a foot is exactly 0.3048 metres</a> and an inch
+          2.54 centimetres, values fixed by the International Yard and Pound Agreement of
+          1959.</dd>
 
         <dt>Is it metre or meter?</dt>
         <dd>Both spell the same unit. “Metre” is the international spelling used by the BIPM and in
@@ -6371,7 +6382,7 @@ function metreArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'en', key: 'origen-del-metro', ha: 0,
-    family: 'distancias', published: '2026-09-14', modified: '2026-09-14',
+    family: 'distancias', published: '2026-09-14', modified: '2026-09-24',
     slug: 'origin-of-the-metre',
     path: METRE_ALTERNATES.en, alternates: METRE_ALTERNATES,
     dist: 1075, distUnit: 'km',
@@ -6396,8 +6407,649 @@ function metreArticle(lang) {
 }
 
 
+// ---- SPOKE · ¿De dónde viene el pie? ---------------------------------------
+//
+// Tercer spoke del hub /unidades-de-distancia/ (serie «El origen de las
+// unidades», bloque B). Reparto de intención: la consulta «pies a metros» la
+// sirve el conversor /kilometros-a-millas/; este artículo sirve «de dónde
+// viene el pie», «por qué doce pulgadas» y «cuánto mide un pie de verdad».
+// Artículo bilingüe de DIST_ARTICLES: no toca navbar ni footer.
+//
+// Datos validados 2026-09-24 (web):
+// - Pie internacional = 0,3048 m exactos; pulgada = 25,4 mm exactos, del
+//   International Yard and Pound Agreement firmado el 1 de julio de 1959 por
+//   seis países: Estados Unidos, Reino Unido, Canadá, Australia, Nueva Zelanda
+//   y Sudáfrica (yarda = 0,9144 m).
+//   https://en.wikipedia.org/wiki/International_yard_and_pound
+// - Valores previos: pie imperial británico 0,3047997 m; US survey foot
+//   1200/3937 m = 0,30480061 m (unas 2 partes por millón más largo).
+//   El US survey foot se retiró el 1 de enero de 2023 (NIST).
+//   https://www.nist.gov/news-events/news/2023/01/new-years-eve-2023-marked-retirement-us-survey-foot
+// - La pulgada de 25,4 mm ya era estándar industrial antes del tratado: la
+//   British Standards Institution la adoptó en 1930 y la American Standards
+//   Association en 1933 (galgas de Johansson).
+//   https://en.wikipedia.org/wiki/Inch
+// - Pie real de un adulto: ~15,3 % de la estatura; una persona de 175 cm tiene
+//   un pie de ~268 mm. El pie histórico varió entre 250 y 335 mm según el país.
+//   Pes romano ~296 mm; pie griego ~302 mm (rango 270-350); pie «bélgico» o
+//   norte-alemán 335 mm; pied du roi francés 324,84 mm.
+//   Griegos y romanos dividían el pie en 16 dedos; los romanos añadieron
+//   después la división en 12 unciae. https://en.wikipedia.org/wiki/Foot_(unit)
+// - Jacob Köbel (1535) describe el método de los dieciséis hombres: «Ponte a la
+//   puerta de una iglesia un domingo y haz que se detengan 16 hombres, altos y
+//   bajos, según vayan saliendo al acabar el oficio; que pongan el pie
+//   izquierdo uno detrás de otro, y la longitud así obtenida será una percha
+//   justa y legal para medir la tierra, y la dieciseisava parte de ella será el
+//   pie justo y legal». https://en.wikipedia.org/wiki/Foot_(unit)
+// - Pulgada de tres granos de cebada «secos y redondos»: Composition of Yards
+//   and Perches, atribuida a Eduardo II (h. 1324). El grano de cebada (1/3 de
+//   pulgada, 8,47 mm) sigue siendo el paso de los números de calzado británicos
+//   y estadounidenses. https://en.wikipedia.org/wiki/Barleycorn_(unit)
+// - Etimología: «pulgada» viene de «pulgar», como el francés pouce y el
+//   italiano pollice; «inch» viene del latín uncia, «la doceava parte».
+//   https://en.wikipedia.org/wiki/Inch
+// - Vitruvio, De architectura III.1: el pie es la sexta parte de la estatura,
+//   y por eso el cuerpo perfecto mide seis pies.
+//   https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Vitruvius/3*.html
+// - Pie castellano (o de Burgos) 0,278635 m = un tercio de la vara (0,835905 m),
+//   dividido en 12 pulgadas de 23,22 mm o en 16 dedos; 20.000 pies castellanos
+//   hacían una legua (5.572,7 m). Desapareció con la Ley de Pesas y Medidas del
+//   19 de julio de 1849. https://es.wikipedia.org/wiki/Pie_castellano
+// - Aviación: la OACI fija las altitudes y los niveles de vuelo en pies; Rusia
+//   y varios países de la CEI pasaron a pies por encima de la altitud de
+//   transición el 17 de noviembre de 2011, y China, Mongolia y Corea del Norte
+//   siguen en metros. https://en.wikipedia.org/wiki/Flight_level
+// - Tipografía: el punto Didot (h. 1783) es 1/72 de pulgada del rey, ~0,376 mm,
+//   con 864 puntos por pied du roi; el punto actual de autoedición es 1/72 de
+//   pulgada inglesa = 0,3528 mm.
+//   https://en.wikipedia.org/wiki/Point_(typography)
+// - Everest: 8.848,86 m = 29.032 pies (medición conjunta China-Nepal de 2020).
+// - Contenedor ISO: 20 pies de largo (6,1 m), 8 de ancho (2,44 m) y 8 pies y
+//   6 pulgadas de alto (2,59 m); el tráfico marítimo se cuenta en TEU, unidades
+//   equivalentes a veinte pies. https://en.wikipedia.org/wiki/Foot_(unit)
+const FOOT_ALTERNATES = {
+  es: '/de-donde-viene-el-pie/',
+  en: '/en/where-the-foot-comes-from/',
+};
+
+function footArticle(lang) {
+  const es = lang === 'es';
+  if (es) {
+  const conv = '/kilometros-a-millas/';
+  const hub = '/unidades-de-distancia/';
+  const circle = '/distancias/?d=304.8&u=m&lat=40.4169&lon=-3.7033&z=15';
+  const intro = `      <p>
+        <b>Un pie son 0,3048 metros exactos</b>, o sea 30,48 centímetros. Lleva puesto el nombre
+        de una parte del cuerpo y, sin embargo, <b>no mide lo que mide ningún pie</b>: el de un adulto de 1,75 m ronda los 26,8
+        centímetros. Para que tu pie midiera un pie tendrías que medir casi <b>dos metros</b>.
+      </p>
+      <p>
+        El círculo del mapa tiene <b><a href="${circle}">304,8 metros de radio</a></b>: mil pies
+        clavados, centrados en el kilómetro cero de la Puerta del Sol, que es justo el sitio desde
+        el que España mide sus carreteras en kilómetros. Este artículo forma parte de
+        <a href="${hub}">las unidades de distancia y de dónde vienen</a>; su hermano por contraste
+        es <a href="/origen-del-metro/">el metro</a>, que se hizo midiendo el planeta en vez de
+        midiendo a una persona. Si solo quieres el número, el
+        <a href="${conv}?d=1&u=ft">conversor de distancias</a> pasa pies a metros al instante.
+      </p>
+
+      <h2>Un pie no mide un pie</h2>
+      <p>
+        Empecemos por lo raro. El pie de un adulto mide, de media, un <b>15,3 % de su estatura</b>:
+        una persona de 175 centímetros tiene un pie de unos <b>268 milímetros</b>. La unidad mide
+        304,8. Es decir, que el pie oficial es un <b>14 % más largo</b> que el pie de la persona
+        media, y eso no es un descuido: es lo que pasa cuando una unidad se hereda durante dos mil
+        años y cada vez que alguien la fija, la fija un poco a su favor.
+      </p>
+      <p>
+        Hay explicaciones razonables —se midió con el calzado puesto, se midió sobre el pie de
+        alguien importante, se ajustó para que cuadrara con múltiplos cómodos— y ninguna está
+        demostrada. Lo que sí está escrito es el ideal. <b>Vitruvio</b>, en el libro III de
+        <i>De architectura</i>, dice que el pie es la <b>sexta parte de la estatura</b> y que por
+        eso el cuerpo bien proporcionado mide exactamente <b>seis pies</b>. Seis pies son
+        <b>1,8288 metros</b>, y el hombre de Vitruvio tendría entonces un pie de 30,5 centímetros.
+        La proporción real es más bien de uno a seis y medio: el canon clásico es, literalmente, un
+        poco largo de pies.
+      </p>
+
+      <h2>Cada reino tenía el suyo</h2>
+      <p>
+        Mientras la unidad se sacaba del cuerpo, no había forma de que dos sitios coincidieran. El
+        pie histórico osciló entre los <b>250 y los 335 milímetros</b> según el país, y en muchos
+        casos convivían dos o tres en la misma región según se estuviera midiendo tela, madera o
+        tierra.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Pie</th><th>Cuánto medía</th><th>Dónde</th></tr></thead>
+        <tbody>
+          <tr><td>Pie internacional</td><td>304,8 mm</td><td>El de hoy, desde 1959</td></tr>
+          <tr><td><i>Pes</i> romano</td><td>~296 mm</td><td>Cinco pies hacían un paso; mil pasos, <a href="/que-es-una-milla/">una milla</a></td></tr>
+          <tr><td>Pie griego</td><td>~302 mm</td><td>Cambiaba de ciudad en ciudad (270-350 mm)</td></tr>
+          <tr><td>Pie castellano o de Burgos</td><td>278,6 mm</td><td>Un tercio de la vara; 20.000 hacían una legua</td></tr>
+          <tr><td><i>Pied du roi</i></td><td>324,8 mm</td><td>Francia, hasta la Revolución</td></tr>
+          <tr><td>Pie bélgico o norte-alemán</td><td>335 mm</td><td>Llegó a Inglaterra con los celtas o con los anglosajones</td></tr>
+          <tr><td><i>US survey foot</i></td><td>304,80061 mm</td><td>Topografía en EE. UU. hasta 2023</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Fíjate en el <b>pie castellano</b>: 27,86 centímetros, casi tres centímetros menos que el
+        inglés. Se dividía en 12 pulgadas de 23,22 milímetros o en 16 dedos, tres pies hacían una
+        <b>vara</b> (83,59 cm) y veinte mil pies hacían una
+        <a href="${conv}?d=5.5727&u=km"><b>legua</b></a> de 5.572,7 metros. Con esa diferencia,
+        un plano inglés y un plano castellano del mismo edificio daban números distintos aunque los
+        dos dijeran «pies».
+      </p>
+
+      <h2>Dieciséis hombres a la puerta de la iglesia</h2>
+      <p>
+        La mejor receta que se conserva para fabricar un pie legal es de <b>1535</b> y la escribió
+        el matemático alemán <b>Jacob Köbel</b>. Dice así:
+      </p>
+      <blockquote class="rules-quote" cite="https://en.wikipedia.org/wiki/Foot_(unit)">
+        <p>
+          Ponte a la puerta de una iglesia un domingo y haz que se detengan dieciséis hombres,
+          altos y bajos, según vayan saliendo al acabar el oficio; que pongan el pie izquierdo uno
+          detrás de otro, y la longitud así obtenida será una percha justa y legal para medir la
+          tierra, y la dieciseisava parte de ella será el pie justo y legal.
+        </p>
+        <footer>— Jacob Köbel, <cite>Geometrei</cite>, 1535</footer>
+      </blockquote>
+      <p>
+        Es una tontería preciosa y es, a la vez, <b>estadística</b>: al promediar dieciséis pies
+        cualesquiera se anulan el gigante y el enano, y el pueblo de al lado que repita el
+        procedimiento obtendrá un número parecido. Sin patrones, sin barras de platino y sin
+        laboratorios, Köbel había encontrado la única forma honrada de estandarizar algo usando
+        gente: usar a mucha gente.
+      </p>
+
+      <h2>Tres granos de cebada</h2>
+      <p>
+        El otro método clásico va por abajo, por la pulgada. Un texto inglés de hacia <b>1324</b>,
+        que se atribuye a <b>Eduardo II</b>, define la pulgada como <b>tres granos de cebada</b>
+        «secos y redondos» puestos en fila a lo largo; doce pulgadas hacen un pie y tres pies una
+        yarda. Curiosamente, la misma idea aparece en Castilla: el <b>dedo</b> castellano se
+        definía como cuatro granos de cebada.
+      </p>
+      <p>
+        Y aquí viene lo mejor: <b>el grano de cebada sigue vivo</b>. Un tercio de pulgada son
+        8,47 milímetros, y ese es exactamente el escalón entre dos números consecutivos de calzado
+        británico o estadounidense. Cada vez que alguien calza un 42 y prueba un 43, está
+        cambiando de talla en un grano de cebada medieval.
+      </p>
+      <p>
+        La palabra también delata el origen: <b>pulgada</b> viene de <b>pulgar</b>, igual que el
+        francés <i>pouce</i> y el italiano <i>pollice</i>. El inglés <i>inch</i> va por otro lado:
+        viene del latín <i>uncia</i>, «la doceava parte», que es la misma palabra de la que sale la
+        onza. Un idioma se quedó con el dedo y el otro con la fracción.
+      </p>
+
+      <h2>Por qué doce pulgadas y no diez</h2>
+      <p>
+        Griegos y romanos dividían el pie en <b>16 dedos</b>. Fueron los romanos quienes añadieron
+        después la división en <b>12 unciae</b>, y esa es la que ganó. No es casualidad ni
+        cabezonería: <b>12 se divide entre 2, 3, 4 y 6</b>, y 10 solo entre 2 y 5. Para un
+        carpintero que necesita un tercio de tabla o un cuarto de viga y no tiene calculadora, el
+        12 es sencillamente mejor herramienta que el 10.
+      </p>
+      <p>
+        Ese es el argumento que tienen a favor las unidades del cuerpo y que el sistema métrico
+        cambió por otro: la facilidad de partir en tercios a cambio de la facilidad de multiplicar
+        por diez. El metro ganó porque medir dejó de ser cosa de artesanos y pasó a ser cosa de
+        científicos, ingenieros y aduanas. La historia de esa otra mitad está en
+        <a href="/origen-del-metro/">el origen del metro</a>.
+      </p>
+
+      <h2>El pie es métrico desde 1959</h2>
+      <p>
+        Aquí está la ironía final. El pie ya no se define con ningún pie: <b>se define en
+        metros</b>. El <b>acuerdo internacional de la yarda y la libra</b>, firmado el
+        <b>1 de julio de 1959</b> por Estados Unidos, Reino Unido, Canadá, Australia, Nueva Zelanda
+        y Sudáfrica, fijó la yarda en 0,9144 metros exactos, y de ahí sale todo lo demás por pura
+        aritmética: el pie es un tercio de yarda y la pulgada, un treintaiseisavo.
+      </p>
+      <p>
+        De hecho, la industria se había adelantado casi treinta años: la pulgada de
+        <b>25,4 milímetros</b> ya la había adoptado la British Standards Institution en <b>1930</b>
+        y la American Standards Association en <b>1933</b>, porque las galgas patrón con las que se
+        fabricaban las piezas venían en milímetros y nadie quería dos juegos. El tratado de 1959 no
+        inventó el número: legalizó el que ya usaban los talleres.
+      </p>
+      <p>
+        Antes de eso, el pie británico (0,3047997 m) y el estadounidense de topografía
+        (0,30480061 m) no medían lo mismo. La diferencia son <b>dos partes por millón</b>: dos
+        milímetros por kilómetro, veinte centímetros en cien kilómetros. Irrelevante para una mesa,
+        carísimo para un catastro, así que Estados Unidos mantuvo su viejo <i>US survey foot</i>
+        seis décadas más y solo lo <b>jubiló el 1 de enero de 2023</b>. Esa fue la última unidad de
+        longitud precientífica que le quedaba a Occidente.
+      </p>
+
+      <h2>Cuántos metros son X pies</h2>
+      <p>
+        La tabla de conversión, con el círculo ya dibujado en el mapa para las distancias que se
+        pueden ver:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Pies</th><th>En metros</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=ft">1 pie</a></td><td>0,3048 m</td><td>30,48 cm; 12 pulgadas</td></tr>
+          <tr><td><a href="${conv}?d=3&u=ft">3 pies</a></td><td>0,9144 m</td><td>Una yarda exacta</td></tr>
+          <tr><td><a href="${conv}?d=6&u=ft">6 pies</a></td><td>1,8288 m</td><td>La estatura ideal de Vitruvio</td></tr>
+          <tr><td><a href="${conv}?d=10&u=ft">10 pies</a></td><td>3,048 m</td><td>La altura de una canasta de baloncesto</td></tr>
+          <tr><td><a href="${conv}?d=20&u=ft">20 pies</a></td><td>6,1 m</td><td>Un contenedor: la unidad del tráfico marítimo</td></tr>
+          <tr><td><a href="${circle}">1.000 pies</a></td><td>304,8 m</td><td>El círculo del mapa</td></tr>
+          <tr><td><a href="${conv}?d=5280&u=ft">5.280 pies</a></td><td>1.609,344 m</td><td><a href="/que-es-una-milla/">Una milla</a></td></tr>
+          <tr><td><a href="${conv}?d=29032&u=ft">29.032 pies</a></td><td>8.848,86 m</td><td>El Everest</td></tr>
+          <tr><td><a href="${conv}?d=35000&u=ft">35.000 pies</a></td><td>10.668 m</td><td>La altura de crucero de un avión</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Dónde sigue vivo el pie (también en España)</h2>
+      <p>
+        España enterró el pie castellano con la <b>Ley de Pesas y Medidas de 1849</b>, y sin
+        embargo el pie se sigue usando aquí todos los días, en un sitio muy concreto: <b>el
+        aire</b>. La OACI fija las altitudes y los niveles de vuelo <b>en pies</b>, así que un
+        piloto español que despega de Barajas asciende a 35.000 pies, no a 10.668 metros. Solo
+        China, Mongolia y Corea del Norte se han quedado con los metros; <b>Rusia</b> y varios
+        países de la antigua URSS se pasaron a los pies el <b>17 de noviembre de 2011</b>, porque
+        tener dos sistemas de altitud en el mismo cielo es, literalmente, peligroso.
+      </p>
+      <p>
+        El pie y la pulgada aguantan también en otros rincones, casi todos por la misma razón —el
+        estándar se fijó en inglés y cambiarlo costaría más de lo que arreglaría—:
+      </p>
+      <ul>
+        <li><b>La canasta de baloncesto</b> está a 3,05 m en todo el mundo, incluida la ACB, porque
+          son diez pies.</li>
+        <li><b>Los contenedores</b> miden 20 o 40 pies, y el tráfico de los puertos se cuenta en
+          TEU: unidades equivalentes a veinte pies.</li>
+        <li><b>Las pantallas</b>, las ruedas de bici, los discos de vinilo y las tuberías se miden
+          en pulgadas hasta en las ferreterías de pueblo.</li>
+        <li><b>El tamaño de letra</b> de tu procesador de textos: el punto tipográfico que inventó
+          Didot hacia 1783 era 1/72 de pulgada del rey de Francia (0,376 mm), y el punto actual es
+          1/72 de pulgada inglesa, 0,3528 mm. Cuando eliges «cuerpo 12» estás midiendo en pies.</li>
+        <li><b>Las olas</b>, en el parte de surf, y <b>la profundidad</b>, en muchos ordenadores de
+          buceo.</li>
+      </ul>
+
+      <h2>El pie contra el metro</h2>
+      <p>
+        Las dos unidades resumen las dos formas de medir que existen. El pie salió del <b>cuerpo</b>
+        y se estabilizó a base de costumbre, decretos, granos de cebada y dieciséis vecinos a la
+        salida de misa; nunca fue exacto hasta que alguien lo definió en metros. El metro salió del
+        <b>planeta</b>, fue exacto desde el primer día por decreto y su problema fue el
+        contrario: medir bien la Tierra costó siete años y salió con
+        <a href="/origen-del-metro/">0,2 milímetros de error</a>.
+      </p>
+      <p>
+        Uno se construyó de abajo arriba y el otro de arriba abajo, y por eso hoy conviven mal: el
+        pie tiene 12 pulgadas, la <a href="/que-es-una-milla/">milla</a> tiene 5.280 pies y el
+        kilómetro tiene 1.000 metros. Solo una de esas tres cifras la eligió alguien pensando en
+        que fuera fácil.
+      </p>
+
+      <h2>Preguntas frecuentes sobre el pie</h2>
+      <dl class="faq">
+        <dt>¿Cuánto es un pie en metros?</dt>
+        <dd>Un pie son <a href="${conv}?d=1&u=ft">0,3048 metros exactos</a>, es decir 30,48
+          centímetros. A la inversa, un metro son 3,281 pies. La cifra es exacta por definición
+          desde el acuerdo internacional de la yarda y la libra de 1959.</dd>
+
+        <dt>¿De dónde viene el pie como unidad?</dt>
+        <dd>Del pie humano, como el codo, el palmo o el paso. Lo usaron griegos, romanos y todos
+          los reinos europeos, pero cada uno con una longitud distinta: entre 250 y 335 milímetros
+          según el sitio. El pie romano medía unos 296 mm y el castellano 278,6. El de 304,8 mm que
+          usamos hoy es el inglés, congelado en metros en 1959.</dd>
+
+        <dt>¿Por qué un pie tiene doce pulgadas?</dt>
+        <dd>Porque los romanos dividieron el pie en doce <i>unciae</i> —de ahí la palabra
+          <i>inch</i>— además de en los dieciséis dedos griegos, y esa división es la que se heredó
+          en Inglaterra. Doce se divide entre 2, 3, 4 y 6, y diez solo entre 2 y 5: para repartir
+          una tabla en tercios sin calculadora, el doce es mejor número.</dd>
+
+        <dt>¿Cuánto mide un pie humano de verdad?</dt>
+        <dd>Un 15,3 % de la estatura, de media. Una persona de 1,75 m tiene un pie de unos 26,8
+          centímetros, casi cuatro menos que la unidad. Para que tu pie midiera un pie exacto
+          tendrías que medir alrededor de 1,99 m.</dd>
+
+        <dt>¿Cuánto son 6 pies en metros?</dt>
+        <dd>Seis pies son 1,8288 metros, un metro y 83 centímetros. Es la estatura que Vitruvio
+          consideraba perfecta, porque para él el pie era la sexta parte del cuerpo, y es la que
+          usan las novelas y las películas cuando dicen que alguien mide «seis pies».</dd>
+
+        <dt>¿Se usó el pie en España?</dt>
+        <dd>Sí: el pie castellano o de Burgos medía 0,278635 metros, un tercio de la vara. Se
+          dividía en doce pulgadas o dieciséis dedos y veinte mil pies hacían una legua. Desapareció
+          con la Ley de Pesas y Medidas del 19 de julio de 1849, que adoptó el sistema métrico.</dd>
+
+        <dt>¿Por qué la aviación mide la altitud en pies?</dt>
+        <dd>Porque la aviación civil nació en países anglosajones y la OACI fijó el pie como unidad
+          de altitud para que todo el mundo use la misma. Se mantiene por seguridad: mezclar metros
+          y pies en el mismo cielo provoca errores de separación entre aviones. China, Mongolia y
+          Corea del Norte siguen en metros; Rusia se pasó a los pies en noviembre de 2011.</dd>
+      </dl>
+      <p>
+        ¿Quieres el número y ya? El <a href="${conv}?d=1&u=ft">conversor de distancias</a> pasa pies
+        a metros, kilómetros, yardas o millas. ¿Quieres verlo? Escribe una distancia en la
+        <a href="/distancias/">herramienta de distancias</a> y se dibuja a escala sobre tu ciudad.
+        Y si quieres la historia completa —la milla, el metro, la legua y por qué no nos ponemos de
+        acuerdo—, está en <a href="${hub}">las unidades de distancia</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'de-donde-viene-el-pie', ha: 0,
+    family: 'distancias', published: '2026-09-24', modified: '2026-09-24',
+    slug: 'de-donde-viene-el-pie',
+    path: FOOT_ALTERNATES.es, alternates: FOOT_ALTERNATES,
+    dist: 304.8, distUnit: 'm',
+    presetExtra: ' var PRESET_ZOOM = 15; var PRESET_LAT = 40.4169; var PRESET_LON = -3.7033;',
+    title: '¿De dónde viene el pie? Por qué mide 30,48 cm y tiene doce pulgadas | Hectareómetro',
+    description: 'Un pie son 0,3048 metros exactos, pero ningún pie humano mide eso: el de un adulto de 1,75 m son 26,8 cm. De los dieciséis hombres a la puerta de la iglesia a los tres granos de cebada de Eduardo II y al tratado de 1959 que definió el pie en metros.',
+    h1: '¿De dónde viene el pie?',
+    intro,
+    question: '¿Cuánto es un pie en metros?',
+    answer: 'Un pie son 0,3048 metros exactos, es decir 30,48 centímetros, y un metro son 3,281 pies. La unidad viene del pie humano, pero es un 14 % más larga que el pie de un adulto medio, y su valor exacto lo fijó en metros el acuerdo internacional de la yarda y la libra de 1959.',
+    faqs: [
+      { q: '¿Cuánto es un pie en metros?', a: 'Un pie son 0,3048 metros exactos, es decir 30,48 centímetros. A la inversa, un metro son 3,281 pies. La cifra es exacta por definición desde el acuerdo internacional de la yarda y la libra de 1959.' },
+      { q: '¿De dónde viene el pie como unidad?', a: 'Del pie humano, como el codo, el palmo o el paso. Lo usaron griegos, romanos y todos los reinos europeos, pero cada uno con una longitud distinta: entre 250 y 335 milímetros según el sitio. El pie romano medía unos 296 mm y el castellano 278,6. El de 304,8 mm que usamos hoy es el inglés, congelado en metros en 1959.' },
+      { q: '¿Por qué un pie tiene doce pulgadas?', a: 'Porque los romanos dividieron el pie en doce unciae —de ahí la palabra inch— además de en los dieciséis dedos griegos, y esa división es la que se heredó en Inglaterra. Doce se divide entre 2, 3, 4 y 6, y diez solo entre 2 y 5: para repartir una tabla en tercios sin calculadora, el doce es mejor número.' },
+      { q: '¿Cuánto mide un pie humano de verdad?', a: 'Un 15,3 % de la estatura, de media. Una persona de 1,75 m tiene un pie de unos 26,8 centímetros, casi cuatro menos que la unidad. Para que tu pie midiera un pie exacto tendrías que medir alrededor de 1,99 m.' },
+      { q: '¿Cuánto son 6 pies en metros?', a: 'Seis pies son 1,8288 metros, un metro y 83 centímetros. Es la estatura que Vitruvio consideraba perfecta, porque para él el pie era la sexta parte del cuerpo, y es la que usan las novelas y las películas cuando dicen que alguien mide «seis pies».' },
+      { q: '¿Se usó el pie en España?', a: 'Sí: el pie castellano o de Burgos medía 0,278635 metros, un tercio de la vara. Se dividía en doce pulgadas o dieciséis dedos y veinte mil pies hacían una legua. Desapareció con la Ley de Pesas y Medidas del 19 de julio de 1849, que adoptó el sistema métrico.' },
+      { q: '¿Por qué la aviación mide la altitud en pies?', a: 'Porque la aviación civil nació en países anglosajones y la OACI fijó el pie como unidad de altitud para que todo el mundo use la misma. Se mantiene por seguridad: mezclar metros y pies en el mismo cielo provoca errores de separación entre aviones. China, Mongolia y Corea del Norte siguen en metros; Rusia se pasó a los pies en noviembre de 2011.' },
+    ],
+    linkLabel: '¿De dónde viene el pie?',
+  };
+  }
+
+  // English mirror (universal topic). Preset: a 1,000-foot radius over Charing
+  // Cross, the point London measures its road distances from, and the copy
+  // leads with feet and inches because that is how the English reader thinks.
+  const conv = '/en/kilometers-to-miles/';
+  const hub = '/en/distance-units/';
+  const circle = '/en/distances/?d=304.8&u=m&lat=51.5074&lon=-0.1277&z=15';
+  const intro = `      <p>
+        <b>A foot is exactly 0.3048 metres</b>, or 30.48 centimetres. It is named after a body
+        part and it <b>matches nobody's body part</b>: the foot of an adult who is
+        5 ft 9 in tall measures about 26.8 centimetres. For your foot to be a foot long, you would
+        have to be nearly <b>6 ft 6 in</b> tall.
+      </p>
+      <p>
+        The circle on the map has a radius of <b><a href="${circle}">304.8 metres</a></b> — one
+        thousand feet exactly — centred on Charing Cross, the point from which every road distance
+        to London has been measured for centuries. This article is part of
+        <a href="${hub}">the distance units and where they come from</a>; its opposite number is
+        <a href="/en/origin-of-the-metre/">the metre</a>, which was built by measuring the planet
+        instead of measuring a person. If you only want the number, the
+        <a href="${conv}?d=1&u=ft">distance converter</a> turns feet into metres instantly.
+      </p>
+
+      <h2>A foot is not a foot</h2>
+      <p>
+        Start with the strange part. An adult's foot is on average <b>15.3% of their height</b>: a
+        person of 175 cm (5 ft 9 in) has a foot about <b>268 millimetres</b> long. The unit is
+        304.8. The official foot is therefore about <b>14% longer</b> than the average human foot,
+        and that is not an oversight: it is what happens when a unit is inherited for two thousand
+        years and everyone who pins it down pins it down slightly in their own favour.
+      </p>
+      <p>
+        There are sensible explanations — it was measured with a shoe on, it was measured on
+        somebody important, it was nudged to fit convenient multiples — and none of them is proven.
+        What is written down is the ideal. <b>Vitruvius</b>, in book III of <i>De architectura</i>,
+        says the foot is <b>one sixth of a person's height</b>, and that a well-proportioned body is
+        therefore exactly <b>six feet</b> tall. Six feet is <b>1.8288 metres</b>, which would give
+        the Vitruvian man a 30.5 cm foot. The real ratio is closer to one in six and a half: the
+        classical canon is, quite literally, a little long in the foot.
+      </p>
+
+      <h2>Every kingdom had its own</h2>
+      <p>
+        While the unit came from the body, no two places could agree. The historical foot ranged
+        from <b>250 to 335 millimetres</b> depending on the country, and in many regions two or
+        three coexisted depending on whether you were measuring cloth, timber or land.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Foot</th><th>Length</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td>International foot</td><td>304.8 mm</td><td>Today's, since 1959</td></tr>
+          <tr><td>Roman <i>pes</i></td><td>~296 mm</td><td>Five feet made a pace; a thousand paces, <a href="/en/what-is-a-mile/">a mile</a></td></tr>
+          <tr><td>Greek foot</td><td>~302 mm</td><td>Different in every city (270-350 mm)</td></tr>
+          <tr><td>Belgic or North German foot</td><td>335 mm</td><td>Brought to England by the Belgic Celts or the Anglo-Saxons</td></tr>
+          <tr><td><i>Pied du roi</i></td><td>324.8 mm</td><td>France, until the Revolution</td></tr>
+          <tr><td>Castilian foot</td><td>278.6 mm</td><td>A third of a <i>vara</i>; 20,000 made a league</td></tr>
+          <tr><td>US survey foot</td><td>304.80061 mm</td><td>US land surveying until 2023</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The spread is the point. An English plan and a French plan of the same building gave
+        different numbers even though both said "feet", and the difference between the
+        <i>pied du roi</i> and the English foot — two whole centimetres — was enough to start
+        arguments about the size of a cargo, a field or a cathedral.
+      </p>
+
+      <h2>Sixteen men outside the church</h2>
+      <p>
+        The best surviving recipe for manufacturing a legal foot dates from <b>1535</b> and was
+        written by the German mathematician <b>Jacob Köbel</b>. It goes like this:
+      </p>
+      <blockquote class="rules-quote" cite="https://en.wikipedia.org/wiki/Foot_(unit)">
+        <p>
+          Stand at the door of a church on a Sunday and bid 16 men to stop, tall ones and small
+          ones, as they happen to pass out when the service is finished; then make them put their
+          left feet one behind the other, and the length thus obtained shall be a right and lawful
+          rood to measure and survey the land with, and the 16th part of it shall be the right and
+          lawful foot.
+        </p>
+        <footer>— Jacob Köbel, <cite>Geometrei</cite>, 1535</footer>
+      </blockquote>
+      <p>
+        It is a beautiful piece of nonsense and it is also <b>statistics</b>: averaging sixteen
+        arbitrary feet cancels out the giant and the dwarf, and the next village repeating the
+        procedure will land on a similar number. With no standards, no platinum bars and no
+        laboratories, Köbel had found the only honest way to standardise anything using people —
+        use a lot of people.
+      </p>
+
+      <h2>Three grains of barley</h2>
+      <p>
+        The other classical method works from the bottom up, through the inch. An English text of
+        around <b>1324</b>, attributed to <b>Edward II</b>, defines the inch as <b>three grains of
+        barley</b>, "dry and round", laid end to end lengthwise; twelve inches make a foot and
+        three feet a yard. The same idea turns up in Castile, where the <i>dedo</i> was defined as
+        four barleycorns.
+      </p>
+      <p>
+        And here is the good bit: <b>the barleycorn is still in use</b>. A third of an inch is
+        8.47 millimetres, and that is exactly the step between two consecutive UK or US shoe sizes.
+        Every time somebody tries a size 9 after a size 8, they are moving up by one medieval grain
+        of barley.
+      </p>
+      <p>
+        The words give the origin away too. <b>Inch</b> comes from the Latin <i>uncia</i>, "a
+        twelfth part" — the same word that gives us the ounce. The Romance languages went the other
+        way and named it after the thumb: French <i>pouce</i>, Spanish <i>pulgada</i>, Italian
+        <i>pollice</i>. One language kept the fraction, the others kept the finger.
+      </p>
+
+      <h2>Why twelve inches and not ten</h2>
+      <p>
+        Greeks and Romans divided the foot into <b>16 digits</b>. It was the Romans who later added
+        the division into <b>12 unciae</b>, and that is the one that won. It is not an accident or
+        stubbornness: <b>12 divides by 2, 3, 4 and 6</b>, while 10 only divides by 2 and 5. For a
+        carpenter who needs a third of a board or a quarter of a beam and has no calculator, twelve
+        is simply a better tool than ten.
+      </p>
+      <p>
+        That is the one real argument the body units have, and it is the trade the metric system
+        refused: the ease of splitting things into thirds in exchange for the ease of multiplying
+        by ten. The metre won because measuring stopped being a craftsman's problem and became a
+        scientist's, an engineer's and a customs officer's. The other half of that story is in
+        <a href="/en/origin-of-the-metre/">the origin of the metre</a>.
+      </p>
+
+      <h2>The foot has been metric since 1959</h2>
+      <p>
+        Here is the final irony. The foot is no longer defined by anybody's foot: <b>it is defined
+        in metres</b>. The <b>International Yard and Pound Agreement</b>, signed on <b>1 July
+        1959</b> by the United States, the United Kingdom, Canada, Australia, New Zealand and South
+        Africa, set the yard at exactly 0.9144 metres, and everything else falls out of that by
+        arithmetic: the foot is a third of a yard, the inch a thirty-sixth.
+      </p>
+      <p>
+        Industry had in fact got there almost thirty years earlier. The <b>25.4 mm</b> inch was
+        adopted by the British Standards Institution in <b>1930</b> and by the American Standards
+        Association in <b>1933</b>, because the gauge blocks that parts were machined against came
+        in millimetres and nobody wanted two sets. The 1959 treaty did not invent the number; it
+        legalised the one the workshops were already using.
+      </p>
+      <p>
+        Before that, the British foot (0.3047997 m) and the American survey foot (0.30480061 m)
+        were not the same length. The difference is <b>two parts per million</b>: two millimetres
+        per kilometre, twenty centimetres over a hundred. Irrelevant for a table, expensive for a
+        land registry — so the United States kept its old <i>US survey foot</i> for another six
+        decades and only <b>retired it on 1 January 2023</b>. That was the last pre-scientific unit
+        of length left in the Western world.
+      </p>
+
+      <h2>How many metres is X feet</h2>
+      <p>
+        The conversion table, with the circle already drawn on the map for the distances you can
+        actually see:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Feet</th><th>In metres</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?d=1&u=ft">1 foot</a></td><td>0.3048 m</td><td>30.48 cm; 12 inches</td></tr>
+          <tr><td><a href="${conv}?d=3&u=ft">3 feet</a></td><td>0.9144 m</td><td>Exactly one yard</td></tr>
+          <tr><td><a href="${conv}?d=6&u=ft">6 feet</a></td><td>1.8288 m</td><td>Vitruvius's ideal height</td></tr>
+          <tr><td><a href="${conv}?d=10&u=ft">10 feet</a></td><td>3.048 m</td><td>The height of a basketball hoop</td></tr>
+          <tr><td><a href="${conv}?d=20&u=ft">20 feet</a></td><td>6.1 m</td><td>A container: the unit of world shipping</td></tr>
+          <tr><td><a href="${circle}">1,000 feet</a></td><td>304.8 m</td><td>The circle on the map</td></tr>
+          <tr><td><a href="${conv}?d=5280&u=ft">5,280 feet</a></td><td>1,609.344 m</td><td><a href="/en/what-is-a-mile/">One mile</a></td></tr>
+          <tr><td><a href="${conv}?d=29032&u=ft">29,032 feet</a></td><td>8,848.86 m</td><td>Mount Everest</td></tr>
+          <tr><td><a href="${conv}?d=35000&u=ft">35,000 feet</a></td><td>10,668 m</td><td>An airliner's cruising altitude</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Where the foot is still alive</h2>
+      <p>
+        Even in countries that buried the foot a century and a half ago, it is used every single
+        day in one very specific place: <b>the air</b>. ICAO sets altitudes and flight levels
+        <b>in feet</b>, so a pilot taking off from Madrid or Frankfurt climbs to 35,000 feet, not
+        10,668 metres. Only China, Mongolia and North Korea have stayed on metres; <b>Russia</b>
+        and several ex-Soviet states switched to feet above the transition altitude on
+        <b>17 November 2011</b>, because running two altitude systems in the same sky is, quite
+        literally, dangerous.
+      </p>
+      <p>
+        Feet and inches survive in other corners too, almost always for the same reason — the
+        standard was written in English and changing it would cost more than it would fix:
+      </p>
+      <ul>
+        <li><b>The basketball hoop</b> is 3.05 m high everywhere on Earth, because that is ten
+          feet.</li>
+        <li><b>Shipping containers</b> are 20 or 40 feet long, and world port traffic is counted in
+          TEU: twenty-foot equivalent units.</li>
+        <li><b>Screens, bicycle wheels, vinyl records and plumbing</b> are sized in inches even in
+          countries that have never used an inch for anything else.</li>
+        <li><b>Your font size.</b> The typographic point Didot devised around 1783 was 1/72 of a
+          French royal inch (0.376 mm); today's desktop-publishing point is 1/72 of an English inch,
+          0.3528 mm. When you pick "12 pt" you are measuring in feet.</li>
+        <li><b>Wave heights</b> in surf forecasts and <b>depth</b> on many dive computers.</li>
+      </ul>
+
+      <h2>The foot versus the metre</h2>
+      <p>
+        The two units sum up the two ways of measuring anything. The foot came from the <b>body</b>
+        and was stabilised by custom, decrees, barleycorns and sixteen neighbours leaving church;
+        it was never exact until somebody defined it in metres. The metre came from the
+        <b>planet</b>, was exact from day one by decree, and had the opposite problem: measuring
+        the Earth properly took seven years and came out
+        <a href="/en/origin-of-the-metre/">0.2 millimetres short</a>.
+      </p>
+      <p>
+        One was built from the bottom up and the other from the top down, which is why they still
+        sit badly together: a foot has 12 inches, a <a href="/en/what-is-a-mile/">mile</a> has
+        5,280 feet, and a kilometre has 1,000 metres. Only one of those three numbers was chosen by
+        somebody who wanted it to be easy.
+      </p>
+
+      <h2>Frequently asked questions about the foot</h2>
+      <dl class="faq">
+        <dt>How many metres is a foot?</dt>
+        <dd>A foot is <a href="${conv}?d=1&u=ft">exactly 0.3048 metres</a>, or 30.48 centimetres.
+          The other way round, a metre is 3.281 feet. The figure is exact by definition, from the
+          International Yard and Pound Agreement of 1959.</dd>
+
+        <dt>Where does the foot come from as a unit?</dt>
+        <dd>From the human foot, like the cubit, the span and the pace. Greeks, Romans and every
+          European kingdom used it, each with a different length: between 250 and 335 millimetres
+          depending on the place. The Roman foot was about 296 mm and the Castilian one 278.6. The
+          304.8 mm foot we use today is the English one, frozen in metres in 1959.</dd>
+
+        <dt>Why does a foot have twelve inches?</dt>
+        <dd>Because the Romans divided the foot into twelve <i>unciae</i> — which is where the word
+          inch comes from — as well as into the sixteen Greek digits, and that is the division
+          England inherited. Twelve divides by 2, 3, 4 and 6; ten only by 2 and 5. To split a board
+          into thirds without a calculator, twelve is the better number.</dd>
+
+        <dt>How long is a real human foot?</dt>
+        <dd>About 15.3% of a person's height on average. Someone 5 ft 9 in tall has a foot of about
+          26.8 centimetres, nearly four centimetres shorter than the unit. For your foot to measure
+          exactly one foot you would have to be around 6 ft 6 in tall.</dd>
+
+        <dt>How many metres is 6 feet?</dt>
+        <dd>Six feet is 1.8288 metres, one metre and 83 centimetres. It is the height Vitruvius
+          considered perfect, because for him the foot was one sixth of the body, and it is the
+          benchmark novels and films reach for when they say somebody is six foot.</dd>
+
+        <dt>Why does aviation measure altitude in feet?</dt>
+        <dd>Because civil aviation grew up in English-speaking countries and ICAO settled on the
+          foot so that everyone uses the same unit. It stays for safety reasons: mixing metres and
+          feet in the same sky causes separation errors between aircraft. China, Mongolia and North
+          Korea still use metres; Russia switched to feet in November 2011.</dd>
+
+        <dt>Is the US foot the same as the British foot?</dt>
+        <dd>It is now. Until 1959 the British imperial foot was 0.3047997 m and the American survey
+          foot 0.30480061 m, a difference of about two parts per million. Both were replaced by the
+          international foot of 0.3048 m, although the United States kept the survey foot for land
+          surveying until it was retired on 1 January 2023.</dd>
+      </dl>
+      <p>
+        Just want the number? The <a href="${conv}?d=1&u=ft">distance converter</a> turns feet into
+        metres, kilometres, yards or miles. Want to see it? Type a distance into the
+        <a href="/en/distances/">distances tool</a> and it is drawn to scale over your own city.
+        And if you want the whole story — the mile, the metre, the league and why we still cannot
+        agree — it is in <a href="${hub}">the distance units</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'en', key: 'de-donde-viene-el-pie', ha: 0,
+    family: 'distancias', published: '2026-09-24', modified: '2026-09-24',
+    slug: 'where-the-foot-comes-from',
+    path: FOOT_ALTERNATES.en, alternates: FOOT_ALTERNATES,
+    dist: 304.8, distUnit: 'm',
+    presetExtra: ' var PRESET_ZOOM = 15; var PRESET_LAT = 51.5074; var PRESET_LON = -0.1277;',
+    title: 'Where does the foot come from? Why it is 12 inches and 0.3048 m | Hectareometer',
+    description: 'A foot is exactly 0.3048 metres, but no human foot is: an adult of 5 ft 9 in has a 26.8 cm foot. From the sixteen men outside the church to the three barleycorns of Edward II and the 1959 treaty that defined the foot in metres.',
+    h1: 'Where does the foot come from?',
+    intro,
+    question: 'How many metres is a foot?',
+    answer: 'A foot is exactly 0.3048 metres, or 30.48 centimetres, and a metre is 3.281 feet. The unit comes from the human foot, but it is about 14% longer than an average adult foot, and its exact value was fixed in metres by the International Yard and Pound Agreement of 1959.',
+    faqs: [
+      { q: 'How many metres is a foot?', a: 'A foot is exactly 0.3048 metres, or 30.48 centimetres. The other way round, a metre is 3.281 feet. The figure is exact by definition, from the International Yard and Pound Agreement of 1959.' },
+      { q: 'Where does the foot come from as a unit?', a: 'From the human foot, like the cubit, the span and the pace. Greeks, Romans and every European kingdom used it, each with a different length: between 250 and 335 millimetres depending on the place. The Roman foot was about 296 mm and the Castilian one 278.6. The 304.8 mm foot we use today is the English one, frozen in metres in 1959.' },
+      { q: 'Why does a foot have twelve inches?', a: 'Because the Romans divided the foot into twelve unciae — which is where the word inch comes from — as well as into the sixteen Greek digits, and that is the division England inherited. Twelve divides by 2, 3, 4 and 6; ten only by 2 and 5. To split a board into thirds without a calculator, twelve is the better number.' },
+      { q: 'How long is a real human foot?', a: 'About 15.3% of a person’s height on average. Someone 5 ft 9 in tall has a foot of about 26.8 centimetres, nearly four centimetres shorter than the unit. For your foot to measure exactly one foot you would have to be around 6 ft 6 in tall.' },
+      { q: 'How many metres is 6 feet?', a: 'Six feet is 1.8288 metres, one metre and 83 centimetres. It is the height Vitruvius considered perfect, because for him the foot was one sixth of the body, and it is the benchmark novels and films reach for when they say somebody is six foot.' },
+      { q: 'Why does aviation measure altitude in feet?', a: 'Because civil aviation grew up in English-speaking countries and ICAO settled on the foot so that everyone uses the same unit. It stays for safety reasons: mixing metres and feet in the same sky causes separation errors between aircraft. China, Mongolia and North Korea still use metres; Russia switched to feet in November 2011.' },
+      { q: 'Is the US foot the same as the British foot?', a: 'It is now. Until 1959 the British imperial foot was 0.3047997 m and the American survey foot 0.30480061 m, a difference of about two parts per million. Both were replaced by the international foot of 0.3048 m, although the United States kept the survey foot for land surveying until it was retired on 1 January 2023.' },
+    ],
+    linkLabel: 'Where does the foot come from?',
+  };
+}
+
+
 const DIST_ARTICLES = [
   distanceUnitsArticle('es'), distanceUnitsArticle('en'),
+  footArticle('es'), footArticle('en'),
   metreArticle('es'), metreArticle('en'),
   mileArticle('es'), mileArticle('en'),
   tenThousandStepsArticle('es'), tenThousandStepsArticle('en'),

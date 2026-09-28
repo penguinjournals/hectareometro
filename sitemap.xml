@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hectareometro.com/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -38,13 +38,13 @@
   </url>
   <url>
     <loc>https://hectareometro.com/distancias/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/distances/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -86,25 +86,25 @@
   </url>
   <url>
     <loc>https://hectareometro.com/kilometros-a-millas/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/kilometers-to-miles/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/articulos/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/articles/</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -584,37 +584,49 @@
   </url>
   <url>
     <loc>https://hectareometro.com/unidades-de-distancia/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/distance-units/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/de-donde-viene-el-pie/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://hectareometro.com/en/where-the-foot-comes-from/</loc>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/origen-del-metro/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/origin-of-the-metre/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/que-es-una-milla/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://hectareometro.com/en/what-is-a-mile/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

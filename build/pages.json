@@ -568,6 +568,20 @@
   },
   {
     "lang": "es",
+    "slug": "de-donde-viene-el-pie",
+    "path": "/de-donde-viene-el-pie/",
+    "label": "¿De dónde viene el pie?",
+    "title": "¿De dónde viene el pie? Por qué mide 30,48 cm y tiene doce pulgadas | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "where-the-foot-comes-from",
+    "path": "/en/where-the-foot-comes-from/",
+    "label": "Where does the foot come from?",
+    "title": "Where does the foot come from? Why it is 12 inches and 0.3048 m | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "origen-del-metro",
     "path": "/origen-del-metro/",
     "label": "El origen del metro",

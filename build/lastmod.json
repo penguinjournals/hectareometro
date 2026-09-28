@@ -1,11 +1,11 @@
 {
   "/": {
-    "fingerprint": "4c6bc2ef6812306e",
-    "lastmod": "2026-09-17"
+    "fingerprint": "059efff825f4a15b",
+    "lastmod": "2026-09-24"
   },
   "/en/": {
-    "fingerprint": "dcd727411426c6e5",
-    "lastmod": "2026-09-17"
+    "fingerprint": "a76947be818cebdc",
+    "lastmod": "2026-09-24"
   },
   "/medir-superficie/": {
     "fingerprint": "407ca0b522b2f3d6",
@@ -24,12 +24,12 @@
     "lastmod": "2026-07-24"
   },
   "/distancias/": {
-    "fingerprint": "44caf5621b7014a5",
-    "lastmod": "2026-09-17"
+    "fingerprint": "5490f09ca0e0de77",
+    "lastmod": "2026-09-24"
   },
   "/en/distances/": {
-    "fingerprint": "fefccf9e6a565b3f",
-    "lastmod": "2026-09-17"
+    "fingerprint": "ab05051894015f69",
+    "lastmod": "2026-09-24"
   },
   "/litros/": {
     "fingerprint": "72e5d32ee793d376",
@@ -56,20 +56,20 @@
     "lastmod": "2026-07-24"
   },
   "/kilometros-a-millas/": {
-    "fingerprint": "f1ee24f3911aa09b",
-    "lastmod": "2026-09-17"
+    "fingerprint": "db1013881f880039",
+    "lastmod": "2026-09-24"
   },
   "/en/kilometers-to-miles/": {
-    "fingerprint": "34ef08383abef073",
-    "lastmod": "2026-09-17"
+    "fingerprint": "06a601f8ed456147",
+    "lastmod": "2026-09-24"
   },
   "/articulos/": {
-    "fingerprint": "8bfbad5e4fad9289",
-    "lastmod": "2026-09-17"
+    "fingerprint": "7d8a131efe0d0adb",
+    "lastmod": "2026-09-24"
   },
   "/en/articles/": {
-    "fingerprint": "b6d7b780b37667b5",
-    "lastmod": "2026-09-17"
+    "fingerprint": "0b988bb9b1c0fffd",
+    "lastmod": "2026-09-24"
   },
   "/1-hectarea/": {
     "fingerprint": "11b0b86cf8055283",
@@ -388,28 +388,36 @@
     "lastmod": "2026-08-14"
   },
   "/unidades-de-distancia/": {
-    "fingerprint": "3cb7d3f3df89f0a6",
-    "lastmod": "2026-09-14"
+    "fingerprint": "d4de658d38f702f6",
+    "lastmod": "2026-09-24"
   },
   "/en/distance-units/": {
-    "fingerprint": "dc065fd7d37e8c7d",
-    "lastmod": "2026-09-14"
+    "fingerprint": "bee82193c1ca1c23",
+    "lastmod": "2026-09-24"
+  },
+  "/de-donde-viene-el-pie/": {
+    "fingerprint": "42b08fbac403f385",
+    "lastmod": "2026-09-24"
+  },
+  "/en/where-the-foot-comes-from/": {
+    "fingerprint": "3d280a32c10a8505",
+    "lastmod": "2026-09-24"
   },
   "/origen-del-metro/": {
-    "fingerprint": "fc2cb4eea5dbe948",
-    "lastmod": "2026-09-14"
+    "fingerprint": "30a3c28a23ac1d88",
+    "lastmod": "2026-09-24"
   },
   "/en/origin-of-the-metre/": {
-    "fingerprint": "2df197c773472a95",
-    "lastmod": "2026-09-14"
+    "fingerprint": "82e1f892dc3f1bbb",
+    "lastmod": "2026-09-24"
   },
   "/que-es-una-milla/": {
-    "fingerprint": "9f3ce24fe7c3fe81",
-    "lastmod": "2026-09-14"
+    "fingerprint": "d978029e242a9590",
+    "lastmod": "2026-09-24"
   },
   "/en/what-is-a-mile/": {
-    "fingerprint": "28a1a2a829c42c0b",
-    "lastmod": "2026-09-14"
+    "fingerprint": "0dfb9991ba8722b9",
+    "lastmod": "2026-09-24"
   },
   "/cuanto-son-10000-pasos/": {
     "fingerprint": "184bb3107369de5e",
