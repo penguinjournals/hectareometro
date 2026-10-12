@@ -11,7 +11,14 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7F6F2">
 <link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<script src="/js/site.js" defer></script>
 <link rel="canonical" href="https://hectareometro.com/100000-litros/">
 <link rel="alternate" hreflang="es" href="https://hectareometro.com/100000-litros/">
 <link rel="alternate" hreflang="en" href="https://hectareometro.com/en/100000-liters/">
@@ -91,127 +98,109 @@
 }
 </script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='/css/style.css' rel='stylesheet' type='text/css'>
 <script>var PAGE_LANG = 'es'; var PRESET_LITERS = 100000;</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/hectareas-utils.js"></script>
-<script type="text/javascript" src="/js/liters-data.js"></script>
-<script type="text/javascript" src="/js/liters.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": { "popup": { "background": "#000" }, "button": { "background": "#337AB7" } },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
+<script src="/js/hectareas-utils.js"></script>
+<script src="/js/liters-data.js"></script>
+<script src="/js/liters.js"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
 </head>
-<body>
-<nav class="navbar navbar-default site-nav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
-        <span class="sr-only">Menú</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">Hectareómetro</a>
-    </div>
-    <div class="collapse navbar-collapse" id="site-nav-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="/medir-superficie/">Medir una superficie</a></li>
-        <li><a href="/medir-distancias/">Medir distancias</a></li>
-        <li><a href="/distancias/">Distancias</a></li>
-        <li class="active"><a href="/litros/">Litros</a></li>
-        <li><a href="/kilos/">Kilos</a></li>
-        <li><a href="/dinero/">Dinero</a></li>
-        <li><a href="/articulos/">Artículos</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/en/100000-liters/" hreflang="en">English</a></li>
-      </ul>
+<body data-section="litros">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><i></i>Hectareómetro</a>
+    <nav class="site-nav" id="site-nav" aria-label="Menú">
+      <a href="/">Hectáreas</a>
+      <a href="/distancias/">Distancias</a>
+      <a href="/litros/" aria-current="page">Litros</a>
+      <a href="/kilos/">Kilos</a>
+      <a href="/dinero/">Dinero</a>
+      <a href="/medir-superficie/">Medir</a>
+      <a href="/articulos/">Artículos</a>
+    </nav>
+    <div class="hdr-actions">
+      <a class="btn-ghost" href="/en/100000-liters/" hreflang="en">English</a>
+      <button type="button" class="btn-ghost btn-icon nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
-</nav>
-<nav class="breadcrumb-line" aria-label="Ruta de navegación">
+</header>
+<main>
+<section class="hero hero-nomap">
+  <div class="wrap">
+    <div class="hero-head">
+      <nav class="breadcrumb-line" aria-label="Ruta de navegación">
   <ol>
     <li><a href="/">Hectareómetro</a></li>
     <li><a href="/litros/">Litros</a></li>
     <li><span aria-current="page">100.000 litros</span></li>
   </ol>
 </nav>
-<div id="litros-tool">
-  <div id="litros-panel">
-    <label for="liters">¿Cuánta agua son</label>
-    <input type="text" id="liters" class="customizable-parameter">
-    <select id="liters-unit" aria-label="Unidad de volumen">
-      <option value="l" selected>litros</option>
+      <h1 class="ans">¿Cuánto son 100.000 litros de agua?</h1>
+      
+      <p class="sub">¿Cuánto son 100.000 litros? Aproximadamente 3,3 camiones cisterna: lo que beben 50.000 personas en un día. Míralo dibujado con iconos, de vasos de agua a piscinas olímpicas.</p>
+      <div id="litros-tool">
+        <div id="litros-panel">
+          <label for="liters">¿Cuánta agua son</label>
+          <input type="text" id="liters" class="customizable-parameter" inputmode="decimal" autocomplete="off">
+          <select id="liters-unit" aria-label="Unidad de volumen">
+            <option value="l" selected>litros</option>
       <option value="gal">galones</option>
       <option value="hm3">hm³</option>
-    </select>
-    <label for="liters">?</label>
-    <div id="equivalences" aria-live="polite"></div>
-  </div>
-  <div id="pictogram" role="img"></div>
-  <p id="picto-count" aria-live="polite"></p>
-  <p id="picto-legend"></p>
-  <p id="picto-unit-row">
-    <label for="picto-unit">Ver</label>
-    <select id="picto-unit" aria-label="Unidad del dibujo"></select>
-  </p>
-  <p id="liter-phrase"></p>
-  <p id="picto-download-row"><a href="#" id="picto-download"><i class="fa fa-download"></i> Descargar como imagen</a></p>
-</div>
-
-<div class="container-fluid">
-  <div id="share-block" class="text-center">
-        <p id="share-cta">¿Te ha servido? Compártelo 👇</p>
-        <div id="share-social">
-          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
-          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="X/Twitter"></a>
-          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Facebook"></a>
-        </div>
-        <div id="share-details">
-          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
-            <i class="fa fa-caret-down"></i> Más opciones de compartir
-          </a>
-          <div id="share-advanced" class="collapse">
-            <form>
-              <div class="form-group">
-                <label class="control-label" for="url-share">Link:</label>
-                <input type="text" id="url-share" class="share-link form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="iframe-share">Iframe:</label>
-                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-width">Ancho:</label>
-                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
-                </div>
-                <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-height">Alto:</label>
-                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
-                </div>
-              </div>
-            </form>
-          </div>
+          </select>
+          <label for="liters">?</label>
+          <div id="equivalences" aria-live="polite"></div>
         </div>
       </div>
-  <div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
-      <h1>¿Cuánto son 100.000 litros de agua?</h1>
-      
-      <p>El dibujo de arriba muestra <b>100.000 litros de agua</b> como 3,3 camiones cisterna: cada icono representa 1 camión cisterna (30.000 litros). Es aproximadamente lo que beben 50.000 personas en un día.</p>
+    </div>
+    <div class="hero-visual">
+      <div class="picto-stage">
+        <div id="pictogram" role="img"></div>
+        <p id="picto-count" aria-live="polite"></p>
+        <p id="picto-legend"></p>
+        <p id="picto-unit-row">
+          <label for="picto-unit">Ver</label>
+          <select id="picto-unit" aria-label="Unidad del dibujo"></select>
+        </p>
+        <p id="liter-phrase"></p>
+        <p id="picto-download-row"><a href="#" id="picto-download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6 11l6 6 6-6M4 21h16"/></svg> Descargar como imagen</a></p>
+      </div>
+    </div>
+    <div class="hero-more">
+      <h2 class="eyebrow">Mira otras cantidades de agua</h2>
+      <ul class="related-links">
+        <li><a href="/100-litros/">100 litros</a></li>
+        <li><a href="/500-litros/">500 litros</a></li>
+        <li><a href="/1000-litros/">1000 litros</a></li>
+        <li><a href="/5000-litros/">5000 litros</a></li>
+        <li><a href="/10000-litros/">10.000 litros</a></li>
+        <li><a href="/1000000-litros/">1.000.000 litros</a></li>
+        <li><a href="/2500000-litros/">2.500.000 litros</a></li>
+        <li><a href="/litros/">La herramienta de litros</a></li>
+      </ul>
+<details class="share">
+  <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Compartir o insertar</summary>
+  <div class="share-body">
+    <div class="share-icons">
+      <a id="whatsapp-share" href="" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.5-1.8-1-1 .8c-.9-.4-1.8-1.3-2.2-2.2l.8-1-1-1.8z"/></svg></a>
+      <a id="twitter-share" href="" target="_blank" rel="noopener" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+      <a id="facebook-share" href="" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8z"/></svg></a>
+    </div>
+    <label for="url-share">Link</label>
+    <input type="text" id="url-share" readonly>
+    <label for="iframe-share">Iframe</label>
+    <textarea id="iframe-share" rows="3" readonly></textarea>
+    <div class="share-size">
+      <div><label for="iframe-share-width">Ancho</label><input type="text" id="iframe-share-width" class="customizable-parameter" inputmode="numeric"></div>
+      <div><label for="iframe-share-height">Alto</label><input type="text" id="iframe-share-height" class="customizable-parameter" inputmode="numeric"></div>
+    </div>
+  </div>
+</details>
+    </div>
+  </div>
+</section>
+<div class="wrap">
+  <div class="prose section">
+<p>El dibujo de arriba muestra <b>100.000 litros de agua</b> como 3,3 camiones cisterna: cada icono representa 1 camión cisterna (30.000 litros). Es aproximadamente lo que beben 50.000 personas en un día.</p>
       <p>En otras unidades, 100.000 litros son <b>100 metros cúbicos</b> o unos <b>26.417 galones</b>. Cambia el número en la herramienta o elige otra referencia para el dibujo (vasos, bañeras, camiones cisterna, piscinas olímpicas…) con el selector «Ver».</p>
 
       <h2>Preguntas frecuentes</h2>
@@ -226,20 +215,10 @@ window.cookieconsent.initialise({
         <dd>Unos 26.417 galones estadounidenses. Un galón US equivale a 3,785 litros (el galón imperial británico, a 4,546).</dd>
       </dl>
 
-      <h2>Mira otras cantidades de agua</h2>
-      <ul class="related-links">
-                <li><a href="/100-litros/">100 litros</a></li>
-        <li><a href="/500-litros/">500 litros</a></li>
-        <li><a href="/1000-litros/">1000 litros</a></li>
-        <li><a href="/5000-litros/">5000 litros</a></li>
-        <li><a href="/10000-litros/">10.000 litros</a></li>
-        <li><a href="/1000000-litros/">1.000.000 litros</a></li>
-        <li><a href="/2500000-litros/">2.500.000 litros</a></li>
-        <li><a href="/litros/">La herramienta de litros</a></li>
-      </ul>
-      <div class="section-block">
-        <h2>Artículos</h2>
-        <div class="card-grid">
+  </div>
+  <section class="section">
+    <h2 class="eyebrow">Artículos</h2>
+    <div class="card-grid">
         <div class="card card-article">
           <a href="/cuantos-litros-consume-una-persona-al-dia/">
             <span class="card-kicker">Litros</span>
@@ -280,27 +259,44 @@ window.cookieconsent.initialise({
             <span class="card-cta">Leer →</span>
           </a>
         </div>
-        </div>
-        <p><a href="/articulos/">Todos los artículos →</a></p>
-      </div>
-      <p><a href="/litros/">← Volver a la herramienta de litros</a></p>
     </div>
-  </div>
+    <p><a href="/articulos/">Todos los artículos →</a></p>
+  </section>
+  <section class="section lenses-block">
+    <h2 class="eyebrow">¿Cuánto es…?</h2>
+    <div class="lenses">
+      <a class="lens" href="/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/></svg>Hectáreas</span><span class="e">¿Cuánto son 1.000 hectáreas? Míralo sobre un mapa</span></a>
+      <a class="lens" href="/distancias/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Distancias</span><span class="e">¿Hasta dónde llegan 10 km?</span></a>
+      <a class="lens" href="/kilos/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21h12l1-12H5l1 12z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>Kilos</span><span class="e">¿Cuánto pesan 40.000 kilos?</span></a>
+      <a class="lens" href="/dinero/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 10h6M9 14h6M12 7v10"/></svg>Dinero</span><span class="e">¿Cuánto es un millón de euros?</span></a>
+      <a class="lens" href="/medir-superficie/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/></svg>Medir una superficie</span><span class="e">Dibuja sobre el mapa y te decimos cuántas hectáreas son</span></a>
+      <a class="lens" href="/medir-distancias/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M14 6l1.5 1.5M11 9l1.5 1.5M8 12l1.5 1.5"/></svg>Medir distancias</span><span class="e">Traza un recorrido punto a punto</span></a>
+      <a class="lens" href="/hectareas-a-metros-cuadrados/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>Conversor de superficies</span><span class="e">Hectáreas a m², acres y km²</span></a>
+      <a class="lens" href="/kilometros-a-millas/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>Conversor de distancias</span><span class="e">Kilómetros a millas, pies y yardas</span></a>
+    </div>
+  </section>
 </div>
-<footer class="site-footer text-center">
-  <ul class="footer-links">
-    <li><a href="/">Hectareómetro</a></li>
-    <li><a href="/medir-superficie/">Medir una superficie</a></li>
-    <li><a href="/medir-distancias/">Medir distancias</a></li>
-    <li><a href="/distancias/">Distancias</a></li>
-    <li><a href="/litros/">Litros</a></li>
-    <li><a href="/kilos/">Kilos</a></li>
-    <li><a href="/dinero/">Dinero</a></li>
-    <li><a href="/hectareas-a-metros-cuadrados/">Conversor de superficies</a></li>
-    <li><a href="/kilometros-a-millas/">Conversor de distancias</a></li>
-    <li><a href="/articulos/">Artículos</a></li>
-  </ul>
-  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/"><i></i>Hectareómetro</a>
+      <p>Cantidades difíciles de imaginar, dibujadas a escala.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="/">Hectareómetro</a></li>
+      <li><a href="/medir-superficie/">Medir una superficie</a></li>
+      <li><a href="/medir-distancias/">Medir distancias</a></li>
+      <li><a href="/distancias/">Distancias</a></li>
+      <li><a href="/litros/">Litros</a></li>
+      <li><a href="/kilos/">Kilos</a></li>
+      <li><a href="/dinero/">Dinero</a></li>
+      <li><a href="/hectareas-a-metros-cuadrados/">Conversor de superficies</a></li>
+      <li><a href="/kilometros-a-millas/">Conversor de distancias</a></li>
+      <li><a href="/articulos/">Artículos</a></li>
+    </ul>
+    <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+  </div>
 </footer>
 </body>
 </html>

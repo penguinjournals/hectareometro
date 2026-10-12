@@ -167,8 +167,25 @@ function getEquivalencesText(hectareas){
   return parts.join(S.sep);
 }
 
+// Headline comparison alone ("≈ 4.202 campos de fútbol"): the pill drawn
+// over the map in the 2026 layout.
+function getFieldsPill(hectareas){
+  var ha = parseFloat(hectareas);
+  if (isNaN(ha) || ha <= 0) {
+    return '';
+  }
+  var S = i18n();
+  var footballFields = (ha * 10000) / FOOTBALL_FIELD_SQUARE_METERS;
+  var fieldsText = footballFields < 10
+    ? formatNumberLocale(footballFields, 1)
+    : formatNumberLocale(Math.round(footballFields));
+  var fieldsLabel = footballFields >= 0.95 && footballFields < 1.05 ? S.field : S.fields;
+  return '≈ ' + fieldsText + ' ' + fieldsLabel;
+}
+
 function updateEquivalences(hectareas){
   $('#equivalences').text(getEquivalencesText(hectareas));
+  $('#map-pill').text(getFieldsPill(hectareas));
 }
 
 // Grows the amount input when the typed number no longer fits its base width

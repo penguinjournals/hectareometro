@@ -1,17 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{LANG}}">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-7KGFGQLBRJ');
-</script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="/favicon.ico">
+{{HEAD_COMMON}}
 <link rel="canonical" href="{{CANONICAL}}">
 {{HREFLANG}}
 <title>{{TITLE}}</title>
@@ -32,78 +22,29 @@
 {{JSON_LD}}
 </script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": { "popup": { "background": "#000" }, "button": { "background": "#337AB7" } },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
 </head>
-<body>
-<nav class="navbar navbar-default site-nav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
-        <span class="sr-only">{{NAV_MENU_LABEL}}</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="{{HOME_URL}}">{{SITE_NAME}}</a>
-    </div>
-    <div class="collapse navbar-collapse" id="site-nav-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="{{NAV_MEASURE_URL}}">{{NAV_MEASURE_LABEL}}</a></li>
-        <li><a href="{{NAV_MEASUREDIST_URL}}">{{NAV_MEASUREDIST_LABEL}}</a></li>
-        <li><a href="{{NAV_DIST_URL}}">{{NAV_DIST_LABEL}}</a></li>
-        <li><a href="{{NAV_LITERS_URL}}">{{NAV_LITERS_LABEL}}</a></li>
-        <li><a href="{{NAV_KILOS_URL}}">{{NAV_KILOS_LABEL}}</a></li>
-        <li><a href="{{NAV_MONEY_URL}}">{{NAV_MONEY_LABEL}}</a></li>
-        <li class="active"><a href="{{NAV_ARTICLES_URL}}">{{NAV_ARTICLES_LABEL}}</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>{{LANG_SWITCH}}</li>
-      </ul>
+<body data-section="{{SECTION}}">
+{{HEADER}}
+<main>
+<section class="hero hero-nomap">
+  <div class="wrap">
+    <div class="hero-head">
+      {{BREADCRUMB}}
+      <h1 class="ans">{{H1}}</h1>
+      <p class="sub">{{INTRO}}</p>
     </div>
   </div>
-</nav>
-{{BREADCRUMB}}
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
-      <h1>{{H1}}</h1>
-      <p class="section-sub">{{INTRO}}</p>
-      <div class="card-grid">
+</section>
+<div class="wrap">
+  <section class="section">
+    <div class="card-grid">
 {{ARTICLE_CARDS}}
-      </div>
     </div>
-  </div>
+  </section>
+{{LENSES_BLOCK}}
 </div>
-<footer class="site-footer text-center">
-  <ul class="footer-links">
-    <li><a href="{{HOME_URL}}">{{SITE_NAME}}</a></li>
-    <li><a href="{{NAV_MEASURE_URL}}">{{NAV_MEASURE_LABEL}}</a></li>
-    <li><a href="{{NAV_MEASUREDIST_URL}}">{{NAV_MEASUREDIST_LABEL}}</a></li>
-    <li><a href="{{NAV_DIST_URL}}">{{NAV_DIST_LABEL}}</a></li>
-    <li><a href="{{NAV_LITERS_URL}}">{{NAV_LITERS_LABEL}}</a></li>
-    <li><a href="{{NAV_KILOS_URL}}">{{NAV_KILOS_LABEL}}</a></li>
-    <li><a href="{{NAV_MONEY_URL}}">{{NAV_MONEY_LABEL}}</a></li>
-    <li><a href="{{NAV_CONVERTER_URL}}">{{NAV_CONVERTER_LABEL}}</a></li>
-    <li><a href="{{NAV_LENGTHCONV_URL}}">{{NAV_LENGTHCONV_LABEL}}</a></li>
-    <li><a href="{{NAV_ARTICLES_URL}}">{{NAV_ARTICLES_LABEL}}</a></li>
-  </ul>
-  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
-</footer>
+</main>
+{{FOOTER}}
 </body>
 </html>

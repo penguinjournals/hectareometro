@@ -1,223 +1,223 @@
 {
   "/": {
-    "fingerprint": "49f089f2d6d178eb",
+    "fingerprint": "a013c3e517c75bd6",
     "lastmod": "2026-10-12"
   },
   "/en/": {
-    "fingerprint": "713d68f9c05e03c8",
+    "fingerprint": "3d5ef8e876910d6b",
     "lastmod": "2026-10-12"
   },
   "/medir-superficie/": {
-    "fingerprint": "407ca0b522b2f3d6",
-    "lastmod": "2026-07-24"
+    "fingerprint": "026a16e0e22bb899",
+    "lastmod": "2026-10-12"
   },
   "/en/measure-area/": {
-    "fingerprint": "2c95ba5ba87227fe",
-    "lastmod": "2026-07-24"
+    "fingerprint": "5d626f4b34507efd",
+    "lastmod": "2026-10-12"
   },
   "/medir-distancias/": {
-    "fingerprint": "d52d89aef6b2a029",
-    "lastmod": "2026-07-24"
+    "fingerprint": "874508784f3fff5c",
+    "lastmod": "2026-10-12"
   },
   "/en/measure-distance/": {
-    "fingerprint": "f913e2db6e514281",
-    "lastmod": "2026-07-24"
+    "fingerprint": "98dac940f5c769b0",
+    "lastmod": "2026-10-12"
   },
   "/distancias/": {
-    "fingerprint": "5490f09ca0e0de77",
-    "lastmod": "2026-09-24"
+    "fingerprint": "42fe706f154cc0cc",
+    "lastmod": "2026-10-12"
   },
   "/en/distances/": {
-    "fingerprint": "ab05051894015f69",
-    "lastmod": "2026-09-24"
+    "fingerprint": "fa8cb07ed72c1a2f",
+    "lastmod": "2026-10-12"
   },
   "/litros/": {
-    "fingerprint": "72e5d32ee793d376",
-    "lastmod": "2026-08-14"
+    "fingerprint": "09745c2fb0e235ce",
+    "lastmod": "2026-10-12"
   },
   "/en/liters/": {
-    "fingerprint": "e5068b116abe6951",
-    "lastmod": "2026-08-07"
+    "fingerprint": "57b4abb0af988048",
+    "lastmod": "2026-10-12"
   },
   "/kilos/": {
-    "fingerprint": "7c4d371e8ba52b0d",
-    "lastmod": "2026-07-24"
+    "fingerprint": "17a6ae5f55948c8a",
+    "lastmod": "2026-10-12"
   },
   "/en/kilos/": {
-    "fingerprint": "7d3211183ff5dd59",
-    "lastmod": "2026-07-24"
+    "fingerprint": "d58113949d69ae2a",
+    "lastmod": "2026-10-12"
   },
   "/dinero/": {
-    "fingerprint": "928478fd85342c1a",
+    "fingerprint": "ba8dd2fb8147acff",
     "lastmod": "2026-10-12"
   },
   "/en/money/": {
-    "fingerprint": "4e87b57bd0d2f792",
+    "fingerprint": "b0a71f144e433d07",
     "lastmod": "2026-10-12"
   },
   "/hectareas-a-metros-cuadrados/": {
-    "fingerprint": "8a072c52508d88dd",
-    "lastmod": "2026-07-24"
+    "fingerprint": "6fc5086e8192d9a4",
+    "lastmod": "2026-10-12"
   },
   "/en/hectares-to-square-meters/": {
-    "fingerprint": "4ee446fe8eb86194",
-    "lastmod": "2026-07-24"
+    "fingerprint": "9af4534170232dc4",
+    "lastmod": "2026-10-12"
   },
   "/kilometros-a-millas/": {
-    "fingerprint": "db1013881f880039",
-    "lastmod": "2026-09-24"
+    "fingerprint": "530e9cccf7f2ab21",
+    "lastmod": "2026-10-12"
   },
   "/en/kilometers-to-miles/": {
-    "fingerprint": "06a601f8ed456147",
-    "lastmod": "2026-09-24"
+    "fingerprint": "40ee32f1cd3b0c81",
+    "lastmod": "2026-10-12"
   },
   "/articulos/": {
-    "fingerprint": "7d8a131efe0d0adb",
-    "lastmod": "2026-09-24"
+    "fingerprint": "238482a2724b5d3c",
+    "lastmod": "2026-10-12"
   },
   "/en/articles/": {
-    "fingerprint": "0b988bb9b1c0fffd",
-    "lastmod": "2026-09-24"
+    "fingerprint": "fb3f3fd8269b0377",
+    "lastmod": "2026-10-12"
   },
   "/1-hectarea/": {
-    "fingerprint": "11b0b86cf8055283",
-    "lastmod": "2026-08-13"
+    "fingerprint": "7c1c8dce6099c38a",
+    "lastmod": "2026-10-12"
   },
   "/100-hectareas/": {
-    "fingerprint": "8ef8c083fad3ec9a",
-    "lastmod": "2026-08-13"
+    "fingerprint": "bbccf97bde896270",
+    "lastmod": "2026-10-12"
   },
   "/300-hectareas/": {
-    "fingerprint": "75343dc3ecaeb322",
-    "lastmod": "2026-08-13"
+    "fingerprint": "9641d52b627f621d",
+    "lastmod": "2026-10-12"
   },
   "/400-hectareas/": {
-    "fingerprint": "2cf44ef0e362816e",
-    "lastmod": "2026-08-13"
+    "fingerprint": "15a5002a0ad1006a",
+    "lastmod": "2026-10-12"
   },
   "/500-hectareas/": {
-    "fingerprint": "1294d6cd1a05da4e",
-    "lastmod": "2026-08-13"
+    "fingerprint": "1f960b3caa8fe20a",
+    "lastmod": "2026-10-12"
   },
   "/1000-hectareas/": {
-    "fingerprint": "6c610ffb034cae98",
-    "lastmod": "2026-08-13"
+    "fingerprint": "9c6f066eb55f93e9",
+    "lastmod": "2026-10-12"
   },
   "/2000-hectareas/": {
-    "fingerprint": "f89fadf44bc5f62b",
-    "lastmod": "2026-08-13"
+    "fingerprint": "ea28e89497565e20",
+    "lastmod": "2026-10-12"
   },
   "/3000-hectareas/": {
-    "fingerprint": "3b30537e3f07ba68",
-    "lastmod": "2026-08-13"
+    "fingerprint": "6d44edf0030425f1",
+    "lastmod": "2026-10-12"
   },
   "/4000-hectareas/": {
-    "fingerprint": "0c79817fb17ecddc",
-    "lastmod": "2026-08-13"
+    "fingerprint": "06233380982bb27f",
+    "lastmod": "2026-10-12"
   },
   "/5000-hectareas/": {
-    "fingerprint": "fa747d2f5495cd4f",
-    "lastmod": "2026-08-13"
+    "fingerprint": "6e97dbd76dd501d7",
+    "lastmod": "2026-10-12"
   },
   "/10000-hectareas/": {
-    "fingerprint": "8d47aa31c29a358c",
-    "lastmod": "2026-08-13"
+    "fingerprint": "c8a4bb8733dcdeff",
+    "lastmod": "2026-10-12"
   },
   "/15000-hectareas/": {
-    "fingerprint": "985244e81ecbce67",
-    "lastmod": "2026-08-13"
+    "fingerprint": "704f8768fae282a1",
+    "lastmod": "2026-10-12"
   },
   "/20000-hectareas/": {
-    "fingerprint": "eb9c44d8b02bde0e",
-    "lastmod": "2026-08-13"
+    "fingerprint": "40d46951fc9b0b69",
+    "lastmod": "2026-10-12"
   },
   "/30000-hectareas/": {
-    "fingerprint": "e739a60545d99aeb",
-    "lastmod": "2026-08-13"
+    "fingerprint": "fe0d2b8c89336ebe",
+    "lastmod": "2026-10-12"
   },
   "/50000-hectareas/": {
-    "fingerprint": "61bb1e472b0d2260",
-    "lastmod": "2026-08-13"
+    "fingerprint": "d84aa081524ff393",
+    "lastmod": "2026-10-12"
   },
   "/100000-hectareas/": {
-    "fingerprint": "14f79a3332ad8947",
-    "lastmod": "2026-08-13"
+    "fingerprint": "a75cecd312789bda",
+    "lastmod": "2026-10-12"
   },
   "/200000-hectareas/": {
-    "fingerprint": "6bb2ee0663c89b9d",
-    "lastmod": "2026-08-13"
+    "fingerprint": "ede35ac09cd41e02",
+    "lastmod": "2026-10-12"
   },
   "/hectarea-campo-de-futbol/": {
     "fingerprint": "69463565d5fb1670",
     "lastmod": "2026-08-19"
   },
   "/en/1-hectare/": {
-    "fingerprint": "33f5766c13e6dc07",
-    "lastmod": "2026-08-13"
+    "fingerprint": "34c44a5801fcddce",
+    "lastmod": "2026-10-12"
   },
   "/en/100-hectares/": {
-    "fingerprint": "b3364c3814010a9b",
-    "lastmod": "2026-08-13"
+    "fingerprint": "2bf243f7a88bd13f",
+    "lastmod": "2026-10-12"
   },
   "/en/300-hectares/": {
-    "fingerprint": "1fb3028511ab15cc",
-    "lastmod": "2026-08-13"
+    "fingerprint": "c62b2b749c81a98d",
+    "lastmod": "2026-10-12"
   },
   "/en/400-hectares/": {
-    "fingerprint": "43df06c16251cbce",
-    "lastmod": "2026-08-13"
+    "fingerprint": "6439817c953e3611",
+    "lastmod": "2026-10-12"
   },
   "/en/500-hectares/": {
-    "fingerprint": "8fa3cdbb316cb205",
-    "lastmod": "2026-08-13"
+    "fingerprint": "5b0ad56dd864f497",
+    "lastmod": "2026-10-12"
   },
   "/en/1000-hectares/": {
-    "fingerprint": "085dffdd4cc1ec44",
-    "lastmod": "2026-08-13"
+    "fingerprint": "95adecb975646699",
+    "lastmod": "2026-10-12"
   },
   "/en/2000-hectares/": {
-    "fingerprint": "ca06a310e57d3aae",
-    "lastmod": "2026-08-13"
+    "fingerprint": "6b4f10c9c4a3c564",
+    "lastmod": "2026-10-12"
   },
   "/en/3000-hectares/": {
-    "fingerprint": "05cd9374b1129514",
-    "lastmod": "2026-08-13"
+    "fingerprint": "2968d52abff28c03",
+    "lastmod": "2026-10-12"
   },
   "/en/4000-hectares/": {
-    "fingerprint": "a6a557d5dcdaffa8",
-    "lastmod": "2026-08-13"
+    "fingerprint": "ec890df8c2fda5b6",
+    "lastmod": "2026-10-12"
   },
   "/en/5000-hectares/": {
-    "fingerprint": "78c667a4b0e787fd",
-    "lastmod": "2026-08-13"
+    "fingerprint": "9c908eb28df597ec",
+    "lastmod": "2026-10-12"
   },
   "/en/10000-hectares/": {
-    "fingerprint": "f8c6183fcf8ef87a",
-    "lastmod": "2026-08-13"
+    "fingerprint": "6a397e95dd36a600",
+    "lastmod": "2026-10-12"
   },
   "/en/15000-hectares/": {
-    "fingerprint": "51697d2c03059acc",
-    "lastmod": "2026-08-13"
+    "fingerprint": "344b5588e230cc5d",
+    "lastmod": "2026-10-12"
   },
   "/en/20000-hectares/": {
-    "fingerprint": "6014ed9320a1297b",
-    "lastmod": "2026-08-13"
+    "fingerprint": "7889141169c0a7cd",
+    "lastmod": "2026-10-12"
   },
   "/en/30000-hectares/": {
-    "fingerprint": "32543fab514098b7",
-    "lastmod": "2026-08-13"
+    "fingerprint": "4404f8e897808038",
+    "lastmod": "2026-10-12"
   },
   "/en/50000-hectares/": {
-    "fingerprint": "1c58fc3106c34ffe",
-    "lastmod": "2026-08-13"
+    "fingerprint": "8ae1bdc811910ca2",
+    "lastmod": "2026-10-12"
   },
   "/en/100000-hectares/": {
-    "fingerprint": "d1a10d07d448fa11",
-    "lastmod": "2026-08-13"
+    "fingerprint": "1b34310287941c04",
+    "lastmod": "2026-10-12"
   },
   "/en/200000-hectares/": {
-    "fingerprint": "9c2d453c7d32c198",
-    "lastmod": "2026-08-13"
+    "fingerprint": "9d2490637720131e",
+    "lastmod": "2026-10-12"
   },
   "/en/hectare-football-field/": {
     "fingerprint": "6627637a62b312e0",

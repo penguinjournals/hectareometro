@@ -138,7 +138,7 @@ const UI = {
     navConverter: 'Conversor de superficies', navLengthConverter: 'Conversor de distancias',
     converterChipLabel: 'Hectáreas a metros cuadrados',
     lengthConverterChipLabel: 'Kilómetros a millas',
-    overlayPre: '¿Cuánto ocupan', overlayPost: 'hectáreas?',
+    overlayPre: '¿Cuánto son', overlayPost: 'hectáreas',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Ancho:', labelHeight: 'Alto:',
     relatedHeading: 'Mira otras cantidades', backText: '← Volver al Hectareómetro',
@@ -172,6 +172,28 @@ const UI = {
     familyLabels: { hectareas: 'Hectáreas', litros: 'Litros', kilos: 'Kilos', distancias: 'Distancias' },
     allArticles: 'Todos los artículos →',
     articlesHeading: 'Artículos',
+    // 2026 layout chrome
+    navHectares: 'Hectáreas', navMeasureShort: 'Medir',
+    mapHint: 'Arrastra el mapa hasta tu ciudad',
+    ladderHeading: 'En cosas conocidas',
+    lensesHeading: '¿Cuánto es…?',
+    shareSummary: 'Compartir o insertar',
+    footerTagline: 'Cantidades difíciles de imaginar, dibujadas a escala.',
+    lenses: {
+      hectares: ['Hectáreas', '¿Cuánto son 1.000 hectáreas? Míralo sobre un mapa'],
+      distances: ['Distancias', '¿Hasta dónde llegan 10 km?'],
+      liters: ['Litros', '¿Cuánto es un millón de litros?'],
+      kilos: ['Kilos', '¿Cuánto pesan 40.000 kilos?'],
+      money: ['Dinero', '¿Cuánto es un millón de euros?'],
+      measure: ['Medir una superficie', 'Dibuja sobre el mapa y te decimos cuántas hectáreas son'],
+      measureDist: ['Medir distancias', 'Traza un recorrido punto a punto'],
+      converter: ['Conversor de superficies', 'Hectáreas a m², acres y km²'],
+      lengthConverter: ['Conversor de distancias', 'Kilómetros a millas, pies y yardas'],
+    },
+    subHa: (radius, side) => `Un círculo de ${radius} de radio, o un cuadrado de ${side} de lado. Arrastra el mapa hasta tu ciudad para verlo a escala.`,
+    ladderPct: (pct, name) => `El ${pct} % de ${name}`,
+    ladderTimes: (n, name) => `${n} × ${name}`,
+    ladderAbout: (name) => `≈ 1 ${name}`,
   },
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
@@ -180,7 +202,7 @@ const UI = {
     navConverter: 'Area converter', navLengthConverter: 'Distance converter',
     converterChipLabel: 'Hectares to square meters',
     lengthConverterChipLabel: 'Kilometers to miles',
-    overlayPre: 'How big are', overlayPost: 'hectares?',
+    overlayPre: 'How big are', overlayPost: 'hectares',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
     labelLink: 'Link:', labelIframe: 'Iframe:', labelWidth: 'Width:', labelHeight: 'Height:',
     relatedHeading: 'See other amounts', backText: '← Back to the Hectareometer',
@@ -214,8 +236,285 @@ const UI = {
     familyLabels: { hectareas: 'Hectares', litros: 'Liters', kilos: 'Kilos', distancias: 'Distances' },
     allArticles: 'All articles →',
     articlesHeading: 'Articles',
+    // 2026 layout chrome
+    navHectares: 'Hectares', navMeasureShort: 'Measure',
+    mapHint: 'Drag the map to your city',
+    ladderHeading: 'In familiar things',
+    lensesHeading: 'How much is…?',
+    shareSummary: 'Share or embed',
+    footerTagline: 'Hard-to-picture quantities, drawn to scale.',
+    lenses: {
+      hectares: ['Hectares', 'How big are 1,000 hectares? See it on a map'],
+      distances: ['Distances', 'How far is 10 km?'],
+      liters: ['Liters', 'How much is a million litres?'],
+      kilos: ['Kilos', 'How heavy is 40,000 kg?'],
+      money: ['Money', 'How much is a million dollars?'],
+      measure: ['Measure an area', 'Draw on the map and get the hectares'],
+      measureDist: ['Measure a distance', 'Trace a route point by point'],
+      converter: ['Area converter', 'Hectares to m², acres and km²'],
+      lengthConverter: ['Distance converter', 'Kilometres to miles, feet and yards'],
+    },
+    subHa: (radius, side) => `A circle with a ${radius} radius, or a square ${side} on each side. Drag the map to your city to see it to scale.`,
+    ladderPct: (pct, name) => `${pct}% of ${name}`,
+    ladderTimes: (n, name) => `${n} × ${name}`,
+    ladderAbout: (name) => `≈ 1 ${name}`,
   },
 };
+
+// ---- 2026 layout: shared chrome ------------------------------------------
+//
+// Header, footer, lenses, share box and comparison ladder are generated here
+// and injected into every template through {{HEAD_COMMON}}, {{HEADER}},
+// {{FOOTER}}, {{LENSES_BLOCK}}, {{SHARE_BLOCK}} and {{LADDER}}. The hand pages
+// receive the same markup via `node build/chrome.js` (see CLAUDE.md), so the
+// chrome is written once.
+
+const SVG = (inner, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${extra}>${inner}</svg>`;
+const ICONS = {
+  menu: SVG('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+  share: SVG('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>'),
+  download: SVG('<path d="M12 3v12M6 11l6 6 6-6M4 21h16"/>'),
+  whatsapp: SVG('<path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.5-1.8-1-1 .8c-.9-.4-1.8-1.3-2.2-2.2l.8-1-1-1.8z"/>'),
+  x: SVG('<path d="M4 4l16 16M20 4L4 20"/>'),
+  facebook: SVG('<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8z"/>'),
+  field: SVG('<rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5v14M3 9h3v6H3M21 9h-3v6h3"/>'),
+  park: SVG('<path d="M12 3l6 8h-4l4 6H6l4-6H6z"/><path d="M12 17v4"/>'),
+  city: SVG('<path d="M3 21h18M5 21V9l4-3 4 3v12M13 21V11l6-3v13"/>'),
+  grid: SVG('<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/>'),
+  ha: SVG('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/>'),
+  dist: SVG('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'),
+  drop: SVG('<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>'),
+  weight: SVG('<path d="M6 21h12l1-12H5l1 12z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/>'),
+  coin: SVG('<circle cx="12" cy="12" r="9"/><path d="M9 10h6M9 14h6M12 7v10"/>'),
+  measure: SVG('<path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/>'),
+  ruler: SVG('<path d="M3 17L17 3l4 4L7 21z"/><path d="M14 6l1.5 1.5M11 9l1.5 1.5M8 12l1.5 1.5"/>'),
+  convert: SVG('<path d="M4 7h13l-3-3M20 17H7l3 3"/>'),
+};
+
+// Reference areas for the comparison ladder on the hectare landings. Sources:
+// Retiro 118 ha (Ayuntamiento de Madrid), Casa de Campo 1.722 ha (idem),
+// Central Park 341 ha (NYC Parks), Hyde Park 142 ha (Royal Parks), Manhattan
+// 59,1 km² (US Census land area), Barcelona 101,4 km² and Madrid 604,5 km²
+// (INE, municipal area), Paris 105,4 km² (INSEE), Greater London 1.572 km²
+// (ONS), Isle of Wight 380 km² (ONS), Gran Canaria 1.560 km² (ISTAC),
+// Comunidad de Madrid 8.028 km² (INE), Luxembourg 2.586 km² (STATEC).
+const LADDER_REFS = {
+  es: [
+    { ha: 118, one: 'parque del Retiro', many: 'parques del Retiro', d: '118 ha, Madrid', icon: 'park' },
+    { ha: 341, one: 'Central Park', many: 'Central Parks', d: '341 ha, Nueva York', icon: 'park' },
+    { ha: 1722, one: 'Casa de Campo', many: 'Casas de Campo', d: '1.722 ha, Madrid', icon: 'park' },
+    { ha: 5910, one: 'Manhattan', many: 'Manhattans', d: '5.910 ha', icon: 'city' },
+    { ha: 10140, one: 'Barcelona', many: 'Barcelonas', d: '10.140 ha, el municipio', icon: 'city' },
+    { ha: 60450, one: 'Madrid', many: 'Madrids', d: '60.450 ha, el municipio', icon: 'city' },
+    { ha: 156000, one: 'Gran Canaria', many: 'Gran Canarias', d: '156.000 ha', icon: 'city' },
+    { ha: 802800, one: 'Comunidad de Madrid', many: 'Comunidades de Madrid', d: '802.800 ha', icon: 'city' },
+  ],
+  en: [
+    { ha: 142, one: 'Hyde Park', many: 'Hyde Parks', d: '142 ha, London', icon: 'park' },
+    { ha: 341, one: 'Central Park', many: 'Central Parks', d: '341 ha, New York', icon: 'park' },
+    { ha: 5910, one: 'Manhattan', many: 'Manhattans', d: '5,910 ha', icon: 'city' },
+    { ha: 10540, one: 'Paris', many: 'Parises', d: '10,540 ha, the city proper', icon: 'city' },
+    { ha: 38000, one: 'Isle of Wight', many: 'Isles of Wight', d: '38,000 ha', icon: 'city' },
+    { ha: 157200, one: 'Greater London', many: 'Greater Londons', d: '157,200 ha', icon: 'city' },
+    { ha: 258600, one: 'Luxembourg', many: 'Luxembourgs', d: '258,600 ha, the country', icon: 'city' },
+  ],
+};
+
+function sectionOf(page) {
+  return page.section || 'hectareas';
+}
+
+function headCommon() {
+  return `  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7KGFGQLBRJ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7F6F2">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<script src="/js/site.js" defer></script>`;
+}
+
+function navLinksHtml(lang, section) {
+  const ui = UI[lang];
+  const items = [
+    ['hectareas', homePath(lang), ui.navHectares],
+    ['distancias', distancesPath(lang), ui.navDistances],
+    ['litros', litersPath(lang), ui.navLiters],
+    ['kilos', kilosPath(lang), ui.navKilos],
+    ['dinero', moneyPath(lang), ui.navMoney],
+    ['medir', measurePath(lang), ui.navMeasureShort],
+    ['articulos', articlesHubPath(lang), ui.navArticles],
+  ];
+  return items.map(([id, href, label]) => `      <a href="${href}"${id === section ? ' aria-current="page"' : ''}>${escapeHtml(label)}</a>`).join('\n');
+}
+
+// langSwitch: the `<a href hreflang>` the page already builds for its sibling.
+function headerHtml(lang, section, langSwitch) {
+  const ui = UI[lang];
+  const sw = langSwitch ? langSwitch.replace('<a ', '<a class="btn-ghost" ') : '';
+  return `<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="${homePath(lang)}"><i></i>${ui.siteName}</a>
+    <nav class="site-nav" id="site-nav" aria-label="${ui.navMenu}">
+${navLinksHtml(lang, section)}
+    </nav>
+    <div class="hdr-actions">
+      ${sw}
+      <button type="button" class="btn-ghost btn-icon nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="${ui.navMenu}">${ICONS.menu}</button>
+    </div>
+  </div>
+</header>`;
+}
+
+function footerHtml(lang) {
+  const ui = UI[lang];
+  const links = [
+    [homePath(lang), ui.siteName],
+    [measurePath(lang), ui.navMeasure],
+    [measureDistancePath(lang), ui.navMeasureDist],
+    [distancesPath(lang), ui.navDistances],
+    [litersPath(lang), ui.navLiters],
+    [kilosPath(lang), ui.navKilos],
+    [moneyPath(lang), ui.navMoney],
+    [converterPath(lang), ui.navConverter],
+    [lengthConverterPath(lang), ui.navLengthConverter],
+    [articlesHubPath(lang), ui.navArticles],
+  ];
+  return `<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="${homePath(lang)}"><i></i>${ui.siteName}</a>
+      <p>${escapeHtml(ui.footerTagline)}</p>
+    </div>
+    <ul class="footer-links">
+${links.map(([href, label]) => `      <li><a href="${href}">${escapeHtml(label)}</a></li>`).join('\n')}
+    </ul>
+    <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+  </div>
+</footer>`;
+}
+
+// The other tools, each with an example question. `section` is left out.
+function lensesBlockHtml(lang, section) {
+  const ui = UI[lang];
+  const all = [
+    ['hectares', 'hectareas', homePath(lang), 'ha'],
+    ['distances', 'distancias', distancesPath(lang), 'dist'],
+    ['liters', 'litros', litersPath(lang), 'drop'],
+    ['kilos', 'kilos', kilosPath(lang), 'weight'],
+    ['money', 'dinero', moneyPath(lang), 'coin'],
+    ['measure', 'medir', measurePath(lang), 'measure'],
+    ['measureDist', 'medir-dist', measureDistancePath(lang), 'ruler'],
+    ['converter', 'conv-area', converterPath(lang), 'convert'],
+    ['lengthConverter', 'conv-dist', lengthConverterPath(lang), 'convert'],
+  ].filter(([, id]) => id !== section);
+  const cards = all.map(([key, , href, icon]) => {
+    const [label, example] = ui.lenses[key];
+    return `      <a class="lens" href="${href}"><span class="k">${ICONS[icon]}${escapeHtml(label)}</span><span class="e">${escapeHtml(example)}</span></a>`;
+  }).join('\n');
+  return `  <section class="section lenses-block">
+    <h2 class="eyebrow">${escapeHtml(ui.lensesHeading)}</h2>
+    <div class="lenses">
+${cards}
+    </div>
+  </section>`;
+}
+
+// Collapsed share/embed box. The ids are what hectareas-utils.js writes to.
+function shareBlockHtml(lang, withIframe = true) {
+  const ui = UI[lang];
+  const strip = s => s.replace(/:\s*$/, '');
+  const iframe = withIframe ? `
+    <label for="iframe-share">${strip(ui.labelIframe)}</label>
+    <textarea id="iframe-share" rows="3" readonly></textarea>
+    <div class="share-size">
+      <div><label for="iframe-share-width">${strip(ui.labelWidth)}</label><input type="text" id="iframe-share-width" class="customizable-parameter" inputmode="numeric"></div>
+      <div><label for="iframe-share-height">${strip(ui.labelHeight)}</label><input type="text" id="iframe-share-height" class="customizable-parameter" inputmode="numeric"></div>
+    </div>` : '';
+  return `<details class="share">
+  <summary>${ICONS.share} ${escapeHtml(ui.shareSummary)}</summary>
+  <div class="share-body">
+    <div class="share-icons">
+      <a id="whatsapp-share" href="" target="_blank" rel="noopener" aria-label="WhatsApp">${ICONS.whatsapp}</a>
+      <a id="twitter-share" href="" target="_blank" rel="noopener" aria-label="X / Twitter">${ICONS.x}</a>
+      <a id="facebook-share" href="" target="_blank" rel="noopener" aria-label="Facebook">${ICONS.facebook}</a>
+    </div>
+    <label for="url-share">${strip(ui.labelLink)}</label>
+    <input type="text" id="url-share" readonly>${iframe}
+  </div>
+</details>`;
+}
+
+// Comparison ladder for the hectare landings: football fields first (the one
+// query the site ranks top-3 for), then the two or three references whose
+// ratio reads best, then the raw units linking to the converter.
+function ladderHtml(page) {
+  if (!page.ha || page.path || page.key === 'comparison') return '';
+  const lang = page.lang;
+  const ui = UI[lang];
+  const ha = page.ha;
+  const n = fmt(ha, 0, lang);
+  const ff = (ha * 10000) / FOOTBALL_FIELD_M2;
+  const ffText = ff < 10 ? fmt(ff, 1, lang) : fmt(Math.round(ff), 0, lang);
+  const ffLabel = lang === 'es'
+    ? (ff >= 0.95 && ff < 1.05 ? 'campo de fútbol' : 'campos de fútbol')
+    : (ff >= 0.95 && ff < 1.05 ? 'football pitch' : 'football pitches');
+  const squares = Math.min(40, Math.floor(ff));
+  const half = ff - Math.floor(ff) >= 0.3 && squares < 40 ? '<i class="half"></i>' : '';
+  const pict = ff >= 1 ? `<span class="pict" aria-hidden="true">${'<i></i>'.repeat(squares)}${half}</span>` : '';
+  const rungs = [`      <a class="rung" href="${pathFor(lang, 'comparison')}"><span class="ic">${ICONS.field}</span><span class="t"><span class="n">${ffText} ${ffLabel}</span><span class="d">${lang === 'es' ? 'de 105 × 68 m' : '105 × 68 m each'}</span>${pict}</span><span class="go">›</span></a>`];
+  const refs = LADDER_REFS[lang]
+    .map(r => ({ r, ratio: ha / r.ha }))
+    .filter(x => x.ratio >= 0.08 && x.ratio <= 400)
+    .sort((a, b) => Math.abs(Math.log10(a.ratio) - 0.7) - Math.abs(Math.log10(b.ratio) - 0.7))
+    .slice(0, 3)
+    .sort((a, b) => a.r.ha - b.r.ha);
+  refs.forEach(({ r, ratio }) => {
+    let label;
+    if (ratio >= 1.5) {
+      label = `${ratio < 10 ? fmt(ratio, 1, lang) : fmt(Math.round(ratio), 0, lang)} ${r.many}`;
+    } else if (ratio >= 0.95) {
+      label = ui.ladderAbout(r.one);
+    } else {
+      label = ui.ladderPct(fmt(Math.round(ratio * 100), 0, lang), r.one);
+    }
+    rungs.push(`      <div class="rung"><span class="ic">${ICONS[r.icon]}</span><span class="t"><span class="n">${escapeHtml(label)}</span><span class="d">${escapeHtml(r.d)}</span></span></div>`);
+  });
+  const m2 = fmt(ha * 10000, 0, lang);
+  const km2 = fmt(ha / 100, ha % 100 === 0 ? 0 : 2, lang);
+  const ac = acres(ha, lang);
+  rungs.push(`      <a class="rung" href="${converterPath(lang)}?a=${ha}&amp;u=ha"><span class="ic">${ICONS.grid}</span><span class="t"><span class="n">${m2} m²</span><span class="d">${km2} km² · ${ac} ${lang === 'es' ? 'acres' : 'acres'}</span></span><span class="go">›</span></a>`);
+  return `      <h2 class="eyebrow">${n} ${lang === 'es' ? (ha === 1 ? 'hectárea' : 'hectáreas') : (ha === 1 ? 'hectare' : 'hectares')} ${lang === 'es' ? 'en cosas conocidas' : 'in familiar things'}</h2>
+      <div class="ladder">
+${rungs.join('\n')}
+      </div>`;
+}
+
+// Everything a template needs that is not page-specific. `langSwitch` is the
+// page's own sibling link; `withIframe` toggles the embed fields.
+function chromeFor(lang, section, langSwitch, withIframe = true) {
+  return {
+    HEAD_COMMON: headCommon(),
+    HEADER: headerHtml(lang, section, langSwitch),
+    FOOTER: footerHtml(lang),
+    LENSES_BLOCK: lensesBlockHtml(lang, section),
+    SHARE_BLOCK: shareBlockHtml(lang, withIframe),
+    SECTION: section,
+    MAP_HINT: UI[lang].mapHint,
+    ICON_DOWNLOAD: ICONS.download,
+  };
+}
 
 // ---- URL / slug helpers --------------------------------------------------
 
@@ -512,6 +811,8 @@ function quantityPage(lang, ha) {
   // Side of a square of this area and radius of the circle the tool draws.
   const sideM = Math.sqrt(ha * 10000);
   const radiusM = Math.sqrt((ha * 10000) / Math.PI);
+  // Answer-first H1 ("3.000 hectáreas son 30 km²"): km² from 100 ha up, m² below.
+  const bigUnit = ha >= 100 ? `${fmt(ha / 100, ha % 100 === 0 ? 0 : 2, lang)} km²` : `${m2} m²`;
 
   if (lang === 'es') {
     const noun = ha === 1 ? 'hectárea' : 'hectáreas';
@@ -535,7 +836,9 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
         ? '¿Cuánto es una hectárea? Tamaño, m² y campos de fútbol | Hectareómetro'
         : `¿Cuánto son ${n} hectáreas? Tamaño en un mapa | Hectareómetro`,
       description: `${haLabel} son ${m2} m² (${km2} km²), unos ${ff} campos de fútbol. Míralo dibujado a escala sobre un mapa real en el Hectareómetro.`,
-      h1: ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${n} hectáreas?`,
+      h1: ha === 1 ? 'Una hectárea son 10.000 m²' : `${n} hectáreas son ${bigUnit}`,
+      h1Html: ha === 1 ? 'Una hectárea son <span class="u">10.000 m²</span>' : `${n} hectáreas son <span class="u">${bigUnit}</span>`,
+      sub: UI.es.subHa(lenEs(radiusM), lenEs(sideM)),
       intro,
       question: ha === 1 ? '¿Cuánto es una hectárea?' : `¿Cuánto son ${n} hectáreas?`,
       answer: `${haLabel} son ${m2} metros cuadrados (${km2} km²), aproximadamente ${ff} campos de fútbol.`,
@@ -579,7 +882,9 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
       ? 'How big is a hectare? Size in m², acres and football fields | Hectareometer'
       : `How big are ${n} hectares? See it on a map | Hectareometer`,
     description: `${haLabel} are ${m2} m² (${km2} km²), about ${ff} football fields or ${ac} acres. See it drawn to scale on a real map with the Hectareometer.`,
-    h1: ha === 1 ? 'How big is a hectare?' : `How big are ${n} hectares?`,
+    h1: ha === 1 ? 'A hectare is 10,000 m²' : `${n} hectares are ${bigUnit}`,
+    h1Html: ha === 1 ? 'A hectare is <span class="u">10,000 m²</span>' : `${n} hectares are <span class="u">${bigUnit}</span>`,
+    sub: UI.en.subHa(lenEn(radiusM), lenEn(sideM)),
     intro,
     question: ha === 1 ? 'How big is a hectare?' : `How big are ${n} hectares?`,
     answer: `${haLabel} are ${m2} square metres (${km2} km²), about ${ff} football fields or ${ac} acres.`,
@@ -7441,13 +7746,13 @@ function relatedArticlesBlock(page) {
   const articles = articlesForLang(lang).filter(a => a.family === family && a.key !== page.key);
   if (!articles.length) return '';
   const ui = UI[lang];
-  return `      <div class="section-block">
-        <h2>${escapeHtml(ui.articlesHeading)}</h2>
-        <div class="card-grid">
+  return `  <section class="section">
+    <h2 class="eyebrow">${escapeHtml(ui.articlesHeading)}</h2>
+    <div class="card-grid">
 ${articles.map(a => buildArticleCard(a, lang)).join('\n')}
-        </div>
-        <p><a href="${articlesHubPath(lang)}">${escapeHtml(ui.allArticles)}</a></p>
-      </div>`;
+    </div>
+    <p><a href="${articlesHubPath(lang)}">${escapeHtml(ui.allArticles)}</a></p>
+  </section>`;
 }
 
 function buildHreflang(key) {
@@ -7573,6 +7878,7 @@ function writeArticlesHub(lang) {
     NAV_ARTICLES_URL: articlesHubPath(lang),
     NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
+    ...chromeFor(lang, 'articulos', `<a href="${articlesHubPath(other)}" hreflang="${other}">${ui.switchLabel}</a>`),
   };
   let out = TEMPLATE_HUB;
   Object.keys(repl).forEach(k => {
@@ -7682,7 +7988,10 @@ function render(page, template) {
     LABEL_IFRAME: ui.labelIframe,
     LABEL_WIDTH: ui.labelWidth,
     LABEL_HEIGHT: ui.labelHeight,
-    H1: escapeHtml(page.h1),
+    H1: page.h1Html || escapeHtml(page.h1),
+    HERO_SUB: escapeHtml(page.sub || page.description || ''),
+    LADDER: ladderHtml(page),
+    ...chromeFor(page.lang, sectionOf(page), langSwitch),
     ARTICLE_DATE: isArticle ? articleDateHtml(page) : '',
     INTRO: page.intro,
     FAQ_BLOCK: faqBlockHtml(page),
@@ -7955,6 +8264,10 @@ function main() {
   console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo + ${MONEY_QUANTITIES.length} money amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
 }
 
-main();
+if (require.main === module) main();
 
-module.exports = { LANGS, KEYS, BASE_URL, pathFor, slugFor, buildPage };
+function ladderFor(lang, ha) {
+  return ladderHtml({ lang, ha, key: String(ha) });
+}
+
+module.exports = { LANGS, KEYS, BASE_URL, pathFor, slugFor, buildPage, chromeFor, ladderFor, UI, ICONS, lensesBlockHtml, shareBlockHtml, headerHtml, footerHtml, headCommon };

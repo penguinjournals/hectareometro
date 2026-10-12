@@ -11,7 +11,14 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7F6F2">
 <link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<script src="/js/site.js" defer></script>
 <link rel="canonical" href="https://hectareometro.com/en/articles/">
 <link rel="alternate" hreflang="es" href="https://hectareometro.com/articulos/">
 <link rel="alternate" hreflang="en" href="https://hectareometro.com/en/articles/">
@@ -127,64 +134,45 @@
 }
 </script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='/css/style.css' rel='stylesheet' type='text/css'>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": { "popup": { "background": "#000" }, "button": { "background": "#337AB7" } },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
 </head>
-<body>
-<nav class="navbar navbar-default site-nav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
-        <span class="sr-only">Menu</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/en/">Hectareometer</a>
-    </div>
-    <div class="collapse navbar-collapse" id="site-nav-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="/en/measure-area/">Measure an area</a></li>
-        <li><a href="/en/measure-distance/">Measure a distance</a></li>
-        <li><a href="/en/distances/">Distances</a></li>
-        <li><a href="/en/liters/">Liters</a></li>
-        <li><a href="/en/kilos/">Kilos</a></li>
-        <li><a href="/en/money/">Money</a></li>
-        <li class="active"><a href="/en/articles/">Articles</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/articulos/" hreflang="es">Español</a></li>
-      </ul>
+<body data-section="articulos">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/en/"><i></i>Hectareometer</a>
+    <nav class="site-nav" id="site-nav" aria-label="Menu">
+      <a href="/en/">Hectares</a>
+      <a href="/en/distances/">Distances</a>
+      <a href="/en/liters/">Liters</a>
+      <a href="/en/kilos/">Kilos</a>
+      <a href="/en/money/">Money</a>
+      <a href="/en/measure-area/">Measure</a>
+      <a href="/en/articles/" aria-current="page">Articles</a>
+    </nav>
+    <div class="hdr-actions">
+      <a class="btn-ghost" href="/articulos/" hreflang="es">Español</a>
+      <button type="button" class="btn-ghost btn-icon nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
-</nav>
-<nav class="breadcrumb-line" aria-label="Breadcrumb">
+</header>
+<main>
+<section class="hero hero-nomap">
+  <div class="wrap">
+    <div class="hero-head">
+      <nav class="breadcrumb-line" aria-label="Breadcrumb">
   <ol>
     <li><a href="/en/">Hectareometer</a></li>
     <li><span aria-current="page">Articles</span></li>
   </ol>
 </nav>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
-      <h1>Articles</h1>
-      <p class="section-sub">Stories and guides about hard-to-picture quantities: areas, volumes of water, weights… always with the figure drawn to scale so it actually sinks in.</p>
-      <div class="card-grid">
+      <h1 class="ans">Articles</h1>
+      <p class="sub">Stories and guides about hard-to-picture quantities: areas, volumes of water, weights… always with the figure drawn to scale so it actually sinks in.</p>
+    </div>
+  </div>
+</section>
+<div class="wrap">
+  <section class="section">
+    <div class="card-grid">
         <div class="card card-article">
           <a href="/en/where-the-foot-comes-from/">
             <span class="card-kicker">Distances</span>
@@ -265,24 +253,44 @@ window.cookieconsent.initialise({
             <span class="card-cta">Read →</span>
           </a>
         </div>
-      </div>
     </div>
-  </div>
+  </section>
+  <section class="section lenses-block">
+    <h2 class="eyebrow">How much is…?</h2>
+    <div class="lenses">
+      <a class="lens" href="/en/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/></svg>Hectares</span><span class="e">How big are 1,000 hectares? See it on a map</span></a>
+      <a class="lens" href="/en/distances/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Distances</span><span class="e">How far is 10 km?</span></a>
+      <a class="lens" href="/en/liters/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>Liters</span><span class="e">How much is a million litres?</span></a>
+      <a class="lens" href="/en/kilos/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21h12l1-12H5l1 12z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>Kilos</span><span class="e">How heavy is 40,000 kg?</span></a>
+      <a class="lens" href="/en/money/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 10h6M9 14h6M12 7v10"/></svg>Money</span><span class="e">How much is a million dollars?</span></a>
+      <a class="lens" href="/en/measure-area/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/></svg>Measure an area</span><span class="e">Draw on the map and get the hectares</span></a>
+      <a class="lens" href="/en/measure-distance/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M14 6l1.5 1.5M11 9l1.5 1.5M8 12l1.5 1.5"/></svg>Measure a distance</span><span class="e">Trace a route point by point</span></a>
+      <a class="lens" href="/en/hectares-to-square-meters/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>Area converter</span><span class="e">Hectares to m², acres and km²</span></a>
+      <a class="lens" href="/en/kilometers-to-miles/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>Distance converter</span><span class="e">Kilometres to miles, feet and yards</span></a>
+    </div>
+  </section>
 </div>
-<footer class="site-footer text-center">
-  <ul class="footer-links">
-    <li><a href="/en/">Hectareometer</a></li>
-    <li><a href="/en/measure-area/">Measure an area</a></li>
-    <li><a href="/en/measure-distance/">Measure a distance</a></li>
-    <li><a href="/en/distances/">Distances</a></li>
-    <li><a href="/en/liters/">Liters</a></li>
-    <li><a href="/en/kilos/">Kilos</a></li>
-    <li><a href="/en/money/">Money</a></li>
-    <li><a href="/en/hectares-to-square-meters/">Area converter</a></li>
-    <li><a href="{{NAV_LENGTHCONV_URL}}">{{NAV_LENGTHCONV_LABEL}}</a></li>
-    <li><a href="/en/articles/">Articles</a></li>
-  </ul>
-  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/en/"><i></i>Hectareometer</a>
+      <p>Hard-to-picture quantities, drawn to scale.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="/en/">Hectareometer</a></li>
+      <li><a href="/en/measure-area/">Measure an area</a></li>
+      <li><a href="/en/measure-distance/">Measure a distance</a></li>
+      <li><a href="/en/distances/">Distances</a></li>
+      <li><a href="/en/liters/">Liters</a></li>
+      <li><a href="/en/kilos/">Kilos</a></li>
+      <li><a href="/en/money/">Money</a></li>
+      <li><a href="/en/hectares-to-square-meters/">Area converter</a></li>
+      <li><a href="/en/kilometers-to-miles/">Distance converter</a></li>
+      <li><a href="/en/articles/">Articles</a></li>
+    </ul>
+    <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+  </div>
 </footer>
 </body>
 </html>

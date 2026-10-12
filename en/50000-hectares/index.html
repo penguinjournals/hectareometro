@@ -11,7 +11,14 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7F6F2">
 <link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<script src="/js/site.js" defer></script>
 <link rel="canonical" href="https://hectareometro.com/en/50000-hectares/">
 <link rel="alternate" hreflang="es" href="https://hectareometro.com/50000-hectareas/">
 <link rel="alternate" hreflang="en" href="https://hectareometro.com/en/50000-hectares/">
@@ -21,7 +28,7 @@
 <meta name="author" content="David González Diez">
 
 <!-- Open Graph data -->
-<meta property="og:title" content="How big are 50,000 hectares?" />
+<meta property="og:title" content="50,000 hectares are 500 km²" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hectareometro.com/en/50000-hectares/" />
 <meta property="og:description" content="50,000 hectares are 500,000,000 m² (500.00 km²), about 70,028 football fields or 123,553 acres. See it drawn to scale on a real map with the Hectareometer." />
@@ -85,113 +92,114 @@
 }
 </script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-<link href='/css/style.css' rel='stylesheet' type='text/css'>
 <script>var PAGE_LANG = 'en'; var PRESET_HECTAREAS = 50000; var PRESET_ZOOM = 10;</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/hectareas-utils.js"></script>
-<script type="text/javascript" src="/js/hectareas.js"></script>
+<script src="/js/hectareas-utils.js"></script>
+<script src="/js/hectareas.js"></script>
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKseKyzd2GsrgBOT5D1dLbKWVLMUnN2LE&loading=async&callback=initMap"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": { "popup": { "background": "#000" }, "button": { "background": "#337AB7" } },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
 </head>
-<body>
-<nav class="navbar navbar-default site-nav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
-        <span class="sr-only">Menu</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/en/">Hectareometer</a>
-    </div>
-    <div class="collapse navbar-collapse" id="site-nav-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="/en/measure-area/">Measure an area</a></li>
-        <li><a href="/en/measure-distance/">Measure a distance</a></li>
-        <li><a href="/en/distances/">Distances</a></li>
-        <li><a href="/en/liters/">Liters</a></li>
-        <li><a href="/en/kilos/">Kilos</a></li>
-        <li><a href="/en/money/">Money</a></li>
-        <li><a href="/en/articles/">Articles</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/50000-hectareas/" hreflang="es">Español</a></li>
-      </ul>
+<body data-section="hectareas">
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/en/"><i></i>Hectareometer</a>
+    <nav class="site-nav" id="site-nav" aria-label="Menu">
+      <a href="/en/" aria-current="page">Hectares</a>
+      <a href="/en/distances/">Distances</a>
+      <a href="/en/liters/">Liters</a>
+      <a href="/en/kilos/">Kilos</a>
+      <a href="/en/money/">Money</a>
+      <a href="/en/measure-area/">Measure</a>
+      <a href="/en/articles/">Articles</a>
+    </nav>
+    <div class="hdr-actions">
+      <a class="btn-ghost" href="/50000-hectareas/" hreflang="es">Español</a>
+      <button type="button" class="btn-ghost btn-icon nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
-</nav>
-<nav class="breadcrumb-line" aria-label="Breadcrumb">
+</header>
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-head">
+      <nav class="breadcrumb-line" aria-label="Breadcrumb">
   <ol>
     <li><a href="/en/">Hectareometer</a></li>
     <li><span aria-current="page">50,000 hectares</span></li>
   </ol>
 </nav>
-<div id="map-container">
-  <div id="map"></div>
-  <div id="hectareas-overlay">
-    <label for="hectareas">How big are</label>
-    <input type="text" id="hectareas" class="customizable-parameter">
-    <label for="hectareas">hectares?</label>
-    <div id="equivalences" aria-live="polite"></div>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <div id="share-block" class="text-center">
-        <p id="share-cta">Found it useful? Share it 👇</p>
-        <div id="share-social">
-          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
-          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="X/Twitter"></a>
-          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Facebook"></a>
-        </div>
-        <div id="share-details">
-          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
-            <i class="fa fa-caret-down"></i> More sharing options
-          </a>
-          <div id="share-advanced" class="collapse">
-            <form>
-              <div class="form-group">
-                <label class="control-label" for="url-share">Link:</label>
-                <input type="text" id="url-share" class="share-link form-control" readonly />
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="iframe-share">Iframe:</label>
-                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
-              </div>
-              <div class="row">
-                <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-width">Width:</label>
-                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
-                </div>
-                <div class="col-xs-6">
-                  <label class="control-label" for="iframe-share-height">Height:</label>
-                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-  <div class="row">
-    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
-      <h1>How big are 50,000 hectares?</h1>
+      <h1 class="ans">50,000 hectares are <span class="u">500 km²</span></h1>
       
-            <p>
+      <p class="sub">A circle with a 12.62 km radius, or a square 22.36 km on each side. Drag the map to your city to see it to scale.</p>
+      <div class="ctl">
+        <label for="hectareas">How big are</label>
+        <input type="text" id="hectareas" class="customizable-parameter" inputmode="decimal" autocomplete="off">
+        <span class="ctl-unit">hectares</span>
+      </div>
+      <p id="equivalences" class="ans-line" aria-live="polite"></p>
+    </div>
+    <div class="hero-visual">
+      <div id="map-container">
+        <div id="map"></div>
+        <div class="map-pill" id="map-pill"></div>
+        <div class="map-hint">Drag the map to your city</div>
+      </div>
+    </div>
+    <div class="hero-more">
+      <h2 class="eyebrow">50,000 hectares in familiar things</h2>
+      <div class="ladder">
+      <a class="rung" href="/en/hectare-football-field/"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5v14M3 9h3v6H3M21 9h-3v6h3"/></svg></span><span class="t"><span class="n">70,028 football pitches</span><span class="d">105 × 68 m each</span><span class="pict" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span><span class="go">›</span></a>
+      <div class="rung"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V9l4-3 4 3v12M13 21V11l6-3v13"/></svg></span><span class="t"><span class="n">8.5 Manhattans</span><span class="d">5,910 ha</span></span></div>
+      <div class="rung"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V9l4-3 4 3v12M13 21V11l6-3v13"/></svg></span><span class="t"><span class="n">4.7 Parises</span><span class="d">10,540 ha, the city proper</span></span></div>
+      <div class="rung"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V9l4-3 4 3v12M13 21V11l6-3v13"/></svg></span><span class="t"><span class="n">≈ 1 Isle of Wight</span><span class="d">38,000 ha</span></span></div>
+      <a class="rung" href="/en/hectares-to-square-meters/?a=50000&amp;u=ha"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/></svg></span><span class="t"><span class="n">500,000,000 m²</span><span class="d">500 km² · 123,553 acres</span></span><span class="go">›</span></a>
+      </div>
+      <h2 class="eyebrow">See other amounts</h2>
+      <ul class="related-links">
+        <li><a href="/en/1-hectare/">1 hectare</a></li>
+        <li><a href="/en/100-hectares/">100 hectares</a></li>
+        <li><a href="/en/300-hectares/">300 hectares</a></li>
+        <li><a href="/en/400-hectares/">400 hectares</a></li>
+        <li><a href="/en/500-hectares/">500 hectares</a></li>
+        <li><a href="/en/1000-hectares/">1,000 hectares</a></li>
+        <li><a href="/en/2000-hectares/">2,000 hectares</a></li>
+        <li><a href="/en/3000-hectares/">3,000 hectares</a></li>
+        <li><a href="/en/4000-hectares/">4,000 hectares</a></li>
+        <li><a href="/en/5000-hectares/">5,000 hectares</a></li>
+        <li><a href="/en/10000-hectares/">10,000 hectares</a></li>
+        <li><a href="/en/15000-hectares/">15,000 hectares</a></li>
+        <li><a href="/en/20000-hectares/">20,000 hectares</a></li>
+        <li><a href="/en/30000-hectares/">30,000 hectares</a></li>
+        <li><a href="/en/50000-hectares/">50,000 hectares</a></li>
+        <li><a href="/en/100000-hectares/">100,000 hectares</a></li>
+        <li><a href="/en/200000-hectares/">200,000 hectares</a></li>
+        <li><a href="/en/hectare-football-field/">Hectare vs football field</a></li>
+        <li><a href="/en/hectares-to-square-meters/">Hectares to square meters</a></li>
+      </ul>
+<details class="share">
+  <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Share or embed</summary>
+  <div class="share-body">
+    <div class="share-icons">
+      <a id="whatsapp-share" href="" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.5-1.8-1-1 .8c-.9-.4-1.8-1.3-2.2-2.2l.8-1-1-1.8z"/></svg></a>
+      <a id="twitter-share" href="" target="_blank" rel="noopener" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg></a>
+      <a id="facebook-share" href="" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8z"/></svg></a>
+    </div>
+    <label for="url-share">Link</label>
+    <input type="text" id="url-share" readonly>
+    <label for="iframe-share">Iframe</label>
+    <textarea id="iframe-share" rows="3" readonly></textarea>
+    <div class="share-size">
+      <div><label for="iframe-share-width">Width</label><input type="text" id="iframe-share-width" class="customizable-parameter" inputmode="numeric"></div>
+      <div><label for="iframe-share-height">Height</label><input type="text" id="iframe-share-height" class="customizable-parameter" inputmode="numeric"></div>
+    </div>
+  </div>
+</details>
+    </div>
+  </div>
+</section>
+<div class="wrap">
+  <div class="prose section">
+      <p>
         <b>50,000 hectares equal 500,000,000 square metres</b> (500.00 km²) — about <b>70,028 football fields</b>
         or 123,553 acres. But a figure like that is hard to picture: drag the map above to your city or
         a place you know to see these 50,000 hectares drawn at real scale.
@@ -216,47 +224,43 @@ window.cookieconsent.initialise({
         <dd>A square of 50,000 hectares measures 22.36 km on each side. Drawn as a circle, which is what the Hectareometer does, it would have a radius of 12.62 km.</dd>
       </dl>
 
-      <h2>See other amounts</h2>
-      <ul class="related-links">
-                <li><a href="/en/1-hectare/">1 hectare</a></li>
-        <li><a href="/en/100-hectares/">100 hectares</a></li>
-        <li><a href="/en/300-hectares/">300 hectares</a></li>
-        <li><a href="/en/400-hectares/">400 hectares</a></li>
-        <li><a href="/en/500-hectares/">500 hectares</a></li>
-        <li><a href="/en/1000-hectares/">1,000 hectares</a></li>
-        <li><a href="/en/2000-hectares/">2,000 hectares</a></li>
-        <li><a href="/en/3000-hectares/">3,000 hectares</a></li>
-        <li><a href="/en/4000-hectares/">4,000 hectares</a></li>
-        <li><a href="/en/5000-hectares/">5,000 hectares</a></li>
-        <li><a href="/en/10000-hectares/">10,000 hectares</a></li>
-        <li><a href="/en/15000-hectares/">15,000 hectares</a></li>
-        <li><a href="/en/20000-hectares/">20,000 hectares</a></li>
-        <li><a href="/en/30000-hectares/">30,000 hectares</a></li>
-        <li><a href="/en/50000-hectares/">50,000 hectares</a></li>
-        <li><a href="/en/100000-hectares/">100,000 hectares</a></li>
-        <li><a href="/en/200000-hectares/">200,000 hectares</a></li>
-        <li><a href="/en/hectare-football-field/">Hectare vs football field</a></li>
-        <li><a href="/en/hectares-to-square-meters/">Hectares to square meters</a></li>
-      </ul>
-
-      <p><a href="/en/">← Back to the Hectareometer</a></p>
-    </div>
   </div>
+
+  <section class="section lenses-block">
+    <h2 class="eyebrow">How much is…?</h2>
+    <div class="lenses">
+      <a class="lens" href="/en/distances/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Distances</span><span class="e">How far is 10 km?</span></a>
+      <a class="lens" href="/en/liters/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>Liters</span><span class="e">How much is a million litres?</span></a>
+      <a class="lens" href="/en/kilos/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21h12l1-12H5l1 12z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>Kilos</span><span class="e">How heavy is 40,000 kg?</span></a>
+      <a class="lens" href="/en/money/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 10h6M9 14h6M12 7v10"/></svg>Money</span><span class="e">How much is a million dollars?</span></a>
+      <a class="lens" href="/en/measure-area/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/></svg>Measure an area</span><span class="e">Draw on the map and get the hectares</span></a>
+      <a class="lens" href="/en/measure-distance/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17L17 3l4 4L7 21z"/><path d="M14 6l1.5 1.5M11 9l1.5 1.5M8 12l1.5 1.5"/></svg>Measure a distance</span><span class="e">Trace a route point by point</span></a>
+      <a class="lens" href="/en/hectares-to-square-meters/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>Area converter</span><span class="e">Hectares to m², acres and km²</span></a>
+      <a class="lens" href="/en/kilometers-to-miles/"><span class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg>Distance converter</span><span class="e">Kilometres to miles, feet and yards</span></a>
+    </div>
+  </section>
 </div>
-<footer class="site-footer text-center">
-  <ul class="footer-links">
-    <li><a href="/en/">Hectareometer</a></li>
-    <li><a href="/en/measure-area/">Measure an area</a></li>
-    <li><a href="/en/measure-distance/">Measure a distance</a></li>
-    <li><a href="/en/distances/">Distances</a></li>
-    <li><a href="/en/liters/">Liters</a></li>
-    <li><a href="/en/kilos/">Kilos</a></li>
-    <li><a href="/en/money/">Money</a></li>
-    <li><a href="/en/hectares-to-square-meters/">Area converter</a></li>
-    <li><a href="/en/kilometers-to-miles/">Distance converter</a></li>
-    <li><a href="/en/articles/">Articles</a></li>
-  </ul>
-  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/en/"><i></i>Hectareometer</a>
+      <p>Hard-to-picture quantities, drawn to scale.</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="/en/">Hectareometer</a></li>
+      <li><a href="/en/measure-area/">Measure an area</a></li>
+      <li><a href="/en/measure-distance/">Measure a distance</a></li>
+      <li><a href="/en/distances/">Distances</a></li>
+      <li><a href="/en/liters/">Liters</a></li>
+      <li><a href="/en/kilos/">Kilos</a></li>
+      <li><a href="/en/money/">Money</a></li>
+      <li><a href="/en/hectares-to-square-meters/">Area converter</a></li>
+      <li><a href="/en/kilometers-to-miles/">Distance converter</a></li>
+      <li><a href="/en/articles/">Articles</a></li>
+    </ul>
+    <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+  </div>
 </footer>
 </body>
 </html>
