@@ -90,6 +90,7 @@ body {
 #distance,
 #liters,
 #kilos,
+#money,
 #area-value,
 #length-value {
   width: 80px;
@@ -108,6 +109,9 @@ body {
 #liters-unit,
 #kilos-unit,
 #picto-unit,
+#money-scale,
+#money-time-unit,
+#money-obj-unit,
 #area-unit,
 #length-unit {
   padding: 8px 6px;
@@ -123,12 +127,16 @@ body {
 #distance:focus,
 #liters:focus,
 #kilos:focus,
+#money:focus,
 #area-value:focus,
 #length-value:focus,
 #distance-unit:focus,
 #liters-unit:focus,
 #kilos-unit:focus,
 #picto-unit:focus,
+#money-scale:focus,
+#money-time-unit:focus,
+#money-obj-unit:focus,
 #area-unit:focus,
 #length-unit:focus {
   outline: none;
@@ -273,7 +281,8 @@ body {
    rows inside stay left-aligned (isotype-style: the partial row is flush).
    #capture-picto is the clone inside the downloadable infographic. */
 #pictogram,
-#capture-picto {
+#capture-picto,
+.money-picto {
   display: table;
   margin: 18px auto 10px;
   max-width: 720px;
@@ -349,6 +358,124 @@ body {
   display: none;
 }
 
+/* Money tool: a headline, then two panels (working time with its bar, and
+   objects), each with its own pictogram and "Show" selector. */
+#money-headline {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c-text);
+  max-width: 720px;
+  margin: 14px auto 4px;
+}
+
+.money-panel {
+  max-width: 760px;
+  margin: 18px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--c-border);
+}
+
+.money-panel h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-primary-dark);
+  margin: 0 0 8px;
+}
+
+.money-count {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 10px 0 2px;
+}
+
+.money-legend,
+#money-bar-legend {
+  font-size: 14px;
+  color: var(--c-text-muted);
+  margin-bottom: 10px;
+}
+
+.money-unit-row label {
+  font-weight: 600;
+  color: var(--c-text);
+  margin-right: 6px;
+}
+
+#money-bar-caption,
+#money-percapita {
+  font-size: 17px;
+  color: var(--c-text);
+  max-width: 640px;
+  margin: 8px auto 6px;
+}
+
+#money-headline:empty,
+#money-percapita:empty,
+#money-bar-caption:empty,
+#money-bar-legend:empty,
+.money-count:empty,
+.money-legend:empty {
+  display: none;
+}
+
+/* The time bar: a track with the filled share, emoji marks on top (history
+   milestones) and tick labels below. Positions are percentages set inline. */
+.money-bar {
+  max-width: 640px;
+  margin: 26px auto 8px;
+  padding: 0 28px;
+}
+
+.money-bar-track {
+  position: relative;
+  height: 18px;
+  background: var(--c-bg-chip);
+  border: 1px solid var(--c-border-soft);
+  border-radius: 9px;
+}
+
+.money-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--c-accent);
+  border-radius: 9px;
+}
+
+.money-bar-mark {
+  position: absolute;
+  top: -24px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  line-height: 1;
+  cursor: help;
+}
+
+.money-bar-mark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  height: 22px;
+  border-left: 2px solid #fff;
+}
+
+.money-bar-ticks {
+  position: relative;
+  height: 20px;
+  margin-top: 4px;
+}
+
+.money-bar-tick {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--c-text-muted);
+  white-space: nowrap;
+}
+
 #picto-download-row {
   font-size: 14px;
   margin: 4px 0 0;
@@ -389,6 +516,20 @@ body {
 }
 
 #capture-legend {
+  font-size: 14px;
+  color: var(--c-text-muted);
+  margin-bottom: 10px;
+}
+
+/* Money infographic: two pictograms, so count/legend are classes there. */
+#picto-capture .capture-count {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 10px 0 2px;
+}
+
+#picto-capture .capture-legend {
   font-size: 14px;
   color: var(--c-text-muted);
   margin-bottom: 10px;
@@ -879,6 +1020,7 @@ a, a:link, a:visited, a:hover, a:active {
   #distance,
   #liters,
   #kilos,
+  #money,
   #area-value,
   #length-value {
     width: 60px;
@@ -891,6 +1033,9 @@ a, a:link, a:visited, a:hover, a:active {
   #liters-unit,
   #kilos-unit,
   #picto-unit,
+  #money-scale,
+  #money-time-unit,
+  #money-obj-unit,
   #area-unit,
   #length-unit {
     font-size: 14px;
@@ -915,6 +1060,13 @@ a, a:link, a:visited, a:hover, a:active {
   #pictogram.picto-m { font-size: 19px; }
   #pictogram.picto-s { font-size: 13px; }
   #pictogram.picto-xs { font-size: 9px; }
+  .money-picto.picto-l { font-size: 26px; }
+  .money-picto.picto-m { font-size: 19px; }
+  .money-picto.picto-s { font-size: 13px; }
+  .money-picto.picto-xs { font-size: 9px; }
+  #money-headline { font-size: 18px; }
+  #money-bar-caption,
+  #money-percapita { font-size: 15px; }
 
   #equivalences {
     font-size: 12px;

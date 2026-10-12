@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7KGFGQLBRJ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<link rel="canonical" href="https://hectareometro.com/en/money/">
+<link rel="alternate" hreflang="es" href="https://hectareometro.com/dinero/">
+<link rel="alternate" hreflang="en" href="https://hectareometro.com/en/money/">
+<link rel="alternate" hreflang="x-default" href="https://hectareometro.com/dinero/">
+<title>How much is a million dollars? Money in working time | Hectareometer</title>
+<meta name="keywords" content="how much is a million dollars, how long to earn a million dollars, billion vs trillion, minimum wage, average salary, visualize money">
+<meta name="description" content="Type an amount of money and see it in working time (days on the minimum wage, years of average wage, whole working lives) and in things you know: cars, homes, lottery jackpots or city budgets.">
+<meta name="author" content="David González Diez">
+
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@penguinjournals">
+<meta name="twitter:title" content="How much is a million dollars? See it in working time and in things">
+<meta name="twitter:description" content="Money, measured by what it takes to earn it: days on the minimum wage, years of average wage, working lives… and in cars, homes or city budgets.">
+<meta name="twitter:creator" content="@penguinjournals">
+<meta name="twitter:image" content="https://hectareometro.com/images/logo.png">
+
+
+<!-- Open Graph data -->
+<meta property="og:title" content="How much is a million dollars? See it in working time and in things" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hectareometro.com/en/money/" />
+<meta property="og:description" content="Money, measured by what it takes to earn it: days on the minimum wage, years of average wage, working lives… and in cars, homes or city budgets." />
+<meta property="og:site_name" content="Hectareometer, the visual way to understand areas, distances, volumes, weights and money." />
+<meta property="og:image" content="https://hectareometro.com/images/logo.png" />
+<meta property="og:locale" content="en_GB" />
+
+<!-- Structured data (schema.org) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Hectareometer — Money",
+      "url": "https://hectareometro.com/en/money/",
+      "description": "Visual tool to understand any amount of money: it turns it into working time (minimum wage, average wage, working lives) and into familiar things (cars, homes, budgets).",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "en",
+      "image": "https://hectareometro.com/images/logo.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "David González Diez"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long does it take to earn a million dollars?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On the average US wage ($69,770 a year, BLS) and spending nothing, about 14 years. On the federal minimum wage ($15,080 a year full time) it would take 66 years, longer than a whole working life."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much is a billion and a trillion?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A billion is a thousand millions (1,000,000,000) and a trillion is a million millions (1,000,000,000,000). Careful with Spanish and most of Europe: there a “billón” is a million millions, the English trillion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the US federal minimum wage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The federal minimum wage is $7.25 an hour, unchanged since July 2009: $58 for an 8-hour day and $15,080 for a full-time year. Many states and cities set a higher one."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the average salary in the United States?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The mean annual wage across all occupations was $69,770 in May 2025 (BLS Occupational Employment and Wage Statistics). The median is lower: full-time workers earned a median $1,258 a week in mid-2026, about $65,400 a year."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the tool not convert dollars to euros?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because a dollar does not stretch the same in New York as in Madrid. Instead of applying an exchange rate, each currency uses the wages and prices of its own country: dollars with US data and euros with Spanish data."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='/css/style.css' rel='stylesheet' type='text/css'>
+<script>var PAGE_LANG = 'en';</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/hectareas-utils.js"></script>
+<script type="text/javascript" src="/js/money-data.js"></script>
+<script type="text/javascript" src="/js/money.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#337AB7"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-default site-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-nav-collapse" aria-expanded="false">
+        <span class="sr-only">Menu</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/en/">Hectareometer</a>
+    </div>
+    <div class="collapse navbar-collapse" id="site-nav-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/en/measure-area/">Measure an area</a></li>
+        <li><a href="/en/measure-distance/">Measure a distance</a></li>
+        <li><a href="/en/distances/">Distances</a></li>
+        <li><a href="/en/liters/">Liters</a></li>
+        <li><a href="/en/kilos/">Kilos</a></li>
+        <li class="active"><a href="/en/money/">Money</a></li>
+        <li><a href="/en/articles/">Articles</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/dinero/" hreflang="es">Español</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div id="litros-tool">
+  <div id="litros-panel">
+    <label for="money">How much is</label>
+    <input type="text" id="money" class="customizable-parameter" inputmode="decimal">
+    <select id="money-scale" aria-label="Amount and currency"></select>
+    <label for="money">?</label>
+    <div id="equivalences" aria-live="polite"></div>
+  </div>
+  <p id="money-headline" aria-live="polite"></p>
+  <section class="money-panel">
+    <h2>In working time</h2>
+    <div id="money-bar"></div>
+    <p id="money-bar-caption"></p>
+    <p id="money-bar-legend"></p>
+    <div id="money-time-picto" class="money-picto" role="img"></div>
+    <p id="money-time-count" class="money-count"></p>
+    <p id="money-time-legend" class="money-legend"></p>
+    <p class="money-unit-row">
+      <label for="money-time-unit">Show</label>
+      <select id="money-time-unit" aria-label="Time unit of the drawing"></select>
+    </p>
+  </section>
+  <section class="money-panel">
+    <h2>In things you know</h2>
+    <div id="money-obj-picto" class="money-picto" role="img"></div>
+    <p id="money-obj-count" class="money-count"></p>
+    <p id="money-obj-legend" class="money-legend"></p>
+    <p class="money-unit-row">
+      <label for="money-obj-unit">Show</label>
+      <select id="money-obj-unit" aria-label="Object of the drawing"></select>
+    </p>
+    <p id="money-percapita"></p>
+  </section>
+  <p id="picto-download-row"><a href="#" id="picto-download"><i class="fa fa-download"></i> Download as image</a></p>
+</div>
+
+<div class="container-fluid">
+  <div id="share-block" class="text-center">
+        <p id="share-cta">Found it useful? Share it 👇</p>
+        <div id="share-social">
+          <a id="whatsapp-share" class="fa fa-whatsapp fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on WhatsApp"></a>
+          <a id="twitter-share" class="fa fa-twitter-square fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on X/Twitter"></a>
+          <a id="facebook-share" class="fa fa-facebook-official fa-2x share-link" href="" target="_blank" rel="noopener" aria-label="Share on Facebook"></a>
+        </div>
+        <div id="share-details">
+          <a href="#share-advanced" data-toggle="collapse" class="share-toggle">
+            <i class="fa fa-caret-down"></i> More sharing options
+          </a>
+          <div id="share-advanced" class="collapse">
+            <form>
+              <div class="form-group">
+                <label class="control-label" for="url-share">Link:</label>
+                <input type="text" id="url-share" class="share-link form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="iframe-share">Iframe:</label>
+                <textarea id="iframe-share" class="form-control" rows="3" readonly ></textarea>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-width">Width:</label>
+                  <input type="text" id="iframe-share-width" class="form-control customizable-parameter">
+                </div>
+                <div class="col-xs-6">
+                  <label class="control-label" for="iframe-share-height">Height:</label>
+                  <input type="text" id="iframe-share-height" class="form-control customizable-parameter">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section">
+      <h1>How much is a million dollars?</h1>
+      <p>
+        “A million dollars”, “a $1.6 billion relief package”, “the national debt tops $37
+        trillion”… Money figures are the most abstract of all: past a certain size, they all
+        sound equally huge. The tool above translates them into two things we can actually
+        measure: <b>the time it takes to earn them</b> and <b>what they can buy</b>.
+      </p>
+      <p>
+        The headline sums it up: a million dollars is about 14 years of average wage, or 20 new
+        cars. Below it, the bar sets the amount against a 40-year working life and, when one life
+        is not enough, against history: <a href="/en/money/?m=100000000">$100 million</a> would
+        mean starting work in the early Middle Ages. Both icon drawings have their own “Show”
+        selector.
+      </p>
+
+      <h2>Three ways to measure money</h2>
+      <p>
+        <b>In working time.</b> The most honest measure, because money is, in the end, someone’s
+        time. The ladder runs from a day on the minimum wage to a year of the whole country’s
+        wages:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Reference</th><th>Dollars</th></tr></thead>
+        <tbody>
+          <tr><td>⏱️ A day on the federal minimum wage</td><td>58</td></tr>
+          <tr><td>📅 A full-time month on the minimum wage</td><td>1,256.67</td></tr>
+          <tr><td>💼 A year of average wage (BLS)</td><td>69,770</td></tr>
+          <tr><td>⏳ A working life: 40 years of average wage</td><td>2.79 million</td></tr>
+          <tr><td>🏢 A year of payroll for 1,000 employees</td><td>69.8 million</td></tr>
+          <tr><td>🏭 A day of wages for the whole US</td><td>31.2 billion</td></tr>
+          <tr><td>🗺️ A year of wages for the whole US</td><td>11.4 trillion</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <b>In things.</b> What the amount buys, from a lottery ticket to a year of GDP:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Reference</th><th>Dollars</th></tr></thead>
+        <tbody>
+          <tr><td>🎫 A Powerball ticket</td><td>2</td></tr>
+          <tr><td>🔑 A month of typical rent</td><td>1,895</td></tr>
+          <tr><td>🚗 A new car</td><td>50,089</td></tr>
+          <tr><td>🏠 A home (median existing-home price)</td><td>429,100</td></tr>
+          <tr><td>🎰 The record Powerball jackpot</td><td>2.04 billion</td></tr>
+          <tr><td>🏛️ New York City’s yearly budget</td><td>125.84 billion</td></tr>
+          <tr><td>👵 A year of Social Security</td><td>1.61 trillion</td></tr>
+          <tr><td>🌐 US GDP in a year</td><td>30.9 trillion</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <b>Per person.</b> For public figures the tool also divides by the 341.8 million people
+        in the United States: <a href="/en/money/?m=1000000000">$1 billion</a> is about $2.93
+        each.
+      </p>
+      <p>
+        In euros? Pick “euros” in the selector: the tool does not apply an exchange rate, it
+        switches country and uses Spain’s wages and prices (minimum wage, average wage, homes,
+        Madrid’s city budget…).
+      </p>
+
+      <h2>Example amounts</h2>
+      <p>Click any of these figures to see it drawn above:</p>
+      <ul class="examples-list">
+        <li>A home: <a href="/en/money/?m=429100">$429,100</a></li>
+        <li>A million dollars: <a href="/en/money/?m=1000000">14 years of average wage</a></li>
+        <li>The record Powerball jackpot: <a href="/en/money/?m=2040000000">$2.04 billion</a></li>
+        <li>New York City’s budget: <a href="/en/money/?m=125840000000">$125.84 billion</a></li>
+        <li>A trillion dollars: <a href="/en/money/?m=1000000000000">a million millions</a></li>
+      </ul>
+      <div class="chip-group">
+        <span class="chip-group-label">More amounts</span>
+        <ul class="related-links">
+          <li><a href="/en/100000-dollars/">$100,000</a></li>
+          <li><a href="/en/one-million-dollars/">One million dollars</a></li>
+          <li><a href="/en/100-million-dollars/">100 million dollars</a></li>
+          <li><a href="/en/one-billion-dollars/">One billion dollars</a></li>
+          <li><a href="/en/one-trillion-dollars/">One trillion dollars</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2 content-section section-block">
+      <h2>Frequently asked questions about money</h2>
+      <dl class="faq">
+        <dt>How long does it take to earn a million dollars?</dt>
+        <dd>On the average US wage ($69,770 a year, BLS) and spending nothing, about <b><a href="/en/money/?m=1000000">14 years</a></b>. On the federal minimum wage ($15,080 a year full time) it would take 66 years, longer than a whole working life.</dd>
+
+        <dt>How much is a billion and a trillion?</dt>
+        <dd>A billion is <a href="/en/one-billion-dollars/">a thousand millions</a> (1,000,000,000) and a trillion is <b><a href="/en/one-trillion-dollars/">a million millions</a></b> (1,000,000,000,000). Careful with Spanish and most of Europe: there a <i>billón</i> is a million millions, the English trillion.</dd>
+
+        <dt>What is the US federal minimum wage?</dt>
+        <dd>The federal minimum wage is <b>$7.25 an hour</b>, unchanged since July 2009: <a href="/en/money/?m=58&vt=dia">$58 for an 8-hour day</a> and $15,080 for a full-time year. Many states and cities set a higher one.</dd>
+
+        <dt>What is the average salary in the United States?</dt>
+        <dd>The mean annual wage across all occupations was <b>$69,770</b> in May 2025 (BLS Occupational Employment and Wage Statistics). The median is lower: full-time workers earned a median $1,258 a week in mid-2026, about $65,400 a year.</dd>
+
+        <dt>Why does the tool not convert dollars to euros?</dt>
+        <dd>Because a dollar does not stretch the same in New York as in Madrid. Instead of applying an exchange rate, each currency uses the wages and prices of its own country: dollars with US data and <a href="/en/money/?m=1000000&c=eur">euros with Spanish data</a>.</dd>
+      </dl>
+      <p>
+        Want to picture other magnitudes? Try the <a href="/en/">Hectareometer</a>, which draws
+        areas on a real map, or the <a href="/en/distances/">distances</a>,
+        <a href="/en/liters/">liters</a> and <a href="/en/kilos/">kilos</a> tools. Figures are
+        from 2026 (or the latest year published) and are reviewed every year.
+      </p>
+    </div>
+  </div>
+</div>
+<footer class="site-footer text-center">
+  <ul class="footer-links">
+    <li><a href="/en/">Hectareometer</a></li>
+    <li><a href="/en/measure-area/">Measure an area</a></li>
+    <li><a href="/en/measure-distance/">Measure a distance</a></li>
+    <li><a href="/en/distances/">Distances</a></li>
+    <li><a href="/en/liters/">Liters</a></li>
+    <li><a href="/en/kilos/">Kilos</a></li>
+    <li><a href="/en/money/">Money</a></li>
+    <li><a href="/en/hectares-to-square-meters/">Area converter</a></li>
+    <li><a href="/en/kilometers-to-miles/">Distance converter</a></li>
+    <li><a href="/en/articles/">Articles</a></li>
+  </ul>
+  <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+</footer>
+</body>
+</html>

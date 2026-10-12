@@ -1,11 +1,11 @@
 {
   "/": {
-    "fingerprint": "059efff825f4a15b",
-    "lastmod": "2026-09-24"
+    "fingerprint": "49f089f2d6d178eb",
+    "lastmod": "2026-10-12"
   },
   "/en/": {
-    "fingerprint": "a76947be818cebdc",
-    "lastmod": "2026-09-24"
+    "fingerprint": "713d68f9c05e03c8",
+    "lastmod": "2026-10-12"
   },
   "/medir-superficie/": {
     "fingerprint": "407ca0b522b2f3d6",
@@ -46,6 +46,14 @@
   "/en/kilos/": {
     "fingerprint": "7d3211183ff5dd59",
     "lastmod": "2026-07-24"
+  },
+  "/dinero/": {
+    "fingerprint": "928478fd85342c1a",
+    "lastmod": "2026-10-12"
+  },
+  "/en/money/": {
+    "fingerprint": "4e87b57bd0d2f792",
+    "lastmod": "2026-10-12"
   },
   "/hectareas-a-metros-cuadrados/": {
     "fingerprint": "8a072c52508d88dd",
@@ -342,6 +350,46 @@
   "/en/1000000-kilos/": {
     "fingerprint": "d2f62a588110cfed",
     "lastmod": "2026-08-13"
+  },
+  "/100000-euros/": {
+    "fingerprint": "948d3b0eca8743ec",
+    "lastmod": "2026-10-12"
+  },
+  "/un-millon-de-euros/": {
+    "fingerprint": "9e431fe1c9e0443d",
+    "lastmod": "2026-10-12"
+  },
+  "/cien-millones-de-euros/": {
+    "fingerprint": "d6c908d43b96453d",
+    "lastmod": "2026-10-12"
+  },
+  "/mil-millones-de-euros/": {
+    "fingerprint": "58e25e956779a9e8",
+    "lastmod": "2026-10-12"
+  },
+  "/un-billon-de-euros/": {
+    "fingerprint": "e67008f3ffd43e40",
+    "lastmod": "2026-10-12"
+  },
+  "/en/100000-dollars/": {
+    "fingerprint": "d117fbb1debc3773",
+    "lastmod": "2026-10-12"
+  },
+  "/en/one-million-dollars/": {
+    "fingerprint": "2cccceec69bd9ab4",
+    "lastmod": "2026-10-12"
+  },
+  "/en/100-million-dollars/": {
+    "fingerprint": "aeb2f2a531f09975",
+    "lastmod": "2026-10-12"
+  },
+  "/en/one-billion-dollars/": {
+    "fingerprint": "9961905a24d5ef6d",
+    "lastmod": "2026-10-12"
+  },
+  "/en/one-trillion-dollars/": {
+    "fingerprint": "9be1992d19416262",
+    "lastmod": "2026-10-12"
   },
   "/hectareas-quemadas-incendios-espana/": {
     "fingerprint": "d1df28c6cf9e5ffb",

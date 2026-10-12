@@ -477,6 +477,76 @@
   },
   {
     "lang": "es",
+    "slug": "100000-euros",
+    "path": "/100000-euros/",
+    "label": "100.000 euros",
+    "title": "¿Cuánto son 100.000 euros? En tiempo de trabajo y en cosas | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "un-millon-de-euros",
+    "path": "/un-millon-de-euros/",
+    "label": "Un millón de euros",
+    "title": "¿Cuánto es un millón de euros? En tiempo de trabajo y en cosas | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "cien-millones-de-euros",
+    "path": "/cien-millones-de-euros/",
+    "label": "Cien millones de euros",
+    "title": "¿Cuánto son cien millones de euros? En tiempo de trabajo y en cosas | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "mil-millones-de-euros",
+    "path": "/mil-millones-de-euros/",
+    "label": "Mil millones de euros",
+    "title": "¿Cuánto son mil millones de euros? En tiempo de trabajo y en cosas | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "un-billon-de-euros",
+    "path": "/un-billon-de-euros/",
+    "label": "Un billón de euros",
+    "title": "¿Cuánto es un billón de euros? En tiempo de trabajo y en cosas | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "100000-dollars",
+    "path": "/en/100000-dollars/",
+    "label": "$100,000",
+    "title": "How much is $100,000? In working time and in things | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "one-million-dollars",
+    "path": "/en/one-million-dollars/",
+    "label": "One million dollars",
+    "title": "How much is one million dollars? In working time and in things | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "100-million-dollars",
+    "path": "/en/100-million-dollars/",
+    "label": "100 million dollars",
+    "title": "How much is 100 million dollars? In working time and in things | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "one-billion-dollars",
+    "path": "/en/one-billion-dollars/",
+    "label": "One billion dollars",
+    "title": "How much is one billion dollars? In working time and in things | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "one-trillion-dollars",
+    "path": "/en/one-trillion-dollars/",
+    "label": "One trillion dollars",
+    "title": "How much is one trillion dollars? In working time and in things | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "hectareas-quemadas-incendios-espana",
     "path": "/hectareas-quemadas-incendios-espana/",
     "label": "Hectáreas quemadas en incendios en España (2020-2025)",

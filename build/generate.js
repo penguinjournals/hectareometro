@@ -23,6 +23,7 @@ const TEMPLATE = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
 const TEMPLATE_LITROS = fs.readFileSync(path.join(__dirname, 'template-litros.html'), 'utf8');
 const TEMPLATE_KILOS = fs.readFileSync(path.join(__dirname, 'template-kilos.html'), 'utf8');
 const TEMPLATE_DISTANCIAS = fs.readFileSync(path.join(__dirname, 'template-distancias.html'), 'utf8');
+const TEMPLATE_DINERO = fs.readFileSync(path.join(__dirname, 'template-dinero.html'), 'utf8');
 const BASE_URL = 'https://hectareometro.com';
 const FOOTBALL_FIELD_M2 = 7140;
 const ACRES_PER_HECTARE = 2.47105;
@@ -33,6 +34,8 @@ const litersLib = require('../js/liters.js');
 const litersData = require('../js/liters-data.js');
 const kilosLib = require('../js/kilos.js');
 const kilosData = require('../js/kilos-data.js');
+const moneyLib = require('../js/money.js');
+const moneyData = require('../js/money-data.js');
 
 const LANGS = ['es', 'en'];
 // Round figures plus the ones the press actually uses when reporting wildfires
@@ -49,6 +52,16 @@ const LITER_QUANTITIES = [100, 500, 1000, 5000, 10000, 100000, 1000000, 2500000]
 // Kilos landings: round figures plus the fully loaded 40-tonne truck as the
 // headline figure.
 const KILO_QUANTITIES = [100, 500, 1000, 5000, 10000, 40000, 100000, 1000000];
+// Money landings: the round amounts the press uses. Each language has its own
+// currency (es → euros, en → dollars), so the slugs are spelled out per
+// language and paired as hreflang alternates by amount.
+const MONEY_QUANTITIES = [
+  { m: 1e5, es: '100000-euros', en: '100000-dollars' },
+  { m: 1e6, es: 'un-millon-de-euros', en: 'one-million-dollars' },
+  { m: 1e8, es: 'cien-millones-de-euros', en: '100-million-dollars' },
+  { m: 1e9, es: 'mil-millones-de-euros', en: 'one-billion-dollars' },
+  { m: 1e12, es: 'un-billon-de-euros', en: 'one-trillion-dollars' },
+];
 
 // ---- helpers -------------------------------------------------------------
 
@@ -120,7 +133,7 @@ function byNewest(articles) {
 const UI = {
   es: {
     htmlLang: 'es', ogLocale: 'es_ES', siteName: 'Hectareómetro',
-    navDistances: 'Distancias', navLiters: 'Litros', navKilos: 'Kilos', navMenu: 'Menú',
+    navDistances: 'Distancias', navLiters: 'Litros', navKilos: 'Kilos', navMoney: 'Dinero', navMenu: 'Menú',
     navMeasure: 'Medir una superficie', navMeasureDist: 'Medir distancias',
     navConverter: 'Conversor de superficies', navLengthConverter: 'Conversor de distancias',
     converterChipLabel: 'Hectáreas a metros cuadrados',
@@ -141,6 +154,10 @@ const UI = {
     kiloUnitOptions: '<option value="kg" selected>kilos</option>\n      <option value="lb">libras</option>\n      <option value="t">toneladas</option>',
     relatedHeadingKilos: 'Mira otros pesos',
     backTextKilos: '← Volver a la herramienta de kilos',
+    moneyToolPre: '¿Cuánto son', moneyAriaScale: 'Cantidad y moneda',
+    moneyTimeHeading: 'En tiempo de trabajo', moneyObjHeading: 'En cosas que conoces',
+    relatedHeadingMoney: 'Mira otras cantidades de dinero',
+    backTextMoney: '← Volver a la herramienta de dinero',
     distOverlayPre: '¿Hasta dónde llegaría en', distOverlayPost: '?',
     distAriaUnit: 'Unidad de distancia',
     distUnitOptions: '<option value="km" selected>km</option>\n      <option value="m">metros</option>\n      <option value="mi">millas</option>',
@@ -158,7 +175,7 @@ const UI = {
   },
   en: {
     htmlLang: 'en', ogLocale: 'en_GB', siteName: 'Hectareometer',
-    navDistances: 'Distances', navLiters: 'Liters', navKilos: 'Kilos', navMenu: 'Menu',
+    navDistances: 'Distances', navLiters: 'Liters', navKilos: 'Kilos', navMoney: 'Money', navMenu: 'Menu',
     navMeasure: 'Measure an area', navMeasureDist: 'Measure a distance',
     navConverter: 'Area converter', navLengthConverter: 'Distance converter',
     converterChipLabel: 'Hectares to square meters',
@@ -179,6 +196,10 @@ const UI = {
     kiloUnitOptions: '<option value="lb" selected>pounds</option>\n      <option value="kg">kilos</option>\n      <option value="t">tonnes</option>',
     relatedHeadingKilos: 'See other weights',
     backTextKilos: '← Back to the kilos tool',
+    moneyToolPre: 'How much is', moneyAriaScale: 'Amount and currency',
+    moneyTimeHeading: 'In working time', moneyObjHeading: 'In things you know',
+    relatedHeadingMoney: 'See other amounts of money',
+    backTextMoney: '← Back to the money tool',
     distOverlayPre: 'How far would I get in', distOverlayPost: '?',
     distAriaUnit: 'Distance unit',
     distUnitOptions: '<option value="km" selected>km</option>\n      <option value="m">metres</option>\n      <option value="mi">miles</option>',
@@ -231,6 +252,11 @@ function litersPath(lang) {
 // And so are the kilos tool pages.
 function kilosPath(lang) {
   return lang === 'es' ? '/kilos/' : '/en/kilos/';
+}
+
+// And so are the money tool pages.
+function moneyPath(lang) {
+  return lang === 'es' ? '/dinero/' : '/en/money/';
 }
 
 // The measure tool (draw a shape on the map, get its area) is hand-maintained.
@@ -7184,6 +7210,122 @@ function kiloPage(lang, k) {
   };
 }
 
+// ---- money landing pages ---------------------------------------------------
+
+// Each language uses its own currency: es → euros (Spanish data), en →
+// dollars (US data). The amount is the same, so the pair are hreflang twins.
+const MONEY_LANDING_CURRENCY = { es: 'eur', en: 'usd' };
+const MONEY_NOUNS = {
+  es: { 1e5: '100.000 euros', 1e6: 'un millón de euros', 1e8: 'cien millones de euros', 1e9: 'mil millones de euros', 1e12: 'un billón de euros' },
+  en: { 1e5: '$100,000', 1e6: 'one million dollars', 1e8: '100 million dollars', 1e9: 'one billion dollars', 1e12: 'one trillion dollars' },
+};
+
+function moneyQuantity(m) {
+  return MONEY_QUANTITIES.find(q => q.m === m);
+}
+
+function moneyPathFor(lang, m) {
+  const prefix = lang === 'es' ? '' : '/en';
+  return `${prefix}/${moneyQuantity(m)[lang]}/`;
+}
+
+function moneyFullUrl(lang, m) {
+  return BASE_URL + moneyPathFor(lang, m);
+}
+
+function buildMoneyHreflang(m) {
+  const lines = LANGS.map(lg => `<link rel="alternate" hreflang="${lg}" href="${moneyFullUrl(lg, m)}">`);
+  lines.push(`<link rel="alternate" hreflang="x-default" href="${moneyFullUrl('es', m)}">`);
+  return lines.join('\n');
+}
+
+function buildMoneyLangSwitch(lang, m) {
+  const other = lang === 'es' ? 'en' : 'es';
+  return `<a href="${moneyPathFor(other, m)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
+}
+
+function relatedMoneyLinks(lang, currentM) {
+  const links = MONEY_QUANTITIES.filter(q => q.m !== currentM)
+    .map(q => `        <li><a href="${moneyPathFor(lang, q.m)}">${escapeHtml(moneyPage(lang, q.m).linkLabel)}</a></li>`);
+  const toolLabel = lang === 'es' ? 'La herramienta de dinero' : 'The money tool';
+  links.push(`        <li><a href="${moneyPath(lang)}">${toolLabel}</a></li>`);
+  return links.join('\n');
+}
+
+function moneyPage(lang, m) {
+  const curId = MONEY_LANDING_CURRENCY[lang];
+  const cur = moneyData.MONEY_CURRENCIES[curId];
+  const timeUnit = moneyLib.pickMoneyUnit(m, cur.time);
+  const objUnit = moneyLib.pickMoneyUnit(m, cur.objects);
+  const noun = MONEY_NOUNS[lang][m];
+  const Noun = noun.charAt(0).toUpperCase() + noun.slice(1);
+  const headline = moneyLib.buildMoneyHeadline(m, curId, timeUnit, objUnit, lang);
+  const equiv = headline.slice(headline.indexOf('≈ ') + 2);
+  const bar = moneyLib.buildMoneyTimeBar(m, curId, lang, Number(buildDate().slice(0, 4)));
+  const barPlain = bar.caption.replace(/<[^>]+>/g, '');
+  const perCapita = moneyLib.buildPerCapita(m, curId, lang).replace(/^≈ /, '');
+  const minYears = moneyLib.niceNumber(m / cur.minWageYear, lang);
+  const minWage = moneyLib.moneyText(Math.round(cur.minWageYear), curId, lang);
+  const zeros = String(m).length - 1;
+  const digits = fmt(m, 0, lang);
+
+  if (lang === 'es') {
+    // "un millón / un billón" take the singular; the rest are plural.
+    const singular = m === 1e6 || m === 1e12;
+    const verb = singular ? 'es' : 'son';
+    const h1 = `¿Cuánto ${verb} ${noun}?`;
+    const title = `${h1} En tiempo de trabajo y en cosas | Hectareómetro`;
+    const description = `${Noun} ${verb} ${equiv}. Míralo en tiempo de trabajo, en cosas que conoces${perCapita ? ' y por habitante' : ''}.`;
+    const answer = `${Noun} ${verb} aproximadamente ${equiv}. ${barPlain}${perCapita ? ` Repartido entre todos, tocaría a ${perCapita.replace(/ \(.*\)$/, '')}.` : ''}`;
+    const scaleNote = m === 1e9
+      ? `<p>Ojo con la traducción: <b>mil millones no son un billón</b>. En español un billón es un millón de millones; los mil millones son lo que en inglés se llama <i>billion</i>. Por eso «$1 billion» en un titular estadounidense son mil millones de dólares, no un billón.</p>`
+      : m === 1e12
+        ? `<p>Ojo con la traducción: <b>un billón español es un <i>trillion</i> en inglés</b>. El <i>billion</i> inglés son solo <a href="/mil-millones-de-euros/">mil millones</a>, mil veces menos. Es el error de traducción más caro de la prensa económica.</p>`
+        : '';
+    const intro = [
+      `<p>Arriba lo tienes dibujado: <b>${noun}</b> ${verb} ${equiv}. La herramienta lo mide de dos maneras, en el tiempo que cuesta ganarlo y en cosas que conoces, con sueldos y precios de España de ${cur.year}.</p>`,
+      `<p>${bar.caption} Con el salario mínimo (${minWage} al año) harían falta ${minYears} años.</p>`,
+      perCapita ? `<p>Y repartido entre todos, tocaría a ${perCapita}.</p>` : '',
+      scaleNote,
+      `<p>Cambia la cifra en la herramienta, o elige otra referencia para cada dibujo (días de salario mínimo, vidas laborales, coches, viviendas, fichajes…) con los selectores «Ver».</p>`,
+    ].filter(Boolean).join('\n      ');
+    return {
+      section: 'dinero', lang, key: m, m, title, description, h1, intro,
+      question: h1, answer, linkLabel: Noun,
+      faqs: [
+        { q: h1, a: answer },
+        { q: `¿Cuánto se tarda en ganar ${noun}?`, a: `${barPlain} Con el salario mínimo de ${cur.year} (${minWage} al año) harían falta ${minYears} años.` },
+        { q: `¿Cuántos ceros tiene ${noun}?`, a: `${Noun} se escribe ${digits}: un 1 seguido de ${zeros} ceros.${m >= 1e9 ? ' En español, un billón es un millón de millones (doce ceros) y mil millones llevan nueve; en inglés, billion son mil millones y trillion, un millón de millones.' : ''}` },
+      ],
+    };
+  }
+  const h1 = `How much is ${noun}?`;
+  const title = `${h1} In working time and in things | Hectareometer`;
+  const description = `${Noun} is ${equiv}. See it in working time, in things you know${perCapita ? ' and per person' : ''}.`;
+  const answer = `${Noun} is about ${equiv}. ${barPlain}${perCapita ? ` Shared out among everyone, it comes to ${perCapita.replace(/ \(.*\)$/, '')}.` : ''}`;
+  const scaleNote = m === 1e9
+    ? `<p>Careful when reading Spanish or most European languages: <b>a billion is not a “billón”</b>. There a billón is a million millions — the English trillion — and a billion is “mil millones”, a thousand millions.</p>`
+    : m === 1e12
+      ? `<p>Careful when reading Spanish or most European languages: <b>a trillion is a “billón”</b> there, while their “mil millones” is the English <a href="/en/one-billion-dollars/">billion</a>. It is the most expensive translation slip in economic news.</p>`
+      : '';
+  const intro = [
+    `<p>The drawing above shows it: <b>${noun}</b> is ${equiv}. The tool measures it two ways, by the time it takes to earn it and by things you know, with US wages and prices for ${cur.year}.</p>`,
+    `<p>${bar.caption} On the federal minimum wage (${minWage} a year) it would take ${minYears} years.</p>`,
+    perCapita ? `<p>And shared out among everyone, it comes to ${perCapita}.</p>` : '',
+    scaleNote,
+    `<p>Change the amount in the tool, or pick another reference for each drawing (days on the minimum wage, working lives, cars, homes, jackpots…) with the “Show” selectors.</p>`,
+  ].filter(Boolean).join('\n      ');
+  return {
+    section: 'dinero', lang, key: m, m, title, description, h1, intro,
+    question: h1, answer, linkLabel: Noun,
+    faqs: [
+      { q: h1, a: answer },
+      { q: `How long does it take to earn ${noun}?`, a: `${barPlain} On the federal minimum wage (${minWage} a year) it would take ${minYears} years.` },
+      { q: `How many zeros are in ${noun}?`, a: `${Noun} is written ${digits}: a 1 followed by ${zeros} zeros.${m >= 1e9 ? ' A billion has nine zeros and a trillion twelve; in Spanish a “billón” is the twelve-zero one.' : ''}` },
+    ],
+  };
+}
+
 // ---- rendering -----------------------------------------------------------
 
 // Breadcrumb trail for a generated page: home › section tool › page, or
@@ -7202,6 +7344,8 @@ function breadcrumbTrail(page, canonical) {
     items.push({ name: ui.navLiters, url: BASE_URL + litersPath(lang) });
   } else if (page.section === 'kilos') {
     items.push({ name: ui.navKilos, url: BASE_URL + kilosPath(lang) });
+  } else if (page.section === 'dinero') {
+    items.push({ name: ui.navMoney, url: BASE_URL + moneyPath(lang) });
   }
   // Hectare landings hang straight off the home (the hectares tool IS the home)
   items.push({ name: page.linkLabel, url: canonical });
@@ -7422,6 +7566,8 @@ function writeArticlesHub(lang) {
     NAV_LITERS_LABEL: ui.navLiters,
     NAV_KILOS_URL: kilosPath(lang),
     NAV_KILOS_LABEL: ui.navKilos,
+    NAV_MONEY_URL: moneyPath(lang),
+    NAV_MONEY_LABEL: ui.navMoney,
     NAV_CONVERTER_URL: converterPath(lang),
     NAV_CONVERTER_LABEL: ui.navConverter,
     NAV_ARTICLES_URL: articlesHubPath(lang),
@@ -7444,6 +7590,7 @@ function render(page, template) {
   const isLiters = page.section === 'litros';
   const isKilos = page.section === 'kilos';
   const isDistances = page.section === 'distancias';
+  const isMoney = page.section === 'dinero';
   // Editorial articles (any section) carry their own path and exist in one
   // language only: canonical = BASE_URL + path, hreflang es + x-default, and
   // the language switch points at the section's tool in the other language
@@ -7479,6 +7626,10 @@ function render(page, template) {
     canonical = kiloFullUrl(page.lang, page.key);
     hreflang = buildKiloHreflang(page.key);
     langSwitch = buildKiloLangSwitch(page.lang, page.key);
+  } else if (isMoney) {
+    canonical = moneyFullUrl(page.lang, page.key);
+    hreflang = buildMoneyHreflang(page.key);
+    langSwitch = buildMoneyLangSwitch(page.lang, page.key);
   } else {
     canonical = fullUrl(page.lang, page.key);
     hreflang = buildHreflang(page.key);
@@ -7518,6 +7669,11 @@ function render(page, template) {
     KILO_TOOL_PRE: ui.kiloToolPre,
     KILO_UNIT_OPTIONS: ui.kiloUnitOptions,
     KILO_ARIA_UNIT: ui.kiloAriaUnit,
+    M: String(page.m || ''),
+    MONEY_TOOL_PRE: ui.moneyToolPre,
+    MONEY_ARIA_SCALE: ui.moneyAriaScale,
+    MONEY_TIME_HEADING: ui.moneyTimeHeading,
+    MONEY_OBJ_HEADING: ui.moneyObjHeading,
     OVERLAY_PRE: ui.overlayPre,
     OVERLAY_POST: ui.overlayPost,
     SHARE_CTA: ui.shareCta,
@@ -7530,9 +7686,10 @@ function render(page, template) {
     ARTICLE_DATE: isArticle ? articleDateHtml(page) : '',
     INTRO: page.intro,
     FAQ_BLOCK: faqBlockHtml(page),
-    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
+    RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isMoney ? ui.relatedHeadingMoney : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
     RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
       : isKilos ? relatedKiloLinks(page.lang, page.key)
+      : isMoney ? relatedMoneyLinks(page.lang, page.key)
       : isDistances ? relatedDistanceLinks(page.lang, page.path)
       : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
@@ -7546,6 +7703,8 @@ function render(page, template) {
     NAV_LITERS_LABEL: ui.navLiters,
     NAV_KILOS_URL: kilosPath(page.lang),
     NAV_KILOS_LABEL: ui.navKilos,
+    NAV_MONEY_URL: moneyPath(page.lang),
+    NAV_MONEY_LABEL: ui.navMoney,
     NAV_CONVERTER_URL: converterPath(page.lang),
     NAV_CONVERTER_LABEL: ui.navConverter,
     NAV_LENGTHCONV_URL: lengthConverterPath(page.lang),
@@ -7553,7 +7712,7 @@ function render(page, template) {
     NAV_ARTICLES_URL: articlesHubPath(page.lang),
     NAV_ARTICLES_LABEL: ui.navArticles,
     NAV_MENU_LABEL: ui.navMenu,
-    BACK_TEXT: isLiters ? ui.backTextLiters : isKilos ? ui.backTextKilos : isDistances ? ui.backTextDistances : ui.backText,
+    BACK_TEXT: isLiters ? ui.backTextLiters : isKilos ? ui.backTextKilos : isMoney ? ui.backTextMoney : isDistances ? ui.backTextDistances : ui.backText,
   };
   let out = template || TEMPLATE;
   Object.keys(repl).forEach(k => {
@@ -7600,6 +7759,8 @@ function contentFingerprint(page, file) {
     return sha1(JSON.stringify([
       page.title, page.description, page.h1, page.intro, faqsFor(page),
       page.presetExtra || '', page.ha, page.l, page.k, page.dist, page.distUnit,
+      // Only money landings carry m; appending it elsewhere would re-date every page.
+      ...(page.m ? [page.m] : []),
     ]));
   }
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8')
@@ -7660,12 +7821,14 @@ function writeSitemap() {
   LANGS.forEach(lang => add(distancesPath(lang)));
   LANGS.forEach(lang => add(litersPath(lang)));
   LANGS.forEach(lang => add(kilosPath(lang)));
+  LANGS.forEach(lang => add(moneyPath(lang)));
   LANGS.forEach(lang => add(converterPath(lang)));
   LANGS.forEach(lang => add(lengthConverterPath(lang)));
   LANGS.forEach(lang => add(articlesHubPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => add(pathFor(lang, key), buildPage(lang, key))));
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => add(literPathFor(lang, l), literPage(lang, l))));
   LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => add(kiloPathFor(lang, k), kiloPage(lang, k))));
+  LANGS.forEach(lang => MONEY_QUANTITIES.forEach(q => add(moneyPathFor(lang, q.m), moneyPage(lang, q.m))));
   ARTICLES.forEach(page => add(page.path, page));
   LITER_ARTICLES.forEach(page => add(page.path, page));
   DIST_ARTICLES.forEach(page => add(page.path, page));
@@ -7675,7 +7838,7 @@ function writeSitemap() {
   const today = buildDate();
   const sectionHomes = new Set([].concat(...LANGS.map(lang => [
     measurePath(lang), measureDistancePath(lang), distancesPath(lang), litersPath(lang),
-    kilosPath(lang), converterPath(lang), lengthConverterPath(lang), articlesHubPath(lang),
+    kilosPath(lang), moneyPath(lang), converterPath(lang), lengthConverterPath(lang), articlesHubPath(lang),
   ])));
   let changed = 0;
   const warnings = [];
@@ -7754,6 +7917,16 @@ function main() {
       console.log(`generated ${kiloPathFor(lang, k)}`);
     });
   });
+  LANGS.forEach(lang => {
+    MONEY_QUANTITIES.forEach(q => {
+      const page = moneyPage(lang, q.m);
+      const dir = path.join(ROOT, moneyPathFor(lang, q.m).replace(/^\/+|\/+$/g, ''));
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_DINERO));
+      manifest.push({ lang, slug: q[lang], path: moneyPathFor(lang, q.m), label: page.linkLabel, title: page.title });
+      console.log(`generated ${moneyPathFor(lang, q.m)}`);
+    });
+  });
   ARTICLES.forEach(page => {
     const dir = path.join(ROOT, page.slug);
     fs.mkdirSync(dir, { recursive: true });
@@ -7779,7 +7952,7 @@ function main() {
   LANGS.forEach(lang => manifest.push(writeArticlesHub(lang)));
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo + ${MONEY_QUANTITIES.length} money amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
 }
 
 main();
