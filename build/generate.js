@@ -324,6 +324,99 @@ function sectionOf(page) {
   return page.section || 'hectareas';
 }
 
+// ---- og:image (the circle over the map) ------------------------------------
+//
+// `node build/og-images.js` renders images/og/<lang>-<slug>.png (1200x630,
+// OpenStreetMap tiles + the page's circle + its answer) for every page that
+// has a map preset; see ogTargets(). Pages whose image exists get it as
+// og:image / twitter:image; the rest keep the logo. Run it after adding a
+// quantity or a map-preset article, then regenerate.
+const OG_DIR = path.join(ROOT, 'images', 'og');
+
+function ogNameFor(page) {
+  // Articles carry their slug; hectare landings derive it from the key. The
+  // liters/kilos/money landings share numeric keys with the hectare ones, so
+  // they get a section-prefixed name (no image is rendered for them: logo).
+  const slug = page.slug || (!page.section ? slugFor(page.lang, page.key) : `${page.section}-${page.key}`);
+  return `${page.lang}-${slug}`;
+}
+
+function ogImageUrl(page) {
+  const name = ogNameFor(page);
+  const ext = ['.jpg', '.png'].find(e => fs.existsSync(path.join(OG_DIR, name + e)));
+  return ext ? `${BASE_URL}/images/og/${name}${ext}` : `${BASE_URL}/images/logo.png`;
+}
+
+function ogImageTags(page) {
+  const url = ogImageUrl(page);
+  const isMap = url.indexOf('/images/og/') !== -1;
+  return [
+    `<meta property="og:image" content="${url}" />`,
+    isMap ? '<meta property="og:image:width" content="1200" />' : '',
+    isMap ? '<meta property="og:image:height" content="630" />' : '',
+    `<meta name="twitter:card" content="${isMap ? 'summary_large_image' : 'summary'}">`,
+    `<meta name="twitter:image" content="${url}">`,
+  ].filter(Boolean).join('\n');
+}
+
+function parsePresets(page) {
+  const extra = page.presetExtra || '';
+  const num = k => { const m = extra.match(new RegExp('PRESET_' + k + ' = (-?[0-9.]+)')); return m ? parseFloat(m[1]) : undefined; };
+  return { zoom: num('ZOOM'), lat: num('LAT'), lon: num('LON') };
+}
+
+// Everything og-images.js needs per image: where the map is, how big the
+// circle is (metres), filled (hectares) or outline (distances), and the copy.
+function ogTargets() {
+  const out = [];
+  const pushHa = (page, lat, lon, zoom) => {
+    const ha = page.ha;
+    const ff = (ha * 10000) / FOOTBALL_FIELD_M2;
+    const ffText = ff < 10 ? fmt(ff, 1, page.lang) : fmt(Math.round(ff), 0, page.lang);
+    const fields = page.lang === 'es' ? 'campos de fútbol' : 'football pitches';
+    out.push({
+      name: ogNameFor(page), lang: page.lang, lat, lon, zoom,
+      radiusM: Math.sqrt((ha * 10000) / Math.PI), outline: false,
+      title: page.h1, sub: page.path ? page.description : `≈ ${ffText} ${fields} · ${acres(ha, page.lang)} acres`,
+    });
+  };
+  LANGS.forEach(lang => KEYS.forEach(key => {
+    const page = buildPage(lang, key);
+    if (!page.ha) return;
+    const p = parsePresets(page);
+    pushHa(page, p.lat || DEFAULT_MAP_LAT, p.lon || DEFAULT_MAP_LON, p.zoom || zoomForHa(page.ha));
+  }));
+  ARTICLES.forEach(page => {
+    const p = parsePresets(page);
+    if (page.ha && p.zoom) pushHa(page, p.lat || DEFAULT_MAP_LAT, p.lon || DEFAULT_MAP_LON, p.zoom);
+  });
+  DIST_ARTICLES.forEach(page => {
+    const p = parsePresets(page);
+    if (!page.dist || !p.zoom) return;
+    const toM = { km: 1000, m: 1, mi: 1609.344 }[page.distUnit || 'km'];
+    out.push({
+      name: ogNameFor(page), lang: page.lang, lat: p.lat || DEFAULT_MAP_LAT, lon: p.lon || DEFAULT_MAP_LON, zoom: p.zoom,
+      radiusM: page.dist * toM, outline: true, title: page.h1, sub: page.description,
+    });
+  });
+  // Hand pages: the homes (1 ha at zoom 17) and the distances tools (2 km / 1 mi).
+  LANGS.forEach(lang => {
+    out.push({
+      name: `${lang}-home`, lang, lat: DEFAULT_MAP_LAT, lon: DEFAULT_MAP_LON, zoom: 17,
+      radiusM: Math.sqrt(10000 / Math.PI), outline: false,
+      title: lang === 'es' ? 'Una hectárea son 10.000 m². Así de grande es.' : 'A hectare is 10,000 m². This is how big.',
+      sub: lang === 'es' ? '≈ 1,4 campos de fútbol · un cuadrado de 100 × 100 m' : '≈ 1.4 football pitches · a 100 × 100 m square',
+    });
+    out.push({
+      name: lang === 'es' ? 'es-distancias' : 'en-distances', lang, lat: DEFAULT_MAP_LAT, lon: DEFAULT_MAP_LON, zoom: 12,
+      radiusM: lang === 'es' ? 2000 : 1609.344, outline: true,
+      title: lang === 'es' ? '¿Hasta dónde llegan 2 km?' : 'How far is 1 mile?',
+      sub: lang === 'es' ? 'Dibuja cualquier distancia como un radio sobre el mapa' : 'Draw any distance as a radius on a real map',
+    });
+  });
+  return out;
+}
+
 function headCommon() {
   return `  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KGFGQLBRJ"></script>
@@ -337,7 +430,9 @@ function headCommon() {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#F7F6F2">
-<link rel="icon" href="/favicon.ico">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32 48x48">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -777,6 +872,7 @@ const COMPARISONS = {
 // Latitude the tool centres on when a page sets no PRESET_LAT (the default in
 // js/hectareas.js). Only used to size the zoom below.
 const DEFAULT_MAP_LAT = 43.3086485;
+const DEFAULT_MAP_LON = -1.9667056;
 // Narrowest map viewport we design for, in CSS pixels (mobile is ~72% of
 // sessions). The circle has to fit inside it at the preset zoom.
 const MAP_MIN_WIDTH_PX = 260;
@@ -7731,7 +7827,7 @@ function buildJsonLd(page, canonical, breadcrumbItems) {
         'name': UI[page.lang].siteName,
         'logo': { '@type': 'ImageObject', 'url': `${BASE_URL}/images/logo.png` },
       },
-      'image': `${BASE_URL}/images/logo.png`,
+      'image': ogImageUrl(page),
       'mainEntityOfPage': canonical,
     });
   }
@@ -7857,6 +7953,7 @@ function writeArticlesHub(lang) {
     SITE_NAME: ui.siteName,
     OG_LOCALE: ui.ogLocale,
     JSON_LD: buildHubJsonLd(lang, articles, crumbs),
+    OG_IMAGE_TAGS: ogImageTags({ lang, slug: 'hub' }),
     H1: escapeHtml(ui.hubH1),
     INTRO: escapeHtml(ui.hubIntro),
     ARTICLE_CARDS: articles.map(a => buildArticleCard(a, lang)).join('\n'),
@@ -7954,6 +8051,7 @@ function render(page, template) {
     SITE_NAME: ui.siteName,
     OG_LOCALE: ui.ogLocale,
     JSON_LD: buildJsonLd(page, canonical, crumbs),
+    OG_IMAGE_TAGS: ogImageTags(page),
     BREADCRUMB: buildBreadcrumbHtml(crumbs, page.lang),
     RELATED_ARTICLES_BLOCK: relatedArticlesBlock(page),
     HA: String(page.ha),
@@ -8270,4 +8368,4 @@ function ladderFor(lang, ha) {
   return ladderHtml({ lang, ha, key: String(ha) });
 }
 
-module.exports = { LANGS, KEYS, BASE_URL, pathFor, slugFor, buildPage, chromeFor, ladderFor, UI, ICONS, lensesBlockHtml, shareBlockHtml, headerHtml, footerHtml, headCommon };
+module.exports = { LANGS, KEYS, BASE_URL, pathFor, slugFor, buildPage, chromeFor, ladderFor, ogTargets, UI, ICONS, lensesBlockHtml, shareBlockHtml, headerHtml, footerHtml, headCommon };
