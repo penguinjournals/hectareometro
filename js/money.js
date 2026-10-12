@@ -490,12 +490,19 @@ if (typeof module !== 'undefined' && module.exports) {
 var MONEY_STRINGS = {
   es: {
     scaleNames: { 1: '', 1000: 'mil', 1000000: 'millones de', 1000000000: 'mil millones de', 1000000000000: 'billones de' },
+    // With exactly 1 in the box: "1 millón de euros", "1 billón de euros", "1 euro".
+    scaleNamesOne: { 1: '', 1000: 'mil', 1000000: 'millón de', 1000000000: 'mil millones de', 1000000000000: 'billón de' },
+    questionMany: '¿Cuánto son',
+    questionOne: '¿Cuánto es',
     autoOption: 'automático',
     shareText: function(text) { return '¿Cuánto es de verdad ' + text + '?'; },
     shareDefault: 'El dinero, medido en tiempo de trabajo y en cosas que conoces'
   },
   en: {
     scaleNames: { 1: '', 1000: 'thousand', 1000000: 'million', 1000000000: 'billion', 1000000000000: 'trillion' },
+    scaleNamesOne: { 1: '', 1000: 'thousand', 1000000: 'million', 1000000000: 'billion', 1000000000000: 'trillion' },
+    questionMany: 'How much is',
+    questionOne: 'How much is',
     autoOption: 'automatic',
     shareText: function(text) { return 'How much is ' + text + ', really?'; },
     shareDefault: 'Money, measured in working time and in things you know'
@@ -613,6 +620,17 @@ if (typeof $ !== 'undefined') {
   };
 
   // The select carries "<currency>:<scale>": "eur:1000000" = millones de euros.
+  // Option text for one scale of one currency. With exactly 1 in the box the
+  // words go singular ("1 millón de euros", "1 dollar"); the scale words
+  // themselves only change in Spanish (millón/billón).
+  var scaleOptionText = function(curId, scale, one) {
+    var cur = MONEY_CURRENCIES[curId];
+    var scaleName = (one ? moneyI18n().scaleNamesOne : moneyI18n().scaleNames)[scale];
+    var curName = (one && scale === 1) ? cur.names[moneyLang].one : cur.names[moneyLang].many;
+    return (scaleName ? scaleName + ' ' : '') + curName;
+  };
+
+  // The select carries "<currency>:<scale>": "eur:1000000" = millones de euros.
   var populateScaleSelector = function() {
     var $select = $('#money-scale');
     $select.empty();
@@ -620,18 +638,28 @@ if (typeof $ !== 'undefined') {
       var cur = MONEY_CURRENCIES[curId];
       var $group = $('<optgroup>', { label: cur.names[moneyLang].many + ' (' + cur.country[moneyLang] + ')' });
       MONEY_SCALES.forEach(function(scale) {
-        var scaleName = moneyI18n().scaleNames[scale];
-        var text;
-        if (moneyLang === 'es') {
-          text = (scaleName ? scaleName + ' ' : '') + cur.names.es.many;
-        } else {
-          text = (scaleName ? scaleName + ' ' : '') + cur.names.en.many;
-        }
-        $group.append($('<option>', { value: curId + ':' + scale, text: text }));
+        $group.append($('<option>', { value: curId + ':' + scale, text: scaleOptionText(curId, scale, false) }));
       });
       $select.append($group);
     });
   };
+
+  // Keeps the option texts (and the Spanish "¿Cuánto es/son") in agreement
+  // with the number typed. Only touches the DOM when the number crosses 1.
+  var lastSingular = null;
+  var syncScaleGrammar = function() {
+    var one = parseMoney($('#money').val()) === 1;
+    if (one === lastSingular) {
+      return;
+    }
+    lastSingular = one;
+    $('#money-scale option').each(function() {
+      var parts = this.value.split(':');
+      $(this).text(scaleOptionText(parts[0], Number(parts[1]), one));
+    });
+    $('#litros-panel label[for="money"]').first().text(one ? moneyI18n().questionOne : moneyI18n().questionMany);
+  };
+
 
   var populateViewSelector = function(selector, ladder, current) {
     var $select = $(selector);
@@ -760,6 +788,7 @@ if (typeof $ !== 'undefined') {
     $('#iframe-share-height').val(iframeHeight);
 
     var onInputChange = function() {
+      syncScaleGrammar();
       refreshMoneyViz();
       generateMoneySharingButtons();
     };
@@ -781,6 +810,7 @@ if (typeof $ !== 'undefined') {
       iframeHeight = $('#iframe-share-height').val();
       generateMoneySharingButtons();
     });
+    syncScaleGrammar();
     refreshMoneyViz();
     generateMoneySharingButtons();
   });
