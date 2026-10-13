@@ -169,7 +169,7 @@ const UI = {
     hubH1: 'Artículos',
     hubIntro: 'Historias y guías sobre cantidades difíciles de imaginar: superficies, volúmenes de agua, pesos… siempre con la cifra dibujada a escala para que se entienda de verdad.',
     hubRead: 'Leer →',
-    familyLabels: { hectareas: 'Hectáreas', litros: 'Litros', kilos: 'Kilos', distancias: 'Distancias' },
+    familyLabels: { hectareas: 'Hectáreas', litros: 'Litros', kilos: 'Kilos', distancias: 'Distancias', dinero: 'Dinero' },
     allArticles: 'Todos los artículos →',
     articlesHeading: 'Artículos',
     // 2026 layout chrome
@@ -233,7 +233,7 @@ const UI = {
     hubH1: 'Articles',
     hubIntro: 'Stories and guides about hard-to-picture quantities: areas, volumes of water, weights… always with the figure drawn to scale so it actually sinks in.',
     hubRead: 'Read →',
-    familyLabels: { hectareas: 'Hectares', litros: 'Liters', kilos: 'Kilos', distancias: 'Distances' },
+    familyLabels: { hectareas: 'Hectares', litros: 'Liters', kilos: 'Kilos', distancias: 'Distances', dinero: 'Money' },
     allArticles: 'All articles →',
     articlesHeading: 'Articles',
     // 2026 layout chrome
@@ -7508,11 +7508,414 @@ const DIST_ARTICLES = [
   horizonArticle('es'), horizonArticle('en'),
 ];
 
+// ---- money articles ---------------------------------------------------------
+//
+// Rendered with TEMPLATE_DINERO (the money tool on top, preset to `m`).
+// Sources, validated 2026-10-13:
+// - UK switch to the short scale: written answer by Harold Wilson, 20-dec-1974
+//   ("The word 'billion' is now used internationally to mean 1,000 million")
+//   https://commonslibrary.parliament.uk/research-briefings/sn04440/
+// - 9th CGPM (1948) recommended the long scale; France made it official by
+//   décret 61-501 of 3-may-1961. https://www.bipm.org/en/committees/cg/cgpm/cgpm-resolutions
+// - Nicolas Chuquet, Triparty en la science des nombres (1484, printed by
+//   Estienne de la Roche in 1520): byllion, tryllion… as powers of a million;
+//   Jacques Peletier du Mans spread "milliard" (1549). https://en.wikipedia.org/wiki/Nicolas_Chuquet
+// - RAE: "millardo" admitted in 1995; the DPD advises against billón = 10⁹
+//   except in US Spanish. https://www.rae.es/dpd/millardo · https://www.rae.es/dpd/billón
+// - Spain GDP 2025: 1.690.012 M€ (INE, Contabilidad Nacional Anual, avance).
+//   https://www.ine.es/dyngs/Prensa/CNA2025.htm
+// - Spain public debt, June 2026: 1,76 billones € (Banco de España).
+//   https://es.euronews.com/2026/04/22/deuda-publica-espanola-alcanza-maximos-historicos-febrero-con-172-billones-de-euros
+// - US GDP 2025: $30.762 trillion (BEA). https://www.bea.gov/news/2026/gdp-third-estimate-industries-corporate-profits-state-gdp-and-state-personal-income-4th
+// - US public debt, 8-oct-2026: $40.3 trillion (Treasury, Debt to the Penny).
+//   https://www.indexbox.io/blog/us-public-debt-outstanding-hits-record-403-trillion-on-october-8-2026/
+const BILLION_ALTERNATES = {
+  es: '/cuanto-es-un-billon/',
+  en: '/en/how-much-is-a-billion/',
+};
+
+function billionArticle(lang) {
+  const es = lang === 'es';
+  const eur = moneyData.MONEY_CURRENCIES.eur;
+  const usd = moneyData.MONEY_CURRENCIES.usd;
+  const lifeEur = eur.avgWage * moneyData.WORKING_LIFE_YEARS; // 1,18 M€
+  const lifeUsd = usd.avgWage * moneyData.WORKING_LIFE_YEARS; // $2,79 M
+  const spainYear = eur.time[eur.time.length - 1].value; // a year of all Spain's wages
+  const usYear = usd.time[usd.time.length - 1].value;
+  const livesBnEur = Math.round(1e9 / lifeEur); // 846
+  const livesTnEur = Math.round(1e12 / lifeEur / 1000) * 1000; // 846.000
+  const yearsTnSpain = 1e12 / spainYear; // 1,49
+  const livesBnUsd = Math.round(1e9 / lifeUsd); // 358
+  const livesTnUsd = Math.round(1e12 / lifeUsd / 1000) * 1000; // 358.000
+  const daysTnUs = Math.round(1e12 / usYear * 365); // 32
+  const secYear = 31556952;
+  const daysMillionSec = 1e6 / 86400; // 11,6
+  const yearsBillionSec = 1e9 / secYear; // 31,7
+  const yearsTrillionSec = Math.round(1e12 / secYear / 100) * 100; // 31.700
+  const n0 = v => fmt(v, 0, lang);
+  const n1 = v => fmt(v, 1, lang);
+  const published = '2026-10-14';
+
+  if (es) {
+    const intro = `      <p>
+        <b>Un billón son un millón de millones</b>: 1.000.000.000.000, un 1 seguido de doce ceros.
+        Esa es la respuesta en español y en casi toda Europa. El problema es que en inglés
+        <i>billion</i> significa <b>mil millones</b> (1.000.000.000, nueve ceros), mil veces menos, y
+        que nuestro billón se dice allí <i>trillion</i>. Las dos palabras se parecen tanto que los
+        traductores, los titulares y hasta los informes oficiales se equivocan a diario, y cada
+        error es de un factor mil. La herramienta de arriba muestra
+        <a href="/mil-millones-de-euros/">mil millones de euros</a> en tiempo de trabajo; cámbiala a
+        <a href="/un-billon-de-euros/">un billón</a> para ver la diferencia.
+      </p>
+
+      <h2>Las dos escalas, en una tabla</h2>
+      <p>
+        El español usa la <b>escala larga</b>: cada nombre nuevo multiplica por un millón (un billón
+        es un millón de millones, un trillón un millón de billones). El inglés de Estados Unidos y
+        del Reino Unido usa la <b>escala corta</b>: cada nombre multiplica por mil. A partir de los
+        nueve ceros, las mismas palabras significan cosas distintas.
+      </p>
+      <table class="equiv-table equiv-table-wide">
+        <thead><tr><th>Número</th><th>En español (escala larga)</th><th>En inglés (escala corta)</th></tr></thead>
+        <tbody>
+          <tr><td>1.000.000 (10⁶)</td><td>un millón</td><td><i>one million</i></td></tr>
+          <tr><td>1.000.000.000 (10⁹)</td><td><b>mil millones</b> (o un millardo)</td><td><b><i>one billion</i></b></td></tr>
+          <tr><td>1.000.000.000.000 (10¹²)</td><td><b>un billón</b></td><td><b><i>one trillion</i></b></td></tr>
+          <tr><td>10¹⁵</td><td>mil billones</td><td><i>one quadrillion</i></td></tr>
+          <tr><td>10¹⁸</td><td>un trillón</td><td><i>one quintillion</i></td></tr>
+        </tbody>
+      </table>
+      <p>
+        La regla práctica para traducir: <b><i>billion</i> = mil millones</b>, <b><i>trillion</i> =
+        billón</b>, y nuestro <b>trillón</b> no tiene equivalente de uso corriente en inglés
+        (sería <i>quintillion</i>). Si en una noticia en español lees «un billón de dólares» y la
+        fuente es estadounidense, lo más probable es que fueran mil millones.
+      </p>
+
+      <h2>Cuánto es de verdad un billón</h2>
+      <p>
+        Las palabras no ayudan a imaginarlo, así que mejor contarlo. En segundos: un millón de
+        segundos son <b>${n1(daysMillionSec)} días</b>; mil millones de segundos son
+        <b>${n1(yearsBillionSec)} años</b>, una vida laboral casi entera; un billón de segundos son
+        <b>${n0(yearsTrillionSec)} años</b>, más o menos lo que hace que el ser humano pintaba en
+        las cuevas de Altamira. Entre el <i>billion</i> inglés y el billón español hay la misma
+        distancia que entre una carrera profesional y toda la historia del arte.
+      </p>
+      <p>
+        En dinero, con las cifras de la <a href="/dinero/">herramienta de dinero</a>:
+        <b><a href="/mil-millones-de-euros/">mil millones de euros</a></b> (un <i>billion</i>) son
+        ${n0(livesBnEur)} vidas laborales enteras cobrando el salario medio español
+        (${moneyLib.moneyText(Math.round(eur.avgWage), 'eur', 'es')} al año durante 40 años); <b><a
+        href="/un-billon-de-euros/">un billón de euros</a></b> son ${n0(livesTnEur)} vidas laborales,
+        o <b>${n1(yearsTnSpain)} años de los sueldos de toda España</b>, los 22,8 millones de
+        ocupados juntos. Un <i>billion</i> lo gana un país en medio día de trabajo; un billón le
+        cuesta año y medio.
+      </p>
+      <p>
+        Las cifras grandes de la actualidad son casi todas billones de los nuestros: el PIB de
+        España fue en 2025 de <b>1.690.012 millones de euros</b>, es decir, <b>1,69 billones</b>
+        (INE); la deuda pública superaba en junio de 2026 los <b>1,76 billones</b> (Banco de
+        España). En inglés esas dos cifras se escriben <i>1.69 trillion</i> y <i>1.76 trillion</i>.
+        Y al revés: el PIB de Estados Unidos de 2025, <i>$30.76 trillion</i>, son
+        <b>30,76 billones de dólares</b>, y su deuda federal, que pasó de <i>$40 trillion</i> en
+        agosto de 2026, son <b>40,3 billones</b>. No cuarenta mil millones: cuarenta billones.
+      </p>
+
+      <h2>De dónde viene el lío: un matemático de Lyon en 1484</h2>
+      <p>
+        Las palabras las inventó <b>Nicolas Chuquet</b>, un médico y matemático francés que en
+        1484 escribió el <i>Triparty en la science des nombres</i> y necesitaba nombres para los
+        números enormes. Agrupó las cifras de seis en seis y creó la serie <i>byllion, tryllion,
+        quadrillion, quyllion…</i>: un billón era un millón de millones, un trillón un millón de
+        billones. El manuscrito no se publicó en vida de Chuquet; sus nombres salieron a imprenta en
+        1520 en un libro de Estienne de la Roche, y en 1549 Jacques Peletier du Mans difundió
+        <i>milliard</i> para los mil millones. Esa es la escala larga, la que seguimos usando.
+      </p>
+      <p>
+        La escala corta nació también en Francia, en el siglo XVII, cuando algunos aritméticos
+        empezaron a agrupar las cifras de tres en tres y a dar un nombre nuevo a cada grupo:
+        <i>billion</i> pasó a ser mil millones. Estados Unidos heredó esa costumbre de los franceses
+        en el siglo XIX, y Francia, en un giro completo, volvió a la escala larga: la Conferencia
+        General de Pesas y Medidas la recomendó en 1948 y el Gobierno francés la hizo oficial por
+        decreto el 3 de mayo de 1961. El Reino Unido aguantó con la escala larga (allí <i>billion</i>
+        fue un millón de millones durante dos siglos) hasta el <b>20 de diciembre de 1974</b>, cuando
+        el primer ministro Harold Wilson contestó por escrito en la Cámara de los Comunes que el
+        Gobierno usaría <i>billion</i> solo como mil millones, «porque es como se usa
+        internacionalmente y sería confuso que los ministros británicos lo emplearan en otro
+        sentido». Desde entonces el inglés es de escala corta en todas partes.
+      </p>
+
+      <h2>Quién usa cada escala</h2>
+      <ul class="examples-list">
+        <li><b>Escala larga (billón = 10¹²)</b>: España y la mayor parte de Hispanoamérica, Francia,
+          Alemania, Italia, Portugal, Países Bajos, los países nórdicos y, en general, la Europa
+          continental.</li>
+        <li><b>Escala corta (billion = 10⁹)</b>: Estados Unidos, Reino Unido desde 1974, Irlanda,
+          Canadá anglófono, Australia, Nueva Zelanda y Brasil, donde el portugués usa <i>bilhão</i>
+          para mil millones aunque el de Portugal use <i>bilião</i> para un millón de millones.</li>
+        <li><b>Zona gris</b>: el español de Estados Unidos y Puerto Rico. Por contacto con el inglés,
+          allí «billón» se usa a menudo como mil millones, y el <i>Diccionario panhispánico de dudas</i>
+          lo admite solo para ese ámbito; en el resto del mundo hispanohablante lo desaconseja.</li>
+      </ul>
+
+      <h2>Millardo: la palabra que la RAE inventó para esto</h2>
+      <p>
+        En 1995 la Real Academia Española admitió <b>millardo</b>, adaptación del francés
+        <i>milliard</i>, precisamente para que nadie tradujera <i>billion</i> como «billón»: un
+        millardo son mil millones, sin ambigüedad. La palabra existe, es correcta y casi nadie la
+        usa; en el uso real «mil millones» sigue siendo más natural, y el propio Diccionario
+        panhispánico de dudas lo reconoce. FundéuRAE repite la advertencia cada pocos meses: «el
+        <i>billion</i> inglés no equivale al billón español».
+      </p>
+      <p>
+        Tres consejos para no equivocarse al leer o escribir: si la fuente es anglosajona, cada
+        <i>billion</i> son mil millones y cada <i>trillion</i> un billón; desconfía de la
+        abreviatura «B» o «bn» (en inglés siempre es 10⁹; en español no significa nada fijo), y
+        cuando la cifra importe, escríbela con todos sus ceros o en millones: «1.690.000 millones»
+        no admite dos lecturas, «1,69 billones» sí.
+      </p>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        <dt>¿Cuánto es un billón?</dt>
+        <dd>En español, un billón es un millón de millones: 1.000.000.000.000, un 1 seguido de doce
+          ceros (10¹²). Es la escala larga, la de casi toda Europa. En inglés <i>billion</i> son
+          mil millones (10⁹), mil veces menos.</dd>
+
+        <dt>¿Cuántos ceros tiene un billón?</dt>
+        <dd>Doce. Un millón tiene seis, mil millones nueve y un billón doce. El <i>billion</i>
+          inglés tiene nueve ceros, como nuestros mil millones.</dd>
+
+        <dt>¿Cómo se dice <i>billion</i> en español?</dt>
+        <dd>Mil millones, o millardo. Nunca «billón», que es mil veces más. Y <i>trillion</i> se
+          traduce como billón.</dd>
+
+        <dt>¿Qué es un millardo?</dt>
+        <dd>Mil millones (10⁹). La RAE lo admitió en 1995, adaptado del francés <i>milliard</i>,
+          para evitar que <i>billion</i> se tradujera como billón. Es correcto pero poco usado:
+          «mil millones» es más natural.</dd>
+
+        <dt>¿Cuánto es un trillón?</dt>
+        <dd>En español, un millón de billones: 10¹⁸, un 1 con dieciocho ceros. El <i>trillion</i>
+          inglés es 10¹², es decir, nuestro billón. El trillón español equivale al
+          <i>quintillion</i> inglés.</dd>
+      </dl>
+      <p>
+        ¿Quieres hacerte a la idea de otras cantidades? Mira
+        <a href="/un-millon-de-euros/">un millón de euros</a>,
+        <a href="/cien-millones-de-euros/">cien millones</a>,
+        <a href="/mil-millones-de-euros/">mil millones</a> o
+        <a href="/un-billon-de-euros/">un billón de euros</a> en tiempo de trabajo con la
+        <a href="/dinero/">herramienta de dinero</a>. Y si lo tuyo son las superficies, los litros o
+        los pesos, tienes el <a href="/">Hectareómetro</a>, la
+        <a href="/litros/">herramienta de litros</a> y la <a href="/kilos/">de kilos</a>.
+      </p>`;
+    return {
+      section: 'dinero', lang: 'es', key: 'billon', m: 1e9,
+      family: 'dinero', published, modified: published,
+      slug: 'cuanto-es-un-billon',
+      path: BILLION_ALTERNATES.es, alternates: BILLION_ALTERNATES,
+      title: '¿Cuánto es un billón? Billón español vs billion inglés | Hectareómetro',
+      description: 'Un billón son un millón de millones (12 ceros); el billion inglés son mil millones (9 ceros), mil veces menos. La tabla de las dos escalas, de dónde viene el lío (Chuquet, 1484) y cómo traducir sin equivocarse.',
+      h1: '¿Cuánto es un billón? El billón español y el billion inglés',
+      intro,
+      question: '¿Cuánto es un billón?',
+      answer: 'En español, un billón es un millón de millones: 1.000.000.000.000, un 1 seguido de doce ceros (10¹²). Es la escala larga, la de casi toda Europa. En inglés billion son mil millones (10⁹), mil veces menos.',
+      faqs: [
+        { q: '¿Cuánto es un billón?', a: 'En español, un billón es un millón de millones: 1.000.000.000.000, un 1 seguido de doce ceros (10¹²). Es la escala larga, la de casi toda Europa. En inglés billion son mil millones (10⁹), mil veces menos.' },
+        { q: '¿Cuántos ceros tiene un billón?', a: 'Doce. Un millón tiene seis, mil millones nueve y un billón doce. El billion inglés tiene nueve ceros, como nuestros mil millones.' },
+        { q: '¿Cómo se dice billion en español?', a: 'Mil millones, o millardo. Nunca «billón», que es mil veces más. Y trillion se traduce como billón.' },
+        { q: '¿Qué es un millardo?', a: 'Mil millones (10⁹). La RAE lo admitió en 1995, adaptado del francés milliard, para evitar que billion se tradujera como billón. Es correcto pero poco usado: «mil millones» es más natural.' },
+        { q: '¿Cuánto es un trillón?', a: 'En español, un millón de billones: 10¹⁸, un 1 con dieciocho ceros. El trillion inglés es 10¹², es decir, nuestro billón. El trillón español equivale al quintillion inglés.' },
+      ],
+      linkLabel: '¿Cuánto es un billón?',
+    };
+  }
+
+  const intro = `      <p>
+        <b>A billion is a thousand million</b>: 1,000,000,000, a 1 followed by nine zeros. That is
+        what the word means in English everywhere today. But cross into Spanish, French, German or
+        Portuguese and the same-looking word (<i>billón</i>, <i>billion</i>, <i>Billion</i>,
+        <i>bilião</i>) means <b>a million million</b>, 1,000,000,000,000: a thousand times more.
+        Their "billion" is our trillion. The two words look so alike that translations, headlines
+        and official reports get it wrong every day, and every mistake is off by a factor of a
+        thousand. The tool above shows <a href="/en/one-billion-dollars/">one billion dollars</a>
+        in working time; switch it to <a href="/en/one-trillion-dollars/">a trillion</a> to see
+        the gap.
+      </p>
+
+      <h2>The two scales, in one table</h2>
+      <p>
+        English uses the <b>short scale</b>: every new name is a thousand times the previous one
+        (a billion is a thousand million, a trillion a thousand billion). Spanish and most of
+        continental Europe use the <b>long scale</b>: every new name is a <i>million</i> times the
+        previous one (a <i>billón</i> is a million million, a <i>trillón</i> a million
+        <i>billones</i>). From nine zeros up, the same words mean different numbers.
+      </p>
+      <table class="equiv-table equiv-table-wide">
+        <thead><tr><th>Number</th><th>In English (short scale)</th><th>In Spanish (long scale)</th></tr></thead>
+        <tbody>
+          <tr><td>1,000,000 (10⁶)</td><td>one million</td><td><i>un millón</i></td></tr>
+          <tr><td>1,000,000,000 (10⁹)</td><td><b>one billion</b></td><td><b><i>mil millones</i></b> (or <i>un millardo</i>)</td></tr>
+          <tr><td>1,000,000,000,000 (10¹²)</td><td><b>one trillion</b></td><td><b><i>un billón</i></b></td></tr>
+          <tr><td>10¹⁵</td><td>one quadrillion</td><td><i>mil billones</i></td></tr>
+          <tr><td>10¹⁸</td><td>one quintillion</td><td><i>un trillón</i></td></tr>
+        </tbody>
+      </table>
+      <p>
+        The practical rule: <b>Spanish <i>billón</i> = English trillion</b>, <b>English billion =
+        <i>mil millones</i></b>, and a Spanish <i>trillón</i> is a quintillion. If a Spanish or
+        French source says "un billón de dólares", it almost certainly means a trillion.
+      </p>
+
+      <h2>How big a billion and a trillion really are</h2>
+      <p>
+        The words do not help, so count instead. In seconds: a million seconds is
+        <b>${n1(daysMillionSec)} days</b>; a billion seconds is <b>${n1(yearsBillionSec)} years</b>,
+        nearly a whole working life; a trillion seconds is <b>${n0(yearsTrillionSec)} years</b>,
+        roughly the time since humans painted the caves of Lascaux and Altamira. The gap between
+        an English billion and a Spanish <i>billón</i> is the gap between a career and the whole
+        history of art.
+      </p>
+      <p>
+        In money, with the figures of the <a href="/en/money/">money tool</a>:
+        <b><a href="/en/one-billion-dollars/">one billion dollars</a></b> is ${n0(livesBnUsd)} whole
+        working lives on the US average wage (${moneyLib.moneyText(Math.round(usd.avgWage), 'usd', 'en')}
+        a year for 40 years); <b><a href="/en/one-trillion-dollars/">one trillion dollars</a></b> is
+        ${n0(livesTnUsd)} working lives, or <b>${n0(daysTnUs)} days of wages for every worker in
+        the United States</b>. A billion is what a country earns in a few hours; a trillion takes
+        it a month.
+      </p>
+      <p>
+        The big numbers in the news are mostly trillions: US GDP was <b>$30.76 trillion</b> in 2025
+        (BEA) and the federal debt passed <b>$40 trillion</b> in August 2026, reaching $40.3
+        trillion in October (Treasury). A Spanish newspaper writes those as <i>30,76 billones</i>
+        and <i>40,3 billones de dólares</i>. The other way round: Spain's GDP in 2025 was
+        €1,690,012 million, which Spanish sources call <i>1,69 billones de euros</i> and English
+        ones <b>€1.69 trillion</b>; its public debt, <i>1,76 billones</i> in June 2026, is
+        €1.76 trillion. Not 1.76 billion: a thousand times that.
+      </p>
+
+      <h2>Where the mess comes from: a mathematician in Lyon, 1484</h2>
+      <p>
+        The words were coined by <b>Nicolas Chuquet</b>, a French physician and mathematician who
+        wrote the <i>Triparty en la science des nombres</i> in 1484 and needed names for huge
+        numbers. He grouped digits in sixes and invented the series <i>byllion, tryllion,
+        quadrillion, quyllion…</i>: a byllion was a million million, a tryllion a million byllion.
+        His manuscript went unpublished in his lifetime; the names first appeared in print in 1520
+        in a book by Estienne de la Roche, and in 1549 Jacques Peletier du Mans popularised
+        <i>milliard</i> for a thousand million. That is the long scale, the one Spanish still uses.
+      </p>
+      <p>
+        The short scale was born in France too, in the seventeenth century, when some
+        arithmeticians began grouping digits in threes and giving each group a new name:
+        <i>billion</i> became a thousand million. The United States inherited that habit from the
+        French in the nineteenth century, and France then turned around completely: the General
+        Conference on Weights and Measures recommended the long scale in 1948 and the French
+        government made it official by decree on 3 May 1961. Britain held on to the long scale (a
+        British billion was a million million for two centuries) until <b>20 December 1974</b>,
+        when Prime Minister Harold Wilson answered in writing in the House of Commons that the
+        government would use <i>billion</i> only to mean a thousand million, because "it is now
+        used internationally to mean 1,000 million and it would be confusing if British Ministers
+        were to use it in any other sense". Since then English is short scale everywhere.
+      </p>
+
+      <h2>Who uses which scale</h2>
+      <ul class="examples-list">
+        <li><b>Short scale (billion = 10⁹)</b>: the United States, the United Kingdom since 1974,
+          Ireland, English-speaking Canada, Australia, New Zealand, and Brazil, where Portuguese
+          uses <i>bilhão</i> for a thousand million even though Portugal's <i>bilião</i> is a
+          million million.</li>
+        <li><b>Long scale (billón = 10¹²)</b>: Spain and most of Latin America, France, Germany,
+          Italy, Portugal, the Netherlands, the Nordic countries and continental Europe in
+          general.</li>
+        <li><b>Grey zone</b>: Spanish as spoken in the United States and Puerto Rico. Through
+          contact with English, <i>billón</i> is often used there to mean a thousand million; the
+          Spanish academies' usage dictionary accepts it only in that context and advises against
+          it everywhere else.</li>
+      </ul>
+
+      <h2>Millardo: the word Spanish invented to fix this</h2>
+      <p>
+        In 1995 the Royal Spanish Academy admitted <b>millardo</b>, adapted from the French
+        <i>milliard</i>, precisely so that nobody would translate <i>billion</i> as
+        <i>billón</i>: a <i>millardo</i> is a thousand million, unambiguously. The word exists, it
+        is correct, and almost nobody uses it; in practice <i>mil millones</i> ("a thousand
+        million") remains the natural phrase, as the academies themselves acknowledge. Their
+        language watchdog, FundéuRAE, repeats the warning every few months: the English
+        <i>billion</i> is not the Spanish <i>billón</i>.
+      </p>
+      <p>
+        Three tips for reading or writing across the two languages: if the source is Spanish,
+        French or German, every <i>billón</i> is a trillion; be wary of the abbreviations "B" and
+        "bn", which mean 10⁹ in English and nothing fixed in Spanish; and when the figure matters,
+        write it out in full or in millions. "1,690,000 million" has one reading; "1.69 billion"
+        depends on who is talking.
+      </p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq">
+        <dt>How much is a billion?</dt>
+        <dd>In English, a billion is a thousand million: 1,000,000,000, a 1 followed by nine zeros
+          (10⁹). In Spanish and most of continental Europe the look-alike word <i>billón</i> means
+          a million million (10¹²): our trillion.</dd>
+
+        <dt>How many zeros are in a billion?</dt>
+        <dd>Nine in English (1,000,000,000). A Spanish <i>billón</i> has twelve, the same as an
+          English trillion.</dd>
+
+        <dt>What is a billion in Spanish?</dt>
+        <dd><i>Mil millones</i> ("a thousand million"), or <i>un millardo</i>. Never <i>billón</i>,
+          which is a thousand times bigger. And trillion translates as <i>billón</i>.</dd>
+
+        <dt>Did Britain ever use the long scale?</dt>
+        <dd>Yes. A British billion was a million million until 1974, when Harold Wilson's
+          government adopted the thousand-million meaning already used in the United States and
+          internationally.</dd>
+
+        <dt>How much is a trillion?</dt>
+        <dd>A thousand billion: 10¹², a 1 with twelve zeros. In Spanish that number is called
+          <i>un billón</i>; the Spanish <i>trillón</i> is 10¹⁸, our quintillion.</dd>
+      </dl>
+      <p>
+        Want a feel for other amounts? See <a href="/en/one-million-dollars/">one million dollars</a>,
+        <a href="/en/100-million-dollars/">100 million</a>,
+        <a href="/en/one-billion-dollars/">one billion</a> or
+        <a href="/en/one-trillion-dollars/">one trillion dollars</a> in working time with the
+        <a href="/en/money/">money tool</a>. And for areas, water and weights there is the
+        <a href="/en/">Hectareometer</a>, the <a href="/en/liters/">liters tool</a> and the
+        <a href="/en/kilos/">kilos tool</a>.
+      </p>`;
+  return {
+    section: 'dinero', lang: 'en', key: 'billon', m: 1e9,
+    family: 'dinero', published, modified: published,
+    slug: 'en/how-much-is-a-billion',
+    path: BILLION_ALTERNATES.en, alternates: BILLION_ALTERNATES,
+    title: 'How much is a billion? Billion vs trillion, and the Spanish billón | Hectareometer',
+    description: 'A billion is a thousand million (9 zeros); the Spanish billón is a million million (12 zeros), our trillion. The two scales in one table, where the mess comes from (Chuquet, 1484) and how to translate without slipping a factor of a thousand.',
+    h1: 'How much is a billion? And why a Spanish billón is a trillion',
+    intro,
+    question: 'How much is a billion?',
+    answer: 'In English, a billion is a thousand million: 1,000,000,000, a 1 followed by nine zeros (10⁹). In Spanish and most of continental Europe the look-alike word billón means a million million (10¹²): our trillion.',
+    faqs: [
+      { q: 'How much is a billion?', a: 'In English, a billion is a thousand million: 1,000,000,000, a 1 followed by nine zeros (10⁹). In Spanish and most of continental Europe the look-alike word billón means a million million (10¹²): our trillion.' },
+      { q: 'How many zeros are in a billion?', a: 'Nine in English (1,000,000,000). A Spanish billón has twelve, the same as an English trillion.' },
+      { q: 'What is a billion in Spanish?', a: 'Mil millones ("a thousand million"), or un millardo. Never billón, which is a thousand times bigger. And trillion translates as billón.' },
+      { q: 'Did Britain ever use the long scale?', a: 'Yes. A British billion was a million million until 1974, when Harold Wilson\'s government adopted the thousand-million meaning already used in the United States and internationally.' },
+      { q: 'How much is a trillion?', a: 'A thousand billion: 10¹², a 1 with twelve zeros. In Spanish that number is called un billón; the Spanish trillón is 10¹⁸, our quintillion.' },
+    ],
+    linkLabel: 'How much is a billion?',
+  };
+}
+
+const MONEY_ARTICLES = [billionArticle('es'), billionArticle('en')];
+
+
 // Every editorial article, whatever its family: the single source for the
 // /articulos/ hub, the article cards and the sitemap. Add new article lists
 // here and they show up everywhere at once.
 function allArticles() {
-  return [...ARTICLES, ...LITER_ARTICLES, ...DIST_ARTICLES];
+  return [...ARTICLES, ...LITER_ARTICLES, ...DIST_ARTICLES, ...MONEY_ARTICLES];
 }
 
 // Newest-first, so every listing (the hub, the article cards, the JSON-LD
@@ -7668,9 +8071,11 @@ function buildMoneyLangSwitch(lang, m) {
   return `<a href="${moneyPathFor(other, m)}" hreflang="${other}">${UI[lang].switchLabel}</a>`;
 }
 
-function relatedMoneyLinks(lang, currentM) {
+function relatedMoneyLinks(lang, currentM, currentPath) {
   const links = MONEY_QUANTITIES.filter(q => q.m !== currentM)
     .map(q => `        <li><a href="${moneyPathFor(lang, q.m)}">${escapeHtml(moneyPage(lang, q.m).linkLabel)}</a></li>`);
+  MONEY_ARTICLES.filter(a => a.lang === lang && a.path !== currentPath)
+    .forEach(a => links.push(`        <li><a href="${a.path}">${escapeHtml(a.linkLabel)}</a></li>`));
   const toolLabel = lang === 'es' ? 'La herramienta de dinero' : 'The money tool';
   links.push(`        <li><a href="${moneyPath(lang)}">${toolLabel}</a></li>`);
   return links.join('\n');
@@ -7861,7 +8266,7 @@ function buildJsonLd(page, canonical, breadcrumbItems) {
 // hub. Empty when the family has no other articles (e.g. kilos, for now).
 function relatedArticlesBlock(page) {
   const lang = page.lang;
-  const family = page.section === 'litros' ? 'litros' : page.section === 'kilos' ? 'kilos' : page.section === 'distancias' ? 'distancias' : 'hectareas';
+  const family = page.section === 'litros' ? 'litros' : page.section === 'kilos' ? 'kilos' : page.section === 'distancias' ? 'distancias' : page.section === 'dinero' ? 'dinero' : 'hectareas';
   const articles = articlesForLang(lang).filter(a => a.family === family && a.key !== page.key);
   if (!articles.length) return '';
   const ui = UI[lang];
@@ -8042,7 +8447,7 @@ function render(page, template) {
       `<link rel="alternate" hreflang="${page.lang}" href="${canonical}">`,
       `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
     ].join('\n');
-    const switchHref = isLiters ? litersPath(other) : isKilos ? kilosPath(other) : isDistances ? distancesPath(other) : homePath(other);
+    const switchHref = isLiters ? litersPath(other) : isKilos ? kilosPath(other) : isDistances ? distancesPath(other) : isMoney ? moneyPath(other) : homePath(other);
     langSwitch = `<a href="${switchHref}" hreflang="${other}">${UI[page.lang].switchLabel}</a>`;
   } else if (isLiters) {
     canonical = literFullUrl(page.lang, page.key);
@@ -8121,7 +8526,7 @@ function render(page, template) {
     RELATED_HEADING: isLiters ? ui.relatedHeadingLiters : isKilos ? ui.relatedHeadingKilos : isMoney ? ui.relatedHeadingMoney : isDistances ? ui.relatedHeadingDistances : ui.relatedHeading,
     RELATED_LINKS: isLiters ? relatedLiterLinks(page.lang, page.key)
       : isKilos ? relatedKiloLinks(page.lang, page.key)
-      : isMoney ? relatedMoneyLinks(page.lang, page.key)
+      : isMoney ? relatedMoneyLinks(page.lang, page.key, page.path)
       : isDistances ? relatedDistanceLinks(page.lang, page.path)
       : relatedLinks(page.lang, page.key),
     HOME_URL: homePath(page.lang),
@@ -8264,6 +8669,7 @@ function writeSitemap() {
   ARTICLES.forEach(page => add(page.path, page));
   LITER_ARTICLES.forEach(page => add(page.path, page));
   DIST_ARTICLES.forEach(page => add(page.path, page));
+  MONEY_ARTICLES.forEach(page => add(page.path, page));
 
   const remembered = loadLastmodMemory();
   const memory = {};
@@ -8381,10 +8787,17 @@ function main() {
     manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
     console.log(`generated ${page.path}`);
   });
+  MONEY_ARTICLES.forEach(page => {
+    const dir = path.join(ROOT, page.path.replace(/^\/+|\/+$/g, ''));
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), render(page, TEMPLATE_DINERO));
+    manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
+    console.log(`generated ${page.path}`);
+  });
   LANGS.forEach(lang => manifest.push(writeArticlesHub(lang)));
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
-  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo + ${MONEY_QUANTITIES.length} money amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
+  console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo + ${MONEY_QUANTITIES.length} money amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length + MONEY_ARTICLES.length} articles + ${LANGS.length} article hubs).`);
 }
 
 if (require.main === module) main();

@@ -736,6 +736,20 @@
   },
   {
     "lang": "es",
+    "slug": "cuanto-es-un-billon",
+    "path": "/cuanto-es-un-billon/",
+    "label": "¿Cuánto es un billón?",
+    "title": "¿Cuánto es un billón? Billón español vs billion inglés | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "en/how-much-is-a-billion",
+    "path": "/en/how-much-is-a-billion/",
+    "label": "How much is a billion?",
+    "title": "How much is a billion? Billion vs trillion, and the Spanish billón | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "articulos",
     "path": "/articulos/",
     "label": "Artículos",

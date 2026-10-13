@@ -1,10 +1,10 @@
 {
   "/": {
-    "fingerprint": "b603910150925c54",
+    "fingerprint": "5b8767d83a9c7aa8",
     "lastmod": "2026-10-13"
   },
   "/en/": {
-    "fingerprint": "d17cb7337796931d",
+    "fingerprint": "0a3b889adcebd7da",
     "lastmod": "2026-10-13"
   },
   "/medir-superficie/": {
@@ -48,12 +48,12 @@
     "lastmod": "2026-10-12"
   },
   "/dinero/": {
-    "fingerprint": "ffca8e43567e08c7",
-    "lastmod": "2026-10-12"
+    "fingerprint": "fc15747fd14444e8",
+    "lastmod": "2026-10-13"
   },
   "/en/money/": {
-    "fingerprint": "6b0c064bec3e208f",
-    "lastmod": "2026-10-12"
+    "fingerprint": "d2a28299628e8afc",
+    "lastmod": "2026-10-13"
   },
   "/hectareas-a-metros-cuadrados/": {
     "fingerprint": "d3afbae95b5abb06",
@@ -72,12 +72,12 @@
     "lastmod": "2026-10-12"
   },
   "/articulos/": {
-    "fingerprint": "ccc442152eaf00b3",
-    "lastmod": "2026-10-12"
+    "fingerprint": "08f00ffec469f96f",
+    "lastmod": "2026-10-13"
   },
   "/en/articles/": {
-    "fingerprint": "e976ea2f1dca5221",
-    "lastmod": "2026-10-12"
+    "fingerprint": "3026632c1ce88b59",
+    "lastmod": "2026-10-13"
   },
   "/1-hectarea/": {
     "fingerprint": "7c1c8dce6099c38a",
@@ -498,5 +498,13 @@
   "/en/how-far-away-is-the-horizon/": {
     "fingerprint": "f276df1fbf46bcec",
     "lastmod": "2026-08-11"
+  },
+  "/cuanto-es-un-billon/": {
+    "fingerprint": "da8814bf26a47b17",
+    "lastmod": "2026-10-14"
+  },
+  "/en/how-much-is-a-billion/": {
+    "fingerprint": "d893404f36708fec",
+    "lastmod": "2026-10-14"
   }
 }
