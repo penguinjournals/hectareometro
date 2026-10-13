@@ -347,6 +347,29 @@ function ogImageUrl(page) {
   return ext ? `${BASE_URL}/images/og/${name}${ext}` : `${BASE_URL}/images/logo.png`;
 }
 
+// Map placeholder (images/map/<name>-640|1200.jpg): a static picture of the
+// same map + circle, shown over #map until Google Maps has its tiles (see
+// mapPlaceholderReady() in hectareas-utils.js). Pages that start from URL
+// params drop it on load, since the picture shows the default place.
+function mapPlaceholderFiles(page) {
+  const name = ogNameFor(page);
+  const dir = path.join(ROOT, 'images', 'map');
+  const ok = ['-800', '-1200'].every(sfx => fs.existsSync(path.join(dir, name + sfx + '.jpg')));
+  return ok ? { small: `/images/map/${name}-800.jpg`, large: `/images/map/${name}-1200.jpg` } : null;
+}
+
+const MAP_SIZES = '(min-width: 981px) 60vw, 100vw';
+
+function mapPreloadTag(page) {
+  const f = mapPlaceholderFiles(page);
+  return f ? `<link rel="preload" as="image" imagesrcset="${f.small} 800w, ${f.large} 1200w" imagesizes="${MAP_SIZES}" fetchpriority="high">` : '';
+}
+
+function mapPlaceholderImg(page) {
+  const f = mapPlaceholderFiles(page);
+  return f ? `<img class="map-placeholder" src="${f.large}" srcset="${f.small} 800w, ${f.large} 1200w" sizes="${MAP_SIZES}" width="1200" height="800" alt="" fetchpriority="high" decoding="async">` : '';
+}
+
 function ogImageTags(page) {
   const url = ogImageUrl(page);
   const isMap = url.indexOf('/images/og/') !== -1;
@@ -8052,6 +8075,8 @@ function render(page, template) {
     OG_LOCALE: ui.ogLocale,
     JSON_LD: buildJsonLd(page, canonical, crumbs),
     OG_IMAGE_TAGS: ogImageTags(page),
+    MAP_PRELOAD: mapPreloadTag(page),
+    MAP_PLACEHOLDER: mapPlaceholderImg(page),
     BREADCRUMB: buildBreadcrumbHtml(crumbs, page.lang),
     RELATED_ARTICLES_BLOCK: relatedArticlesBlock(page),
     HA: String(page.ha),

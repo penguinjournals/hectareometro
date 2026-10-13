@@ -38,6 +38,7 @@ function initMap() {
     'center': mapCenter,
     'mapTypeId': google.maps.MapTypeId.ROADMAP
   });
+  mapPlaceholderReady(map);
   drawCircle(map,radius,mapCenter);
   map.addListener('center_changed', function(){
     drawCircle(map,radius,mapCenter);

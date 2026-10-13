@@ -164,6 +164,7 @@ function initMap() {
     'center': mapCenter,
     'mapTypeId': google.maps.MapTypeId.ROADMAP
   });
+  mapPlaceholderReady(map);
   refreshDistanceCircle();
   map.addListener('center_changed', function(){
     refreshDistanceCircle();

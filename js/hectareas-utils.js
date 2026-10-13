@@ -202,6 +202,26 @@ function autoGrowInput(selector) {
   resize();
 }
 
+// Static map placeholder (see mapPlaceholderImg() in build/generate.js):
+// drop it right away when the page opens at a shared location (the picture
+// shows the default one), otherwise fade it out once the real tiles are in.
+function mapPlaceholderReady(map){
+  var container = document.getElementById('map-container');
+  var img = container ? container.querySelector('.map-placeholder') : null;
+  if (!img) {
+    return;
+  }
+  var remove = function(){ if (img.parentNode) { img.parentNode.removeChild(img); } };
+  if (getUrlParameter('lat') !== undefined || getUrlParameter('lon') !== undefined) {
+    remove();
+    return;
+  }
+  google.maps.event.addListenerOnce(map, 'tilesloaded', function(){
+    container.classList.add('map-ready');
+    setTimeout(remove, 400);
+  });
+}
+
 function cleanMap(){
   if (circle) {
     circle.setMap(null);

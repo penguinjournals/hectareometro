@@ -207,6 +207,13 @@ h1.ans .u { color: var(--accent-ink); }
   overflow: hidden;
 }
 #map { width: 100%; height: 100%; }
+/* Static picture of the same map (images/map/), the LCP candidate; it sits
+   over #map until the tiles are in, then fades and is removed. */
+.map-placeholder {
+  position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%;
+  object-fit: cover; pointer-events: none; transition: opacity 0.35s ease;
+}
+#map-container.map-ready .map-placeholder { opacity: 0; }
 @media (max-width: 760px) {
   /* full-bleed on phones */
   .hero-visual { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); }
