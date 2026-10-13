@@ -216,10 +216,20 @@ function mapPlaceholderReady(map){
     remove();
     return;
   }
-  google.maps.event.addListenerOnce(map, 'tilesloaded', function(){
+  // Fade when every visible tile is in; but never trap the user behind it:
+  // the first drag or zoom, or 8 s, also dismiss it (a single slow tile would
+  // otherwise keep 'tilesloaded' from ever firing).
+  var done = false;
+  var dismiss = function(){
+    if (done) { return; }
+    done = true;
     container.classList.add('map-ready');
     setTimeout(remove, 400);
-  });
+  };
+  google.maps.event.addListenerOnce(map, 'tilesloaded', dismiss);
+  google.maps.event.addListenerOnce(map, 'dragstart', dismiss);
+  google.maps.event.addListenerOnce(map, 'zoom_changed', dismiss);
+  setTimeout(dismiss, 8000);
 }
 
 function cleanMap(){

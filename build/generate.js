@@ -347,7 +347,7 @@ function ogImageUrl(page) {
   return ext ? `${BASE_URL}/images/og/${name}${ext}` : `${BASE_URL}/images/logo.png`;
 }
 
-// Map placeholder (images/map/<name>-640|1200.jpg): a static picture of the
+// Map placeholder (images/map/<name>-800|1200.jpg): a static picture of the
 // same map + circle, shown over #map until Google Maps has its tiles (see
 // mapPlaceholderReady() in hectareas-utils.js). Pages that start from URL
 // params drop it on load, since the picture shows the default place.
