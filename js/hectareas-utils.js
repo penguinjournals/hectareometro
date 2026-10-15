@@ -283,28 +283,139 @@ function getUrlParameter(sParam) {
 // iframes ship no Analytics), so this file stays safe to load everywhere.
 // Native delegation on purpose: the hectares iframe still ships jQuery 1.4.4,
 // which predates jQuery.on(), so we avoid jQuery here entirely.
+function trackingAllowed() {
+  // Production only (localhost previews would pollute GA4), unless the
+  // `hm-track-debug` localStorage flag is set for testing. Mirrors js/site.js.
+  if (/(^|\.)hectareometro\.com$/.test(location.hostname)) { return true; }
+  try { return localStorage.getItem('hm-track-debug') === '1'; } catch (e) { return false; }
+}
 function trackEvent(name, params) {
-  if (typeof gtag === 'function') {
+  if (typeof gtag === 'function' && trackingAllowed()) {
     gtag('event', name, params || {});
   }
+}
+
+// Two-significant-figure bucket of what the visitor typed ("1.250,5" / "1,250.5"
+// → 1300) so the `amount` dimension stays readable and below GA4's cardinality
+// limit. Returns null for nothing/garbage.
+function amountBucket(raw) {
+  var s = String(raw || '').replace(/\s/g, '');
+  if (!s) { return null; }
+  var lastComma = s.lastIndexOf(','), lastDot = s.lastIndexOf('.');
+  if (lastComma > -1 && lastDot > -1) {
+    // Both separators: the last one is the decimal mark.
+    s = lastComma > lastDot ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, '');
+  } else if (lastComma > -1) {
+    // Only commas: one followed by 1-2 digits is a decimal mark, else thousands.
+    s = /,\d{1,2}$/.test(s) && s.indexOf(',') === lastComma ? s.replace(',', '.') : s.replace(/,/g, '');
+  } else if (lastDot > -1) {
+    // Only dots: ".ddd" groups repeated or on an es page are thousands.
+    var esPage = (document.documentElement.lang || 'es').slice(0, 2) !== 'en';
+    if (s.indexOf('.') !== lastDot || (esPage && /\.\d{3}$/.test(s))) { s = s.replace(/\./g, ''); }
+  }
+  var n = parseFloat(s);
+  if (!isFinite(n) || n <= 0) { return null; }
+  return Number(n.toPrecision(2));
+}
+
+// Google Maps health. `gm_authFailure` is the global the Maps API calls on
+// key/referer/billing errors; the capturing 'error' listener catches the
+// script being blocked (ad blockers, firewalls) because this file runs before
+// the Maps <script> tag is parsed; the timeout catches everything else.
+var mapErrorSent = false;
+function reportMapError(reason) {
+  if (mapErrorSent) { return; }
+  mapErrorSent = true;
+  trackEvent('map_error', { reason: reason });
+}
+window.gm_authFailure = function() { reportMapError('auth'); };
+window.addEventListener('error', function(e) {
+  var t = e && e.target;
+  if (t && t.tagName === 'SCRIPT' && /maps\.google/.test(t.src || '')) { reportMapError('api_blocked'); }
+}, true);
+(function watchMapLoad() {
+  var check = function() {
+    if (!document.getElementById('map')) { return; }
+    setTimeout(function() {
+      if (!(window.google && window.google.maps && window.google.maps.Map)) {
+        reportMapError(navigator.onLine === false ? 'offline' : 'timeout');
+      }
+    }, 10000);
+  };
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', check); } else { check(); }
+})();
+
+// map_interact: the first time the visitor moves the map by hand (drag, zoom
+// or a tap), once per page. Programmatic zooms (fitting the circle after a
+// new amount) do not count, which is why zoom is read from DOM gestures and
+// the zoom buttons rather than from Maps' zoom_changed.
+function trackMap(map) {
+  var el = document.getElementById('map');
+  if (!map || !el || !window.google || !google.maps) { return; }
+  var done = false;
+  var fire = function(action) {
+    if (done) { return; }
+    done = true;
+    trackEvent('map_interact', { action: action });
+  };
+  google.maps.event.addListenerOnce(map, 'dragstart', function() { fire('drag'); });
+  google.maps.event.addListenerOnce(map, 'click', function() { fire('tap'); });
+  el.addEventListener('wheel', function() { fire('zoom'); }, { passive: true });
+  el.addEventListener('dblclick', function() { fire('zoom'); });
+  el.addEventListener('touchstart', function(e) { if (e.touches && e.touches.length > 1) { fire('zoom'); } }, { passive: true });
+  el.addEventListener('click', function(e) {
+    var b = e.target && e.target.closest ? e.target.closest('button') : null;
+    if (b && !b.closest('#hectareas-overlay')) { fire('zoom'); }
+  });
 }
 
 (function initEngagementTracking() {
   if (typeof gtag !== 'function' || typeof document === 'undefined') {
     return;
   }
-  var TOOL_BY_ID = { hectareas: 'hectares', distance: 'distances', liters: 'liters', kilos: 'kilos', money: 'money', 'area-value': 'converter' };
+  var TOOL_BY_ID = { hectareas: 'hectares', distance: 'distances', liters: 'liters', kilos: 'kilos', money: 'money', 'area-value': 'converter', 'length-value': 'length_converter' };
+  var UNIT_BY_ID = { hectareas: null, distance: 'distance-unit', liters: 'liters-unit', kilos: 'kilos-unit', money: 'money-scale', 'area-value': 'area-unit', 'length-value': 'length-unit' };
   var SHARE_BY_ID = { 'whatsapp-share': 'whatsapp', 'twitter-share': 'twitter', 'facebook-share': 'facebook', 'url-share': 'copy_link' };
-  var toolUsed = false;
+  var toolUsed = false, pendingInput = null, pendingTimer = null;
+  // The amount the visitor wanted (2 significant figures) and its unit: the
+  // demand signal that tells which landing pages are missing.
+  var amountParams = function(input) {
+    var id = input.id;
+    var amount = amountBucket(input.value);
+    var unit = 'ha';
+    var sel = UNIT_BY_ID[id] ? document.getElementById(UNIT_BY_ID[id]) : null;
+    if (sel) { unit = String(sel.value || ''); }
+    if (id === 'money' && unit.indexOf(':') > -1) {
+      // "<currency>:<scale>" → amount in full units of the currency.
+      var parts = unit.split(':');
+      unit = parts[0];
+      if (amount !== null) { amount = Number((amount * Number(parts[1] || 1)).toPrecision(2)); }
+    }
+    var p = { tool: TOOL_BY_ID[id], unit: unit };
+    if (amount !== null) { p.amount = String(amount); }
+    return p;
+  };
+  var flushToolUsed = function() {
+    if (!pendingInput) { return; }
+    var input = pendingInput;
+    pendingInput = null;
+    clearTimeout(pendingTimer);
+    trackEvent('tool_used', amountParams(input));
+  };
   var start = function() {
-    // First real edit of the amount input = this visit "used the tool".
+    // First real edit of the amount input = this visit "used the tool". Sent
+    // 1.5 s after the last keystroke so `amount` carries the finished number;
+    // flushed early if the page is hidden before that.
     document.addEventListener('input', function(e) {
       var id = e.target && e.target.id;
-      if (!toolUsed && TOOL_BY_ID[id]) {
-        toolUsed = true;
-        trackEvent('tool_used', { tool: TOOL_BY_ID[id] });
-      }
+      if (!TOOL_BY_ID[id] || (toolUsed && !pendingInput)) { return; }
+      toolUsed = true;
+      pendingInput = e.target;
+      clearTimeout(pendingTimer);
+      pendingTimer = setTimeout(flushToolUsed, 1500);
     });
+    document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') { flushToolUsed(); } });
+    window.addEventListener('pagehide', flushToolUsed);
     // Unit selectors (input unit) and the "Ver"/"Show" ladder-rung selector.
     document.addEventListener('change', function(e) {
       var id = e.target && e.target.id;

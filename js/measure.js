@@ -857,6 +857,7 @@ function initMap() {
     'mapTypeId': google.maps.MapTypeId.ROADMAP
   });
   map.addListener('click', handleMapClick);
+  trackMap(map);
   map.addListener('mousemove', handleMapMouseMove);
   map.addListener('dblclick', handleMapDblClick);
   // Panning/zooming with a drawn shape changes the shared viewport.
