@@ -50,12 +50,16 @@ function initMap() {
     generateSocialNetworkSharingButtons();
   });
   $('.customizable-parameter').keyup(function() {
+    var previousRadius = radius;
     baseHectareas = $('#hectareas').val();
     iframeWidth = $('#iframe-share-width').val();
     iframeHeight = $('#iframe-share-height').val();
     radius = getRadiusInMetersFromHectareas(baseHectareas);
     updateEquivalences(baseHectareas);
     drawCircle(map,radius,mapCenter);
+    if (radius !== previousRadius) {
+      fitCircleIfOverflow(map, circle);
+    }
     generateSocialNetworkSharingButtons();
   });
   var defaultShareText = i18n().shareDefault;

@@ -179,6 +179,9 @@ function initMap() {
     radius = getRadiusMetersFromDistance($('#distance').val(), $('#distance-unit').val());
     updateDistanceEquivalences();
     refreshDistanceCircle();
+    if (radius) {
+      fitCircleIfOverflow(map, circle);
+    }
     generateDistanceSharingButtons();
   };
   $('#distance').keyup(onInputChange);

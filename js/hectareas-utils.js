@@ -91,6 +91,26 @@ function drawCircle(map,radius,mapCenter,style){
   }
 }
 
+// Zooms OUT (never in) until the whole circle fits in the map viewport.
+// Call it only when the user changes the amount or unit — never from the
+// map's own zoom/center listeners — so zooming into the circle by hand
+// still works. fitBounds keeps the centre (the circle sits on it) and picks
+// the closest zoom at which the circle's bounding box fits.
+function fitCircleIfOverflow(map, circle){
+  if (!map || !circle || !map.getBounds || !circle.getBounds) {
+    return;
+  }
+  var view = map.getBounds();
+  var box = circle.getBounds();
+  if (!view || !box) {
+    return;
+  }
+  if (view.contains(box.getNorthEast()) && view.contains(box.getSouthWest())) {
+    return;
+  }
+  map.fitBounds(box, 24);
+}
+
 function getRadiusInMetersFromHectareas(hectareas){
   var squareMeters = hectareas * 10000;
   var radius = Math.round(Math.sqrt(squareMeters/Math.PI));
