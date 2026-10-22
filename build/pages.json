@@ -575,6 +575,20 @@
   },
   {
     "lang": "es",
+    "slug": "unidades-de-superficie",
+    "path": "/unidades-de-superficie/",
+    "label": "Las unidades de superficie",
+    "title": "Unidades de superficie: hectárea, acre, fanega y de dónde vienen | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "area-units",
+    "path": "/en/area-units/",
+    "label": "Area units",
+    "title": "Area units: hectare, acre and where they come from | Hectareometer"
+  },
+  {
+    "lang": "es",
     "slug": "cuantos-litros-piscina-olimpica",
     "path": "/cuantos-litros-piscina-olimpica/",
     "label": "¿Cuántos litros tiene una piscina olímpica?",
@@ -635,6 +649,13 @@
     "path": "/en/distance-units/",
     "label": "Distance units",
     "title": "Distance units: metre, mile, foot, league and where they came from | Hectareometer"
+  },
+  {
+    "lang": "es",
+    "slug": "cuanto-es-una-legua",
+    "path": "/cuanto-es-una-legua/",
+    "label": "¿Cuánto es una legua?",
+    "title": "¿Cuánto es una legua? 5,57 km, lo que se anda en una hora | Hectareómetro"
   },
   {
     "lang": "es",

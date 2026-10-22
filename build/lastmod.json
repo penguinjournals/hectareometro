@@ -1,83 +1,83 @@
 {
   "/": {
-    "fingerprint": "5b8767d83a9c7aa8",
-    "lastmod": "2026-10-13"
+    "fingerprint": "dab0658f3cb6ecac",
+    "lastmod": "2026-10-14"
   },
   "/en/": {
-    "fingerprint": "0a3b889adcebd7da",
-    "lastmod": "2026-10-13"
+    "fingerprint": "30ae6c481cea81c7",
+    "lastmod": "2026-10-14"
   },
   "/medir-superficie/": {
-    "fingerprint": "a2bd6f131cce48c6",
+    "fingerprint": "a71847bba0e7d803",
     "lastmod": "2026-10-12"
   },
   "/en/measure-area/": {
-    "fingerprint": "eb42f088489bae8a",
+    "fingerprint": "0b76905b8bca7e87",
     "lastmod": "2026-10-12"
   },
   "/medir-distancias/": {
-    "fingerprint": "d052db081d537493",
+    "fingerprint": "03194526f6e4a8bc",
     "lastmod": "2026-10-12"
   },
   "/en/measure-distance/": {
-    "fingerprint": "a45942e71c982363",
+    "fingerprint": "329c0a3a0efed8c3",
     "lastmod": "2026-10-12"
   },
   "/distancias/": {
-    "fingerprint": "ec3fb940fa9a41fe",
-    "lastmod": "2026-10-13"
+    "fingerprint": "2978f5fa2384a6ea",
+    "lastmod": "2026-10-14"
   },
   "/en/distances/": {
-    "fingerprint": "b2bd0329645f7ff8",
-    "lastmod": "2026-10-13"
+    "fingerprint": "f7763f9003cf0bb3",
+    "lastmod": "2026-10-14"
   },
   "/litros/": {
-    "fingerprint": "e8603fcd6eefcebd",
+    "fingerprint": "6ca39a53354f40ae",
     "lastmod": "2026-10-12"
   },
   "/en/liters/": {
-    "fingerprint": "7d38e774f8c7453a",
+    "fingerprint": "5cf1623cd16e900b",
     "lastmod": "2026-10-12"
   },
   "/kilos/": {
-    "fingerprint": "cbf364d39ac6c88f",
+    "fingerprint": "4370b16448281072",
     "lastmod": "2026-10-12"
   },
   "/en/kilos/": {
-    "fingerprint": "03a33234395affef",
+    "fingerprint": "31aeb85de9f02a2b",
     "lastmod": "2026-10-12"
   },
   "/dinero/": {
-    "fingerprint": "fc15747fd14444e8",
-    "lastmod": "2026-10-13"
+    "fingerprint": "1715d1039ff15df3",
+    "lastmod": "2026-10-14"
   },
   "/en/money/": {
-    "fingerprint": "d2a28299628e8afc",
-    "lastmod": "2026-10-13"
+    "fingerprint": "08ee9f92ce07ae25",
+    "lastmod": "2026-10-14"
   },
   "/hectareas-a-metros-cuadrados/": {
-    "fingerprint": "d3afbae95b5abb06",
-    "lastmod": "2026-10-12"
+    "fingerprint": "5c49b1e6cec04f7f",
+    "lastmod": "2026-10-14"
   },
   "/en/hectares-to-square-meters/": {
-    "fingerprint": "d9fef428c8cec857",
-    "lastmod": "2026-10-12"
+    "fingerprint": "ddb756018ab646fb",
+    "lastmod": "2026-10-14"
   },
   "/kilometros-a-millas/": {
-    "fingerprint": "07fd5e2ec96f802b",
-    "lastmod": "2026-10-12"
+    "fingerprint": "b5ee60c8c144376f",
+    "lastmod": "2026-10-14"
   },
   "/en/kilometers-to-miles/": {
-    "fingerprint": "baa9984bc9dbc5bf",
+    "fingerprint": "ee6c432273c08c20",
     "lastmod": "2026-10-12"
   },
   "/articulos/": {
-    "fingerprint": "08f00ffec469f96f",
-    "lastmod": "2026-10-13"
+    "fingerprint": "3016e203523c7add",
+    "lastmod": "2026-10-14"
   },
   "/en/articles/": {
-    "fingerprint": "3026632c1ce88b59",
-    "lastmod": "2026-10-13"
+    "fingerprint": "09385ce24cf14429",
+    "lastmod": "2026-10-14"
   },
   "/1-hectarea/": {
     "fingerprint": "7c1c8dce6099c38a",
@@ -407,6 +407,14 @@
     "fingerprint": "32b12fa4b9450d4c",
     "lastmod": "2026-08-18"
   },
+  "/unidades-de-superficie/": {
+    "fingerprint": "31d406c99ed40faa",
+    "lastmod": "2026-10-14"
+  },
+  "/en/area-units/": {
+    "fingerprint": "3d57108d1b058769",
+    "lastmod": "2026-10-14"
+  },
   "/cuantos-litros-piscina-olimpica/": {
     "fingerprint": "20a47dd400ddd00c",
     "lastmod": "2026-07-14"
@@ -436,16 +444,20 @@
     "lastmod": "2026-08-14"
   },
   "/unidades-de-distancia/": {
-    "fingerprint": "d4de658d38f702f6",
-    "lastmod": "2026-09-24"
+    "fingerprint": "c54b6af2e09e65f1",
+    "lastmod": "2026-10-04"
   },
   "/en/distance-units/": {
     "fingerprint": "bee82193c1ca1c23",
     "lastmod": "2026-09-24"
   },
+  "/cuanto-es-una-legua/": {
+    "fingerprint": "c8c45e208bbf2da7",
+    "lastmod": "2026-10-04"
+  },
   "/de-donde-viene-el-pie/": {
-    "fingerprint": "42b08fbac403f385",
-    "lastmod": "2026-09-24"
+    "fingerprint": "3582c25b4e2f93fe",
+    "lastmod": "2026-10-04"
   },
   "/en/where-the-foot-comes-from/": {
     "fingerprint": "3d280a32c10a8505",
@@ -460,8 +472,8 @@
     "lastmod": "2026-09-24"
   },
   "/que-es-una-milla/": {
-    "fingerprint": "d978029e242a9590",
-    "lastmod": "2026-09-24"
+    "fingerprint": "d7574f28a5cd9be1",
+    "lastmod": "2026-10-04"
   },
   "/en/what-is-a-mile/": {
     "fingerprint": "0dfb9991ba8722b9",
@@ -492,8 +504,8 @@
     "lastmod": "2026-08-04"
   },
   "/a-que-distancia-esta-el-horizonte/": {
-    "fingerprint": "04159dd3637959ff",
-    "lastmod": "2026-08-11"
+    "fingerprint": "067972d29c51b64c",
+    "lastmod": "2026-10-14"
   },
   "/en/how-far-away-is-the-horizon/": {
     "fingerprint": "f276df1fbf46bcec",

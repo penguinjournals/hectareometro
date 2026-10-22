@@ -137,6 +137,7 @@ const UI = {
     navMeasure: 'Medir una superficie', navMeasureDist: 'Medir distancias',
     navConverter: 'Conversor de superficies', navLengthConverter: 'Conversor de distancias',
     converterChipLabel: 'Hectáreas a metros cuadrados',
+    areaUnitsChipLabel: 'Las unidades de superficie',
     lengthConverterChipLabel: 'Kilómetros a millas',
     overlayPre: '¿Cuánto son', overlayPost: 'hectáreas',
     shareCta: '¿Te ha servido? Compártelo 👇', shareMore: 'Más opciones de compartir',
@@ -201,6 +202,7 @@ const UI = {
     navMeasure: 'Measure an area', navMeasureDist: 'Measure a distance',
     navConverter: 'Area converter', navLengthConverter: 'Distance converter',
     converterChipLabel: 'Hectares to square meters',
+    areaUnitsChipLabel: 'Area units',
     lengthConverterChipLabel: 'Kilometers to miles',
     overlayPre: 'How big are', overlayPost: 'hectares',
     shareCta: 'Found it useful? Share it 👇', shareMore: 'More sharing options',
@@ -2161,7 +2163,438 @@ function solarPlantArticle() {
   };
 }
 
-const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle()];
+// Hub of the area block of «El origen de las unidades»: hectárea, acre and
+// fanega, and why almost every land unit is a day of work except the hectare.
+// Bilingual (first bilingual article of the hectares family: ARTICLES now get
+// their output dir from page.path). Preset: 1 ha over the Plaza Mayor of
+// Madrid (~129 × 94 m, ~1,2 ha) on es, over Trafalgar Square on en.
+// Data validated 2026-10-22 (web):
+// - Are/hectare: French law of 18 Germinal An III (7-apr-1795) defined the
+//   are (100 m², from Latin area); hectare = 100 ares.
+//   https://en.wikipedia.org/wiki/Hectare
+// - Spain: Real Decreto 2032/2009 (unidades legales de medida), table 6 lists
+//   the hectárea (1 ha = 1 hm² = 10⁴ m²) among the non-SI units accepted for
+//   use with the SI; table 8 keeps the área for "superficies agrarias y
+//   fincas". https://www.boe.es/buscar/act.php?id=BOE-A-2010-927
+//   BIPM SI Brochure v4.01 (jun-2026) dropped the special "accepted" status
+//   of every non-SI unit. https://www.bipm.org/en/-/2026-06-04-updated-si-brochure-clarifies-the-status-of-non-si-units
+// - Acre: one chain by one furlong (66 × 660 ft) = 4.840 yd² = 43.560 ft²
+//   = 4.046,8564224 m² since the 1959 yard; medieval idea: what a team of oxen
+//   ploughs in a day; Act on the Composition of Yards and Perches (c. 1300):
+//   40 perches by 4; 640 acres = 1 sq mile; US survey acre retired end of
+//   2022; UK dropped it as a primary trade unit on 1-oct-1995; Irish acre
+//   6.560 m², Scottish ~5.080 m²; feddan 4.200 m². https://en.wikipedia.org/wiki/Acre
+// - Fanega de tierra: the land sown with a fanega of grain; Castile's (marco
+//   real, DLE: 576 estadales cuadrados) = 6.459,6 m²; regional values
+//   (Extremadura 6.400, Andalucía occ. ~6.440, Granada 4.698,5, Canarias 5.248,
+//   Burgos y Madrid 3.424, Murcia 2.800, Galicia 2.103, Valencia 833,33); the
+//   area sense comes from Arabic faddān, "what a pair of oxen can plough in a
+//   day"; still a colloquial reference in rural land sales.
+//   https://es.wikipedia.org/wiki/Fanega
+const AREA_UNITS_ALTERNATES = {
+  es: '/unidades-de-superficie/',
+  en: '/en/area-units/',
+};
+
+function areaUnitsArticle(lang) {
+  const es = lang === 'es';
+  if (es) {
+  const conv = '/hectareas-a-metros-cuadrados/';
+  const plaza = 'lat=40.4155&lon=-3.7074&z=17';
+  const intro = `      <p>
+        <b>Una hectárea son 10.000 metros cuadrados</b>: un cuadrado de 100 × 100 metros. Un acre
+        son 4.046,86. Una fanega, depende de a quién se lo preguntes: 6.459,6 en Castilla, 3.424 en
+        Madrid y Burgos, 833 en Valencia. Las tres miden la tierra, pero solo una salió de una
+        regla; las otras dos salieron de <b>un día de trabajo</b>. Esa es toda la historia de las
+        unidades de superficie.
+      </p>
+      <p>
+        El mapa de arriba dibuja <b>una hectárea</b> sobre la Plaza Mayor de Madrid, que mide unos
+        129 × 94 metros: un poco más de una hectárea. Compárala con
+        <a href="/?ha=0.4047&${plaza}">un acre</a> (menos de la mitad) o con
+        <a href="/?ha=0.64596&${plaza}">una fanega castellana</a> (dos tercios). Este artículo
+        forma parte de la serie sobre el origen de las unidades, junto a
+        <a href="/unidades-de-distancia/">las unidades de distancia</a>. Si solo quieres el
+        número, el <a href="${conv}">conversor de superficies</a> lo hace al instante.
+      </p>
+
+      <h2>Todas las unidades de superficie, de un vistazo</h2>
+      <p>
+        Cada fila lleva a la conversión ya hecha o a la superficie dibujada en el mapa:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Unidad</th><th>Cuánto es</th><th>De dónde sale</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?a=1&u=m2">Metro cuadrado</a></td><td>1 m²</td><td>La unidad del Sistema Internacional</td></tr>
+          <tr><td><a href="${conv}?a=100&u=m2">Área</a></td><td>100 m²</td><td>Un cuadrado de 10 × 10 m; ley francesa de 1795</td></tr>
+          <tr><td><a href="/1-hectarea/">Hectárea</a></td><td>10.000 m²</td><td>Cien áreas: un cuadrado de 100 × 100 m</td></tr>
+          <tr><td><a href="${conv}?a=1&u=km2">Kilómetro cuadrado</a></td><td>100 ha</td><td>Un cuadrado de 1 × 1 km</td></tr>
+          <tr><td><a href="${conv}?a=1&u=acre">Acre</a></td><td>4.046,86 m²</td><td>Lo que araba una yunta de bueyes en un día</td></tr>
+          <tr><td><a href="${conv}?a=6459.6&u=m2">Fanega de tierra</a></td><td>6.459,6 m² (Castilla)</td><td>La tierra que se siembra con una fanega de grano</td></tr>
+          <tr><td><a href="${conv}?a=538.3&u=m2">Celemín</a></td><td>538,3 m² (Castilla)</td><td>La doceava parte de la fanega</td></tr>
+          <tr><td><a href="${conv}?a=1000&u=m2">Decárea o dunam</a></td><td>1.000 m²</td><td>La medida del campo en Grecia, Turquía y Oriente Medio</td></tr>
+          <tr><td><a href="${conv}?a=1&u=mi2">Milla cuadrada</a></td><td>259 ha</td><td>640 acres: la cuadrícula del catastro de EE. UU.</td></tr>
+          <tr><td><a href="${conv}?a=1&u=ft2">Pie cuadrado</a></td><td>0,0929 m²</td><td>La de los pisos en Estados Unidos</td></tr>
+          <tr><td><a href="/hectarea-campo-de-futbol/">Campo de fútbol</a></td><td>~0,71 ha</td><td>105 × 68 m: la unidad informal de las noticias</td></tr>
+        </tbody>
+      </table>
+
+      <h2>La tierra se medía en días de trabajo</h2>
+      <p>
+        Con las distancias medimos primero con el cuerpo: el pie, el palmo, el paso. Con la tierra
+        se hizo algo más inteligente: medirla por lo que <b>rinde</b>. A un campesino le daba igual
+        cuántos pies cuadrados tenía su finca; lo que quería saber era cuánto tardaba en ararla y
+        cuánto grano necesitaba para sembrarla. Así que las unidades de superficie de casi todo el
+        mundo son, en el fondo, <b>jornadas de trabajo</b>.
+      </p>
+      <p>
+        El <b>acre</b> es la tierra que una yunta de bueyes podía arar en un día. El alemán
+        <i>Morgen</i> («mañana») es lo que se araba en una mañana. La <b>yugada</b> castellana, lo
+        que labraba una yunta en una jornada. El <i>feddan</i> egipcio, unos 4.200 m², lo que araba
+        un par de bueyes. Y de esa misma palabra árabe, <i>faddān</i>, sale el sentido de
+        superficie de nuestra <b>fanega</b>. La misma idea, con distinto idioma, en medio mundo.
+      </p>
+
+      <h2>El acre: un surco largo por una cadena de ancho</h2>
+      <p>
+        El acre inglés tiene una forma concreta, y es la de un campo arado. Su largo es un
+        <b>furlong</b> (660 pies, 201 metros), el <i>furrow long</i>: lo que avanzaba la yunta antes
+        de tener que dar la vuelta y descansar. Su ancho es una <b>cadena</b> (66 pies, 20 metros).
+        660 × 66 = <b>43.560 pies cuadrados</b>. Un estatuto inglés de hacia el año 1300 ya lo
+        describía así: cuarenta perchas de largo por cuatro de ancho.
+      </p>
+      <p>
+        Por eso el acre no es un número redondo en ningún sistema: son 4.840 yardas cuadradas y,
+        desde que la yarda se definió en metros en <b>1959</b>, <b>4.046,8564224 metros
+        cuadrados</b> exactos, unas 0,4 hectáreas. Hacen falta <b>640 acres</b> para una
+        <a href="${conv}?a=1&u=mi2">milla cuadrada</a> (259 hectáreas), y esa es la cuadrícula con la
+        que Estados Unidos parceló todo el Medio Oeste: lo que se ve desde el avión al cruzar el
+        país son millas cuadradas de un catastro dibujado con regla.
+      </p>
+      <p>
+        El Reino Unido dejó de usar el acre como unidad legal de comercio el 1 de octubre de 1995,
+        aunque los agricultores y las inmobiliarias lo siguen usando. En Estados Unidos sigue siendo
+        la unidad de la tierra, y hasta finales de 2022 convivían allí dos acres distintos —el
+        internacional y el topográfico— que se diferenciaban en unos 160 centímetros cuadrados.
+      </p>
+
+      <h2>La fanega: una medida de siembra</h2>
+      <p>
+        La fanega empezó siendo una medida de <b>capacidad</b>: unos 55,5 litros de grano. La
+        <b>fanega de tierra</b> es la tierra que se siembra con una fanega de grano, y aquí está la
+        trampa: no se siembra igual en una vega de regadío que en un secano pedregoso, así que la
+        fanega de tierra cambiaba según la provincia, el cultivo y la calidad del suelo.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Fanega de tierra</th><th>Metros cuadrados</th><th>En hectáreas</th></tr></thead>
+        <tbody>
+          <tr><td>Castilla (marco real)</td><td><a href="${conv}?a=6459.6&u=m2">6.459,6 m²</a></td><td>0,65 ha</td></tr>
+          <tr><td>Andalucía occidental</td><td>~6.440 m²</td><td>0,64 ha</td></tr>
+          <tr><td>Extremadura</td><td><a href="${conv}?a=6400&u=m2">6.400 m²</a></td><td>0,64 ha</td></tr>
+          <tr><td>Canarias</td><td>5.248 m²</td><td>0,52 ha</td></tr>
+          <tr><td>Granada</td><td>4.698,5 m²</td><td>0,47 ha</td></tr>
+          <tr><td>Burgos y Madrid</td><td><a href="${conv}?a=3424&u=m2">3.424 m²</a></td><td>0,34 ha</td></tr>
+          <tr><td>Murcia</td><td>2.800 m²</td><td>0,28 ha</td></tr>
+          <tr><td>Galicia</td><td>2.103 m²</td><td>0,21 ha</td></tr>
+          <tr><td>Valencia (hanegada)</td><td>833,33 m²</td><td>0,08 ha</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Entre la fanega extremeña y la hanegada valenciana hay un factor de <b>ocho</b>. Y sin
+        embargo la fanega sigue viva: muchas lindes que siguen vigentes se trazaron en fanegas, y en
+        las compraventas rurales de media España se sigue hablando de «una finca de diez fanegas».
+        Si te pasa, pregunta siempre de qué fanega se trata antes de convertir.
+      </p>
+
+      <h2>La hectárea: la única que no salió del campo</h2>
+      <p>
+        La hectárea es la rara de la familia. No mide lo que alguien ara ni lo que alguien siembra:
+        es <b>geometría pura</b>. La ley francesa del 18 de germinal del año III (el
+        <b>7 de abril de 1795</b>) creó el <b>área</b>, del latín <i>area</i>, «superficie»: un
+        cuadrado de 10 × 10 metros, 100 m². La hectárea son cien áreas, un cuadrado de
+        <b>100 × 100 metros</b>, y se eligió porque era el escalón cómodo entre el metro cuadrado,
+        demasiado pequeño para una finca, y el kilómetro cuadrado, demasiado grande.
+      </p>
+      <p>
+        Curiosamente, <b>la hectárea no es una unidad del Sistema Internacional</b>: la unidad SI de
+        superficie es el metro cuadrado. Pero es tan útil que nadie ha conseguido jubilarla. En
+        España el Real Decreto 2032/2009 la recoge entre las unidades legales, y es la unidad de la
+        tierra en toda la Unión Europea, en Australia, en Canadá y, oficialmente, también en el
+        Reino Unido. Solo Estados Unidos y Myanmar se quedan con el acre.
+      </p>
+      <p>
+        Su gran defecto es que no se puede imaginar. Nadie ha visto nunca «una hectárea» suelta, y
+        por eso las noticias la traducen a <a href="/hectarea-campo-de-futbol/">campos de
+        fútbol</a> (una hectárea son 1,4 campos) y por eso existe esta web: para dibujarla encima
+        de un sitio que conozcas.
+      </p>
+
+      <h2>Y esto, ¿cuánto es en cosas reales?</h2>
+      <p>
+        Las hectáreas se entienden mejor puestas encima de algo:
+        <a href="/cuantas-hectareas-ocupa-una-planta-solar/">una planta solar</a> ocupa unas 2
+        hectáreas por megavatio; <a href="/cuanto-ocupan-centros-datos-aws-aragon/">los centros de
+        datos de AWS en Aragón</a> ocuparán unas 800; y
+        <a href="/hectareas-quemadas-incendios-espana/">lo que arde cada verano en España</a> se
+        cuenta en decenas de miles. Para escalas intermedias, mira cómo son
+        <a href="/100-hectareas/">100 hectáreas</a> o <a href="/1000-hectareas/">1.000
+        hectáreas</a> dibujadas sobre el mapa.
+      </p>
+
+      <h2>Preguntas frecuentes sobre las unidades de superficie</h2>
+      <dl class="faq">
+        <dt>¿Cuáles son las unidades de superficie?</dt>
+        <dd>En el sistema métrico, el <b>metro cuadrado</b> y sus múltiplos: el área (100 m²), la
+          <a href="/1-hectarea/">hectárea</a> (10.000 m²) y el kilómetro cuadrado (100 ha). En el
+          sistema anglosajón, el pie cuadrado, la yarda cuadrada, el
+          <a href="${conv}?a=1&u=acre">acre</a> (4.046,86 m²) y la milla cuadrada (259 ha). En
+          España aún se usan unidades agrarias tradicionales como la fanega y el celemín.</dd>
+
+        <dt>¿Cuántos metros cuadrados tiene una hectárea?</dt>
+        <dd>Una hectárea tiene <a href="${conv}?a=1&u=ha">10.000 metros cuadrados</a>: es un
+          cuadrado de 100 × 100 metros, o cien áreas. Un kilómetro cuadrado son 100 hectáreas.</dd>
+
+        <dt>¿Cuánto es un acre en hectáreas?</dt>
+        <dd>Un acre son <a href="${conv}?a=1&u=acre">0,4047 hectáreas</a> (4.046,86 metros
+          cuadrados), y una hectárea son 2,471 acres. Nació como la tierra que una yunta de bueyes
+          araba en un día: un furlong de largo por una cadena de ancho.</dd>
+
+        <dt>¿Cuánto es una fanega de tierra?</dt>
+        <dd>Depende de la zona: la fanega castellana de marco real son
+          <a href="${conv}?a=6459.6&u=m2">6.459,6 metros cuadrados</a> (0,65 hectáreas), pero en
+          Madrid y Burgos eran 3.424 m², en Extremadura 6.400 y en Valencia 833. Es la tierra que se
+          siembra con una fanega de grano, y por eso cambiaba con el suelo y el cultivo.</dd>
+
+        <dt>¿De dónde viene la hectárea?</dt>
+        <dd>Del sistema métrico francés. Una ley del 7 de abril de 1795 creó el área, un cuadrado
+          de 10 × 10 metros, y la hectárea son cien áreas: un cuadrado de 100 × 100 metros. No es una
+          unidad del Sistema Internacional, pero en España es una unidad legal y es la unidad de la
+          tierra en toda la Unión Europea.</dd>
+
+        <dt>¿Por qué casi todas las unidades de tierra son distintas?</dt>
+        <dd>Porque casi todas medían trabajo y no espacio: el acre y la yugada son lo que araba una
+          yunta en un día, el Morgen alemán lo que se araba en una mañana y la fanega la tierra que
+          se sembraba con una fanega de grano. Como el rendimiento cambiaba con el suelo, la medida
+          también. La hectárea es la excepción: es geometría pura.</dd>
+      </dl>
+      <p>
+        ¿Quieres el número y ya? Usa el <a href="${conv}">conversor de superficies</a>. ¿Quieres
+        verlo? Escribe cualquier cantidad en el <a href="/">Hectareómetro</a> y se dibuja a escala
+        sobre tu ciudad, o <a href="/medir-superficie/">mide una superficie</a> dibujándola tú en el
+        mapa. Y si te interesa de dónde salen el metro, la milla o la legua, sigue por
+        <a href="/unidades-de-distancia/">las unidades de distancia</a>.
+      </p>`;
+  return {
+    key: 'unidades-superficie', lang: 'es', ha: 1,
+    family: 'hectareas', published: '2026-10-14', modified: '2026-10-14',
+    slug: 'unidades-de-superficie',
+    path: AREA_UNITS_ALTERNATES.es, alternates: AREA_UNITS_ALTERNATES,
+    presetExtra: ' var PRESET_ZOOM = 17; var PRESET_LAT = 40.4155; var PRESET_LON = -3.7074;',
+    title: 'Unidades de superficie: hectárea, acre, fanega y de dónde vienen | Hectareómetro',
+    description: 'Una hectárea son 10.000 m², un acre 4.046,86 y una fanega depende de la provincia. La tabla de todas las unidades de superficie y por qué casi todas miden un día de trabajo, menos la hectárea.',
+    h1: 'Hectárea, acre y fanega: por qué la tierra se mide en jornadas de trabajo',
+    intro,
+    question: '¿Cuáles son las unidades de superficie?',
+    answer: 'En el sistema métrico, el metro cuadrado y sus múltiplos: el área (100 m²), la hectárea (10.000 m²) y el kilómetro cuadrado (100 ha). En el sistema anglosajón, el pie cuadrado, la yarda cuadrada, el acre (4.046,86 m²) y la milla cuadrada (259 ha). En España aún se usan unidades agrarias tradicionales como la fanega y el celemín.',
+    faqs: [
+      { q: '¿Cuáles son las unidades de superficie?', a: 'En el sistema métrico, el metro cuadrado y sus múltiplos: el área (100 m²), la hectárea (10.000 m²) y el kilómetro cuadrado (100 ha). En el sistema anglosajón, el pie cuadrado, la yarda cuadrada, el acre (4.046,86 m²) y la milla cuadrada (259 ha). En España aún se usan unidades agrarias tradicionales como la fanega y el celemín.' },
+      { q: '¿Cuántos metros cuadrados tiene una hectárea?', a: 'Una hectárea tiene 10.000 metros cuadrados: es un cuadrado de 100 × 100 metros, o cien áreas. Un kilómetro cuadrado son 100 hectáreas.' },
+      { q: '¿Cuánto es un acre en hectáreas?', a: 'Un acre son 0,4047 hectáreas (4.046,86 metros cuadrados), y una hectárea son 2,471 acres. Nació como la tierra que una yunta de bueyes araba en un día: un furlong de largo por una cadena de ancho.' },
+      { q: '¿Cuánto es una fanega de tierra?', a: 'Depende de la zona: la fanega castellana de marco real son 6.459,6 metros cuadrados (0,65 hectáreas), pero en Madrid y Burgos eran 3.424 m², en Extremadura 6.400 y en Valencia 833. Es la tierra que se siembra con una fanega de grano, y por eso cambiaba con el suelo y el cultivo.' },
+      { q: '¿De dónde viene la hectárea?', a: 'Del sistema métrico francés. Una ley del 7 de abril de 1795 creó el área, un cuadrado de 10 × 10 metros, y la hectárea son cien áreas: un cuadrado de 100 × 100 metros. No es una unidad del Sistema Internacional, pero en España es una unidad legal y es la unidad de la tierra en toda la Unión Europea.' },
+      { q: '¿Por qué casi todas las unidades de tierra son distintas?', a: 'Porque casi todas medían trabajo y no espacio: el acre y la yugada son lo que araba una yunta en un día, el Morgen alemán lo que se araba en una mañana y la fanega la tierra que se sembraba con una fanega de grano. Como el rendimiento cambiaba con el suelo, la medida también. La hectárea es la excepción: es geometría pura.' },
+    ],
+    linkLabel: 'Las unidades de superficie',
+  };
+  }
+
+  // English mirror (universal topic). Leads with the acre, which is what the
+  // English reader actually uses; the fanega stays as the Spanish example of a
+  // unit that measures sowing. Preset: 1 ha over Trafalgar Square.
+  const conv = '/en/hectares-to-square-meters/';
+  const sq = 'lat=51.5080&lon=-0.1281&z=17';
+  const intro = `      <p>
+        <b>A hectare is 10,000 square metres</b>: a square 100 metres on each side. An acre is
+        4,046.86 square metres, about 0.4 hectares. A Spanish <i>fanega</i> depends on who you
+        ask: 6,459.6 m² in Castile, 3,424 in Madrid, 833 in Valencia. All three measure land, but
+        only one of them came from a ruler; the other two came from <b>a day's work</b>. That is
+        the whole story of area units.
+      </p>
+      <p>
+        The map above draws <b>one hectare</b> over Trafalgar Square. Compare it with
+        <a href="/en/?ha=0.4047&${sq}">one acre</a>, less than half of it. This article is part of
+        the series on where units come from, together with
+        <a href="/en/distance-units/">the distance units</a>. If you only want the number, the
+        <a href="${conv}">area converter</a> does it instantly.
+      </p>
+
+      <h2>Every area unit at a glance</h2>
+      <p>
+        Each row takes you to the conversion already done or to the area drawn on the map:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Unit</th><th>How much</th><th>Where it comes from</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?a=1&u=m2">Square metre</a></td><td>1 m²</td><td>The International System unit</td></tr>
+          <tr><td><a href="${conv}?a=100&u=m2">Are</a></td><td>100 m²</td><td>A 10 × 10 m square; French law of 1795</td></tr>
+          <tr><td><a href="/en/1-hectare/">Hectare</a></td><td>10,000 m²</td><td>A hundred ares: a 100 × 100 m square</td></tr>
+          <tr><td><a href="${conv}?a=1&u=km2">Square kilometre</a></td><td>100 ha</td><td>A 1 × 1 km square</td></tr>
+          <tr><td><a href="${conv}?a=1&u=acre">Acre</a></td><td>4,046.86 m²</td><td>What a team of oxen could plough in a day</td></tr>
+          <tr><td><a href="${conv}?a=1&u=mi2">Square mile</a></td><td>259 ha</td><td>640 acres: the grid of the US land survey</td></tr>
+          <tr><td><a href="${conv}?a=1&u=ft2">Square foot</a></td><td>0.0929 m²</td><td>How US and UK homes are sold</td></tr>
+          <tr><td><a href="${conv}?a=1&u=yd2">Square yard</a></td><td>0.836 m²</td><td>Carpets, turf and old British land plans</td></tr>
+          <tr><td><a href="${conv}?a=1000&u=m2">Decare or dunam</a></td><td>1,000 m²</td><td>Farmland in Greece, Turkey and the Middle East</td></tr>
+          <tr><td><a href="${conv}?a=6459.6&u=m2"><i>Fanega</i> (Castile)</a></td><td>6,459.6 m²</td><td>The land you can sow with a <i>fanega</i> of grain</td></tr>
+          <tr><td><a href="/en/hectare-football-field/">Football pitch</a></td><td>~0.71 ha</td><td>105 × 68 m: the informal unit of the news</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Land was measured in days of work</h2>
+      <p>
+        For distances we first measured with the body: the foot, the hand, the pace. Land got
+        something cleverer: it was measured by what it <b>yields</b>. A farmer did not care how
+        many square feet his field had; he wanted to know how long it took to plough and how much
+        seed it needed. So almost every land unit in the world is, underneath, <b>a working
+        day</b>.
+      </p>
+      <p>
+        The <b>acre</b> is the land a team of oxen could plough in a day. The German
+        <i>Morgen</i> ("morning") is what could be ploughed in a morning. The Spanish
+        <i>yugada</i> is what a yoke of oxen worked in a day. The Egyptian <i>feddan</i>, about
+        4,200 m², is what a pair of oxen ploughed — and the same Arabic word, <i>faddān</i>, gives
+        the Spanish <i>fanega</i> its meaning as a measure of land. One idea, many languages.
+      </p>
+
+      <h2>The acre: one furrow long, one chain wide</h2>
+      <p>
+        The English acre has a shape, and it is the shape of a ploughed strip. Its length is a
+        <b>furlong</b> (660 feet, 201 metres) — the <i>furrow long</i>, how far the oxen went before
+        they had to turn and rest. Its width is a <b>chain</b> (66 feet, 20 metres). 660 × 66 =
+        <b>43,560 square feet</b>. An English statute from around the year 1300 already described
+        it that way: forty perches long by four wide.
+      </p>
+      <p>
+        That is why the acre is not a round number in any system: it is 4,840 square yards and,
+        since the yard was defined in metres in <b>1959</b>, exactly <b>4,046.8564224 square
+        metres</b>. It takes <b>640 acres</b> to make a <a href="${conv}?a=1&u=mi2">square mile</a>
+        (259 hectares), and that is the grid the United States used to parcel out the whole
+        Midwest: what you see from a plane crossing the country is square miles of a land survey
+        drawn with a ruler.
+      </p>
+      <p>
+        The acre was never one thing, either. The <b>Irish acre</b> was 6,560 m² and the
+        <b>Scottish acre</b> about 5,080, both built on longer local perches. The UK stopped using
+        the acre as a primary unit for trade on 1 October 1995, although farmers and estate agents
+        never let go of it. In the United States it is still the land unit, and until the end of
+        2022 two slightly different acres coexisted there — the international one and the survey
+        one — about 160 square centimetres apart.
+      </p>
+
+      <h2>The fanega: a unit of sowing</h2>
+      <p>
+        Spain's traditional land unit shows the same logic even more clearly. The <i>fanega</i>
+        was first a measure of <b>volume</b>, about 55.5 litres of grain. A <i>fanega de
+        tierra</i> is the land you can sow with one <i>fanega</i> of grain — and there is the catch:
+        you do not sow an irrigated valley like a stony dry field, so the land fanega changed with
+        the province, the crop and the soil. Castile's was 6,459.6 m², Extremadura's 6,400,
+        Madrid's 3,424 and Valencia's just 833: a factor of eight between neighbours. It is still
+        heard in rural land sales in Spain today.
+      </p>
+
+      <h2>The hectare: the only one that did not come from a field</h2>
+      <p>
+        The hectare is the odd one out. It does not measure what somebody ploughs or sows: it is
+        <b>pure geometry</b>. The French law of 18 Germinal Year III (<b>7 April 1795</b>) created
+        the <b>are</b>, from the Latin <i>area</i>: a 10 × 10 metre square, 100 m². A hectare is a
+        hundred ares, a <b>100 × 100 metre</b> square, chosen because it was the convenient step
+        between the square metre, too small for a farm, and the square kilometre, too big.
+      </p>
+      <p>
+        Oddly, <b>the hectare is not an SI unit</b>: the SI unit of area is the square metre. But
+        it is so useful that nobody has managed to retire it. It is the legal land unit across the
+        European Union, Australia, Canada, New Zealand, South Africa and, officially, the United
+        Kingdom. Only the United States and Myanmar stick with the acre.
+      </p>
+      <p>
+        Its great weakness is that nobody can picture it. Nobody has ever seen "a hectare" on its
+        own, which is why the news translates it into <a href="/en/hectare-football-field/">football
+        pitches</a> (a hectare is 1.4 of them) — and why this website exists: to draw it over a
+        place you know.
+      </p>
+
+      <h2>So how big is that in real things?</h2>
+      <p>
+        Hectares make more sense laid over something familiar: see
+        <a href="/en/1-hectare/">one hectare</a>, <a href="/en/100-hectares/">100 hectares</a> or
+        <a href="/en/1000-hectares/">1,000 hectares</a> drawn to scale on the map, and compare them
+        with a <a href="/en/hectare-football-field/">football pitch</a>.
+      </p>
+
+      <h2>Frequently asked questions about area units</h2>
+      <dl class="faq">
+        <dt>What are the units of area?</dt>
+        <dd>In the metric system, the <b>square metre</b> and its multiples: the are (100 m²), the
+          <a href="/en/1-hectare/">hectare</a> (10,000 m²) and the square kilometre (100 ha). In the
+          imperial and US systems, the square foot, the square yard, the
+          <a href="${conv}?a=1&u=acre">acre</a> (4,046.86 m²) and the square mile (259 ha).</dd>
+
+        <dt>How many square metres are in a hectare?</dt>
+        <dd>A hectare is <a href="${conv}?a=1&u=ha">10,000 square metres</a>: a square 100 metres on
+          each side, or a hundred ares. A square kilometre is 100 hectares.</dd>
+
+        <dt>How many hectares is an acre?</dt>
+        <dd>An acre is <a href="${conv}?a=1&u=acre">0.4047 hectares</a> (4,046.86 square metres),
+          and a hectare is 2.471 acres. It began as the land a team of oxen could plough in a day:
+          one furlong long by one chain wide.</dd>
+
+        <dt>Why is an acre 43,560 square feet?</dt>
+        <dd>Because it is a furlong (660 feet) by a chain (66 feet): the shape of a strip of
+          ploughed land, as long as the oxen could pull a furrow before resting. 660 × 66 = 43,560.
+          Since 1959 that is exactly 4,046.8564224 square metres.</dd>
+
+        <dt>Where does the hectare come from?</dt>
+        <dd>From the French metric system. A law of 7 April 1795 created the are, a 10 × 10 metre
+          square, and the hectare is a hundred ares: a 100 × 100 metre square. It is not an SI unit,
+          but it is the legal land unit across the European Union and most of the world.</dd>
+
+        <dt>Why are old land units all different?</dt>
+        <dd>Because they measured work, not space: the acre and the Spanish yugada were what a team
+          of oxen ploughed in a day, the German Morgen what could be ploughed in a morning, and the
+          Spanish fanega the land sown with a fanega of grain. As the yield changed with the soil,
+          so did the unit. The hectare is the exception: it is pure geometry.</dd>
+      </dl>
+      <p>
+        Just want the number? Use the <a href="${conv}">area converter</a>. Want to see it? Type any
+        amount into the <a href="/en/">Hectareometer</a> and it is drawn to scale over your own city,
+        or <a href="/en/measure-area/">measure an area</a> by drawing it on the map yourself. And if
+        you want to know where the metre, the mile and the foot come from, carry on with
+        <a href="/en/distance-units/">the distance units</a>.
+      </p>`;
+  return {
+    key: 'unidades-superficie', lang: 'en', ha: 1,
+    family: 'hectareas', published: '2026-10-14', modified: '2026-10-14',
+    slug: 'area-units',
+    path: AREA_UNITS_ALTERNATES.en, alternates: AREA_UNITS_ALTERNATES,
+    presetExtra: ' var PRESET_ZOOM = 17; var PRESET_LAT = 51.5080; var PRESET_LON = -0.1281;',
+    title: 'Area units: hectare, acre and where they come from | Hectareometer',
+    description: 'A hectare is 10,000 m², an acre 4,046.86 m², and a Spanish fanega depends on the province. Every area unit in one table, and why almost all of them measure a day of work, except the hectare.',
+    h1: 'Hectare, acre and fanega: why land was measured in days of work',
+    intro,
+    question: 'What are the units of area?',
+    answer: 'In the metric system, the square metre and its multiples: the are (100 m²), the hectare (10,000 m²) and the square kilometre (100 ha). In the imperial and US systems, the square foot, the square yard, the acre (4,046.86 m²) and the square mile (259 ha).',
+    faqs: [
+      { q: 'What are the units of area?', a: 'In the metric system, the square metre and its multiples: the are (100 m²), the hectare (10,000 m²) and the square kilometre (100 ha). In the imperial and US systems, the square foot, the square yard, the acre (4,046.86 m²) and the square mile (259 ha).' },
+      { q: 'How many square metres are in a hectare?', a: 'A hectare is 10,000 square metres: a square 100 metres on each side, or a hundred ares. A square kilometre is 100 hectares.' },
+      { q: 'How many hectares is an acre?', a: 'An acre is 0.4047 hectares (4,046.86 square metres), and a hectare is 2.471 acres. It began as the land a team of oxen could plough in a day: one furlong long by one chain wide.' },
+      { q: 'Why is an acre 43,560 square feet?', a: 'Because it is a furlong (660 feet) by a chain (66 feet): the shape of a strip of ploughed land, as long as the oxen could pull a furrow before resting. 660 × 66 = 43,560. Since 1959 that is exactly 4,046.8564224 square metres.' },
+      { q: 'Where does the hectare come from?', a: 'From the French metric system. A law of 7 April 1795 created the are, a 10 × 10 metre square, and the hectare is a hundred ares: a 100 × 100 metre square. It is not an SI unit, but it is the legal land unit across the European Union and most of the world.' },
+      { q: 'Why are old land units all different?', a: 'Because they measured work, not space: the acre and the Spanish yugada were what a team of oxen ploughed in a day, the German Morgen what could be ploughed in a morning, and the Spanish fanega the land sown with a fanega of grain. As the yield changed with the soil, so did the unit. The hectare is the exception: it is pure geometry.' },
+    ],
+    linkLabel: 'Area units',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle(), areaUnitsArticle('es'), areaUnitsArticle('en')];
 
 // ---- liters landing pages ------------------------------------------------
 
@@ -3609,6 +4042,7 @@ function relatedDistanceLinks(lang, currentPath) {
     ['/que-es-una-milla/', '¿Qué es una milla?'],
     ['/origen-del-metro/', 'El origen del metro'],
     ['/de-donde-viene-el-pie/', '¿De dónde viene el pie?'],
+    ['/cuanto-es-una-legua/', '¿Cuánto es una legua?'],
     ['/distancias/', 'La herramienta de distancias'],
   ] : [
     ['/en/distance-units/', 'Distance units'],
@@ -4876,7 +5310,7 @@ function horizonArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'horizonte', ha: 0,
-    family: 'distancias', published: '2026-08-11', modified: '2026-08-11',
+    family: 'distancias', published: '2026-08-11', modified: '2026-10-14',
     slug: 'a-que-distancia-esta-el-horizonte',
     path: HORIZON_ALTERNATES.es, alternates: HORIZON_ALTERNATES,
     dist: 4.7, distUnit: 'km',
@@ -4890,7 +5324,7 @@ function horizonArticle(lang) {
     faqs: [
       { q: '¿A qué distancia está el horizonte?', a: 'Para una persona de pie en la playa, con los ojos a 1,70 m del suelo, el horizonte está a 4,7 km por geometría pura y a unos 5 km contando la refracción del aire. Cuanto más alto mires, más lejos: 21 km desde un décimo piso, 386 km desde un avión.' },
       { q: '¿Cuál es la fórmula para calcular la distancia al horizonte?', a: 'd ≈ 3,57 × √h, con la altura de los ojos h en metros y la distancia d en kilómetros. Sale de la tangente a una esfera de 6.371 km de radio. Si se cuenta la refracción atmosférica normal, la constante sube a 3,86 (un 8 % más lejos).' },
-      { q: '¿Por qué se ve más lejos desde un sitio alto?', a: 'Porque el horizonte es el punto donde tu línea de visión roza la superficie curva de la Tierra, y cuanto más alto estés, más tarda en rozarla. Crece con la raíz cuadrada de la altura, así que para ver el doble de lejos hay que subir cuatro veces más alto.' },
+      { q: '¿Por qué se ve más lejos desde un sitio alto?', a: 'Porque el horizonte es el punto donde tu línea de visión roza la superficie curva de la Tierra, y cuanto más alto estés, más tarda en rozarla. Ojo: crece con la raíz cuadrada de la altura, así que para ver el doble de lejos hay que subir cuatro veces más alto.' },
       { q: '¿Hasta dónde se ve desde un avión?', a: 'A la altitud de crucero de un avión de línea, unos 10.000 metros, el horizonte está a unos 386 km (357 km sin contar la refracción). Desde la Estación Espacial Internacional, a 400 km de altura, se va hasta unos 2.300 km.' },
       { q: '¿Por qué se ven montañas mucho más lejos que el horizonte?', a: 'Porque lo que sobresale por encima del punto de roce vuelve a asomar. Sumando los dos horizontes, d ≈ 3,86 × (√h₁ + √h₂), un monte de 500 m se ve desde la playa a 91 km, y el Teide (3.715 m) se ve desde Gran Canaria, a 93 km, aunque la costa de enfrente esté oculta. El récord fotografiado son 443 km, del Pic de Finestrelles al Pic Gaspard.' },
       { q: '¿Por qué los barcos desaparecen por abajo?', a: 'Porque la superficie del mar se hunde respecto a tu línea de visión: unos 0,0785 × d² metros, con d en kilómetros. Primero se pierde el casco y al final el mástil; un velero con el mástil a 10 m sigue asomando hasta unos 17 km, aunque tu horizonte esté a 5.' },
@@ -5187,7 +5621,7 @@ function distanceUnitsArticle(lang) {
           <tr><td><a href="/de-donde-viene-el-pie/">Pie</a></td><td>0,3048 m</td><td>Un pie de verdad, y cada reino tenía el suyo</td></tr>
           <tr><td><a href="${conv}?d=1&u=in">Pulgada</a></td><td>2,54 cm</td><td>Tres granos de cebada puestos en fila (Eduardo II, 1324)</td></tr>
           <tr><td><a href="${conv}?d=201.168&u=m">Furlong</a></td><td>201,168 m</td><td>El surco que araba una yunta antes de descansar</td></tr>
-          <tr><td><a href="${conv}?d=5.5727&u=km">Legua castellana</a></td><td>5.572,7 m</td><td>Lo que se anda en una hora: 20.000 pies castellanos</td></tr>
+          <tr><td><a href="/cuanto-es-una-legua/">Legua castellana</a></td><td>5.572,7 m</td><td>Lo que se anda en una hora: 20.000 pies castellanos</td></tr>
           <tr><td><a href="${conv}?d=0.835905&u=m">Vara castellana</a></td><td>0,835905 m</td><td>Tres pies castellanos; la usaban los sastres y los albañiles</td></tr>
           <tr><td>Año luz</td><td>9,46 billones de km</td><td>Lo que recorre la luz en un año: es una distancia, no un tiempo</td></tr>
         </tbody>
@@ -5375,7 +5809,7 @@ function distanceUnitsArticle(lang) {
           que lo retiró el 1 de enero de 2023.</dd>
 
         <dt>¿Cuánto es una legua?</dt>
-        <dd>La legua castellana son <a href="${conv}?d=5.5727&u=km">5.572,7 metros</a>, es decir,
+        <dd>La <a href="/cuanto-es-una-legua/">legua castellana</a> son 5.572,7 metros, es decir,
           20.000 pies castellanos: la distancia que se suponía que una persona andaba en una hora.
           Cada reino tenía la suya, así que la cifra varía según la época y el lugar.</dd>
 
@@ -5394,7 +5828,7 @@ function distanceUnitsArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'unidades-distancia', ha: 0,
-    family: 'distancias', published: '2026-08-25', modified: '2026-09-24',
+    family: 'distancias', published: '2026-08-25', modified: '2026-10-04',
     slug: 'unidades-de-distancia',
     path: DISTANCE_UNITS_ALTERNATES.es, alternates: DISTANCE_UNITS_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -5815,7 +6249,7 @@ function mileArticle(lang) {
       <p>
         España también tuvo su milla: mil <b>pasos geométricos</b> de cinco pies castellanos,
         <b>1.393 metros</b>. Encajaba limpiamente en el sistema de la época, porque
-        <a href="${conv}?d=5,5727&u=km">la legua común</a> (5.572,7 m) son exactamente cuatro
+        <a href="/cuanto-es-una-legua/">la legua común</a> (5.572,7 m) son exactamente cuatro
         millas castellanas. Desapareció con el sistema métrico, adoptado por la Ley de Pesas y
         Medidas de 1849.
       </p>
@@ -5926,7 +6360,7 @@ function mileArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'que-es-una-milla', ha: 0,
-    family: 'distancias', published: '2026-09-04', modified: '2026-09-24',
+    family: 'distancias', published: '2026-09-04', modified: '2026-10-04',
     slug: 'que-es-una-milla',
     path: MILE_ALTERNATES.es, alternates: MILE_ALTERNATES,
     dist: 1, distUnit: 'mi',
@@ -6985,7 +7419,7 @@ function footArticle(lang) {
         Fíjate en el <b>pie castellano</b>: 27,86 centímetros, casi tres centímetros menos que el
         inglés. Se dividía en 12 pulgadas de 23,22 milímetros o en 16 dedos, tres pies hacían una
         <b>vara</b> (83,59 cm) y veinte mil pies hacían una
-        <a href="${conv}?d=5.5727&u=km"><b>legua</b></a> de 5.572,7 metros. Con esa diferencia,
+        <a href="/cuanto-es-una-legua/"><b>legua</b></a> de 5.572,7 metros. Con esa diferencia,
         un plano inglés y un plano castellano del mismo edificio daban números distintos aunque los
         dos dijeran «pies».
       </p>
@@ -7186,7 +7620,7 @@ function footArticle(lang) {
       </p>`;
   return {
     section: 'distancias', lang: 'es', key: 'de-donde-viene-el-pie', ha: 0,
-    family: 'distancias', published: '2026-09-24', modified: '2026-09-24',
+    family: 'distancias', published: '2026-09-24', modified: '2026-10-04',
     slug: 'de-donde-viene-el-pie',
     path: FOOT_ALTERNATES.es, alternates: FOOT_ALTERNATES,
     dist: 304.8, distUnit: 'm',
@@ -7496,9 +7930,224 @@ function footArticle(lang) {
   };
 }
 
+// ¿Cuánto es una legua? Spanish-only spoke of /unidades-de-distancia/ (the
+// legua is a Hispanic unit, rule of the series). Preset: a 5.5727 km radius
+// circle — one legua común — over the kilómetro cero of the Puerta del Sol.
+// Data validated 2026-10-22 (web):
+// - Legua: from Late Latin leuga, of Celtic origin; "lo que se anda en una
+//   hora". Legua legal antigua = 5.000 varas = 15.000 pies castellanos ≈
+//   4.179,5 m, abolished by Felipe II in 1568; legua común = 20.000 pies =
+//   6.666,66 varas = 5.572,7 m; legua marina of 17,5 al grado (≈ 6,35 km)
+//   prescribed for map scales by Felipe V in 1718, replaced by the 20-al-grado
+//   one (3 nautical miles, 5.555 m); real orden of Carlos IV of 26-jan-1801
+//   fixed the legua at 20.000 pies and unified land and sea.
+//   https://es.wikipedia.org/wiki/Legua
+// - Gaulish leuga in Roman Gaul = 1,5 Roman miles (≈ 2,2 km); English league
+//   = 3 miles (4.828 m); French lieue métrique = 4.000 m (1812-1840), the one
+//   Jules Verne uses: Vingt mille lieues sous les mers is the distance
+//   travelled (80.000 km), not a depth; the deepest point in the book is four
+//   leagues. Argentina fixed its legua at 5.000 m in 1878; Mexico ≈ 4.190 m.
+//   https://en.wikipedia.org/wiki/League_(unit)
+// - Seven-league boots: Perrault, Le Petit Poucet (1697).
+const LEAGUE_PATH = '/cuanto-es-una-legua/';
+
+function leagueArticle() {
+  const conv = '/kilometros-a-millas/';
+  const hub = '/unidades-de-distancia/';
+  const sol = 'lat=40.4169&lon=-3.7033';
+  const circle = `/distancias/?d=5.5727&u=km&${sol}&z=12`;
+  const intro = `      <p>
+        <b>Una legua castellana son 5.572,7 metros</b>, unos 5,6 kilómetros: veinte mil pies
+        castellanos. Es la legua «común» que se usó en España desde 1568 hasta el sistema métrico,
+        y la que aparece en los caminos, en los pleitos de lindes y en el Quijote. Pero ojo, porque
+        es una medida tramposa: la legua nació como <b>lo que se anda en una hora</b>, y cada
+        reino, cada siglo y cada oficio tuvo la suya, de los 2,2 a los casi 7 kilómetros.
+      </p>
+      <p>
+        El círculo del mapa tiene <b><a href="${circle}">una legua de radio</a></b> desde el
+        kilómetro cero de la Puerta del Sol: su borde norte pasa casi por la plaza de Castilla.
+        Este artículo forma parte de <a href="${hub}">las unidades de distancia y de dónde
+        vienen</a>; sus parientes más cercanos son <a href="/que-es-una-milla/">la milla</a>
+        —la legua común eran cuatro millas castellanas— y <a href="/de-donde-viene-el-pie/">el
+        pie</a>, del que estaba hecha. Si solo quieres el número, el
+        <a href="${conv}?d=5.5727&u=km">conversor de distancias</a> pasa leguas a millas o a
+        lo que haga falta.
+      </p>
+
+      <h2>Una hora de camino</h2>
+      <p>
+        La legua no mide el cuerpo, como el pie o el palmo, sino el <b>tiempo</b>. Es la distancia
+        que una persona recorre andando en una hora, y por eso fue la unidad natural de los caminos
+        durante siglos: decir que el pueblo de al lado está a dos leguas era decir que llegabas en
+        dos horas. La palabra viene del latín tardío <i>leuga</i>, que los romanos tomaron de los
+        galos: es una de las pocas unidades europeas de origen <b>celta</b>.
+      </p>
+      <p>
+        Esa definición tiene un problema evidente: no todo el mundo anda igual, ni por el mismo
+        terreno. Una persona camina a unos 5 km/h en llano; la legua común de 5,57 km es, por
+        tanto, <b>una hora a buen paso</b>, y cuesta arriba o por un camino de herradura se
+        quedaba larga. En el campo de México todavía se oye la legua con su sentido original, el
+        de una hora de camino, de modo que mide más en el llano que en la sierra.
+      </p>
+
+      <h2>Tantas leguas como reinos</h2>
+      <p>
+        Como cada sitio fijaba su hora de camino, las leguas oficiales van de punta a punta:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Legua</th><th>Cuánto medía</th><th>Dónde y cuándo</th></tr></thead>
+        <tbody>
+          <tr><td><i>Leuga</i> gala</td><td>~2,2 km</td><td>La Galia romana: milla y media romana</td></tr>
+          <tr><td>Legua métrica francesa</td><td>4.000 m</td><td>Francia, 1812-1840; la de Julio Verne</td></tr>
+          <tr><td>Legua legal castellana</td><td>~4.180 m</td><td>5.000 varas; la abolió Felipe II en 1568</td></tr>
+          <tr><td>Legua mexicana</td><td>~4.190 m</td><td>Nueva España; casi igual que la legua legal</td></tr>
+          <tr><td>Legua inglesa</td><td>4.828 m</td><td>Tres millas; casi solo en la literatura</td></tr>
+          <tr><td>Legua argentina</td><td>5.000 m</td><td>Redondeada por ley en 1878</td></tr>
+          <tr><td>Legua marina de 20 al grado</td><td>5.555 m</td><td>Tres millas náuticas</td></tr>
+          <tr><td><b>Legua común castellana</b></td><td><b>5.572,7 m</b></td><td>20.000 pies; España, 1568-1849</td></tr>
+          <tr><td>Legua marina de 17,5 al grado</td><td>~6.350 m</td><td>La de las cartas españolas de los siglos XVI-XVIII</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Que en España convivieran dos leguas oficiales no era una rareza, era lo normal. La
+        <b>legua legal</b> (5.000 varas, unos 4,18 km) era la de los tribunales y los documentos;
+        Felipe II la abolió en <b>1568</b> y dejó la <b>legua común</b> de 20.000 pies, aunque la
+        vieja siguió viva muchos años en la costumbre. La nueva salía exacta en cualquier unidad
+        castellana: 20.000 pies, 6.666 varas y dos tercios o <a href="/que-es-una-milla/">cuatro
+        millas castellanas</a> de 1.393 metros.
+      </p>
+
+      <h2>La legua del mar</h2>
+      <p>
+        En el mar la legua se ató pronto a algo más fiable que las piernas: el <b>grado de
+        meridiano</b>. Los pilotos españoles de los siglos XVI y XVII contaban <b>17,5 leguas por
+        grado</b>, unos 6,35 km cada una, y Felipe V mandó en 1718 usarla en las escalas de los
+        mapas. A finales del XVII ya se imponía la de <b>20 leguas al grado</b>: tres
+        <a href="/cuanto-es-una-milla-nautica/">millas náuticas</a>, 5.555 metros, casi idéntica
+        a la legua común de tierra. Carlos IV terminó de cuadrar las dos con una real orden del
+        <b>26 de enero de 1801</b>, que fijó una sola legua de 20.000 pies para el camino y para el
+        mar.
+      </p>
+
+      <h2>Las botas de siete leguas y las veinte mil leguas de Verne</h2>
+      <p>
+        La legua sobrevive sobre todo en los libros. Las <b>botas de siete leguas</b> son de
+        <i>Pulgarcito</i>, el cuento de Charles Perrault de 1697: con la legua francesa de su
+        época, cada zancada del ogro cubría unos 28 kilómetros; con la castellana,
+        <a href="/distancias/?d=39&u=km&${sol}&z=9">39 kilómetros</a>, casi lo que hay de Madrid a
+        Aranjuez en línea recta, de un solo paso.
+      </p>
+      <p>
+        Y luego está el malentendido más famoso de la literatura de aventuras.
+        <i>Veinte mil leguas de viaje submarino</i> (Julio Verne, 1870) <b>no habla de
+        profundidad</b>: es la distancia que recorre el Nautilus. Verne usaba la legua métrica de
+        4 km, así que el viaje son <b>80.000 kilómetros</b>, dos vueltas al mundo bajo el agua. La
+        mayor profundidad que alcanza el submarino en la novela son cuatro leguas, 16 km, que ya
+        es bastante: la fosa de las Marianas tiene unos 11.
+      </p>
+
+      <h2>Cuántos kilómetros son X leguas</h2>
+      <p>
+        Con la legua común castellana de 5.572,7 metros, y con el círculo ya dibujado cuando la
+        distancia cabe en un mapa:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Leguas</th><th>En kilómetros</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${circle}">1 legua</a></td><td>5,57 km</td><td>Una hora de camino a buen paso</td></tr>
+          <tr><td><a href="/distancias/?d=11.15&u=km&${sol}&z=11">2 leguas</a></td><td>11,1 km</td><td>Una mañana de recados al pueblo de al lado</td></tr>
+          <tr><td><a href="/distancias/?d=39&u=km&${sol}&z=9">7 leguas</a></td><td>39 km</td><td>Una zancada de las botas del cuento</td></tr>
+          <tr><td><a href="/distancias/?d=55.7&u=km&${sol}&z=9">10 leguas</a></td><td>55,7 km</td><td>Una jornada larga de viaje a pie</td></tr>
+          <tr><td><a href="/distancias/?d=557&u=km&${sol}&z=6">100 leguas</a></td><td>557 km</td><td>Algo más que Madrid–Barcelona en línea recta (505 km)</td></tr>
+          <tr><td><a href="${conv}?d=80000&u=km">20.000 leguas de Verne</a></td><td>80.000 km</td><td>Con su legua de 4 km: dos vueltas al mundo</td></tr>
+        </tbody>
+      </table>
+
+      <h2>¿Se sigue usando la legua?</h2>
+      <p>
+        Oficialmente, no. España adoptó el metro con la <b>Ley de Pesas y Medidas del 19 de julio de
+        1849</b>, y con ella desaparecieron la legua, la vara y el pie castellano, aunque la
+        implantación real del sistema métrico se arrastró hasta cerca de 1880. Pero la legua dejó
+        huella en la toponimia y en el habla: el barrio de La Legua, en Santiago de Chile, está a
+        unos seis kilómetros de la plaza de Armas, y «se nota a la legua» sigue significando que
+        algo se ve desde muy lejos.
+      </p>
+      <p>
+        En el resto de Hispanoamérica la legua aguantó más y, como en España, cada país la redondeó
+        a su manera: Argentina la fijó en <b>5.000 metros</b> en 1878 y en el campo argentino y
+        uruguayo todavía se dan distancias en leguas y en cuadras. Si alguien te dice hoy que un
+        sitio está a una legua, lo más prudente es entender «una hora andando» y no tomarse los
+        5.572,7 metros al pie de la letra.
+      </p>
+
+      <h2>Preguntas frecuentes sobre la legua</h2>
+      <dl class="faq">
+        <dt>¿Cuánto es una legua en kilómetros?</dt>
+        <dd>La legua común castellana son <a href="${conv}?d=5.5727&u=km">5,5727 kilómetros</a>
+          (5.572,7 metros), es decir, 20.000 pies castellanos. Es la que se usó en España de 1568 a
+          1849. Otras leguas medían distinto: la legal castellana unos 4,18 km, la inglesa 4,83 km,
+          la francesa métrica 4 km y la argentina 5 km.</dd>
+
+        <dt>¿Por qué se dice que una legua es lo que se anda en una hora?</dt>
+        <dd>Porque ese es su origen: la legua medía el tiempo de camino, no el cuerpo. Era la
+          distancia que una persona recorría andando en una hora, y por eso variaba de un sitio a
+          otro. La legua común castellana, de 5,57 km, corresponde a una hora a buen paso.</dd>
+
+        <dt>¿Cuántos kilómetros son siete leguas?</dt>
+        <dd>Con la legua castellana, <a href="/distancias/?d=39&u=km&${sol}&z=9">unos 39
+          kilómetros</a>; con la legua francesa de la época de Perrault, que es de donde vienen las
+          botas de siete leguas del cuento de Pulgarcito (1697), unos 28.</dd>
+
+        <dt>¿Cuánto son las veinte mil leguas de viaje submarino?</dt>
+        <dd>Unos 80.000 kilómetros, porque Julio Verne usaba la legua métrica francesa de 4 km. El
+          título se refiere a la distancia que recorre el Nautilus, no a la profundidad: son dos
+          vueltas al mundo. La mayor profundidad de la novela son cuatro leguas, unos 16 km.</dd>
+
+        <dt>¿Cuántas millas tiene una legua?</dt>
+        <dd>En el sistema castellano, una legua común eran exactamente cuatro millas castellanas de
+          1.393 metros. Con las unidades inglesas, una legua son tres millas terrestres (4.828 m), y
+          en el mar, tres millas náuticas (5.556 m).</dd>
+
+        <dt>¿Cuándo dejó de usarse la legua en España?</dt>
+        <dd>Dejó de ser legal con la Ley de Pesas y Medidas del 19 de julio de 1849, que adoptó el
+          sistema métrico, aunque la implantación real se alargó hasta cerca de 1880. Hoy solo
+          sobrevive en expresiones como «se nota a la legua» y en algunos topónimos.</dd>
+      </dl>
+      <p>
+        ¿Quieres el número y ya? El <a href="${conv}?d=5.5727&u=km">conversor de distancias</a> pasa
+        cualquier distancia a kilómetros, millas o pies. ¿Quieres verla? Escribe una distancia en
+        la <a href="/distancias/">herramienta de distancias</a> y se dibuja a escala sobre tu
+        ciudad. Y la historia completa —el metro, la milla, el pie y por qué no nos ponemos de
+        acuerdo— está en <a href="${hub}">las unidades de distancia</a>.
+      </p>`;
+  return {
+    section: 'distancias', lang: 'es', key: 'cuanto-es-una-legua', ha: 0,
+    family: 'distancias', published: '2026-10-04', modified: '2026-10-04',
+    slug: 'cuanto-es-una-legua',
+    path: LEAGUE_PATH,
+    dist: 5.5727, distUnit: 'km',
+    presetExtra: ' var PRESET_ZOOM = 12; var PRESET_LAT = 40.4169; var PRESET_LON = -3.7033;',
+    title: '¿Cuánto es una legua? 5,57 km, lo que se anda en una hora | Hectareómetro',
+    description: 'Una legua castellana son 5.572,7 metros: 20.000 pies, una hora de camino a buen paso. Por qué hubo tantas leguas como reinos, la legua del mar, las botas de siete leguas y las 20.000 leguas de Verne, que son 80.000 km.',
+    h1: '¿Cuánto es una legua?',
+    intro,
+    question: '¿Cuánto es una legua en kilómetros?',
+    answer: 'La legua común castellana son 5,5727 kilómetros (5.572,7 metros), es decir, 20.000 pies castellanos. Es la que se usó en España de 1568 a 1849. Otras leguas medían distinto: la legal castellana unos 4,18 km, la inglesa 4,83 km, la francesa métrica 4 km y la argentina 5 km.',
+    faqs: [
+      { q: '¿Cuánto es una legua en kilómetros?', a: 'La legua común castellana son 5,5727 kilómetros (5.572,7 metros), es decir, 20.000 pies castellanos. Es la que se usó en España de 1568 a 1849. Otras leguas medían distinto: la legal castellana unos 4,18 km, la inglesa 4,83 km, la francesa métrica 4 km y la argentina 5 km.' },
+      { q: '¿Por qué se dice que una legua es lo que se anda en una hora?', a: 'Porque ese es su origen: la legua medía el tiempo de camino, no el cuerpo. Era la distancia que una persona recorría andando en una hora, y por eso variaba de un sitio a otro. La legua común castellana, de 5,57 km, corresponde a una hora a buen paso.' },
+      { q: '¿Cuántos kilómetros son siete leguas?', a: 'Con la legua castellana, unos 39 kilómetros; con la legua francesa de la época de Perrault, que es de donde vienen las botas de siete leguas del cuento de Pulgarcito (1697), unos 28.' },
+      { q: '¿Cuánto son las veinte mil leguas de viaje submarino?', a: 'Unos 80.000 kilómetros, porque Julio Verne usaba la legua métrica francesa de 4 km. El título se refiere a la distancia que recorre el Nautilus, no a la profundidad: son dos vueltas al mundo. La mayor profundidad de la novela son cuatro leguas, unos 16 km.' },
+      { q: '¿Cuántas millas tiene una legua?', a: 'En el sistema castellano, una legua común eran exactamente cuatro millas castellanas de 1.393 metros. Con las unidades inglesas, una legua son tres millas terrestres (4.828 m), y en el mar, tres millas náuticas (5.556 m).' },
+      { q: '¿Cuándo dejó de usarse la legua en España?', a: 'Dejó de ser legal con la Ley de Pesas y Medidas del 19 de julio de 1849, que adoptó el sistema métrico, aunque la implantación real se alargó hasta cerca de 1880. Hoy solo sobrevive en expresiones como «se nota a la legua» y en algunos topónimos.' },
+    ],
+    linkLabel: '¿Cuánto es una legua?',
+  };
+}
 
 const DIST_ARTICLES = [
   distanceUnitsArticle('es'), distanceUnitsArticle('en'),
+  leagueArticle(),
   footArticle('es'), footArticle('en'),
   metreArticle('es'), metreArticle('en'),
   mileArticle('es'), mileArticle('en'),
@@ -8293,8 +8942,10 @@ function buildLangSwitch(lang, key) {
 // Quantity chips only: articles now live in their own cards block
 // (relatedArticlesBlock), not mixed in with the amounts.
 function relatedLinks(lang, currentKey) {
-  return KEYS.filter(k => k !== currentKey)
-    .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`)
+  const hub = currentKey === 'unidades-superficie' ? []
+    : [`        <li><a href="${AREA_UNITS_ALTERNATES[lang]}">${escapeHtml(UI[lang].areaUnitsChipLabel)}</a></li>`];
+  return hub.concat(KEYS.filter(k => k !== currentKey)
+    .map(k => `        <li><a href="${pathFor(lang, k)}">${escapeHtml(buildPage(lang, k).linkLabel)}</a></li>`))
     .concat(`        <li><a href="${converterPath(lang)}">${escapeHtml(UI[lang].converterChipLabel)}</a></li>`)
     .join('\n');
 }
@@ -8766,7 +9417,8 @@ function main() {
     });
   });
   ARTICLES.forEach(page => {
-    const dir = path.join(ROOT, page.slug);
+    // Derive the output dir from the path so en articles land under en/.
+    const dir = path.join(ROOT, page.path.replace(/^\/+|\/+$/g, ''));
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), render(page));
     manifest.push({ lang: page.lang, slug: page.slug, path: page.path, label: page.linkLabel, title: page.title });
