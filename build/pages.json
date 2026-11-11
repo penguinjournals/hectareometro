@@ -8,10 +8,73 @@
   },
   {
     "lang": "es",
+    "slug": "2-hectareas",
+    "path": "/2-hectareas/",
+    "label": "2 hectáreas",
+    "title": "¿Cuánto son 2 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "3-hectareas",
+    "path": "/3-hectareas/",
+    "label": "3 hectáreas",
+    "title": "¿Cuánto son 3 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "4-hectareas",
+    "path": "/4-hectareas/",
+    "label": "4 hectáreas",
+    "title": "¿Cuánto son 4 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "5-hectareas",
+    "path": "/5-hectareas/",
+    "label": "5 hectáreas",
+    "title": "¿Cuánto son 5 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "10-hectareas",
+    "path": "/10-hectareas/",
+    "label": "10 hectáreas",
+    "title": "¿Cuánto son 10 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "20-hectareas",
+    "path": "/20-hectareas/",
+    "label": "20 hectáreas",
+    "title": "¿Cuánto son 20 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "30-hectareas",
+    "path": "/30-hectareas/",
+    "label": "30 hectáreas",
+    "title": "¿Cuánto son 30 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "50-hectareas",
+    "path": "/50-hectareas/",
+    "label": "50 hectáreas",
+    "title": "¿Cuánto son 50 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
     "slug": "100-hectareas",
     "path": "/100-hectareas/",
     "label": "100 hectáreas",
     "title": "¿Cuánto son 100 hectáreas? Tamaño en un mapa | Hectareómetro"
+  },
+  {
+    "lang": "es",
+    "slug": "200-hectareas",
+    "path": "/200-hectareas/",
+    "label": "200 hectáreas",
+    "title": "¿Cuánto son 200 hectáreas? Tamaño en un mapa | Hectareómetro"
   },
   {
     "lang": "es",
@@ -134,10 +197,73 @@
   },
   {
     "lang": "en",
+    "slug": "2-hectares",
+    "path": "/en/2-hectares/",
+    "label": "2 hectares",
+    "title": "How big are 2 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "3-hectares",
+    "path": "/en/3-hectares/",
+    "label": "3 hectares",
+    "title": "How big are 3 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "4-hectares",
+    "path": "/en/4-hectares/",
+    "label": "4 hectares",
+    "title": "How big are 4 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "5-hectares",
+    "path": "/en/5-hectares/",
+    "label": "5 hectares",
+    "title": "How big are 5 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "10-hectares",
+    "path": "/en/10-hectares/",
+    "label": "10 hectares",
+    "title": "How big are 10 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "20-hectares",
+    "path": "/en/20-hectares/",
+    "label": "20 hectares",
+    "title": "How big are 20 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "30-hectares",
+    "path": "/en/30-hectares/",
+    "label": "30 hectares",
+    "title": "How big are 30 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "50-hectares",
+    "path": "/en/50-hectares/",
+    "label": "50 hectares",
+    "title": "How big are 50 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
     "slug": "100-hectares",
     "path": "/en/100-hectares/",
     "label": "100 hectares",
     "title": "How big are 100 hectares? See it on a map | Hectareometer"
+  },
+  {
+    "lang": "en",
+    "slug": "200-hectares",
+    "path": "/en/200-hectares/",
+    "label": "200 hectares",
+    "title": "How big are 200 hectares? See it on a map | Hectareometer"
   },
   {
     "lang": "en",
@@ -586,6 +712,27 @@
     "path": "/en/area-units/",
     "label": "Area units",
     "title": "Area units: hectare, acre and where they come from | Hectareometer"
+  },
+  {
+    "lang": "es",
+    "slug": "cuanto-es-un-acre",
+    "path": "/cuanto-es-un-acre/",
+    "label": "¿Cuánto es un acre?",
+    "title": "Un acre son 4.047 m² (0,40 hectáreas): míralo sobre un campo de fútbol | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "how-big-is-an-acre",
+    "path": "/en/how-big-is-an-acre/",
+    "label": "How big is an acre?",
+    "title": "How big is an acre? 43,560 sq ft (0.40 hectares), drawn on a football pitch | Hectareometer"
+  },
+  {
+    "lang": "es",
+    "slug": "cuanto-es-una-fanega",
+    "path": "/cuanto-es-una-fanega/",
+    "label": "¿Cuánto es una fanega?",
+    "title": "Una fanega de tierra son 6.440 m² (0,64 ha) en Castilla: tabla por provincias | Hectareómetro"
   },
   {
     "lang": "es",

@@ -41,8 +41,12 @@ const LANGS = ['es', 'en'];
 // Round figures plus the ones the press actually uses when reporting wildfires
 // and land deals. Every quantity added here needs a COMPARISONS entry in both
 // languages; everything else (pages, sitemap, chips, hreflang) follows.
+// 2-50 and 200 ha were added on 2026-11-11: Search Console showed 300-1.800
+// impressions each for «cuánto son N hectáreas / how big is N hectares» with no
+// landing (position 9-10, against 4-6 for the amounts that have one), and they
+// are among the most typed amounts in the tool (GA4 tool_used).
 const QUANTITIES = [
-  1, 100, 300, 400, 500, 1000, 2000, 3000, 4000, 5000,
+  1, 2, 3, 4, 5, 10, 20, 30, 50, 100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000,
   10000, 15000, 20000, 30000, 50000, 100000, 200000,
 ];
 const KEYS = [...QUANTITIES, 'comparison'];
@@ -300,8 +304,17 @@ const ICONS = {
 // (INE, municipal area), Paris 105,4 km² (INSEE), Greater London 1.572 km²
 // (ONS), Isle of Wight 380 km² (ONS), Gran Canaria 1.560 km² (ISTAC),
 // Comunidad de Madrid 8.028 km² (INE), Luxembourg 2.586 km² (STATEC).
+// Small references (only: [min, max] hectares of the page) so the 2-50 ha
+// landings get a ladder too without changing the rungs of the older pages:
+// Colosseum footprint 2,4 ha, Plaza de España de Sevilla 5 ha, Park Güell
+// 17,18 ha, Vatican City 44 ha, Sydney Opera House 1,8 ha, Tower of London
+// 4,9 ha, St James's Park 23 ha (Wikipedia / Royal Parks, checked 2026-11-11).
 const LADDER_REFS = {
   es: [
+    { ha: 2.4, one: 'Coliseo de Roma', many: 'Coliseos de Roma', d: '2,4 ha de planta', icon: 'city', only: [2, 60], pct: p => `El ${p} % del Coliseo de Roma` },
+    { ha: 5, one: 'plaza de España de Sevilla', many: 'plazas de España de Sevilla', d: '5 ha', icon: 'city', only: [2, 60], pct: p => `El ${p} % de la plaza de España de Sevilla` },
+    { ha: 17.2, one: 'parque Güell', many: 'parques Güell', d: '17 ha, Barcelona', icon: 'park', only: [2, 60], pct: p => `El ${p} % del parque Güell` },
+    { ha: 44, one: 'Ciudad del Vaticano', many: 'Ciudades del Vaticano', d: '44 ha', icon: 'city', only: [2, 60], pct: p => `El ${p} % de la Ciudad del Vaticano` },
     { ha: 118, one: 'parque del Retiro', many: 'parques del Retiro', d: '118 ha, Madrid', icon: 'park' },
     { ha: 341, one: 'Central Park', many: 'Central Parks', d: '341 ha, Nueva York', icon: 'park' },
     { ha: 1722, one: 'Casa de Campo', many: 'Casas de Campo', d: '1.722 ha, Madrid', icon: 'park' },
@@ -312,6 +325,10 @@ const LADDER_REFS = {
     { ha: 802800, one: 'Comunidad de Madrid', many: 'Comunidades de Madrid', d: '802.800 ha', icon: 'city' },
   ],
   en: [
+    { ha: 1.8, one: 'Sydney Opera House', many: 'Sydney Opera Houses', d: '1.8 ha', icon: 'city', only: [2, 60], pct: p => `${p}% of the Sydney Opera House` },
+    { ha: 4.9, one: 'Tower of London', many: 'Towers of London', d: '4.9 ha', icon: 'city', only: [2, 60], pct: p => `${p}% of the Tower of London` },
+    { ha: 23, one: 'St James\'s Park', many: 'St James\'s Parks', d: '23 ha, London', icon: 'park', only: [2, 60], pct: p => `${p}% of St James\'s Park` },
+    { ha: 44, one: 'Vatican City', many: 'Vatican Cities', d: '44 ha', icon: 'city', only: [2, 60], pct: p => `${p}% of Vatican City` },
     { ha: 142, one: 'Hyde Park', many: 'Hyde Parks', d: '142 ha, London', icon: 'park' },
     { ha: 341, one: 'Central Park', many: 'Central Parks', d: '341 ha, New York', icon: 'park' },
     { ha: 5910, one: 'Manhattan', many: 'Manhattans', d: '5,910 ha', icon: 'city' },
@@ -595,6 +612,7 @@ function ladderHtml(page) {
   const pict = ff >= 1 ? `<span class="pict" aria-hidden="true">${'<i></i>'.repeat(squares)}${half}</span>` : '';
   const rungs = [`      <a class="rung" href="${pathFor(lang, 'comparison')}"><span class="ic">${ICONS.field}</span><span class="t"><span class="n">${ffText} ${ffLabel}</span><span class="d">${lang === 'es' ? 'de 105 × 68 m' : '105 × 68 m each'}</span>${pict}</span><span class="go">›</span></a>`];
   const refs = LADDER_REFS[lang]
+    .filter(r => !r.only || (ha >= r.only[0] && ha <= r.only[1]))
     .map(r => ({ r, ratio: ha / r.ha }))
     .filter(x => x.ratio >= 0.08 && x.ratio <= 400)
     .sort((a, b) => Math.abs(Math.log10(a.ratio) - 0.7) - Math.abs(Math.log10(b.ratio) - 0.7))
@@ -607,7 +625,8 @@ function ladderHtml(page) {
     } else if (ratio >= 0.95) {
       label = ui.ladderAbout(r.one);
     } else {
-      label = ui.ladderPct(fmt(Math.round(ratio * 100), 0, lang), r.one);
+      const pct = fmt(Math.round(ratio * 100), 0, lang);
+      label = r.pct ? r.pct(pct) : ui.ladderPct(pct, r.one);
     }
     rungs.push(`      <div class="rung"><span class="ic">${ICONS[r.icon]}</span><span class="t"><span class="n">${escapeHtml(label)}</span><span class="d">${escapeHtml(r.d)}</span></span></div>`);
   });
@@ -714,6 +733,23 @@ function fullUrl(lang, key) {
 }
 
 // ---- real-world comparisons ---------------------------------------------
+//
+// Areas of the 2-50 and 200 ha entries, checked 2026-11-11 (Wikipedia unless
+// noted): Colosseum 189 × 156 m, base 24.000 m² (en.wikipedia.org/wiki/Colosseum);
+// Mezquita-Catedral de Córdoba 23.400 m²; Plaza de Mayo 19.713-23.665 m²;
+// El Escorial 33.327 m²; Plaza de España (Madrid) 36.900 m²; Zócalo 46.800 m²;
+// Plaza de España (Sevilla) ~50.000 m²; Plaça de Catalunya 5 ha; Great Pyramid
+// 230,3 m side = 5,3 ha; Real Jardín Botánico 8 ha; Pentagon 11,6 ha; Campo
+// del Moro 200.266 m²; Park Güell 17,18 ha; Taj Mahal complex 17 ha; Ciudad de
+// las Artes y las Ciencias ~350.000 m² (valencia.es); Disneyland Park "over
+// 100 acres (40 ha)"; Vatican City 44 ha (the conventional figure; some
+// sources give 49); Forbidden City 72 ha; Monaco 208 ha since the Mareterra
+// reclamation of dec-2024 (older entries below still say 202); Regent's Park
+// 166 ha; Sydney Opera House 1,8 ha; MCG field ~173 × 148 m ≈ 2 ha;
+// Federation Square 3,2 ha; Tower of London 4,9 ha; Windsor Castle 5,3 ha;
+// White House grounds 7,3 ha; Place de la Concorde 7,6 ha; Green Park 19 ha
+// and St James's Park 23 ha (Royal Parks); American football field with end
+// zones 360 × 160 ft = 0,535 ha.
 
 const COMPARISONS = {
   es: {
@@ -722,10 +758,55 @@ const COMPARISONS = {
       'la Plaza Mayor de Madrid (unos 1,2 ha)',
       'una manzana del Ensanche de Barcelona (la «illa» de Cerdà, ~1,2 ha)',
     ],
+    2: [
+      'la planta del Coliseo de Roma (unas 2,4 ha)',
+      'la Mezquita-Catedral de Córdoba (2,3 ha)',
+      'la Plaza de Mayo de Buenos Aires (unas 2 ha)',
+    ],
+    3: [
+      'el Monasterio de El Escorial (3,3 ha)',
+      'algo menos que la Plaza de España de Madrid (3,7 ha)',
+      'dos manzanas y media del Ensanche de Barcelona (~1,2 ha cada una)',
+    ],
+    4: [
+      'algo más que la Plaza de España de Madrid (3,7 ha)',
+      'algo menos que el Zócalo de Ciudad de México (4,7 ha)',
+      'el Monasterio de El Escorial y un poco más (3,3 ha)',
+    ],
+    5: [
+      'la Plaza de España de Sevilla (unas 5 ha)',
+      'la Plaza de Cataluña de Barcelona (unas 5 ha)',
+      'la base de la Gran Pirámide de Guiza (5,3 ha)',
+    ],
+    10: [
+      'algo más que el Real Jardín Botánico de Madrid (8 ha)',
+      'algo menos que el edificio del Pentágono (11,6 ha)',
+      'dos veces la Plaza de España de Sevilla (5 ha)',
+    ],
+    20: [
+      'los jardines del Campo del Moro de Madrid (unas 20 ha)',
+      'algo más que el Parque Güell de Barcelona (17 ha)',
+      'algo más que el recinto del Taj Mahal (17 ha)',
+    ],
+    30: [
+      'algo menos que la Ciudad de las Artes y las Ciencias de Valencia (35 ha)',
+      'dos tercios de la Ciudad del Vaticano (44 ha)',
+      'tres cuartas partes del parque Disneyland de California (unas 40 ha)',
+    ],
+    50: [
+      'algo más que la Ciudad del Vaticano (44 ha)',
+      'dos tercios de la Ciudad Prohibida de Pekín (72 ha)',
+      'algo menos de la mitad del Parque del Retiro de Madrid (118 ha)',
+    ],
     100: [
       'el Parque del Retiro de Madrid (unas 118 ha)',
       'la mitad del Principado de Mónaco (todo el país mide 202 ha)',
       'más de dos veces el recinto de la Ciudad del Vaticano (44 ha)',
+    ],
+    200: [
+      'casi todo el Principado de Mónaco (208 ha)',
+      'algo más que Regent\'s Park de Londres (166 ha)',
+      'el Parque del Retiro de Madrid más de una vez y media (118 ha)',
     ],
     300: [
       'Central Park de Nueva York (unas 341 ha)',
@@ -809,10 +890,55 @@ const COMPARISONS = {
       "London's Trafalgar Square (~1.2 ha)",
       "a city block in Barcelona's Eixample (~1.2 ha)",
     ],
+    2: [
+      'the footprint of the Colosseum in Rome (about 2.4 ha)',
+      'a little more than the Sydney Opera House (1.8 ha)',
+      'the playing field of the Melbourne Cricket Ground (about 2 ha)',
+    ],
+    3: [
+      'Federation Square in Melbourne (3.2 ha)',
+      'the monastery of El Escorial, near Madrid (3.3 ha)',
+      'five and a half American football fields, end zones included (0.54 ha each)',
+    ],
+    4: [
+      'most of the Tower of London (4.9 ha)',
+      'Federation Square in Melbourne and a quarter more (3.2 ha)',
+      'seven and a half American football fields, end zones included (0.54 ha each)',
+    ],
+    5: [
+      'the Tower of London (4.9 ha)',
+      'the grounds of Windsor Castle (5.3 ha)',
+      'the base of the Great Pyramid of Giza (5.3 ha)',
+    ],
+    10: [
+      'a little less than the Pentagon building (11.6 ha)',
+      'more than the White House grounds (7.3 ha)',
+      'Place de la Concorde in Paris and a third more (7.6 ha)',
+    ],
+    20: [
+      'Green Park in London (19 ha)',
+      'a little less than St James\'s Park in London (23 ha)',
+      'a little more than the Taj Mahal complex (17 ha)',
+    ],
+    30: [
+      'St James\'s Park in London and a third more (23 ha)',
+      'about two-thirds of Vatican City (44 ha)',
+      'three-quarters of Disneyland Park in California (about 40 ha)',
+    ],
+    50: [
+      'a little more than Vatican City (44 ha)',
+      'about two-thirds of the Forbidden City in Beijing (72 ha)',
+      'about a third of Hyde Park in London (142 ha)',
+    ],
     100: [
       "London's Hyde Park (~142 ha)",
       'half of the Principality of Monaco (the whole country is 202 ha)',
       'more than twice the grounds of Vatican City (44 ha)',
+    ],
+    200: [
+      'almost the whole of Monaco (208 ha)',
+      'a little more than Regent\'s Park in London (166 ha)',
+      'Hyde Park and almost half as much again (142 ha)',
     ],
     300: [
       "New York's Central Park (~341 ha)",
@@ -994,7 +1120,7 @@ ${examples.map(e => '        <li>' + e + '</li>').join('\n')}
       <p>Drag the map to your city and change the number of hectares to compare other areas instantly.</p>`;
   const intro = `      <p>
         <b>${haLabel} equal ${m2} square metres</b> (${km2} km²) — about <b>${ff} football fields</b>
-        or ${ac} acres. But a figure like that is hard to picture: drag the map above to your city or
+        or <a href="/en/how-big-is-an-acre/">${ac} acres</a>. But a figure like that is hard to picture: drag the map above to your city or
         a place you know to see ${subject} drawn at real scale.
       </p>${examplesBlock}`;
   return {
@@ -2184,13 +2310,16 @@ function solarPlantArticle() {
 //   40 perches by 4; 640 acres = 1 sq mile; US survey acre retired end of
 //   2022; UK dropped it as a primary trade unit on 1-oct-1995; Irish acre
 //   6.560 m², Scottish ~5.080 m²; feddan 4.200 m². https://en.wikipedia.org/wiki/Acre
-// - Fanega de tierra: the land sown with a fanega of grain; Castile's (marco
-//   real, DLE: 576 estadales cuadrados) = 6.459,6 m²; regional values
-//   (Extremadura 6.400, Andalucía occ. ~6.440, Granada 4.698,5, Canarias 5.248,
-//   Burgos y Madrid 3.424, Murcia 2.800, Galicia 2.103, Valencia 833,33); the
-//   area sense comes from Arabic faddān, "what a pair of oxen can plough in a
-//   day"; still a colloquial reference in rural land sales.
-//   https://es.wikipedia.org/wiki/Fanega
+// - Fanega de tierra: the land sown with a fanega of grain. CORRECTED on
+//   2026-11-11 (the first version copied es.wikipedia): the official value of
+//   the fanega de marco real (576 estadales cuadrados) is 6.439,56 m², not the
+//   6.459,6 the DLE prints, and the provincial values now come from the Real
+//   Orden of 9-dec-1852 (Albacete 7.005,69, Murcia 6.707,88, Córdoba 6.121,23,
+//   Sevilla 5.944,72, Tenerife 5.248,29, Toledo 4.697,07, Madrid 3.423,81,
+//   Valencia 831,0964); the «Extremadura 6.400 / Burgos 3.424 / Murcia 2.800 /
+//   Galicia 2.103» rows and the faddān etymology had no source and are gone.
+//   See the sources above fanegaArticle().
+//   https://www.cem.es/sites/default/files/2019-11/00000458recurso.pdf
 const AREA_UNITS_ALTERNATES = {
   es: '/unidades-de-superficie/',
   en: '/en/area-units/',
@@ -2203,8 +2332,8 @@ function areaUnitsArticle(lang) {
   const plaza = 'lat=40.4155&lon=-3.7074&z=17';
   const intro = `      <p>
         <b>Una hectárea son 10.000 metros cuadrados</b>: un cuadrado de 100 × 100 metros. Un acre
-        son 4.046,86. Una fanega, depende de a quién se lo preguntes: 6.459,6 en Castilla, 3.424 en
-        Madrid y Burgos, 833 en Valencia. Las tres miden la tierra, pero solo una salió de una
+        son 4.046,86. Una fanega, depende de a quién se lo preguntes: 6.439,56 en Castilla, 3.424 en
+        Madrid, 831 en Valencia. Las tres miden la tierra, pero solo una salió de una
         regla; las otras dos salieron de <b>un día de trabajo</b>. Esa es toda la historia de las
         unidades de superficie.
       </p>
@@ -2212,7 +2341,7 @@ function areaUnitsArticle(lang) {
         El mapa de arriba dibuja <b>una hectárea</b> sobre la Plaza Mayor de Madrid, que mide unos
         129 × 94 metros: un poco más de una hectárea. Compárala con
         <a href="/?ha=0.4047&${plaza}">un acre</a> (menos de la mitad) o con
-        <a href="/?ha=0.64596&${plaza}">una fanega castellana</a> (dos tercios). Este artículo
+        <a href="/?ha=0.644&${plaza}">una fanega castellana</a> (dos tercios). Este artículo
         forma parte de la serie sobre el origen de las unidades, junto a
         <a href="/unidades-de-distancia/">las unidades de distancia</a>. Si solo quieres el
         número, el <a href="${conv}">conversor de superficies</a> lo hace al instante.
@@ -2229,9 +2358,9 @@ function areaUnitsArticle(lang) {
           <tr><td><a href="${conv}?a=100&u=m2">Área</a></td><td>100 m²</td><td>Un cuadrado de 10 × 10 m; ley francesa de 1795</td></tr>
           <tr><td><a href="/1-hectarea/">Hectárea</a></td><td>10.000 m²</td><td>Cien áreas: un cuadrado de 100 × 100 m</td></tr>
           <tr><td><a href="${conv}?a=1&u=km2">Kilómetro cuadrado</a></td><td>100 ha</td><td>Un cuadrado de 1 × 1 km</td></tr>
-          <tr><td><a href="${conv}?a=1&u=acre">Acre</a></td><td>4.046,86 m²</td><td>Lo que araba una yunta de bueyes en un día</td></tr>
-          <tr><td><a href="${conv}?a=6459.6&u=m2">Fanega de tierra</a></td><td>6.459,6 m² (Castilla)</td><td>La tierra que se siembra con una fanega de grano</td></tr>
-          <tr><td><a href="${conv}?a=538.3&u=m2">Celemín</a></td><td>538,3 m² (Castilla)</td><td>La doceava parte de la fanega</td></tr>
+          <tr><td><a href="/cuanto-es-un-acre/">Acre</a></td><td>4.046,86 m²</td><td>Lo que araba una yunta de bueyes en un día</td></tr>
+          <tr><td><a href="/cuanto-es-una-fanega/">Fanega de tierra</a></td><td>6.439,56 m² (Castilla)</td><td>La tierra que se siembra con una fanega de grano</td></tr>
+          <tr><td><a href="${conv}?a=536.6&u=m2">Celemín</a></td><td>536,6 m² (Castilla)</td><td>La doceava parte de la fanega</td></tr>
           <tr><td><a href="${conv}?a=1000&u=m2">Decárea o dunam</a></td><td>1.000 m²</td><td>La medida del campo en Grecia, Turquía y Oriente Medio</td></tr>
           <tr><td><a href="${conv}?a=1&u=mi2">Milla cuadrada</a></td><td>259 ha</td><td>640 acres: la cuadrícula del catastro de EE. UU.</td></tr>
           <tr><td><a href="${conv}?a=1&u=ft2">Pie cuadrado</a></td><td>0,0929 m²</td><td>La de los pisos en Estados Unidos</td></tr>
@@ -2251,8 +2380,8 @@ function areaUnitsArticle(lang) {
         El <b>acre</b> es la tierra que una yunta de bueyes podía arar en un día. El alemán
         <i>Morgen</i> («mañana») es lo que se araba en una mañana. La <b>yugada</b> castellana, lo
         que labraba una yunta en una jornada. El <i>feddan</i> egipcio, unos 4.200 m², lo que araba
-        un par de bueyes. Y de esa misma palabra árabe, <i>faddān</i>, sale el sentido de
-        superficie de nuestra <b>fanega</b>. La misma idea, con distinto idioma, en medio mundo.
+        un par de bueyes. Nuestra <b>fanega</b> cambia el arado por la siembra, pero es la misma
+        idea: medir la tierra por el trabajo que da. Con distinto idioma, en medio mundo.
       </p>
 
       <h2>El acre: un surco largo por una cadena de ancho</h2>
@@ -2276,6 +2405,8 @@ function areaUnitsArticle(lang) {
         aunque los agricultores y las inmobiliarias lo siguen usando. En Estados Unidos sigue siendo
         la unidad de la tierra, y hasta finales de 2022 convivían allí dos acres distintos —el
         internacional y el topográfico— que se diferenciaban en unos 160 centímetros cuadrados.
+        La historia entera, con la tabla de acres a hectáreas, está en
+        <a href="/cuanto-es-un-acre/">¿cuánto es un acre?</a>
       </p>
 
       <h2>La fanega: una medida de siembra</h2>
@@ -2288,22 +2419,24 @@ function areaUnitsArticle(lang) {
       <table class="equiv-table">
         <thead><tr><th>Fanega de tierra</th><th>Metros cuadrados</th><th>En hectáreas</th></tr></thead>
         <tbody>
-          <tr><td>Castilla (marco real)</td><td><a href="${conv}?a=6459.6&u=m2">6.459,6 m²</a></td><td>0,65 ha</td></tr>
-          <tr><td>Andalucía occidental</td><td>~6.440 m²</td><td>0,64 ha</td></tr>
-          <tr><td>Extremadura</td><td><a href="${conv}?a=6400&u=m2">6.400 m²</a></td><td>0,64 ha</td></tr>
-          <tr><td>Canarias</td><td>5.248 m²</td><td>0,52 ha</td></tr>
-          <tr><td>Granada</td><td>4.698,5 m²</td><td>0,47 ha</td></tr>
-          <tr><td>Burgos y Madrid</td><td><a href="${conv}?a=3424&u=m2">3.424 m²</a></td><td>0,34 ha</td></tr>
-          <tr><td>Murcia</td><td>2.800 m²</td><td>0,28 ha</td></tr>
-          <tr><td>Galicia</td><td>2.103 m²</td><td>0,21 ha</td></tr>
-          <tr><td>Valencia (hanegada)</td><td>833,33 m²</td><td>0,08 ha</td></tr>
+          <tr><td>Albacete</td><td>7.005,69 m²</td><td>0,70 ha</td></tr>
+          <tr><td>Murcia</td><td>6.707,88 m²</td><td>0,67 ha</td></tr>
+          <tr><td>Castilla (marco real)</td><td><a href="${conv}?a=6439.56&u=m2">6.439,56 m²</a></td><td>0,64 ha</td></tr>
+          <tr><td>Córdoba</td><td>6.121,23 m²</td><td>0,61 ha</td></tr>
+          <tr><td>Sevilla</td><td>5.944,72 m²</td><td>0,59 ha</td></tr>
+          <tr><td>Canarias (Tenerife)</td><td>5.248,29 m²</td><td>0,52 ha</td></tr>
+          <tr><td>Toledo</td><td>4.697,07 m²</td><td>0,47 ha</td></tr>
+          <tr><td>Madrid</td><td><a href="${conv}?a=3423.81&u=m2">3.423,81 m²</a></td><td>0,34 ha</td></tr>
+          <tr><td>Valencia (hanegada)</td><td>831,10 m²</td><td>0,08 ha</td></tr>
         </tbody>
       </table>
       <p>
-        Entre la fanega extremeña y la hanegada valenciana hay un factor de <b>ocho</b>. Y sin
-        embargo la fanega sigue viva: muchas lindes que siguen vigentes se trazaron en fanegas, y en
-        las compraventas rurales de media España se sigue hablando de «una finca de diez fanegas».
-        Si te pasa, pregunta siempre de qué fanega se trata antes de convertir.
+        Entre la fanega de Albacete y la hanegada valenciana hay un factor de <b>más de ocho</b>. Y
+        sin embargo la fanega sigue viva: muchas lindes que siguen vigentes se trazaron en fanegas,
+        y en las compraventas rurales de media España se sigue hablando de «una finca de diez
+        fanegas». Si te pasa, pregunta siempre de qué fanega se trata antes de convertir. La tabla
+        completa por provincias, y la fanegada de Colombia, están en
+        <a href="/cuanto-es-una-fanega/">¿cuánto es una fanega de tierra?</a>
       </p>
 
       <h2>La hectárea: la única que no salió del campo</h2>
@@ -2355,14 +2488,14 @@ function areaUnitsArticle(lang) {
           cuadrado de 100 × 100 metros, o cien áreas. Un kilómetro cuadrado son 100 hectáreas.</dd>
 
         <dt>¿Cuánto es un acre en hectáreas?</dt>
-        <dd>Un acre son <a href="${conv}?a=1&u=acre">0,4047 hectáreas</a> (4.046,86 metros
+        <dd>Un acre son <a href="/cuanto-es-un-acre/">0,4047 hectáreas</a> (4.046,86 metros
           cuadrados), y una hectárea son 2,471 acres. Nació como la tierra que una yunta de bueyes
           araba en un día: un furlong de largo por una cadena de ancho.</dd>
 
         <dt>¿Cuánto es una fanega de tierra?</dt>
         <dd>Depende de la zona: la fanega castellana de marco real son
-          <a href="${conv}?a=6459.6&u=m2">6.459,6 metros cuadrados</a> (0,65 hectáreas), pero en
-          Madrid y Burgos eran 3.424 m², en Extremadura 6.400 y en Valencia 833. Es la tierra que se
+          <a href="/cuanto-es-una-fanega/">6.439,56 metros cuadrados</a> (0,64 hectáreas), pero en
+          Madrid eran 3.424 m², en Sevilla 5.945 y en Valencia 831. Es la tierra que se
           siembra con una fanega de grano, y por eso cambiaba con el suelo y el cultivo.</dd>
 
         <dt>¿De dónde viene la hectárea?</dt>
@@ -2386,7 +2519,7 @@ function areaUnitsArticle(lang) {
       </p>`;
   return {
     key: 'unidades-superficie', lang: 'es', ha: 1,
-    family: 'hectareas', published: '2026-10-14', modified: '2026-10-14',
+    family: 'hectareas', published: '2026-10-14', modified: '2026-11-03',
     slug: 'unidades-de-superficie',
     path: AREA_UNITS_ALTERNATES.es, alternates: AREA_UNITS_ALTERNATES,
     presetExtra: ' var PRESET_ZOOM = 17; var PRESET_LAT = 40.4155; var PRESET_LON = -3.7074;',
@@ -2400,7 +2533,7 @@ function areaUnitsArticle(lang) {
       { q: '¿Cuáles son las unidades de superficie?', a: 'En el sistema métrico, el metro cuadrado y sus múltiplos: el área (100 m²), la hectárea (10.000 m²) y el kilómetro cuadrado (100 ha). En el sistema anglosajón, el pie cuadrado, la yarda cuadrada, el acre (4.046,86 m²) y la milla cuadrada (259 ha). En España aún se usan unidades agrarias tradicionales como la fanega y el celemín.' },
       { q: '¿Cuántos metros cuadrados tiene una hectárea?', a: 'Una hectárea tiene 10.000 metros cuadrados: es un cuadrado de 100 × 100 metros, o cien áreas. Un kilómetro cuadrado son 100 hectáreas.' },
       { q: '¿Cuánto es un acre en hectáreas?', a: 'Un acre son 0,4047 hectáreas (4.046,86 metros cuadrados), y una hectárea son 2,471 acres. Nació como la tierra que una yunta de bueyes araba en un día: un furlong de largo por una cadena de ancho.' },
-      { q: '¿Cuánto es una fanega de tierra?', a: 'Depende de la zona: la fanega castellana de marco real son 6.459,6 metros cuadrados (0,65 hectáreas), pero en Madrid y Burgos eran 3.424 m², en Extremadura 6.400 y en Valencia 833. Es la tierra que se siembra con una fanega de grano, y por eso cambiaba con el suelo y el cultivo.' },
+      { q: '¿Cuánto es una fanega de tierra?', a: 'Depende de la zona: la fanega castellana de marco real son 6.439,56 metros cuadrados (0,64 hectáreas), pero en Madrid eran 3.424 m², en Sevilla 5.945 y en Valencia 831. Es la tierra que se siembra con una fanega de grano, y por eso cambiaba con el suelo y el cultivo.' },
       { q: '¿De dónde viene la hectárea?', a: 'Del sistema métrico francés. Una ley del 7 de abril de 1795 creó el área, un cuadrado de 10 × 10 metros, y la hectárea son cien áreas: un cuadrado de 100 × 100 metros. No es una unidad del Sistema Internacional, pero en España es una unidad legal y es la unidad de la tierra en toda la Unión Europea.' },
       { q: '¿Por qué casi todas las unidades de tierra son distintas?', a: 'Porque casi todas medían trabajo y no espacio: el acre y la yugada son lo que araba una yunta en un día, el Morgen alemán lo que se araba en una mañana y la fanega la tierra que se sembraba con una fanega de grano. Como el rendimiento cambiaba con el suelo, la medida también. La hectárea es la excepción: es geometría pura.' },
     ],
@@ -2416,7 +2549,7 @@ function areaUnitsArticle(lang) {
   const intro = `      <p>
         <b>A hectare is 10,000 square metres</b>: a square 100 metres on each side. An acre is
         4,046.86 square metres, about 0.4 hectares. A Spanish <i>fanega</i> depends on who you
-        ask: 6,459.6 m² in Castile, 3,424 in Madrid, 833 in Valencia. All three measure land, but
+        ask: 6,439.56 m² in Castile, 3,424 in Madrid, 831 in Valencia. All three measure land, but
         only one of them came from a ruler; the other two came from <b>a day's work</b>. That is
         the whole story of area units.
       </p>
@@ -2439,12 +2572,12 @@ function areaUnitsArticle(lang) {
           <tr><td><a href="${conv}?a=100&u=m2">Are</a></td><td>100 m²</td><td>A 10 × 10 m square; French law of 1795</td></tr>
           <tr><td><a href="/en/1-hectare/">Hectare</a></td><td>10,000 m²</td><td>A hundred ares: a 100 × 100 m square</td></tr>
           <tr><td><a href="${conv}?a=1&u=km2">Square kilometre</a></td><td>100 ha</td><td>A 1 × 1 km square</td></tr>
-          <tr><td><a href="${conv}?a=1&u=acre">Acre</a></td><td>4,046.86 m²</td><td>What a team of oxen could plough in a day</td></tr>
+          <tr><td><a href="/en/how-big-is-an-acre/">Acre</a></td><td>4,046.86 m²</td><td>What a team of oxen could plough in a day</td></tr>
           <tr><td><a href="${conv}?a=1&u=mi2">Square mile</a></td><td>259 ha</td><td>640 acres: the grid of the US land survey</td></tr>
           <tr><td><a href="${conv}?a=1&u=ft2">Square foot</a></td><td>0.0929 m²</td><td>How US and UK homes are sold</td></tr>
           <tr><td><a href="${conv}?a=1&u=yd2">Square yard</a></td><td>0.836 m²</td><td>Carpets, turf and old British land plans</td></tr>
           <tr><td><a href="${conv}?a=1000&u=m2">Decare or dunam</a></td><td>1,000 m²</td><td>Farmland in Greece, Turkey and the Middle East</td></tr>
-          <tr><td><a href="${conv}?a=6459.6&u=m2"><i>Fanega</i> (Castile)</a></td><td>6,459.6 m²</td><td>The land you can sow with a <i>fanega</i> of grain</td></tr>
+          <tr><td><a href="${conv}?a=6439.56&u=m2"><i>Fanega</i> (Castile)</a></td><td>6,439.56 m²</td><td>The land you can sow with a <i>fanega</i> of grain</td></tr>
           <tr><td><a href="/en/hectare-football-field/">Football pitch</a></td><td>~0.71 ha</td><td>105 × 68 m: the informal unit of the news</td></tr>
         </tbody>
       </table>
@@ -2461,8 +2594,9 @@ function areaUnitsArticle(lang) {
         The <b>acre</b> is the land a team of oxen could plough in a day. The German
         <i>Morgen</i> ("morning") is what could be ploughed in a morning. The Spanish
         <i>yugada</i> is what a yoke of oxen worked in a day. The Egyptian <i>feddan</i>, about
-        4,200 m², is what a pair of oxen ploughed — and the same Arabic word, <i>faddān</i>, gives
-        the Spanish <i>fanega</i> its meaning as a measure of land. One idea, many languages.
+        4,200 m², is what a pair of oxen ploughed. The Spanish <i>fanega</i> swaps the plough for
+        the seed, but the idea is the same: measure land by the work it takes. One idea, many
+        languages.
       </p>
 
       <h2>The acre: one furrow long, one chain wide</h2>
@@ -2487,7 +2621,8 @@ function areaUnitsArticle(lang) {
         the acre as a primary unit for trade on 1 October 1995, although farmers and estate agents
         never let go of it. In the United States it is still the land unit, and until the end of
         2022 two slightly different acres coexisted there — the international one and the survey
-        one — about 160 square centimetres apart.
+        one — about 160 square centimetres apart. The whole story, with an acres to hectares
+        table, is in <a href="/en/how-big-is-an-acre/">how big is an acre?</a>
       </p>
 
       <h2>The fanega: a unit of sowing</h2>
@@ -2496,8 +2631,8 @@ function areaUnitsArticle(lang) {
         was first a measure of <b>volume</b>, about 55.5 litres of grain. A <i>fanega de
         tierra</i> is the land you can sow with one <i>fanega</i> of grain — and there is the catch:
         you do not sow an irrigated valley like a stony dry field, so the land fanega changed with
-        the province, the crop and the soil. Castile's was 6,459.6 m², Extremadura's 6,400,
-        Madrid's 3,424 and Valencia's just 833: a factor of eight between neighbours. It is still
+        the province, the crop and the soil. Castile's was 6,439.56 m², Seville's 5,945,
+        Madrid's 3,424 and Valencia's just 831: a factor of almost eight between neighbours. It is still
         heard in rural land sales in Spain today.
       </p>
 
@@ -2543,7 +2678,7 @@ function areaUnitsArticle(lang) {
           each side, or a hundred ares. A square kilometre is 100 hectares.</dd>
 
         <dt>How many hectares is an acre?</dt>
-        <dd>An acre is <a href="${conv}?a=1&u=acre">0.4047 hectares</a> (4,046.86 square metres),
+        <dd>An acre is <a href="/en/how-big-is-an-acre/">0.4047 hectares</a> (4,046.86 square metres),
           and a hectare is 2.471 acres. It began as the land a team of oxen could plough in a day:
           one furlong long by one chain wide.</dd>
 
@@ -2572,7 +2707,7 @@ function areaUnitsArticle(lang) {
       </p>`;
   return {
     key: 'unidades-superficie', lang: 'en', ha: 1,
-    family: 'hectareas', published: '2026-10-14', modified: '2026-10-14',
+    family: 'hectareas', published: '2026-10-14', modified: '2026-10-24',
     slug: 'area-units',
     path: AREA_UNITS_ALTERNATES.en, alternates: AREA_UNITS_ALTERNATES,
     presetExtra: ' var PRESET_ZOOM = 17; var PRESET_LAT = 51.5080; var PRESET_LON = -0.1281;',
@@ -2594,7 +2729,756 @@ function areaUnitsArticle(lang) {
   };
 }
 
-const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle(), areaUnitsArticle('es'), areaUnitsArticle('en')];
+// ¿Cuánto es un acre? Bilingual spoke of /unidades-de-superficie/ (series «El
+// origen de las unidades», slot 2026-10-24). Answer-first title and H1 (plan
+// B5 of the 22-oct traffic report): the figure goes in the title, and the
+// acres → hectares table links to the numeric landings, which are the pages
+// that actually win the click. Preset: a one-acre circle (0,4047 ha, 35,9 m
+// radius) over the pitch of the Santiago Bernabéu (Wembley in English), so the
+// «algo más de medio campo de fútbol» is visible at a glance.
+// Data validated 2026-11-11 (web):
+// - International acre = 4.046,8564224 m² = 43.560 ft² = 4.840 yd² = one chain
+//   by one furlong (66 × 660 ft) = 10 square chains; 640 acres = 1 sq mile;
+//   US survey acre 4.046,8726 m² (+162 cm², 4 ppm), retired 31-dec-2022 (NIST);
+//   Irish acre 7.840 yd² = 6.555 m², Scottish ~5.080 m²; used today in the US,
+//   UK, Canada, Ireland, India, Pakistan, Ghana and much of the Caribbean.
+//   https://en.wikipedia.org/wiki/Acre · https://www.nist.gov/pml/us-surveyfoot
+// - Old English æcer, cognate with Latin ager and Greek agrós
+//   (https://en.wiktionary.org/wiki/acre); a team of eight oxen in one day;
+//   furlong = furh + lang (https://en.wikipedia.org/wiki/Furlong); "40 perches
+//   in length and 4 in breadth" is the Composition of Yards and Perches, of
+//   uncertain date (1266-1303, usually «c. 1300») — NOT the Statutum de
+//   Admensuratione Terrae of 1305, which is a different statute.
+//   https://en.wikipedia.org/wiki/Composition_of_Yards_and_Perches
+// - Gunter's chain, 1620: 66 ft, 100 links. https://en.wikipedia.org/wiki/Gunter%27s_chain
+// - UK: not authorised for trade from 1-oct-1995 (Units of Measurement
+//   Regulations 1994, SI 1994/2867); supplementary use still allowed.
+//   https://www.legislation.gov.uk/uksi/1994/2867/made
+// - PLSS: Land Ordinance of 1785, township 6 × 6 miles = 36 sections of 640
+//   acres; Homestead Act of 20-may-1862, 160 acres.
+//   https://en.wikipedia.org/wiki/Public_Land_Survey_System · https://en.wikipedia.org/wiki/Homestead_Acts
+// - Forty acres and a mule: Sherman's Special Field Orders No. 15, 16-jan-1865;
+//   the mule is not in the order; reversed by Andrew Johnson in 1865.
+//   https://en.wikipedia.org/wiki/Forty_acres_and_a_mule
+// - Iugerum 240 × 120 Roman feet ≈ 2.523 m²; feddan ≈ 4.200 m²; Morgen.
+//   https://en.wikipedia.org/wiki/Jugerum · https://en.wikipedia.org/wiki/Feddan
+// - American football field 360 × 160 ft = 1,32 acres; tennis doubles court
+//   23,77 × 10,97 m; acre-foot = 1.233,48 m³ = 325.851 US gal
+//   (https://en.wikipedia.org/wiki/Acre-foot); Central Park 843 acres; Hyde
+//   Park 350; Vatican City 44 ha = 109 acres (conventional figure); Hundred
+//   Acre Wood ← Five Hundred Acre Wood, Ashdown Forest
+//   (https://en.wikipedia.org/wiki/Hundred_Acre_Wood); DLE «acre»: «Medida
+//   inglesa de superficie equivalente a 40 áreas y 47 centiáreas»
+//   (https://dle.rae.es/acre).
+const ACRE_ALTERNATES = {
+  es: '/cuanto-es-un-acre/',
+  en: '/en/how-big-is-an-acre/',
+};
+
+function acreArticle(lang) {
+  const es = lang === 'es';
+  if (es) {
+  const conv = '/hectareas-a-metros-cuadrados/';
+  const hub = '/unidades-de-superficie/';
+  const pitch = 'lat=40.45306&lon=-3.68835&z=18';
+  const intro = `      <p>
+        <b>Un acre son 4.046,86 metros cuadrados</b>, es decir, <b>0,4047 hectáreas</b>: algo más
+        de medio campo de fútbol. Al revés, una hectárea son 2,47 acres. Es la unidad con la que
+        se mide la tierra en Estados Unidos y, de manera informal, en el Reino Unido, Canadá o la
+        India, así que aparece cada vez que una noticia habla de un rancho, un incendio en
+        California o una finca en venta.
+      </p>
+      <p>
+        El círculo del mapa es <b><a href="/?ha=0.4047&${pitch}">un acre</a></b> dibujado sobre el
+        césped del Santiago Bernabéu: tapa poco más de la mitad del campo. Arrástralo hasta tu
+        calle para compararlo con algo que conozcas. Este artículo forma parte de
+        <a href="${hub}">las unidades de superficie y de dónde vienen</a>; si solo quieres el
+        número, el <a href="${conv}?a=1&u=acre">conversor de superficies</a> pasa acres a
+        hectáreas, metros cuadrados o lo que haga falta.
+      </p>
+
+      <h2>Un acre en cosas que conoces</h2>
+      <ul class="examples-list">
+        <li>El <b>57 % de un campo de fútbol</b> de 105 × 68 metros. Dicho al revés: un campo
+          de fútbol son 1,76 acres.</li>
+        <li>Un <b>cuadrado de 63,6 metros de lado</b>, o un círculo de 35,9 metros de radio, que
+          es lo que dibuja el mapa.</li>
+        <li>Unas <b>15 pistas y media de tenis</b> (cada pista de dobles mide 23,77 × 10,97
+          metros).</li>
+        <li>Tres cuartas partes de un campo de fútbol americano contando las zonas de anotación
+          (que mide 1,32 acres).</li>
+        <li>Menos de la mitad de <a href="/1-hectarea/">una hectárea</a>: en una hectárea caben
+          casi dos acres y medio.</li>
+      </ul>
+
+      <h2>De acres a hectáreas: la tabla rápida</h2>
+      <p>
+        Para pasar de acres a hectáreas se multiplica por 0,4047 (o, de cabeza, se divide entre
+        dos y medio). Las cifras redondas llevan a la superficie dibujada sobre el mapa:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Acres</th><th>Hectáreas</th><th>Para hacerse una idea</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?a=1&u=acre">1 acre</a></td><td>0,40 ha</td><td>Algo más de medio campo de fútbol</td></tr>
+          <tr><td>5 acres</td><td>2,02 ha</td><td>Como <a href="/2-hectareas/">2 hectáreas</a></td></tr>
+          <tr><td>10 acres</td><td>4,05 ha</td><td>Como <a href="/4-hectareas/">4 hectáreas</a></td></tr>
+          <tr><td>50 acres</td><td>20,2 ha</td><td>Como <a href="/20-hectareas/">20 hectáreas</a></td></tr>
+          <tr><td><a href="/?ha=40.47">100 acres</a></td><td>40,5 ha</td><td>El bosque de Winnie the Pooh</td></tr>
+          <tr><td>160 acres</td><td>64,7 ha</td><td>La parcela que regalaba la Homestead Act</td></tr>
+          <tr><td>250 acres</td><td>101 ha</td><td>Como <a href="/100-hectareas/">100 hectáreas</a></td></tr>
+          <tr><td>500 acres</td><td>202 ha</td><td>Como <a href="/200-hectareas/">200 hectáreas</a>: casi todo Mónaco</td></tr>
+          <tr><td><a href="${conv}?a=1&u=mi2">640 acres</a></td><td>259 ha</td><td>Una milla cuadrada exacta</td></tr>
+          <tr><td>1.000 acres</td><td>405 ha</td><td>Como <a href="/400-hectareas/">400 hectáreas</a></td></tr>
+          <tr><td>2.500 acres</td><td>1.012 ha</td><td>Como <a href="/1000-hectareas/">1.000 hectáreas</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>De dónde sale: un día de arado</h2>
+      <p>
+        El acre no nació como una figura geométrica sino como una <b>jornada de trabajo</b>: la
+        tierra que una yunta de bueyes podía arar en un día. La palabra viene del inglés antiguo
+        <i>æcer</i>, «campo abierto», pariente del latín <i>ager</i> y del griego <i>agrós</i>, la
+        misma raíz de «agricultura».
+      </p>
+      <p>
+        Esa jornada tenía una forma concreta, la de una tira de arado. De largo, un
+        <b>furlong</b> (660 pies, <a href="/distancias/?d=201&u=m">201 metros</a>), el
+        <i>furrow long</i> o «largo de surco»: lo que avanzaban los bueyes antes de parar a
+        descansar y dar la vuelta. De ancho, una <b>cadena</b> (66 pies, 20 metros). Dar la vuelta
+        a un arado tirado por ocho bueyes era lo más incómodo del día, así que los campos se
+        hacían largos y estrechos. Un estatuto inglés de hacia el año 1300 ya lo fija así:
+        cuarenta perchas de largo por cuatro de ancho.
+      </p>
+      <p>
+        De ahí sale el número raro: 660 × 66 = <b>43.560 pies cuadrados</b>, o 4.840 yardas
+        cuadradas. En 1620 el matemático Edmund Gunter inventó la cadena de agrimensor de 66
+        pies y 100 eslabones precisamente para que las cuentas salieran solas: <b>diez cadenas
+        cuadradas son un acre</b>. Y como la milla tiene ocho furlongs
+        (<a href="/que-es-una-milla/">por eso mide 5.280 pies</a>), en una milla cuadrada caben
+        exactamente 640 acres.
+      </p>
+
+      <h2>Por qué mide 4.046,8564224 m² exactos</h2>
+      <p>
+        El acre se define a partir de la yarda, y desde el acuerdo internacional de <b>1959</b> la
+        yarda mide exactamente 0,9144 metros. Así que el acre, sin haber cambiado nunca de tamaño
+        sobre el terreno, pasó a ser un número métrico con diez cifras: 4.046,8564224 m². Hasta
+        finales de 2022 Estados Unidos mantuvo además un segundo acre, el topográfico, basado en
+        el <a href="/de-donde-viene-el-pie/">pie de agrimensura</a>: era unos 160 centímetros
+        cuadrados más grande, una diferencia de cuatro partes por millón que solo importaba al
+        medir estados enteros.
+      </p>
+
+      <h2>El acre que cuadriculó Estados Unidos</h2>
+      <p>
+        Estados Unidos parceló casi todo su territorio al oeste de los Apalaches con una regla:
+        la Land Ordinance de 1785 lo dividió en <i>townships</i> de seis por seis millas y cada
+        uno en 36 <b>secciones de una milla cuadrada, 640 acres</b>. Esa cuadrícula es la que se
+        ve desde el avión al cruzar el Medio Oeste.
+      </p>
+      <p>
+        La Homestead Act de 1862 entregaba a cada colono un cuarto de sección:
+        <b>160 acres</b>, unas <a href="/?ha=64.75">65 hectáreas</a>. Y la promesa más famosa de
+        la historia del país se hizo en acres: los «cuarenta acres y una mula» de la orden del
+        general Sherman del 16 de enero de 1865 para las familias liberadas de la esclavitud: hasta
+        40 acres por familia, unas 16 hectáreas. La mula no figura en la orden (el ejército
+        prestó algunas después), y el presidente Andrew Johnson la revocó ese mismo año.
+      </p>
+
+      <h2>No todos los acres miden lo mismo</h2>
+      <p>
+        Como toda unidad que mide trabajo, el acre cambiaba con el terreno. El acre irlandés tenía
+        7.840 yardas cuadradas (unos 6.555 m²) y el escocés rondaba los 5.080 m². Y la misma idea
+        existe en medio mundo: el <i>iugerum</i> romano (unos 2.500 m²) era lo que araba una yunta
+        en un día, el <i>Morgen</i> alemán lo que se araba en una mañana y el <i>feddan</i> egipcio
+        (4.200 m²) lo que labraba un par de bueyes. En España su pariente es
+        <a href="/cuanto-es-una-fanega/">la fanega de tierra</a>, que no mide un día de arado sino
+        una siembra, y por eso varía todavía más.
+      </p>
+      <p>
+        La excepción es <a href="/1-hectarea/">la hectárea</a>, que no salió del campo sino de una
+        ley: un cuadrado de 100 × 100 metros. Un acre es el 40 % de una hectárea.
+      </p>
+
+      <h2>Dónde se sigue usando</h2>
+      <p>
+        En <b>Estados Unidos</b> es la unidad oficial de la tierra: fincas, parques nacionales e
+        incendios forestales se cuentan en acres. En el <b>Reino Unido</b> dejó de ser unidad
+        legal para el comercio el 1 de octubre de 1995, pero agricultores e inmobiliarias la
+        siguen usando a diario. También sobrevive en Canadá, Irlanda, la India, Pakistán, Ghana y
+        buena parte del Caribe. El diccionario de la RAE la recoge como «medida inglesa de
+        superficie equivalente a 40 áreas y 47 centiáreas».
+      </p>
+      <p>
+        Del acre sale además una unidad de agua: el <b>acre-pie</b>, el volumen que cubre un acre
+        con un pie de profundidad, <a href="/litros/?l=1&u=acft">1.233 metros cúbicos</a>. Es la
+        unidad en la que se miden los embalses y los derechos de riego del oeste de Estados
+        Unidos, igual que aquí usamos el
+        <a href="/cuanto-es-un-hectometro-cubico/">hectómetro cúbico</a>.
+      </p>
+
+      <h2>Acres famosos</h2>
+      <ul class="examples-list">
+        <li><b>Central Park</b>: 843 acres, <a href="/300-hectareas/">341 hectáreas</a>.</li>
+        <li><b>El Bosque de los Cien Acres</b> de Winnie the Pooh: 100 acres serían
+          <a href="/?ha=40.47">40,5 hectáreas</a>. El bosque real en el que se inspira, en
+          Ashdown Forest (East Sussex), se llama Five Hundred Acre Wood: 202 hectáreas.</li>
+        <li><b>La Ciudad del Vaticano</b>: unos 109 acres, 44 hectáreas.</li>
+        <li><b>Hyde Park</b>, en Londres: 350 acres, 142 hectáreas.</li>
+      </ul>
+
+      <h2>Preguntas frecuentes sobre el acre</h2>
+      <dl class="faq">
+        <dt>¿Cuánto es un acre en metros cuadrados?</dt>
+        <dd>Un acre son <a href="${conv}?a=1&u=acre">4.046,86 metros cuadrados</a> (exactamente
+          4.046,8564224 m²). Equivale a un cuadrado de 63,6 metros de lado, o a 43.560 pies
+          cuadrados.</dd>
+
+        <dt>¿Cuánto es un acre en hectáreas?</dt>
+        <dd>Un acre son 0,4047 hectáreas, y <a href="/1-hectarea/">una hectárea</a> son 2,471
+          acres. Para convertir de cabeza, divide los acres entre dos y medio: 100 acres son unas
+          40 hectáreas.</dd>
+
+        <dt>¿Cuántos campos de fútbol es un acre?</dt>
+        <dd>Un acre es el 57 % de <a href="/hectarea-campo-de-futbol/">un campo de fútbol</a>
+          reglamentario de 105 × 68 metros: algo más de medio campo. Un campo de fútbol entero
+          son 1,76 acres.</dd>
+
+        <dt>¿Qué es más grande, un acre o una hectárea?</dt>
+        <dd>La hectárea, casi dos veces y media más: una hectárea tiene 10.000 m² y un acre
+          4.046,86 m². Un acre es aproximadamente el 40 % de una hectárea.</dd>
+
+        <dt>¿Por qué un acre tiene 43.560 pies cuadrados?</dt>
+        <dd>Porque es un furlong (660 pies) por una cadena (66 pies): la forma de una tira de
+          tierra arada, tan larga como los bueyes aguantaban sin descansar. 660 × 66 = 43.560. Era
+          la tierra que una yunta araba en un día.</dd>
+
+        <dt>¿Dónde se usa el acre?</dt>
+        <dd>Sobre todo en Estados Unidos, donde es la unidad oficial de la tierra. En el Reino
+          Unido dejó de ser unidad legal de comercio en 1995, pero se sigue usando en el campo y
+          en las inmobiliarias, igual que en Canadá, la India o Pakistán. En España y en el resto
+          de la Unión Europea la tierra se mide en hectáreas.</dd>
+      </dl>
+      <p>
+        ¿Quieres ver cualquier cantidad de acres? Pásala a hectáreas con el
+        <a href="${conv}?a=1&u=acre">conversor de superficies</a> y escríbela en el
+        <a href="/">Hectareómetro</a>: se dibuja a escala sobre tu ciudad. O
+        <a href="/medir-superficie/">mide una finca</a> dibujándola tú en el mapa. La historia
+        completa —la hectárea, el acre, la fanega y por qué casi todas miden un día de trabajo—
+        está en <a href="${hub}">las unidades de superficie</a>.
+      </p>`;
+  return {
+    key: 'cuanto-es-un-acre', lang: 'es', ha: 0.4047,
+    family: 'hectareas', published: '2026-10-24', modified: '2026-10-24',
+    slug: 'cuanto-es-un-acre',
+    path: ACRE_ALTERNATES.es, alternates: ACRE_ALTERNATES,
+    presetExtra: ' var PRESET_ZOOM = 18; var PRESET_LAT = 40.45306; var PRESET_LON = -3.68835;',
+    title: 'Un acre son 4.047 m² (0,40 hectáreas): míralo sobre un campo de fútbol | Hectareómetro',
+    description: 'Un acre son 4.046,86 m², 0,4047 hectáreas: algo más de medio campo de fútbol. Tabla de acres a hectáreas, de dónde sale (un día de arado con bueyes) y por qué tiene 43.560 pies cuadrados.',
+    h1: 'Un acre son 4.047 m²: algo más de medio campo de fútbol',
+    intro,
+    question: '¿Cuánto es un acre en metros cuadrados?',
+    answer: 'Un acre son 4.046,86 metros cuadrados (exactamente 4.046,8564224 m²). Equivale a un cuadrado de 63,6 metros de lado, o a 43.560 pies cuadrados.',
+    faqs: [
+      { q: '¿Cuánto es un acre en metros cuadrados?', a: 'Un acre son 4.046,86 metros cuadrados (exactamente 4.046,8564224 m²). Equivale a un cuadrado de 63,6 metros de lado, o a 43.560 pies cuadrados.' },
+      { q: '¿Cuánto es un acre en hectáreas?', a: 'Un acre son 0,4047 hectáreas, y una hectárea son 2,471 acres. Para convertir de cabeza, divide los acres entre dos y medio: 100 acres son unas 40 hectáreas.' },
+      { q: '¿Cuántos campos de fútbol es un acre?', a: 'Un acre es el 57 % de un campo de fútbol reglamentario de 105 × 68 metros: algo más de medio campo. Un campo de fútbol entero son 1,76 acres.' },
+      { q: '¿Qué es más grande, un acre o una hectárea?', a: 'La hectárea, casi dos veces y media más: una hectárea tiene 10.000 m² y un acre 4.046,86 m². Un acre es aproximadamente el 40 % de una hectárea.' },
+      { q: '¿Por qué un acre tiene 43.560 pies cuadrados?', a: 'Porque es un furlong (660 pies) por una cadena (66 pies): la forma de una tira de tierra arada, tan larga como los bueyes aguantaban sin descansar. 660 × 66 = 43.560. Era la tierra que una yunta araba en un día.' },
+      { q: '¿Dónde se usa el acre?', a: 'Sobre todo en Estados Unidos, donde es la unidad oficial de la tierra. En el Reino Unido dejó de ser unidad legal de comercio en 1995, pero se sigue usando en el campo y en las inmobiliarias, igual que en Canadá, la India o Pakistán. En España y en el resto de la Unión Europea la tierra se mide en hectáreas.' },
+    ],
+    linkLabel: '¿Cuánto es un acre?',
+  };
+  }
+
+  // English mirror (universal topic, and the highest-volume query of the
+  // block). Leads with square feet, which is what the English reader knows;
+  // preset over the Wembley pitch.
+  const conv = '/en/hectares-to-square-meters/';
+  const hub = '/en/area-units/';
+  const pitch = 'lat=51.55603&lon=-0.27959&z=18';
+  const intro = `      <p>
+        <b>An acre is 43,560 square feet</b>: 4,046.86 square metres, or <b>0.4047 hectares</b>.
+        That is a little over half a football pitch, or about three quarters of an American
+        football field. Going the other way, a hectare is 2.47 acres. It is how land is measured
+        in the United States and, informally, in the UK, Canada and India.
+      </p>
+      <p>
+        The circle on the map is <b><a href="/en/?ha=0.4047&${pitch}">one acre</a></b> drawn on the
+        Wembley pitch: it covers just over half of it. Drag it to your own street to compare it
+        with a place you know. This article is part of
+        <a href="${hub}">area units and where they come from</a>; if you only want the number, the
+        <a href="${conv}?a=1&u=acre">area converter</a> turns acres into hectares, square metres
+        or square feet.
+      </p>
+
+      <h2>An acre in things you know</h2>
+      <ul class="examples-list">
+        <li><b>57% of a football (soccer) pitch</b> of 105 × 68 metres. The other way round, a
+          pitch is 1.76 acres.</li>
+        <li><b>About 76% of an American football field</b> including the end zones (the full
+          field is 1.32 acres), or 91% of the field between the goal lines.</li>
+        <li>A <b>square 208.7 feet (63.6 metres) on each side</b>, or a circle with a radius of
+          117.8 feet (35.9 metres), which is what the map draws.</li>
+        <li>About <b>15 and a half tennis courts</b> (a doubles court is 78 × 36 feet).</li>
+        <li>Less than half of <a href="/en/1-hectare/">a hectare</a>: almost two and a half acres
+          fit in one hectare.</li>
+      </ul>
+
+      <h2>Acres to hectares: the quick table</h2>
+      <p>
+        To turn acres into hectares, multiply by 0.4047 (or, in your head, divide by two and a
+        half). The round figures link to that area drawn on a map:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Acres</th><th>Hectares</th><th>To picture it</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?a=1&u=acre">1 acre</a></td><td>0.40 ha</td><td>A little over half a football pitch</td></tr>
+          <tr><td>5 acres</td><td>2.02 ha</td><td>Like <a href="/en/2-hectares/">2 hectares</a></td></tr>
+          <tr><td>10 acres</td><td>4.05 ha</td><td>Like <a href="/en/4-hectares/">4 hectares</a></td></tr>
+          <tr><td>50 acres</td><td>20.2 ha</td><td>Like <a href="/en/20-hectares/">20 hectares</a></td></tr>
+          <tr><td><a href="/en/?ha=40.47">100 acres</a></td><td>40.5 ha</td><td>Winnie-the-Pooh's wood</td></tr>
+          <tr><td>160 acres</td><td>64.7 ha</td><td>A Homestead Act claim</td></tr>
+          <tr><td>250 acres</td><td>101 ha</td><td>Like <a href="/en/100-hectares/">100 hectares</a></td></tr>
+          <tr><td>500 acres</td><td>202 ha</td><td>Like <a href="/en/200-hectares/">200 hectares</a>: almost all of Monaco</td></tr>
+          <tr><td><a href="${conv}?a=1&u=mi2">640 acres</a></td><td>259 ha</td><td>Exactly one square mile</td></tr>
+          <tr><td>1,000 acres</td><td>405 ha</td><td>Like <a href="/en/400-hectares/">400 hectares</a></td></tr>
+          <tr><td>2,500 acres</td><td>1,012 ha</td><td>Like <a href="/en/1000-hectares/">1,000 hectares</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Where it comes from: a day's ploughing</h2>
+      <p>
+        The acre did not start as a shape but as a <b>day of work</b>: the land a team of oxen
+        could plough in one day. The word comes from Old English <i>æcer</i>, "open field", a
+        cousin of Latin <i>ager</i> and Greek <i>agros</i> — the same root as "agriculture".
+      </p>
+      <p>
+        That day's work had a definite shape, a ploughed strip. Its length was a <b>furlong</b>
+        (660 feet, <a href="/en/distances/?d=201&u=m">201 metres</a>), the <i>furrow long</i>: how
+        far the oxen pulled before they stopped to rest and turn. Its width was a <b>chain</b> (66
+        feet, 20 metres). Turning a plough drawn by eight oxen was the hardest part of the day, so
+        fields were made long and narrow. An English statute of around 1300 already puts it that
+        way: forty perches long by four wide.
+      </p>
+      <p>
+        Hence the odd number: 660 × 66 = <b>43,560 square feet</b>, or 4,840 square yards. In
+        1620 the mathematician Edmund Gunter designed the 66-foot, 100-link surveyor's chain so
+        that the sums did themselves: <b>ten square chains make an acre</b>. And because a mile
+        is eight furlongs (<a href="/en/what-is-a-mile/">which is why it has 5,280 feet</a>), a
+        square mile holds exactly 640 acres.
+      </p>
+
+      <h2>Why it is exactly 4,046.8564224 m²</h2>
+      <p>
+        The acre is defined from the yard, and since the international agreement of <b>1959</b>
+        the yard has been exactly 0.9144 metres. So the acre, without ever changing size on the
+        ground, became a ten-digit metric number: 4,046.8564224 m². Until the end of 2022 the
+        United States also kept a second acre, the survey acre, based on the
+        <a href="/en/where-the-foot-comes-from/">survey foot</a>: it was about 25 square inches
+        larger, a difference of four parts per million that only mattered when measuring whole
+        states.
+      </p>
+
+      <h2>The acre that drew the grid of America</h2>
+      <p>
+        The United States parcelled out most of its land west of the Appalachians with a ruler:
+        the Land Ordinance of 1785 divided it into townships six miles square, each split into 36
+        <b>sections of one square mile, 640 acres</b>. That grid is what you see from the plane
+        when you fly over the Midwest.
+      </p>
+      <p>
+        The Homestead Act of 1862 gave each settler a quarter section: <b>160 acres</b>, about
+        <a href="/en/?ha=64.75">65 hectares</a>. And the most famous broken promise in the
+        country's history was made in acres: the "forty acres and a mule" of General Sherman's
+        field order of 16 January 1865 for families freed from slavery — up to 40 acres each,
+        about 16 hectares. The mule is not in the order (the army lent some later), and President
+        Andrew Johnson reversed it that same year.
+      </p>
+
+      <h2>Not every acre is the same size</h2>
+      <p>
+        Like every unit that measures work, the acre changed with the ground. The Irish acre was
+        7,840 square yards (about 6,555 m²) and the Scottish acre about 5,080 m². The same idea
+        turns up across half the world: the Roman <i>iugerum</i> (about 2,500 m²) was what a yoke
+        of oxen ploughed in a day, the German <i>Morgen</i> what could be ploughed in a morning,
+        and the Egyptian <i>feddan</i> (4,200 m²) what a pair of oxen could work.
+      </p>
+      <p>
+        The exception is <a href="/en/1-hectare/">the hectare</a>, which came not from the field
+        but from a law: a square 100 metres on each side. An acre is 40% of a hectare.
+      </p>
+
+      <h2>Where it is still used</h2>
+      <p>
+        In the <b>United States</b> it is the standard unit of land: farms, national parks and
+        wildfires are all counted in acres. In the <b>United Kingdom</b> it stopped being a legal
+        unit for trade on 1 October 1995, yet farmers and estate agents still use it every day. It
+        also survives in Canada, Ireland, India, Pakistan, Ghana and much of the Caribbean. Almost
+        everywhere else, land is measured in hectares.
+      </p>
+      <p>
+        The acre also gave us a unit of water: the <b>acre-foot</b>, the volume that covers one
+        acre to a depth of one foot — <a href="/en/liters/?l=1&u=acft">325,851 US gallons</a>, or
+        1,233 cubic metres. It is how reservoirs and irrigation rights are measured across the
+        American West.
+      </p>
+
+      <h2>Famous acres</h2>
+      <ul class="examples-list">
+        <li><b>Central Park</b>: 843 acres, <a href="/en/300-hectares/">341 hectares</a>.</li>
+        <li><b>The Hundred Acre Wood</b> of Winnie-the-Pooh: 100 acres would be
+          <a href="/en/?ha=40.47">40.5 hectares</a>. The real wood behind it, in Ashdown Forest,
+          East Sussex, is the Five Hundred Acre Wood: 202 hectares.</li>
+        <li><b>Vatican City</b>: about 109 acres, 44 hectares.</li>
+        <li><b>Hyde Park</b>, London: 350 acres, 142 hectares.</li>
+      </ul>
+
+      <h2>Frequently asked questions about the acre</h2>
+      <dl class="faq">
+        <dt>How big is an acre?</dt>
+        <dd>An acre is 43,560 square feet, or <a href="${conv}?a=1&u=acre">4,046.86 square
+          metres</a> (0.4047 hectares). As a square it is 208.7 feet (63.6 metres) on each side:
+          a little over half a football pitch.</dd>
+
+        <dt>How many acres are in a hectare?</dt>
+        <dd><a href="/en/1-hectare/">A hectare</a> is 2.471 acres, and an acre is 0.4047 hectares.
+          To convert in your head, divide acres by two and a half: 100 acres is about 40
+          hectares.</dd>
+
+        <dt>How many football fields is an acre?</dt>
+        <dd>An acre is 57% of a standard <a href="/en/hectare-football-field/">football (soccer)
+          pitch</a> of 105 × 68 metres, and about 76% of an American football field including the
+          end zones. A soccer pitch is 1.76 acres; an American football field is 1.32 acres.</dd>
+
+        <dt>Which is bigger, an acre or a hectare?</dt>
+        <dd>The hectare, by almost two and a half times: a hectare is 10,000 m² and an acre is
+          4,046.86 m². An acre is roughly 40% of a hectare.</dd>
+
+        <dt>Why is an acre 43,560 square feet?</dt>
+        <dd>Because it is a furlong (660 feet) by a chain (66 feet): the shape of a strip of
+          ploughed land, as long as the oxen could pull a furrow before resting. 660 × 66 = 43,560.
+          It was the land a team of oxen ploughed in a day.</dd>
+
+        <dt>How many acres are in a square mile?</dt>
+        <dd>Exactly 640. A mile is eight furlongs and an acre is one furlong by a tenth of a
+          furlong, so a square mile holds 8 × 80 = 640 acres, which is 259 hectares.</dd>
+      </dl>
+      <p>
+        Want to see any number of acres? Turn it into hectares with the
+        <a href="${conv}?a=1&u=acre">area converter</a> and type it into the
+        <a href="/en/">Hectareometer</a>: it is drawn to scale over your own city. Or
+        <a href="/en/measure-area/">measure a plot</a> by drawing it on the map yourself. The
+        whole story — the hectare, the acre and why almost every land unit measures a day of
+        work — is in <a href="${hub}">area units</a>.
+      </p>`;
+  return {
+    key: 'cuanto-es-un-acre', lang: 'en', ha: 0.4047,
+    family: 'hectareas', published: '2026-10-24', modified: '2026-10-24',
+    slug: 'how-big-is-an-acre',
+    path: ACRE_ALTERNATES.en, alternates: ACRE_ALTERNATES,
+    presetExtra: ' var PRESET_ZOOM = 18; var PRESET_LAT = 51.55603; var PRESET_LON = -0.27959;',
+    title: 'How big is an acre? 43,560 sq ft (0.40 hectares), drawn on a football pitch | Hectareometer',
+    description: 'An acre is 43,560 square feet: 4,046.86 m² or 0.4047 hectares, a little over half a football pitch. Acres to hectares table, where it comes from (a day of ploughing with oxen) and why the number is so odd.',
+    h1: 'An acre is 43,560 square feet: a little over half a football pitch',
+    intro,
+    question: 'How big is an acre?',
+    answer: 'An acre is 43,560 square feet, or 4,046.86 square metres (0.4047 hectares). As a square it is 208.7 feet (63.6 metres) on each side: a little over half a football pitch.',
+    faqs: [
+      { q: 'How big is an acre?', a: 'An acre is 43,560 square feet, or 4,046.86 square metres (0.4047 hectares). As a square it is 208.7 feet (63.6 metres) on each side: a little over half a football pitch.' },
+      { q: 'How many acres are in a hectare?', a: 'A hectare is 2.471 acres, and an acre is 0.4047 hectares. To convert in your head, divide acres by two and a half: 100 acres is about 40 hectares.' },
+      { q: 'How many football fields is an acre?', a: 'An acre is 57% of a standard football (soccer) pitch of 105 × 68 metres, and about 76% of an American football field including the end zones. A soccer pitch is 1.76 acres; an American football field is 1.32 acres.' },
+      { q: 'Which is bigger, an acre or a hectare?', a: 'The hectare, by almost two and a half times: a hectare is 10,000 m² and an acre is 4,046.86 m². An acre is roughly 40% of a hectare.' },
+      { q: 'Why is an acre 43,560 square feet?', a: 'Because it is a furlong (660 feet) by a chain (66 feet): the shape of a strip of ploughed land, as long as the oxen could pull a furrow before resting. 660 × 66 = 43,560. It was the land a team of oxen ploughed in a day.' },
+      { q: 'How many acres are in a square mile?', a: 'Exactly 640. A mile is eight furlongs and an acre is one furlong by a tenth of a furlong, so a square mile holds 8 × 80 = 640 acres, which is 259 hectares.' },
+    ],
+    linkLabel: 'How big is an acre?',
+  };
+}
+
+// ¿Cuánto es una fanega de tierra? Spanish-only spoke of /unidades-de-superficie/
+// (Hispanic unit, rule of the series; slot 2026-11-03). Answer-first title and
+// H1, and a fanegas → hectáreas table that links to the numeric landings.
+// Preset: a one-fanega circle (0,644 ha, 45,3 m radius) over the Plaza Mayor
+// de Salamanca, which measures almost exactly one fanega de marco real: sides
+// of 82,60 / 80,60 / 81,60 / 75,69 m, about 6.400 m² without the arcades
+// (https://es.wikipedia.org/wiki/Plaza_Mayor_de_Salamanca).
+// Data validated 2026-11-11 (web):
+// - Fanega de tierra de marco real = 9.216 varas cuadradas = 576 estadales
+//   cuadrados (24 × 24 estadales of 4 varas) = 64 áreas 39 centiáreas 56 dm²
+//   = 6.439,56 m². Real Orden of 9-dec-1852, official equivalences table,
+//   which is also the source of every provincial value in the article.
+//   https://www.cem.es/sites/default/files/2019-11/00000458recurso.pdf
+//   The DLE prints «64,596 áreas» (6.459,6 m²) for the same 576 estadales,
+//   which does not match its own aranzada (4.472 m² = 400 estadales) nor its
+//   celemín (537 m²): the article gives the official figure and says so.
+//   https://dle.rae.es/fanega · https://dle.rae.es/aranzada
+// - Etymology (DLE): ár. hisp. faníqa 'medida de áridos', ár. clás. fanīqah
+//   'saco para acarrear tierra'. Documented as a capacity measure in 1164 and
+//   as a land measure in 1274 (Corominas, via Escalona Molina, «Estadal»,
+//   Junta de Andalucía 2009). The link with Arabic faddān that es.wikipedia
+//   gives has NO source: not used.
+//   https://www.juntadeandalucia.es/export/drupaljda/1337160964Estadal_baja.pdf
+// - Capacity: 55,5 l = 12 celemines of 4,625 l; wheat ≈ 43-44 kg, barley ≈
+//   32-33 kg per fanega. Subdivisions of the land fanega: 12 celemines
+//   (536,63 m²) of 4 cuartillos (134,16 m²); aranzada = 400 estadales
+//   cuadrados = 4.471,92 m²; yugada = 50 fanegas ≈ 32,2 ha (DLE).
+// - Fanega de puño or de sembradura: the land sown with one fanega of wheat
+//   (DLE); 12 celemines of wheat or 18 of barley on first-quality land
+//   (Sánchez Salazar, Boletín del Instituto de Estudios Giennenses); Cuenca
+//   3.000-6.000 m² by land quality, extremes of 280 m² (Guriezo) and 111.389 m²
+//   (Orce, third-class dry land) in the Catastro de Ensenada (Escalona).
+//   https://dialnet.unirioja.es/descarga/articulo/1197514.pdf
+// - Metric system: Ley de Pesas y Medidas of 19-jul-1849; after several
+//   postponements, generally compulsory from 1-jul-1880.
+//   https://www.cem.es/sites/default/files/2021-12/Evolucion%20metrologia%20Espa%C3%B1a.pdf
+// - Colombia: fanegada = 100 × 100 varas of 0,80 m = 6.400 m², still used in
+//   Cundinamarca, Boyacá and Valle del Cauca. Mexico: fanega de sembradura de
+//   maíz ≈ 3,57 ha (von Wobeser, UNAM). Peru: fanegada ≈ 2,9 ha.
+//   https://es.wikipedia.org/wiki/Hanegada
+//   https://historicas.unam.mx/publicaciones/publicadigital/libros/formacion_hacienda/04_fhec06_glosario.pdf
+// - Quijote I, 9: the translator is paid «dos arrobas de pasas y dos fanegas
+//   de trigo».
+const FANEGA_PATH = '/cuanto-es-una-fanega/';
+const FANEGA_M2 = 6439.56;
+
+function fanegaArticle() {
+  const conv = '/hectareas-a-metros-cuadrados/';
+  const hub = '/unidades-de-superficie/';
+  const plaza = 'lat=40.96503&lon=-5.66405&z=18';
+  const intro = `      <p>
+        <b>Una fanega de tierra castellana son 6.439,56 metros cuadrados</b>: 0,644 hectáreas, o
+        el 90 % de un campo de fútbol. Es la fanega «de marco real», la oficial de Castilla. Pero
+        la respuesta honrada es <b>depende de dónde esté la finca</b>: en Madrid una fanega son
+        3.424 m², en Sevilla 5.945, en Albacete 7.006 y en Valencia, donde se llama hanegada,
+        solo 831. Antes de convertir fanegas a hectáreas hay que saber de qué fanega se habla.
+      </p>
+      <p>
+        El círculo del mapa es <b><a href="/?ha=0.644&${plaza}">una fanega de marco real</a></b>
+        sobre la Plaza Mayor de Salamanca, que mide casi exactamente eso: unos 6.400 m² sin contar
+        los soportales. Arrástralo hasta tu pueblo para verlo sobre un sitio que conozcas. Este
+        artículo forma parte de <a href="${hub}">las unidades de superficie y de dónde vienen</a>;
+        su pariente más cercano es <a href="/cuanto-es-un-acre/">el acre</a>, que mide un día de
+        arado, mientras que la fanega mide una siembra.
+      </p>
+
+      <h2>Una fanega en cosas que conoces</h2>
+      <ul class="examples-list">
+        <li>Un <b>cuadrado de 80,25 metros de lado</b>: 24 estadales por 24.</li>
+        <li>El <b>90 % de un campo de fútbol</b> de 105 × 68 metros.</li>
+        <li>La <b>Plaza Mayor de Salamanca</b> entera (unos 6.400 m²).</li>
+        <li>Algo menos de dos tercios de <a href="/1-hectarea/">una hectárea</a>: en una hectárea
+          cabe una fanega y media (1,55).</li>
+        <li>Un acre y medio largo: una fanega son 1,59 <a href="/cuanto-es-un-acre/">acres</a>.</li>
+      </ul>
+
+      <h2>De fanegas a hectáreas: la tabla rápida</h2>
+      <p>
+        Con la fanega de marco real (6.439,56 m²), para pasar a hectáreas se multiplica por 0,644.
+        Si tu fanega es otra, usa los metros cuadrados de la tabla por provincias de más abajo.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Fanegas (marco real)</th><th>Hectáreas</th><th>Para hacerse una idea</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${conv}?a=6439.56&u=m2">1 fanega</a></td><td>0,64 ha</td><td>La Plaza Mayor de Salamanca</td></tr>
+          <tr><td>3 fanegas</td><td>1,93 ha</td><td>Casi <a href="/2-hectareas/">2 hectáreas</a></td></tr>
+          <tr><td>5 fanegas</td><td>3,22 ha</td><td>Como <a href="/3-hectareas/">3 hectáreas</a></td></tr>
+          <tr><td><a href="/?ha=6.44">10 fanegas</a></td><td>6,44 ha</td><td>Nueve campos de fútbol</td></tr>
+          <tr><td>15 fanegas</td><td>9,66 ha</td><td>Casi <a href="/10-hectareas/">10 hectáreas</a></td></tr>
+          <tr><td>30 fanegas</td><td>19,3 ha</td><td>Como <a href="/20-hectareas/">20 hectáreas</a></td></tr>
+          <tr><td>50 fanegas</td><td>32,2 ha</td><td>Una yugada: algo más de <a href="/30-hectareas/">30 hectáreas</a></td></tr>
+          <tr><td><a href="/?ha=64.4">100 fanegas</a></td><td>64,4 ha</td><td>Más que la Ciudad del Vaticano</td></tr>
+          <tr><td>150 fanegas</td><td>96,6 ha</td><td>Casi <a href="/100-hectareas/">100 hectáreas</a></td></tr>
+          <tr><td>300 fanegas</td><td>193 ha</td><td>Casi <a href="/200-hectareas/">200 hectáreas</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>No es una superficie: es una siembra</h2>
+      <p>
+        La fanega fue primero una medida de <b>capacidad</b> para el grano: unos 55,5 litros en
+        Castilla, repartidos en doce celemines. Una fanega de trigo pesa unos 43 o 44 kilos; una de
+        cebada, más ligera, unos 32. La palabra viene del árabe hispánico <i>faníqa</i>,
+        «medida de áridos», y esta de un término que significaba «saco para acarrear tierra»: está
+        documentada como medida de grano desde 1164.
+      </p>
+      <p>
+        La <b>fanega de tierra</b> llegó un siglo después y es exactamente lo que suena: la tierra
+        que se siembra con una fanega de grano. Un documento de 1274 habla ya de «doce hanegas
+        sembradura de heredat». Por eso se la llamaba también <b>fanega de sembradura</b> o
+        <b>fanega de puño</b>.
+      </p>
+      <p>
+        Y ahí está la trampa. En una vega buena el grano se echa espeso y en un secano pobre se
+        echa ralo, así que la misma fanega de trigo cubría mucha más tierra mala que buena. En
+        Cuenca la fanega de puño iba de 3.000 a 6.000 m² según la calidad del suelo. Cuando el
+        Catastro de Ensenada preguntó a cada pueblo, a mediados del siglo XVIII, qué medidas de
+        tierra usaba y cuántas varas tenían, hubo pueblos que contestaron que no tenían medida
+        fija y que contaban por la semilla. Las fanegas locales documentadas van de los 280 m² de
+        Guriezo (Cantabria) a los 111.389 m² de la fanega de secano de tercera de Orce (Granada).
+      </p>
+
+      <h2>La fanega oficial: 576 estadales cuadrados</h2>
+      <p>
+        Para poner orden, Castilla fijó una fanega geométrica, la de <b>marco real</b>: un cuadrado
+        de 24 estadales de lado. Como el estadal son cuatro varas (3,34 metros), salen
+        <b>576 estadales cuadrados</b>, o 9.216 varas cuadradas. Cuando España adoptó el sistema
+        métrico, la tabla oficial de equivalencias de 1852 la tradujo a 64 áreas, 39 centiáreas y
+        56 decímetros cuadrados: <b>6.439,56 m²</b>.
+      </p>
+      <p>
+        Un aviso, porque te lo vas a encontrar: el diccionario de la RAE dice que esos mismos 576
+        estadales equivalen a «64,596 áreas», es decir, 6.459,6 m², y media internet lo repite. La
+        cifra no cuadra con la vara legal ni con el propio diccionario, que da 4.472 m² a la
+        aranzada de 400 estadales. La equivalencia oficial es 6.439,56 m². La diferencia son veinte
+        metros cuadrados por fanega: poco para una conversación, bastante para una escritura.
+      </p>
+      <p>
+        La fanega se dividía igual que la de grano: en <b>doce celemines</b> de 537 m², y cada
+        celemín en cuatro cuartillos de 134 m². Hacia arriba, cincuenta fanegas eran una
+        <b>yugada</b>, algo más de 32 hectáreas.
+      </p>
+
+      <h2>Cuánto mide una fanega en cada provincia</h2>
+      <p>
+        Estas son las equivalencias oficiales de 1852, la tabla que el Estado publicó para pasar
+        al sistema métrico las medidas de cada provincia. Dentro de una misma provincia podía
+        haber además fanegas locales distintas, así que para una escritura concreta manda siempre
+        lo que diga el documento o el catastro del municipio.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Provincia</th><th>Fanega de tierra</th><th>En hectáreas</th></tr></thead>
+        <tbody>
+          <tr><td>Albacete</td><td>7.005,69 m²</td><td>0,70 ha</td></tr>
+          <tr><td>Murcia</td><td>6.707,88 m²</td><td>0,67 ha</td></tr>
+          <tr><td>Badajoz, Cáceres, Salamanca, Burgos, Ciudad Real, Cuenca, Cádiz, Cantabria, Granada y Almería (marco real)</td><td><a href="${conv}?a=6439.56&u=m2">6.439,56 m²</a></td><td>0,64 ha</td></tr>
+          <tr><td>Jaén</td><td>6.262,78 m²</td><td>0,63 ha</td></tr>
+          <tr><td>Córdoba</td><td>6.121,23 m²</td><td>0,61 ha</td></tr>
+          <tr><td>Málaga</td><td>6.037,09 m²</td><td>0,60 ha</td></tr>
+          <tr><td>Sevilla</td><td>5.944,72 m²</td><td>0,59 ha</td></tr>
+          <tr><td>Canarias (fanegada de Tenerife)</td><td>5.248,29 m²</td><td>0,52 ha</td></tr>
+          <tr><td>Toledo (fanega de 500 estadales)</td><td>4.697,07 m²</td><td>0,47 ha</td></tr>
+          <tr><td>Ávila</td><td>3.930,40 m²</td><td>0,39 ha</td></tr>
+          <tr><td>Huelva</td><td>3.689,33 m²</td><td>0,37 ha</td></tr>
+          <tr><td>Gipuzkoa</td><td>3.432,79 m²</td><td>0,34 ha</td></tr>
+          <tr><td>Madrid</td><td><a href="${conv}?a=3423.81&u=m2">3.423,81 m²</a></td><td>0,34 ha</td></tr>
+          <tr><td>Zamora</td><td>3.353,94 m²</td><td>0,34 ha</td></tr>
+          <tr><td>Guadalajara</td><td>3.105,50 m²</td><td>0,31 ha</td></tr>
+          <tr><td>Álava</td><td>2.510,71 m²</td><td>0,25 ha</td></tr>
+          <tr><td>Soria</td><td>2.235,96 m²</td><td>0,22 ha</td></tr>
+          <tr><td>La Rioja</td><td>1.901,96 m²</td><td>0,19 ha</td></tr>
+          <tr><td>Teruel</td><td>1.117,98 m²</td><td>0,11 ha</td></tr>
+          <tr><td>Valencia y Castellón (hanegada)</td><td><a href="${conv}?a=831.0964&u=m2">831,10 m²</a></td><td>0,08 ha</td></tr>
+          <tr><td>Huesca</td><td>715,18 m²</td><td>0,07 ha</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Entre la fanega de Albacete y la de Huesca hay un factor de <b>casi diez</b>. Y no todas
+        las provincias usaban fanegas: Galicia medía en <b>ferrados</b> (de 437 a 640 m²),
+        Asturias en <b>días de bueyes</b> (1.258 m²), Navarra en <b>robadas</b> (898 m²),
+        Valladolid y Segovia en <b>obradas</b>, y las huertas de Murcia y Almería en
+        <b>tahúllas</b> de 1.118 m². Granada, además de la de marco real, tenía una fanega local
+        de secano de unos 4.697 m².
+      </p>
+
+      <h2>La fanegada de Colombia y otras fanegas de América</h2>
+      <p>
+        La fanega cruzó el Atlántico y allí también cambió. En <b>Colombia</b> la
+        <b>fanegada</b> es un cuadrado de 100 × 100 varas de 80 centímetros: 80 × 80 metros,
+        <b><a href="${conv}?a=6400&u=m2">6.400 m²</a></b> exactos, 0,64 hectáreas. Es la que
+        sigue apareciendo hoy en los anuncios de fincas de Cundinamarca, Boyacá o el Valle del
+        Cauca: una finca de 350 fanegadas son 224 hectáreas.
+      </p>
+      <p>
+        En <b>México</b> la fanega de sembradura de maíz era mucho mayor, unas 3,57 hectáreas.
+        En <b>Perú</b> la fanegada rondaba las 2,9 hectáreas. Y en Chile o Argentina la fanega se quedó en lo que fue al principio: una
+        medida de grano.
+      </p>
+
+      <h2>¿Se sigue usando?</h2>
+      <p>
+        Legalmente, no: la Ley de Pesas y Medidas del 19 de julio de 1849 adoptó el sistema métrico
+        y, después de varias prórrogas, fue obligatoria de forma general desde el 1 de julio de
+        1880. Desde entonces la tierra se escritura en <a href="/1-hectarea/">hectáreas</a>, áreas y
+        centiáreas.
+      </p>
+      <p>
+        En la práctica, la fanega sigue viva en el campo. Muchas lindes se trazaron en fanegas, las
+        escrituras antiguas las citan, y en media España se sigue hablando de «una finca de diez
+        fanegas» o de un olivar de tantos celemines. Si te pasa en una compraventa, la regla es
+        sencilla: pregunta <b>de qué fanega</b> hablan y pide la superficie en metros cuadrados del
+        catastro. Con la de marco real, diez fanegas son 6,44 hectáreas; con la de Madrid, 3,42.
+      </p>
+      <p>
+        Y sigue viva en los libros. En el capítulo IX del Quijote, Cervantes paga al morisco que le
+        traduce el manuscrito con «dos arrobas de pasas y dos fanegas de trigo»: unos 87 kilos de
+        grano, o la semilla para sembrar una hectárea larga.
+      </p>
+
+      <h2>Preguntas frecuentes sobre la fanega</h2>
+      <dl class="faq">
+        <dt>¿Cuántos metros cuadrados tiene una fanega de tierra?</dt>
+        <dd>La fanega castellana de marco real tiene
+          <a href="${conv}?a=6439.56&u=m2">6.439,56 metros cuadrados</a>: un cuadrado de 80,25
+          metros de lado. Pero cambia según la provincia: 3.424 m² en Madrid, 5.945 en Sevilla,
+          7.006 en Albacete y 831 en Valencia.</dd>
+
+        <dt>¿Cuántas fanegas tiene una hectárea?</dt>
+        <dd><a href="/1-hectarea/">Una hectárea</a> son 1,55 fanegas de marco real, y una fanega
+          son 0,644 hectáreas. Con la fanega de Madrid, de 3.424 m², una hectárea son 2,92
+          fanegas.</dd>
+
+        <dt>¿Cuánto son 10 fanegas de tierra en hectáreas?</dt>
+        <dd>Con la fanega de marco real, 10 fanegas son 6,44 hectáreas (64.396 m²), unos nueve
+          campos de fútbol. Con la fanega de Madrid serían 3,42 hectáreas y con la hanegada
+          valenciana, 0,83.</dd>
+
+        <dt>¿Por qué la fanega mide distinto en cada provincia?</dt>
+        <dd>Porque no nació como una superficie, sino como la tierra que se sembraba con una fanega
+          de grano, unos 55,5 litros. En un suelo bueno el grano se echa más espeso que en uno
+          pobre, así que la misma fanega de trigo cubría más o menos tierra según la zona y el
+          cultivo.</dd>
+
+        <dt>¿Cuánto es una fanegada en Colombia?</dt>
+        <dd>Una fanegada colombiana son 6.400 metros cuadrados: un cuadrado de 80 × 80 metros, 0,64
+          hectáreas. Una hectárea son 1,5625 fanegadas.</dd>
+
+        <dt>¿Cuánto es un celemín de tierra?</dt>
+        <dd>Un celemín es la doceava parte de una fanega: con la de marco real, unos 537 metros
+          cuadrados. Cada celemín se divide en cuatro cuartillos de unos 134 m².</dd>
+      </dl>
+      <p>
+        ¿Tienes una finca en fanegas? Pásala a metros cuadrados con la tabla de tu provincia,
+        conviértela con el <a href="${conv}">conversor de superficies</a> y escribe las hectáreas
+        en el <a href="/">Hectareómetro</a> para verla dibujada sobre el mapa. O
+        <a href="/medir-superficie/">mide la finca</a> dibujando sus lindes. La historia completa
+        —la hectárea, el acre, la fanega y por qué casi todas miden trabajo— está en
+        <a href="${hub}">las unidades de superficie</a>.
+      </p>`;
+  return {
+    key: 'cuanto-es-una-fanega', lang: 'es', ha: 0.644,
+    family: 'hectareas', published: '2026-11-03', modified: '2026-11-03',
+    slug: 'cuanto-es-una-fanega',
+    path: FANEGA_PATH,
+    presetExtra: ' var PRESET_ZOOM = 18; var PRESET_LAT = 40.96503; var PRESET_LON = -5.66405;',
+    title: 'Una fanega de tierra son 6.440 m² (0,64 ha) en Castilla: tabla por provincias | Hectareómetro',
+    description: 'Una fanega de tierra de marco real son 6.439,56 m², 0,644 hectáreas, pero en Madrid son 3.424 m² y en Valencia 831. Tabla por provincias, fanegas a hectáreas, la fanegada de Colombia y por qué varía tanto.',
+    h1: 'Una fanega de tierra son 6.440 m² en Castilla, 3.424 en Madrid y 831 en Valencia',
+    intro,
+    question: '¿Cuántos metros cuadrados tiene una fanega de tierra?',
+    answer: 'La fanega castellana de marco real tiene 6.439,56 metros cuadrados: un cuadrado de 80,25 metros de lado. Pero cambia según la provincia: 3.424 m² en Madrid, 5.945 en Sevilla, 7.006 en Albacete y 831 en Valencia.',
+    faqs: [
+      { q: '¿Cuántos metros cuadrados tiene una fanega de tierra?', a: 'La fanega castellana de marco real tiene 6.439,56 metros cuadrados: un cuadrado de 80,25 metros de lado. Pero cambia según la provincia: 3.424 m² en Madrid, 5.945 en Sevilla, 7.006 en Albacete y 831 en Valencia.' },
+      { q: '¿Cuántas fanegas tiene una hectárea?', a: 'Una hectárea son 1,55 fanegas de marco real, y una fanega son 0,644 hectáreas. Con la fanega de Madrid, de 3.424 m², una hectárea son 2,92 fanegas.' },
+      { q: '¿Cuánto son 10 fanegas de tierra en hectáreas?', a: 'Con la fanega de marco real, 10 fanegas son 6,44 hectáreas (64.396 m²), unos nueve campos de fútbol. Con la fanega de Madrid serían 3,42 hectáreas y con la hanegada valenciana, 0,83.' },
+      { q: '¿Por qué la fanega mide distinto en cada provincia?', a: 'Porque no nació como una superficie, sino como la tierra que se sembraba con una fanega de grano, unos 55,5 litros. En un suelo bueno el grano se echa más espeso que en uno pobre, así que la misma fanega de trigo cubría más o menos tierra según la zona y el cultivo.' },
+      { q: '¿Cuánto es una fanegada en Colombia?', a: 'Una fanegada colombiana son 6.400 metros cuadrados: un cuadrado de 80 × 80 metros, 0,64 hectáreas. Una hectárea son 1,5625 fanegadas.' },
+      { q: '¿Cuánto es un celemín de tierra?', a: 'Un celemín es la doceava parte de una fanega: con la de marco real, unos 537 metros cuadrados. Cada celemín se divide en cuatro cuartillos de unos 134 m².' },
+    ],
+    linkLabel: '¿Cuánto es una fanega?',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle(), areaUnitsArticle('es'), areaUnitsArticle('en'), acreArticle('es'), acreArticle('en'), fanegaArticle()];
 
 // ---- liters landing pages ------------------------------------------------
 

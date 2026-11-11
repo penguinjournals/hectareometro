@@ -1,11 +1,11 @@
 {
   "/": {
-    "fingerprint": "dab0658f3cb6ecac",
-    "lastmod": "2026-10-14"
+    "fingerprint": "2957cf28473091d9",
+    "lastmod": "2026-11-11"
   },
   "/en/": {
-    "fingerprint": "30ae6c481cea81c7",
-    "lastmod": "2026-10-14"
+    "fingerprint": "e6feabef1a58009a",
+    "lastmod": "2026-11-11"
   },
   "/medir-superficie/": {
     "fingerprint": "a71847bba0e7d803",
@@ -56,12 +56,12 @@
     "lastmod": "2026-10-14"
   },
   "/hectareas-a-metros-cuadrados/": {
-    "fingerprint": "5c49b1e6cec04f7f",
-    "lastmod": "2026-10-14"
+    "fingerprint": "f8bb85e73a56d249",
+    "lastmod": "2026-11-11"
   },
   "/en/hectares-to-square-meters/": {
-    "fingerprint": "ddb756018ab646fb",
-    "lastmod": "2026-10-14"
+    "fingerprint": "f33eda565f7ad1c5",
+    "lastmod": "2026-11-11"
   },
   "/kilometros-a-millas/": {
     "fingerprint": "b5ee60c8c144376f",
@@ -72,20 +72,56 @@
     "lastmod": "2026-10-12"
   },
   "/articulos/": {
-    "fingerprint": "3016e203523c7add",
-    "lastmod": "2026-10-14"
+    "fingerprint": "9fd160ab0db1fa93",
+    "lastmod": "2026-11-11"
   },
   "/en/articles/": {
-    "fingerprint": "09385ce24cf14429",
-    "lastmod": "2026-10-14"
+    "fingerprint": "16a39f0388436468",
+    "lastmod": "2026-11-11"
   },
   "/1-hectarea/": {
     "fingerprint": "7c1c8dce6099c38a",
     "lastmod": "2026-10-12"
   },
+  "/2-hectareas/": {
+    "fingerprint": "f969df2e10855619",
+    "lastmod": "2026-11-11"
+  },
+  "/3-hectareas/": {
+    "fingerprint": "5cd61d273d550361",
+    "lastmod": "2026-11-11"
+  },
+  "/4-hectareas/": {
+    "fingerprint": "ce3ab9be8c53ab79",
+    "lastmod": "2026-11-11"
+  },
+  "/5-hectareas/": {
+    "fingerprint": "c20496e949349d73",
+    "lastmod": "2026-11-11"
+  },
+  "/10-hectareas/": {
+    "fingerprint": "46c65b67471b9839",
+    "lastmod": "2026-11-11"
+  },
+  "/20-hectareas/": {
+    "fingerprint": "6b8cc58d1a50cf50",
+    "lastmod": "2026-11-11"
+  },
+  "/30-hectareas/": {
+    "fingerprint": "feca131179b0a84e",
+    "lastmod": "2026-11-11"
+  },
+  "/50-hectareas/": {
+    "fingerprint": "2b3e85ffc97b0b40",
+    "lastmod": "2026-11-11"
+  },
   "/100-hectareas/": {
     "fingerprint": "bbccf97bde896270",
     "lastmod": "2026-10-12"
+  },
+  "/200-hectareas/": {
+    "fingerprint": "d3c0ee30d93029aa",
+    "lastmod": "2026-11-11"
   },
   "/300-hectareas/": {
     "fingerprint": "9641d52b627f621d",
@@ -152,72 +188,108 @@
     "lastmod": "2026-08-19"
   },
   "/en/1-hectare/": {
-    "fingerprint": "34c44a5801fcddce",
-    "lastmod": "2026-10-12"
+    "fingerprint": "c6439241a07c2b74",
+    "lastmod": "2026-11-11"
+  },
+  "/en/2-hectares/": {
+    "fingerprint": "d239f30b6e862894",
+    "lastmod": "2026-11-11"
+  },
+  "/en/3-hectares/": {
+    "fingerprint": "10315ff30874eae7",
+    "lastmod": "2026-11-11"
+  },
+  "/en/4-hectares/": {
+    "fingerprint": "cdb8d98b629e4eb4",
+    "lastmod": "2026-11-11"
+  },
+  "/en/5-hectares/": {
+    "fingerprint": "99f2276ef57489a9",
+    "lastmod": "2026-11-11"
+  },
+  "/en/10-hectares/": {
+    "fingerprint": "5fcaf74ab5ead416",
+    "lastmod": "2026-11-11"
+  },
+  "/en/20-hectares/": {
+    "fingerprint": "b072ce10f5415c87",
+    "lastmod": "2026-11-11"
+  },
+  "/en/30-hectares/": {
+    "fingerprint": "1bfac750fa14e437",
+    "lastmod": "2026-11-11"
+  },
+  "/en/50-hectares/": {
+    "fingerprint": "8efdaac761f81a01",
+    "lastmod": "2026-11-11"
   },
   "/en/100-hectares/": {
-    "fingerprint": "2bf243f7a88bd13f",
-    "lastmod": "2026-10-12"
+    "fingerprint": "ca270768d2fad3c3",
+    "lastmod": "2026-11-11"
+  },
+  "/en/200-hectares/": {
+    "fingerprint": "921e394ca3924bac",
+    "lastmod": "2026-11-11"
   },
   "/en/300-hectares/": {
-    "fingerprint": "c62b2b749c81a98d",
-    "lastmod": "2026-10-12"
+    "fingerprint": "658f2ccb2363e4e4",
+    "lastmod": "2026-11-11"
   },
   "/en/400-hectares/": {
-    "fingerprint": "6439817c953e3611",
-    "lastmod": "2026-10-12"
+    "fingerprint": "56f03adcd8dd3f39",
+    "lastmod": "2026-11-11"
   },
   "/en/500-hectares/": {
-    "fingerprint": "5b0ad56dd864f497",
-    "lastmod": "2026-10-12"
+    "fingerprint": "182aa559b9e4a293",
+    "lastmod": "2026-11-11"
   },
   "/en/1000-hectares/": {
-    "fingerprint": "95adecb975646699",
-    "lastmod": "2026-10-12"
+    "fingerprint": "19dad2845d96787d",
+    "lastmod": "2026-11-11"
   },
   "/en/2000-hectares/": {
-    "fingerprint": "6b4f10c9c4a3c564",
-    "lastmod": "2026-10-12"
+    "fingerprint": "a8034993b5904184",
+    "lastmod": "2026-11-11"
   },
   "/en/3000-hectares/": {
-    "fingerprint": "2968d52abff28c03",
-    "lastmod": "2026-10-12"
+    "fingerprint": "a4171dbb97fb539d",
+    "lastmod": "2026-11-11"
   },
   "/en/4000-hectares/": {
-    "fingerprint": "ec890df8c2fda5b6",
-    "lastmod": "2026-10-12"
+    "fingerprint": "7e0efdb2b882a34b",
+    "lastmod": "2026-11-11"
   },
   "/en/5000-hectares/": {
-    "fingerprint": "9c908eb28df597ec",
-    "lastmod": "2026-10-12"
+    "fingerprint": "59e0835790b7aec5",
+    "lastmod": "2026-11-11"
   },
   "/en/10000-hectares/": {
-    "fingerprint": "6a397e95dd36a600",
-    "lastmod": "2026-10-12"
+    "fingerprint": "8849167d1407183e",
+    "lastmod": "2026-11-11"
   },
   "/en/15000-hectares/": {
-    "fingerprint": "344b5588e230cc5d",
-    "lastmod": "2026-10-12"
+    "fingerprint": "a1ac969e6779d6c6",
+    "lastmod": "2026-11-11"
   },
   "/en/20000-hectares/": {
-    "fingerprint": "7889141169c0a7cd",
-    "lastmod": "2026-10-12"
+    "fingerprint": "aefa5fb2d89d61f9",
+    "lastmod": "2026-11-11"
   },
   "/en/30000-hectares/": {
-    "fingerprint": "4404f8e897808038",
-    "lastmod": "2026-10-12"
+    "fingerprint": "20fe75d3e2588aa7",
+    "lastmod": "2026-11-11"
   },
   "/en/50000-hectares/": {
-    "fingerprint": "8ae1bdc811910ca2",
-    "lastmod": "2026-10-12"
+    "fingerprint": "1eb3ffe69ce723bb",
+    "lastmod": "2026-11-11"
   },
   "/en/100000-hectares/": {
-    "fingerprint": "1b34310287941c04",
-    "lastmod": "2026-10-12"
+    "fingerprint": "d593862c6f24a70a",
+    "lastmod": "2026-11-11"
   },
   "/en/200000-hectares/": {
-    "fingerprint": "9d2490637720131e",
-    "lastmod": "2026-10-12"
+    "fingerprint": "617d4d32ca0f9059",
+    "lastmod": "2026-11-11"
   },
   "/en/hectare-football-field/": {
     "fingerprint": "6627637a62b312e0",
@@ -408,12 +480,24 @@
     "lastmod": "2026-08-18"
   },
   "/unidades-de-superficie/": {
-    "fingerprint": "31d406c99ed40faa",
-    "lastmod": "2026-10-14"
+    "fingerprint": "3e0dfd42f0c1ec7f",
+    "lastmod": "2026-11-03"
   },
   "/en/area-units/": {
-    "fingerprint": "3d57108d1b058769",
-    "lastmod": "2026-10-14"
+    "fingerprint": "aa3d866363db0f8a",
+    "lastmod": "2026-10-24"
+  },
+  "/cuanto-es-un-acre/": {
+    "fingerprint": "11de295e88555de9",
+    "lastmod": "2026-10-24"
+  },
+  "/en/how-big-is-an-acre/": {
+    "fingerprint": "32765ba3602b720c",
+    "lastmod": "2026-10-24"
+  },
+  "/cuanto-es-una-fanega/": {
+    "fingerprint": "2fa392ebc9367809",
+    "lastmod": "2026-11-03"
   },
   "/cuantos-litros-piscina-olimpica/": {
     "fingerprint": "20a47dd400ddd00c",
