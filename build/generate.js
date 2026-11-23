@@ -856,7 +856,7 @@ const COMPARISONS = {
     15000: [
       'casi todo el país de Liechtenstein (~16.000 ha)',
       'una vez y media la ciudad de Barcelona (~10.100 ha)',
-      'unas cuarenta y cuatro veces Central Park de Nueva York (341 ha)',
+      'unas cuarenta y cuatro veces Central Park de Nueva York (341 ha)',      'todo <a href="/cuanto-mide-el-mapa-de-gta-6/">el mapa de GTA 6</a> con su mar, según las estimaciones (~15.000 ha)',
     ],
     20000: [
       'casi el doble de la ciudad de Barcelona (~10.100 ha)',
@@ -988,7 +988,7 @@ const COMPARISONS = {
     15000: [
       'almost the whole country of Liechtenstein (~16,000 ha)',
       'one and a half times the city of Paris (~10,500 ha)',
-      "about forty-four times New York's Central Park (341 ha)",
+      "about forty-four times New York's Central Park (341 ha)",      'the whole <a href="/en/how-big-is-the-gta-6-map/">GTA 6 map</a>, sea included, going by the estimates (~15,000 ha)',
     ],
     20000: [
       'larger than the entire country of Liechtenstein (~16,000 ha)',
@@ -3478,7 +3478,421 @@ function fanegaArticle() {
   };
 }
 
-const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle(), areaUnitsArticle('es'), areaUnitsArticle('en'), acreArticle('es'), acreArticle('en'), fanegaArticle()];
+// ¿Cuánto mide el mapa de GTA 6? Out-of-calendar article (asked by David on
+// 2026-11-23, four days after the release), bilingual: the topic is universal.
+// Preset: a 15.000 ha circle (150 km², 6,9 km of radius) over the Puerta del
+// Sol (downtown Miami in English, since Vice City is Miami).
+// IMPORTANT: Rockstar has published NO area. Every km² below is an estimate,
+// and the copy says so. Review when somebody measures the shipped map.
+// Data validated 2026-11-23 (web):
+// - Released 19-nov-2026 for PS5 and Xbox Series X|S.
+//   https://www.rockstargames.com/VI/out-now
+// - Official statements are ratios only: about twice the map of GTA V, three
+//   times the playable area of Red Dead Redemption 2, Vice City twice the size
+//   of Los Santos (Rockstar to The New York Times and Edge, relayed by VGC).
+//   https://www.videogameschronicle.com/news/grand-theft-auto-6s-map-is-three-times-bigger-than-red-dead-redemption-2/
+// - ~150 km² with the sea = 2 × the 75,84 km² usually given for GTA V
+//   (arithmetic on Rockstar's ratio, not a measurement).
+//   https://www.notebookcheck.net/GTA-6-Vice-City-map-size-and-completion-time-revealed.1381025.0.html
+// - ~85 km² of land: community map v16, sept-2026 (85,6 km²; other community
+//   measurements give 83-84). Vice City built-up area: 13-17 km² (community).
+//   All pre-release. https://www.notebookcheck.net/GTA-6-New-map-shows-Leonida-in-unprecedented-detail-and-smaller-than-expected.1404443.0.html
+//   https://www.tweaktown.com/news/113726/a-new-fan-video-shows-gta-6s-vice-city-is-nearly-twice-the-size-of-gta-5s-los-santos/index.html
+// - Crossing times on the released game (Zack Zwiezen, Kotaku, 18-nov-2026):
+//   walking 3 h 21 min, running 1 h 41 min, driving 10 min 53 s, prop plane
+//   5 min 51 s; GTA V: about 2,5 h walking and about 8 min driving.
+//   https://kotaku.com/it-took-me-over-three-hours-to-walk-across-gta-6s-massive-map-2000755572
+// - Earlier maps (community measurements): GTA V 75,8 km² (about 49 of land),
+//   RDR2 ~75, San Andreas 38,2, GTA IV 16,1, Vice City (2002) 9,1, GTA III 8,1.
+//   https://www.thegamer.com/which-grand-theft-auto-has-the-biggest-world-map/
+// - Real places: City of Miami 36,00 sq mi = 93,2 km² and Miami Beach 7,69
+//   sq mi = 19,9 km² of land (US Census QuickFacts 2020); Manhattan 59,1 km²,
+//   Barcelona 101,4 km², Madrid 604,5 km², Paris 105,4 km² (as in LADDER_REFS).
+const GTA6_ALTERNATES = {
+  es: '/cuanto-mide-el-mapa-de-gta-6/',
+  en: '/en/how-big-is-the-gta-6-map/',
+};
+const GTA6 = { totalHa: 15000, landHa: 8500, cityHa: 1500 };
+
+function gta6MapArticle(lang) {
+  const g = GTA6;
+  const ROCKSTAR_URL = 'https://www.rockstargames.com/VI/out-now';
+  const KOTAKU_URL = 'https://kotaku.com/it-took-me-over-three-hours-to-walk-across-gta-6s-massive-map-2000755572';
+  const VGC_URL = 'https://www.videogameschronicle.com/news/grand-theft-auto-6s-map-is-three-times-bigger-than-red-dead-redemption-2/';
+  const MAP_V16_URL = 'https://www.notebookcheck.net/GTA-6-New-map-shows-Leonida-in-unprecedented-detail-and-smaller-than-expected.1404443.0.html';
+  if (lang === 'es') {
+  const at = (ha, lat, lon, z) => `/?ha=${ha}&lat=${lat}&lon=${lon}&z=${z}`;
+  const sol = [40.4169, -3.7033];
+  const intro = `      <p>
+        <b>El mapa de GTA 6 mide unos 150 kilómetros cuadrados</b> contando el mar, y unos
+        <b>85 km² de tierra firme</b>. Es aproximadamente el doble que el de GTA V. Pero hay que
+        decirlo desde el principio: <b>Rockstar no ha publicado ninguna cifra oficial</b>. Lo
+        único que ha dicho el estudio son proporciones, y todos los kilómetros cuadrados que
+        circulan salen de ahí o de mapas medidos por la comunidad.
+      </p>
+      <p>
+        El círculo del mapa de arriba tiene esos <b>150 km²</b>, 15.000 hectáreas, centrado en la
+        Puerta del Sol de Madrid: por el norte llega hasta Chamartín. Arrástralo hasta tu
+        ciudad, o míralo directamente sobre
+        <a href="${at(g.totalHa, 41.3874, 2.1686, 11)}">Barcelona</a>,
+        <a href="${at(g.totalHa, 19.4326, -99.1332, 11)}">Ciudad de México</a>,
+        <a href="${at(g.totalHa, -34.6037, -58.3816, 11)}">Buenos Aires</a>,
+        <a href="${at(g.totalHa, 4.5981, -74.0760, 11)}">Bogotá</a> o sobre
+        <a href="${at(g.totalHa, 25.7743, -80.1937, 11)}">la Miami real</a>, que es la ciudad en
+        la que se inspira Vice City. Grand Theft Auto VI salió el
+        <a href="${ROCKSTAR_URL}" rel="noopener">19 de noviembre de 2026</a> para PlayStation 5 y
+        Xbox Series X|S.
+      </p>
+
+      <h2>Las tres cifras del mapa de GTA 6</h2>
+      <p>
+        Cuando alguien dice «el mapa de GTA 6 mide tanto» puede estar hablando de tres cosas
+        distintas, y conviene no mezclarlas:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Qué se mide</th><th>Superficie estimada</th><th>De dónde sale</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${at(g.totalHa, sol[0], sol[1], 11)}">Todo el mapa, con el mar</a></td><td>~150 km² (15.000 ha)</td><td>El doble que GTA V, la proporción que da Rockstar</td></tr>
+          <tr><td><a href="${at(g.landHa, sol[0], sol[1], 11)}">Solo la tierra firme de Leonida</a></td><td>~85 km² (8.500 ha)</td><td>Mapas reconstruidos por la comunidad antes del lanzamiento</td></tr>
+          <tr><td><a href="${at(g.cityHa, sol[0], sol[1], 12)}">Solo la ciudad de Vice City</a></td><td>13-17 km² (~1.500 ha)</td><td>Mediciones de la comunidad sobre esos mismos mapas</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Es decir: los 150 km² que se repiten por todas partes son el mapa <b>entero</b>, con sus
+        cayos, sus pantanos y mucho océano. La ciudad de Vice City es unas diez veces más
+        pequeña. Y ninguna de las tres cifras se ha medido todavía sobre el juego ya publicado:
+        son estimaciones anteriores al 19 de noviembre, y las actualizaremos cuando alguien lo
+        haga.
+      </p>
+
+      <h2>Qué ha dicho Rockstar exactamente</h2>
+      <p>
+        Rockstar solo ha dado comparaciones con sus juegos anteriores, a medios como The New
+        York Times y la revista Edge: que el mapa es <b>aproximadamente el doble</b> que el de
+        GTA V, que tiene unas <b>tres veces el área jugable</b> de Red Dead Redemption 2 y que
+        <b>Vice City dobla a Los Santos</b>
+        (<a href="${VGC_URL}" rel="noopener">lo recoge VGC</a>). Como el mapa de GTA V se suele
+        cifrar en unos 76 km² con su mar, el doble da los famosos 150.
+      </p>
+      <p>
+        La cifra de tierra firme viene de otro sitio: de la comunidad que lleva años
+        reconstruyendo el mapa a partir de tráilers y capturas. Su
+        <a href="${MAP_V16_URL}" rel="noopener">versión de septiembre de 2026</a> daba 85,6 km²
+        de tierra, bastante menos que los 125 que se manejaban en 2024.
+      </p>
+
+      <h2>150 km² en cosas que conoces</h2>
+      <ul class="examples-list">
+        <li><b>Una vez y media Barcelona</b> (el municipio mide 101 km²).</li>
+        <li><b>Una cuarta parte de Madrid</b> (el municipio mide 605 km²).</li>
+        <li><b>Dos veces y media Manhattan</b> (59 km²).</li>
+        <li>Casi todo <b>Liechtenstein</b> (160 km²).</li>
+        <li>Unos <b>21.000 campos de fútbol</b>, o
+          <a href="/15000-hectareas/">15.000 hectáreas</a>: un círculo de 6,9 km de radio o un
+          cuadrado de 12,2 km de lado.</li>
+      </ul>
+      <p>
+        Y aquí está la comparación más curiosa. La <b>ciudad de Miami real</b> tiene 93 km² de
+        tierra: toda la tierra firme de Leonida, con sus seis regiones, cabe en
+        <a href="${at(g.landHa, 25.7743, -80.1937, 11)}">algo menos que la Miami de verdad</a>.
+        Y Vice City, con sus 13 a 17 km², es más pequeña que Miami Beach (20 km²) y equivale a
+        una sexta parte de la ciudad en la que se inspira. Los mundos abiertos no son grandes
+        por superficie, sino por densidad: en esos kilómetros hay que meter una ciudad, unos
+        cayos, unos pantanos y una montaña.
+      </p>
+
+      <h2>GTA 6 frente a los mapas anteriores</h2>
+      <p>
+        Ninguna de estas cifras es oficial: son las mediciones de la comunidad que se citan
+        habitualmente, con el mar incluido.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Juego</th><th>Mapa</th><th>En el mundo real</th></tr></thead>
+        <tbody>
+          <tr><td>GTA VI (2026)</td><td>~150 km²</td><td><a href="/15000-hectareas/">15.000 hectáreas</a>: una vez y media Barcelona</td></tr>
+          <tr><td>GTA V (2013)</td><td>~76 km²</td><td>Tres cuartas partes de Barcelona</td></tr>
+          <tr><td>Red Dead Redemption 2 (2018)</td><td>~75 km²</td><td>Algo más que Manhattan</td></tr>
+          <tr><td>GTA San Andreas (2004)</td><td>~38 km²</td><td><a href="/4000-hectareas/">Unas 4.000 hectáreas</a></td></tr>
+          <tr><td>GTA IV (2008)</td><td>~16 km²</td><td>Como la Vice City de GTA 6</td></tr>
+          <tr><td>GTA Vice City (2002)</td><td>~9 km²</td><td><a href="/1000-hectareas/">Menos de 1.000 hectáreas</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        El dato que mejor resume el salto: <b>solo la ciudad</b> de Vice City de 2026 ya es más
+        grande que <b>todo el mapa</b> del Vice City de 2002, y el mapa completo es unas
+        dieciséis veces mayor.
+      </p>
+
+      <h2>Cuánto se tarda en cruzarlo</h2>
+      <p>
+        Esto sí está medido sobre el juego publicado.
+        <a href="${KOTAKU_URL}" rel="noopener">Zack Zwiezen, de Kotaku</a>, cruzó Leonida de sur
+        a norte de cuatro maneras:
+      </p>
+      <ul class="examples-list">
+        <li><b>Andando:</b> 3 horas y 21 minutos (en GTA V, unas dos horas y media).</li>
+        <li><b>Corriendo:</b> 1 hora y 41 minutos.</li>
+        <li><b>En coche</b>, por autopista: 10 minutos y 53 segundos (en GTA V, unos ocho).</li>
+        <li><b>En avioneta:</b> 5 minutos y 51 segundos.</li>
+      </ul>
+
+      <h2>Leonida: una Florida en miniatura</h2>
+      <p>
+        El estado de Leonida es la Florida de Rockstar, y sus seis regiones tienen modelo real:
+        <b>Vice City</b> es Miami, los <b>Leonida Keys</b> son los cayos de Florida,
+        <b>Grassrivers</b> son los Everglades, y a ellas se suman Port Gellhorn, Ambrosia y el
+        parque nacional de Mount Kalaga. La escala, eso sí, es de maqueta: solo el parque
+        nacional de los Everglades de verdad mide unos 6.200 km², cuarenta veces el mapa entero
+        del juego.
+      </p>
+
+      <h2>Preguntas frecuentes sobre el mapa de GTA 6</h2>
+      <dl class="faq">
+        <dt>¿Cuánto mide el mapa de GTA 6?</dt>
+        <dd>Rockstar no ha publicado una cifra oficial. Las estimaciones son de unos
+          <a href="/15000-hectareas/">150 km²</a> contando el mar, que es el doble que GTA V, y
+          de unos 85 km² de tierra firme según los mapas reconstruidos por la comunidad.</dd>
+
+        <dt>¿Cuánto mide Vice City en GTA 6?</dt>
+        <dd>La zona urbana de Vice City mide entre 13 y 17 km² según las mediciones de la
+          comunidad. Rockstar solo ha dicho que es el doble de grande que Los Santos. Los 150 km²
+          que se citan a menudo son el mapa entero, no la ciudad.</dd>
+
+        <dt>¿Es más grande el mapa de GTA 6 que el de GTA 5?</dt>
+        <dd>Sí, aproximadamente el doble. El mapa de GTA V se suele cifrar en unos 76 km² con el
+          mar y el de GTA 6 en unos 150 km². En tierra firme la diferencia es algo menor: unos 85
+          km² frente a unos 49.</dd>
+
+        <dt>¿A qué equivale el mapa de GTA 6 en el mundo real?</dt>
+        <dd>Sus 150 km² son una vez y media el municipio de Barcelona, una cuarta parte del de
+          Madrid o dos veces y media Manhattan. Su tierra firme, unos 85 km², es algo menos que la
+          ciudad de Miami real, que tiene 93 km².</dd>
+
+        <dt>¿Cuánto se tarda en cruzar el mapa de GTA 6?</dt>
+        <dd>Según las pruebas de Kotaku sobre el juego ya publicado, de sur a norte se tarda 3
+          horas y 21 minutos andando, 1 hora y 41 minutos corriendo, casi 11 minutos en coche y
+          menos de 6 minutos en avioneta.</dd>
+
+        <dt>¿En qué lugar real se basa el mapa de GTA 6?</dt>
+        <dd>En Florida. El estado de Leonida es una versión reducida de Florida: Vice City es
+          Miami, los Leonida Keys son los cayos y Grassrivers son los Everglades.</dd>
+      </dl>
+      <p>
+        ¿Quieres comparar otro mapa? Escribe sus hectáreas en el <a href="/">Hectareómetro</a>
+        (1 km² son 100 hectáreas) y se dibuja a escala sobre tu ciudad, o usa el
+        <a href="/hectareas-a-metros-cuadrados/?a=150&u=km2">conversor de superficies</a> para
+        pasar los kilómetros cuadrados a lo que necesites. Cifras revisadas el 23 de noviembre
+        de 2026.
+      </p>`;
+  return {
+    key: 'mapa-gta-6', lang: 'es', ha: g.totalHa,
+    family: 'hectareas', published: '2026-11-23', modified: '2026-11-23',
+    slug: 'cuanto-mide-el-mapa-de-gta-6',
+    path: GTA6_ALTERNATES.es, alternates: GTA6_ALTERNATES,
+    presetExtra: ` var PRESET_ZOOM = 11; var PRESET_LAT = ${sol[0]}; var PRESET_LON = ${sol[1]};`,
+    title: 'Tamaño del mapa de GTA 6: unos 150 km² (85 de tierra), dibujado sobre tu ciudad | Hectareómetro',
+    description: 'El mapa de GTA 6 mide unos 150 km² con el mar y unos 85 de tierra firme, el doble que GTA V. Vice City, entre 13 y 17 km². No hay cifra oficial de Rockstar: míralo a escala sobre Madrid, Barcelona o Miami.',
+    h1: 'El mapa de GTA 6 mide unos 150 km²: así de grande es en el mundo real',
+    intro,
+    question: '¿Cuánto mide el mapa de GTA 6?',
+    answer: 'Rockstar no ha publicado una cifra oficial. Las estimaciones son de unos 150 km² contando el mar, que es el doble que GTA V, y de unos 85 km² de tierra firme según los mapas reconstruidos por la comunidad.',
+    faqs: [
+      { q: '¿Cuánto mide el mapa de GTA 6?', a: 'Rockstar no ha publicado una cifra oficial. Las estimaciones son de unos 150 km² contando el mar, que es el doble que GTA V, y de unos 85 km² de tierra firme según los mapas reconstruidos por la comunidad.' },
+      { q: '¿Cuánto mide Vice City en GTA 6?', a: 'La zona urbana de Vice City mide entre 13 y 17 km² según las mediciones de la comunidad. Rockstar solo ha dicho que es el doble de grande que Los Santos. Los 150 km² que se citan a menudo son el mapa entero, no la ciudad.' },
+      { q: '¿Es más grande el mapa de GTA 6 que el de GTA 5?', a: 'Sí, aproximadamente el doble. El mapa de GTA V se suele cifrar en unos 76 km² con el mar y el de GTA 6 en unos 150 km². En tierra firme la diferencia es algo menor: unos 85 km² frente a unos 49.' },
+      { q: '¿A qué equivale el mapa de GTA 6 en el mundo real?', a: 'Sus 150 km² son una vez y media el municipio de Barcelona, una cuarta parte del de Madrid o dos veces y media Manhattan. Su tierra firme, unos 85 km², es algo menos que la ciudad de Miami real, que tiene 93 km².' },
+      { q: '¿Cuánto se tarda en cruzar el mapa de GTA 6?', a: 'Según las pruebas de Kotaku sobre el juego ya publicado, de sur a norte se tarda 3 horas y 21 minutos andando, 1 hora y 41 minutos corriendo, casi 11 minutos en coche y menos de 6 minutos en avioneta.' },
+      { q: '¿En qué lugar real se basa el mapa de GTA 6?', a: 'En Florida. El estado de Leonida es una versión reducida de Florida: Vice City es Miami, los Leonida Keys son los cayos y Grassrivers son los Everglades.' },
+    ],
+    linkLabel: '¿Cuánto mide el mapa de GTA 6?',
+  };
+  }
+
+  // English mirror: the circle sits over downtown Miami, the real Vice City.
+  const at = (ha, lat, lon, z) => `/en/?ha=${ha}&lat=${lat}&lon=${lon}&z=${z}`;
+  const miami = [25.7743, -80.1937];
+  const intro = `      <p>
+        <b>The GTA 6 map is about 150 square kilometres</b> (58 square miles) including the sea,
+        and about <b>85 km² (33 sq mi) of land</b>. That is roughly twice the size of GTA V. One
+        thing needs saying up front, though: <b>Rockstar has not published an official
+        figure</b>. All the studio has given are ratios, and every square kilometre you see
+        quoted comes from those or from maps measured by the community.
+      </p>
+      <p>
+        The circle on the map above is those <b>150 km²</b>, or 15,000 hectares, centred on
+        downtown Miami, the real city behind Vice City. Drag it to your own city, or jump
+        straight to it over
+        <a href="${at(g.totalHa, 40.7580, -73.9855, 11)}">New York</a>,
+        <a href="${at(g.totalHa, 34.0522, -118.2437, 11)}">Los Angeles</a>,
+        <a href="${at(g.totalHa, 51.5074, -0.1278, 10)}">London</a> or
+        <a href="${at(g.totalHa, -33.8688, 151.2093, 11)}">Sydney</a>. Grand Theft Auto VI
+        came out on <a href="${ROCKSTAR_URL}" rel="noopener">19 November 2026</a> for PlayStation
+        5 and Xbox Series X|S.
+      </p>
+
+      <h2>The three sizes of the GTA 6 map</h2>
+      <p>
+        When someone says "the GTA 6 map is this big" they may mean three different things, and
+        it pays to keep them apart:
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>What is measured</th><th>Estimated area</th><th>Where it comes from</th></tr></thead>
+        <tbody>
+          <tr><td><a href="${at(g.totalHa, miami[0], miami[1], 11)}">The whole map, sea included</a></td><td>~150 km² (58 sq mi)</td><td>Twice GTA V, the ratio Rockstar gives</td></tr>
+          <tr><td><a href="${at(g.landHa, miami[0], miami[1], 11)}">The land of Leonida only</a></td><td>~85 km² (33 sq mi)</td><td>Community maps rebuilt before launch</td></tr>
+          <tr><td><a href="${at(g.cityHa, miami[0], miami[1], 12)}">Vice City alone</a></td><td>13–17 km² (5–6.5 sq mi)</td><td>Community measurements on those same maps</td></tr>
+        </tbody>
+      </table>
+      <p>
+        In other words, the 150 km² quoted everywhere is the <b>whole</b> map, with its keys,
+        its swamps and a lot of ocean. Vice City itself is about ten times smaller. And none of
+        the three has yet been measured on the released game: they are estimates from before 19
+        November, and we will update them when somebody does.
+      </p>
+
+      <h2>What Rockstar has actually said</h2>
+      <p>
+        Rockstar has only compared the map with its earlier games, in interviews with The New
+        York Times and Edge magazine: the map is <b>roughly twice</b> the size of GTA V's, it has
+        about <b>three times the playable area</b> of Red Dead Redemption 2, and <b>Vice City is
+        twice the size of Los Santos</b> (<a href="${VGC_URL}" rel="noopener">as reported by
+        VGC</a>). GTA V's map is usually put at about 76 km² with its sea, so doubling it gives
+        the famous 150.
+      </p>
+      <p>
+        The land figure comes from somewhere else: the community that has spent years rebuilding
+        the map from trailers and screenshots. Its
+        <a href="${MAP_V16_URL}" rel="noopener">September 2026 version</a> put the land at 85.6
+        km², well below the 125 km² that was being quoted in 2024.
+      </p>
+
+      <h2>150 km² in things you know</h2>
+      <ul class="examples-list">
+        <li><b>Two and a half Manhattans</b> (59 km²).</li>
+        <li><b>1.6 times the real City of Miami</b> (93 km² of land).</li>
+        <li><b>Paris and almost half as much again</b> (the city proper is 105 km²).</li>
+        <li>Almost the whole of <b>Liechtenstein</b> (160 km²).</li>
+        <li>About <b>21,000 football pitches</b>, or
+          <a href="/en/15000-hectares/">15,000 hectares</a>: a circle with a 6.9 km (4.3 mile)
+          radius, or a square 12.2 km on each side.</li>
+      </ul>
+      <p>
+        Here is the comparison worth remembering. The <b>real City of Miami</b> has 93 km² of
+        land: all the land in Leonida, six regions and all, fits in
+        <a href="${at(g.landHa, miami[0], miami[1], 11)}">slightly less than the real Miami</a>.
+        And Vice City, at 13 to 17 km², is smaller than Miami Beach (20 km²) and about a sixth
+        of the city it is modelled on. Open worlds are not big in area; they are dense. Those
+        few square kilometres have to hold a city, a chain of keys, a swamp and a mountain.
+      </p>
+
+      <h2>GTA 6 against the earlier maps</h2>
+      <p>
+        None of these figures is official: they are the community measurements usually quoted,
+        sea included.
+      </p>
+      <table class="equiv-table">
+        <thead><tr><th>Game</th><th>Map</th><th>In the real world</th></tr></thead>
+        <tbody>
+          <tr><td>GTA VI (2026)</td><td>~150 km²</td><td><a href="/en/15000-hectares/">15,000 hectares</a>: two and a half Manhattans</td></tr>
+          <tr><td>GTA V (2013)</td><td>~76 km²</td><td>A little more than Manhattan</td></tr>
+          <tr><td>Red Dead Redemption 2 (2018)</td><td>~75 km²</td><td>A little more than Manhattan</td></tr>
+          <tr><td>GTA San Andreas (2004)</td><td>~38 km²</td><td><a href="/en/4000-hectares/">About 4,000 hectares</a></td></tr>
+          <tr><td>GTA IV (2008)</td><td>~16 km²</td><td>About the Vice City of GTA 6</td></tr>
+          <tr><td>GTA Vice City (2002)</td><td>~9 km²</td><td><a href="/en/1000-hectares/">Under 1,000 hectares</a></td></tr>
+        </tbody>
+      </table>
+      <p>
+        The line that sums up the jump: the <b>city alone</b> in 2026's Vice City is already
+        bigger than the <b>entire map</b> of 2002's Vice City, and the full map is about sixteen
+        times larger.
+      </p>
+
+      <h2>How long it takes to cross</h2>
+      <p>
+        This part has been measured on the released game.
+        <a href="${KOTAKU_URL}" rel="noopener">Zack Zwiezen at Kotaku</a> crossed Leonida from
+        south to north four ways:
+      </p>
+      <ul class="examples-list">
+        <li><b>Walking:</b> 3 hours 21 minutes (GTA V: about two and a half hours).</li>
+        <li><b>Running:</b> 1 hour 41 minutes.</li>
+        <li><b>Driving</b>, mostly on highways: 10 minutes 53 seconds (GTA V: about eight).</li>
+        <li><b>In a prop plane:</b> 5 minutes 51 seconds.</li>
+      </ul>
+
+      <h2>Leonida: Florida in miniature</h2>
+      <p>
+        The state of Leonida is Rockstar's Florida, and its six regions have real models:
+        <b>Vice City</b> is Miami, the <b>Leonida Keys</b> are the Florida Keys and
+        <b>Grassrivers</b> is the Everglades, joined by Port Gellhorn, Ambrosia and Mount Kalaga
+        National Park. The scale is a model's, though: the real Everglades National Park alone
+        is about 6,200 km² (2,400 sq mi), forty times the game's entire map.
+      </p>
+
+      <h2>Frequently asked questions about the GTA 6 map</h2>
+      <dl class="faq">
+        <dt>How big is the GTA 6 map?</dt>
+        <dd>Rockstar has not published an official figure. Estimates put it at about
+          <a href="/en/15000-hectares/">150 km²</a> (58 square miles) including the sea, which
+          is twice GTA V, and about 85 km² (33 square miles) of land according to
+          community-built maps.</dd>
+
+        <dt>How big is Vice City in GTA 6?</dt>
+        <dd>The built-up area of Vice City is between 13 and 17 km² (5 to 6.5 square miles)
+          according to community measurements. Rockstar has only said it is twice the size of
+          Los Santos. The 150 km² often quoted is the whole map, not the city.</dd>
+
+        <dt>Is the GTA 6 map bigger than GTA 5?</dt>
+        <dd>Yes, roughly twice as big. GTA V's map is usually put at about 76 km² with the sea
+          and GTA 6's at about 150 km². On land the gap is a little smaller: about 85 km² against
+          about 49.</dd>
+
+        <dt>What is the GTA 6 map equal to in the real world?</dt>
+        <dd>Its 150 km² is two and a half times Manhattan, 1.6 times the City of Miami or
+          almost the whole of Liechtenstein. Its land, about 85 km², is slightly less than the
+          real City of Miami, which has 93 km².</dd>
+
+        <dt>How long does it take to cross the GTA 6 map?</dt>
+        <dd>In Kotaku's tests on the released game, south to north takes 3 hours 21 minutes on
+          foot, 1 hour 41 minutes running, almost 11 minutes by car and under 6 minutes in a
+          prop plane.</dd>
+
+        <dt>What real place is the GTA 6 map based on?</dt>
+        <dd>Florida. The state of Leonida is a scaled-down Florida: Vice City is Miami, the
+          Leonida Keys are the Florida Keys and Grassrivers is the Everglades.</dd>
+      </dl>
+      <p>
+        Want to compare another map? Type its hectares into the
+        <a href="/en/">Hectareometer</a> (1 km² is 100 hectares) and it is drawn to scale over
+        your city, or use the
+        <a href="/en/hectares-to-square-meters/?a=150&u=km2">area converter</a> to turn square
+        kilometres into square miles or acres. Figures checked on 23 November 2026.
+      </p>`;
+  return {
+    key: 'mapa-gta-6', lang: 'en', ha: g.totalHa,
+    family: 'hectareas', published: '2026-11-23', modified: '2026-11-23',
+    slug: 'how-big-is-the-gta-6-map',
+    path: GTA6_ALTERNATES.en, alternates: GTA6_ALTERNATES,
+    presetExtra: ` var PRESET_ZOOM = 11; var PRESET_LAT = ${miami[0]}; var PRESET_LON = ${miami[1]};`,
+    title: 'GTA 6 map size: about 150 km² (58 sq mi), drawn to scale over real Miami | Hectareometer',
+    description: 'The GTA 6 map is about 150 km² (58 sq mi) with the sea and about 85 km² of land, twice GTA V. Vice City is 13 to 17 km². There is no official Rockstar figure: see it to scale over Miami, New York or London.',
+    h1: 'The GTA 6 map is about 150 km²: this is how big that really is',
+    intro,
+    question: 'How big is the GTA 6 map?',
+    answer: 'Rockstar has not published an official figure. Estimates put it at about 150 km² (58 square miles) including the sea, which is twice GTA V, and about 85 km² (33 square miles) of land according to community-built maps.',
+    faqs: [
+      { q: 'How big is the GTA 6 map?', a: 'Rockstar has not published an official figure. Estimates put it at about 150 km² (58 square miles) including the sea, which is twice GTA V, and about 85 km² (33 square miles) of land according to community-built maps.' },
+      { q: 'How big is Vice City in GTA 6?', a: 'The built-up area of Vice City is between 13 and 17 km² (5 to 6.5 square miles) according to community measurements. Rockstar has only said it is twice the size of Los Santos. The 150 km² often quoted is the whole map, not the city.' },
+      { q: 'Is the GTA 6 map bigger than GTA 5?', a: 'Yes, roughly twice as big. GTA V\'s map is usually put at about 76 km² with the sea and GTA 6\'s at about 150 km². On land the gap is a little smaller: about 85 km² against about 49.' },
+      { q: 'What is the GTA 6 map equal to in the real world?', a: 'Its 150 km² is two and a half times Manhattan, 1.6 times the City of Miami or almost the whole of Liechtenstein. Its land, about 85 km², is slightly less than the real City of Miami, which has 93 km².' },
+      { q: 'How long does it take to cross the GTA 6 map?', a: 'In Kotaku\'s tests on the released game, south to north takes 3 hours 21 minutes on foot, 1 hour 41 minutes running, almost 11 minutes by car and under 6 minutes in a prop plane.' },
+      { q: 'What real place is the GTA 6 map based on?', a: 'Florida. The state of Leonida is a scaled-down Florida: Vice City is Miami, the Leonida Keys are the Florida Keys and Grassrivers is the Everglades.' },
+    ],
+    linkLabel: 'How big is the GTA 6 map?',
+  };
+}
+
+const ARTICLES = [burnedAreaArticle(), awsAragonArticle(), eclipseArticle(), solarPlantArticle(), areaUnitsArticle('es'), areaUnitsArticle('en'), acreArticle('es'), acreArticle('en'), fanegaArticle(), gta6MapArticle('es'), gta6MapArticle('en')];
 
 // ---- liters landing pages ------------------------------------------------
 

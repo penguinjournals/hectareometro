@@ -1,11 +1,11 @@
 {
   "/": {
-    "fingerprint": "2957cf28473091d9",
-    "lastmod": "2026-11-11"
+    "fingerprint": "7ba226136dc5b31e",
+    "lastmod": "2026-11-23"
   },
   "/en/": {
-    "fingerprint": "e6feabef1a58009a",
-    "lastmod": "2026-11-11"
+    "fingerprint": "ef45d4a3aff29c63",
+    "lastmod": "2026-11-23"
   },
   "/medir-superficie/": {
     "fingerprint": "a71847bba0e7d803",
@@ -72,12 +72,12 @@
     "lastmod": "2026-10-12"
   },
   "/articulos/": {
-    "fingerprint": "9fd160ab0db1fa93",
-    "lastmod": "2026-11-11"
+    "fingerprint": "305c8abe1e989dd5",
+    "lastmod": "2026-11-23"
   },
   "/en/articles/": {
-    "fingerprint": "16a39f0388436468",
-    "lastmod": "2026-11-11"
+    "fingerprint": "0fe130bbea9433bf",
+    "lastmod": "2026-11-23"
   },
   "/1-hectarea/": {
     "fingerprint": "7c1c8dce6099c38a",
@@ -160,8 +160,8 @@
     "lastmod": "2026-10-12"
   },
   "/15000-hectareas/": {
-    "fingerprint": "704f8768fae282a1",
-    "lastmod": "2026-10-12"
+    "fingerprint": "9cdd248685581c21",
+    "lastmod": "2026-11-23"
   },
   "/20000-hectareas/": {
     "fingerprint": "40d46951fc9b0b69",
@@ -268,8 +268,8 @@
     "lastmod": "2026-11-11"
   },
   "/en/15000-hectares/": {
-    "fingerprint": "a1ac969e6779d6c6",
-    "lastmod": "2026-11-11"
+    "fingerprint": "487aaba7fa211639",
+    "lastmod": "2026-11-23"
   },
   "/en/20000-hectares/": {
     "fingerprint": "aefa5fb2d89d61f9",
@@ -498,6 +498,14 @@
   "/cuanto-es-una-fanega/": {
     "fingerprint": "2fa392ebc9367809",
     "lastmod": "2026-11-03"
+  },
+  "/cuanto-mide-el-mapa-de-gta-6/": {
+    "fingerprint": "4e492e74dc95288d",
+    "lastmod": "2026-11-23"
+  },
+  "/en/how-big-is-the-gta-6-map/": {
+    "fingerprint": "c5d9a3b76be0d990",
+    "lastmod": "2026-11-23"
   },
   "/cuantos-litros-piscina-olimpica/": {
     "fingerprint": "20a47dd400ddd00c",
