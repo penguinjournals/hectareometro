@@ -538,7 +538,7 @@ function footerHtml(lang) {
     <ul class="footer-links">
 ${links.map(([href, label]) => `      <li><a href="${href}">${escapeHtml(label)}</a></li>`).join('\n')}
     </ul>
-    <p>by <a href="https://twitter.com/penguinjournals">@penguinjournals</a> and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
+    <p>by Penguinjournals and <a href="https://twitter.com/buzzkomarketing">@BuzzkoMarketing</a></p>
   </div>
 </footer>`;
 }
@@ -10325,7 +10325,8 @@ function buildHubJsonLd(lang, articles, crumbs) {
 // change the copy in BOTH languages.
 const TEMPLATE_ABOUT = fs.readFileSync(path.join(__dirname, 'template-about.html'), 'utf8');
 const REPO_URL = 'https://github.com/penguinjournals/hectareometro';
-const X_URL = 'https://twitter.com/penguinjournals';
+// Contact is a plain-text, obfuscated e-mail on purpose (no mailto link, no
+// X profile: David's account no longer exists). Asked by David, 2026-11-24.
 
 const ABOUT = {
   es: {
@@ -10371,7 +10372,7 @@ const ABOUT = {
 
     <h2>Si ves un error</h2>
     <p>
-      Escríbeme a <a href="${X_URL}" rel="noopener">@penguinjournals en X</a>. Lo reviso yo.
+      Escríbeme a dgonzalezdiez [arroba] gmail.com. Lo reviso yo.
     </p>`,
   },
   en: {
@@ -10417,8 +10418,7 @@ const ABOUT = {
 
     <h2>If you spot a mistake</h2>
     <p>
-      Write to me at <a href="${X_URL}" rel="noopener">@penguinjournals on X</a>. I review it
-      myself.
+      Write to me at dgonzalezdiez [at] gmail.com. I review it myself.
     </p>`,
   },
 };
@@ -10444,7 +10444,7 @@ function writeAboutPage(lang) {
         'inLanguage': lang,
         'url': url,
         'about': { '@type': 'WebSite', 'name': ui.siteName, 'url': BASE_URL + homePath(lang) },
-        'author': { '@type': 'Person', 'name': 'David González Diez', 'sameAs': X_URL },
+        'author': { '@type': 'Person', 'name': 'David González Diez' },
       },
       {
         '@type': 'BreadcrumbList',
