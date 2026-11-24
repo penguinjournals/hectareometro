@@ -943,5 +943,19 @@
     "path": "/en/articles/",
     "label": "Articles",
     "title": "Articles: quantities and magnitudes explained | Hectareometer"
+  },
+  {
+    "lang": "es",
+    "slug": "acerca-de",
+    "path": "/acerca-de/",
+    "label": "Acerca de",
+    "title": "Acerca de Hectareómetro: una persona y una IA | Hectareómetro"
+  },
+  {
+    "lang": "en",
+    "slug": "about",
+    "path": "/en/about/",
+    "label": "About",
+    "title": "About Hectareometer: one person and an AI | Hectareometer"
   }
 ]

@@ -527,6 +527,7 @@ function footerHtml(lang) {
     [converterPath(lang), ui.navConverter],
     [lengthConverterPath(lang), ui.navLengthConverter],
     [articlesHubPath(lang), ui.navArticles],
+    [aboutPath(lang), ABOUT[lang].footerLabel],
   ];
   return `<footer class="site-footer">
   <div class="wrap">
@@ -724,6 +725,13 @@ function lengthConverterPath(lang) {
 // The articles hub, unlike the tool pages, IS generated (writeArticlesHub):
 // it lists every editorial article of its language from ALL_ARTICLES, so a
 // new article shows up there without touching anything else.
+// About page: who is behind the site and which part an AI agent does. Linked
+// from the footer of every page (footerHtml), so the disclosure is one click
+// away from any content.
+function aboutPath(lang) {
+  return lang === 'es' ? '/acerca-de/' : '/en/about/';
+}
+
 function articlesHubPath(lang) {
   return lang === 'es' ? '/articulos/' : '/en/articles/';
 }
@@ -10310,6 +10318,168 @@ function buildHubJsonLd(lang, articles, crumbs) {
   }, null, 2);
 }
 
+// ---- about page (/acerca-de/, /en/about/) -----------------------------------
+//
+// Text approved by David on 2026-11-24. It is a disclosure, so keep it true:
+// if the way the site is made changes (another model, human-written pieces),
+// change the copy in BOTH languages.
+const TEMPLATE_ABOUT = fs.readFileSync(path.join(__dirname, 'template-about.html'), 'utf8');
+const REPO_URL = 'https://github.com/penguinjournals/hectareometro';
+const X_URL = 'https://twitter.com/penguinjournals';
+
+const ABOUT = {
+  es: {
+    footerLabel: 'Acerca de · Hecho con IA',
+    crumb: 'Acerca de',
+    title: 'Acerca de Hectareómetro: una persona y una IA | Hectareómetro',
+    description: 'Hectareómetro lo dirige una persona, David González Diez, y lo escribe en su mayor parte un agente de inteligencia artificial. Quién hace qué y cómo se comprueban las cifras.',
+    h1: 'Quién hace Hectareómetro, y qué parte hace una IA',
+    sub: 'Hectareómetro lo dirige una persona y lo escribe, en su mayor parte, una inteligencia artificial. Creo que tienes derecho a saberlo antes de fiarte de una cifra.',
+    body: `    <h2>La persona</h2>
+    <p>
+      Me llamo David González Diez. Monté Hectareómetro en 2017 por una razón sencilla: cada
+      verano oía en las noticias que habían ardido miles de hectáreas y no era capaz de imaginar
+      cuánto era eso. La primera versión hacía una sola cosa: dibujar
+      <a href="/">un círculo de N hectáreas sobre un mapa</a>. Sigo siendo quien decide qué se
+      construye y qué se publica, y el responsable de lo que lees aquí.
+    </p>
+
+    <h2>La IA</h2>
+    <p>
+      Desde 2026 trabajo con un agente de inteligencia artificial: Claude, de Anthropic. Hace casi
+      todo el trabajo de teclado. Escribe <a href="/articulos/">los artículos</a> y los textos de
+      las páginas, busca y contrasta los datos, programa las herramientas y traduce al inglés. Yo
+      le marco qué hacer, reviso el resultado y corrijo el rumbo.
+    </p>
+    <p>
+      Lo digo sin rodeos para que no parezca otra cosa: <b>prácticamente todo el contenido de esta
+      web lo ha redactado una IA, no yo</b>.
+    </p>
+
+    <h2>Cómo intentamos no equivocarnos</h2>
+    <ul>
+      <li>Las cifras se contrastan con fuentes antes de publicarse. Cuando un dato es una
+        estimación o las fuentes no coinciden, el texto lo dice.</li>
+      <li>Las fuentes quedan anotadas en <a href="${REPO_URL}" rel="noopener">el código de la
+        web, que es público</a>.</li>
+      <li>Las conversiones no las «recuerda» la IA: las calcula el código con factores
+        exactos.</li>
+      <li>Los mapas son de Google Maps y de OpenStreetMap.</li>
+      <li>Aun así, una IA se equivoca, y yo también. Ya hemos corregido errores publicados y
+        volverá a pasar.</li>
+    </ul>
+
+    <h2>Si ves un error</h2>
+    <p>
+      Escríbeme a <a href="${X_URL}" rel="noopener">@penguinjournals en X</a>. Lo reviso yo.
+    </p>`,
+  },
+  en: {
+    footerLabel: 'About · Made with AI',
+    crumb: 'About',
+    title: 'About Hectareometer: one person and an AI | Hectareometer',
+    description: 'Hectareometer is run by one person, David González Diez, and written for the most part by an AI agent. Who does what, and how the figures are checked.',
+    h1: 'Who makes Hectareometer, and which part an AI does',
+    sub: 'Hectareometer is run by one person and written, for the most part, by an artificial intelligence. I think you have a right to know that before you trust a figure.',
+    body: `    <h2>The person</h2>
+    <p>
+      My name is David González Diez. I built Hectareometer in 2017 for a simple reason: every
+      summer the news said thousands of hectares had burned, and I could not picture how much
+      that was. The first version did one thing: it drew
+      <a href="/en/">a circle of N hectares on a map</a>. I still decide what gets built and what
+      gets published, and I am responsible for what you read here.
+    </p>
+
+    <h2>The AI</h2>
+    <p>
+      Since 2026 I have worked with an AI agent: Claude, made by Anthropic. It does almost all
+      the keyboard work. It writes <a href="/en/articles/">the articles</a> and page copy, finds
+      and checks the data, codes the tools and translates into English. I tell it what to do,
+      review the result and correct the course.
+    </p>
+    <p>
+      I am saying this plainly so it does not look like anything else: <b>practically all the
+      content on this site was written by an AI, not by me</b>.
+    </p>
+
+    <h2>How we try not to get things wrong</h2>
+    <ul>
+      <li>Figures are checked against sources before they are published. When a number is an
+        estimate or sources disagree, the text says so.</li>
+      <li>Sources are noted in <a href="${REPO_URL}" rel="noopener">the site's code, which is
+        public</a>.</li>
+      <li>Conversions are not "remembered" by the AI: the code calculates them with exact
+        factors.</li>
+      <li>Maps come from Google Maps and OpenStreetMap.</li>
+      <li>Even so, an AI makes mistakes, and so do I. We have already corrected published
+        errors, and it will happen again.</li>
+    </ul>
+
+    <h2>If you spot a mistake</h2>
+    <p>
+      Write to me at <a href="${X_URL}" rel="noopener">@penguinjournals on X</a>. I review it
+      myself.
+    </p>`,
+  },
+};
+
+function writeAboutPage(lang) {
+  const ui = UI[lang];
+  const a = ABOUT[lang];
+  const other = lang === 'es' ? 'en' : 'es';
+  const url = BASE_URL + aboutPath(lang);
+  const crumbs = [
+    { name: ui.siteName, url: BASE_URL + homePath(lang) },
+    { name: a.crumb, url },
+  ];
+  const hreflang = LANGS.map(lg => `<link rel="alternate" hreflang="${lg}" href="${BASE_URL + aboutPath(lg)}">`)
+    .concat(`<link rel="alternate" hreflang="x-default" href="${BASE_URL + aboutPath('es')}">`).join('\n');
+  const jsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'AboutPage',
+        'name': a.h1,
+        'description': a.description,
+        'inLanguage': lang,
+        'url': url,
+        'about': { '@type': 'WebSite', 'name': ui.siteName, 'url': BASE_URL + homePath(lang) },
+        'author': { '@type': 'Person', 'name': 'David González Diez', 'sameAs': X_URL },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': crumbs.map((it, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': it.name, 'item': it.url })),
+      },
+    ],
+  }, null, 2);
+  const repl = {
+    LANG: ui.htmlLang,
+    BREADCRUMB: buildBreadcrumbHtml(crumbs, lang),
+    HREFLANG: hreflang,
+    CANONICAL: url,
+    TITLE: escapeHtml(a.title),
+    OG_TITLE: escapeHtml(a.h1),
+    DESCRIPTION: escapeHtml(a.description),
+    SITE_NAME: ui.siteName,
+    OG_LOCALE: ui.ogLocale,
+    JSON_LD: jsonLd,
+    OG_IMAGE_TAGS: ogImageTags({ lang, slug: 'about' }),
+    H1: escapeHtml(a.h1),
+    INTRO: escapeHtml(a.sub),
+    BODY: a.body,
+    ...chromeFor(lang, 'acerca', `<a href="${aboutPath(other)}" hreflang="${other}">${ui.switchLabel}</a>`),
+  };
+  let out = TEMPLATE_ABOUT;
+  Object.keys(repl).forEach(k => {
+    out = out.split('{{' + k + '}}').join(repl[k]);
+  });
+  const dir = path.join(ROOT, aboutPath(lang).replace(/^\/+|\/+$/g, ''));
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), out);
+  console.log(`generated ${aboutPath(lang)}`);
+  return { lang, slug: lang === 'es' ? 'acerca-de' : 'about', path: aboutPath(lang), label: a.crumb, title: a.title };
+}
+
 function writeArticlesHub(lang) {
   const ui = UI[lang];
   const other = lang === 'es' ? 'en' : 'es';
@@ -10611,6 +10781,7 @@ function writeSitemap() {
   LANGS.forEach(lang => add(converterPath(lang)));
   LANGS.forEach(lang => add(lengthConverterPath(lang)));
   LANGS.forEach(lang => add(articlesHubPath(lang)));
+  LANGS.forEach(lang => add(aboutPath(lang)));
   LANGS.forEach(lang => KEYS.forEach(key => add(pathFor(lang, key), buildPage(lang, key))));
   LANGS.forEach(lang => LITER_QUANTITIES.forEach(l => add(literPathFor(lang, l), literPage(lang, l))));
   LANGS.forEach(lang => KILO_QUANTITIES.forEach(k => add(kiloPathFor(lang, k), kiloPage(lang, k))));
@@ -10745,6 +10916,7 @@ function main() {
     console.log(`generated ${page.path}`);
   });
   LANGS.forEach(lang => manifest.push(writeArticlesHub(lang)));
+  LANGS.forEach(lang => manifest.push(writeAboutPage(lang)));
   fs.writeFileSync(path.join(__dirname, 'pages.json'), JSON.stringify(manifest, null, 2));
   writeSitemap();
   console.log(`\n${manifest.length} pages generated (${LANGS.length} languages × (${KEYS.length} keys + ${LITER_QUANTITIES.length} liter + ${KILO_QUANTITIES.length} kilo + ${MONEY_QUANTITIES.length} money amounts) + ${ARTICLES.length + LITER_ARTICLES.length + DIST_ARTICLES.length + MONEY_ARTICLES.length} articles + ${LANGS.length} article hubs).`);

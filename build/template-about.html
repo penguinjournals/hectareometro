@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+{{HEAD_COMMON}}
+<link rel="canonical" href="{{CANONICAL}}">
+{{HREFLANG}}
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="author" content="David González Diez">
+
+<!-- Open Graph data -->
+<meta property="og:title" content="{{OG_TITLE}}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{CANONICAL}}" />
+<meta property="og:description" content="{{DESCRIPTION}}" />
+<meta property="og:site_name" content="{{SITE_NAME}}" />
+{{OG_IMAGE_TAGS}}
+<meta property="og:locale" content="{{OG_LOCALE}}" />
+
+<!-- Structured data (schema.org) -->
+<script type="application/ld+json">
+{{JSON_LD}}
+</script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4477095176837087" crossorigin="anonymous"></script>
+</head>
+<body data-section="{{SECTION}}">
+{{HEADER}}
+<main>
+<section class="hero hero-nomap">
+  <div class="wrap">
+    <div class="hero-head">
+      {{BREADCRUMB}}
+      <h1 class="ans">{{H1}}</h1>
+      <p class="sub">{{INTRO}}</p>
+    </div>
+  </div>
+</section>
+<div class="wrap">
+  <div class="prose section">
+{{BODY}}
+  </div>
+{{LENSES_BLOCK}}
+</div>
+</main>
+{{FOOTER}}
+</body>
+</html>
